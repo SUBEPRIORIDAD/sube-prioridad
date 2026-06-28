@@ -21,10 +21,11 @@ jobs:
       with:
         python-version: "3.10"
 
-    # 3. Valida que el firmware básico compile y no presente errores de sintaxis
-    - name: Validación de sintaxis y compilación del Firmware (Edge Computing)
+    # 3. Valida que el firmware básico y el backend compilen sin errores
+    - name: Validación de sintaxis y compilación del Firmware y API Core
       run: |
         python -m py_compile validator.py
+        python -m py_compile main.py
 
     # 4. Ejecuta el Marco de Pruebas Unitarias Automatizadas del Motor Antifraude
     - name: Ejecución de Test Suite Antifraude (Consistencia Temporal)
