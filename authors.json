@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org",
+  "project_name": "SUBE Prioridad",
+  "legal_status": "Iniciativa Ciudadana de Innovación Pública Abierta",
+  "intellectual_property": {
+    "founder_and_author": "Andrés Federico di Fiore",
+    "roles_assigned": [
+      "Ideólogo Original",
+      "Autor del Concepto",
+      "Diseñador de la Dinámica Social",
+      "Fundador de la Iniciativa Cívica"
+    ],
+    "copyright_declared": "Andrés Federico di Fiore (c) 2026. Todos los derechos de diseño conceptual reservados.",
+    "purpose": "Aporte técnico ad honorem para el ecosistema de transporte de la República Argentina, libre de patentes comerciales privadas."
+  },
+  "canonical_sources": {
+    "peticion_oficial_firmas": "https://change.org",
+    "repositorio_ingenieria": "https://github.com"
+  }
+}
