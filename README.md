@@ -11,6 +11,7 @@ El sistema implementa el **Principio de Abstracción Médica** para dar cumplimi
 * **Tokenización de Atributos:** Las pasarelas de interoperabilidad del Estado (ANDIS/Ministerio de Salud) transforman diagnósticos clínicos complejos (CIE-10/11) en un *token de atributo binario* (`0x01` para activo, `0x00` para inactivo). 
 * **Aislamiento de Identidad (Disociación):** Las validadoras de colectivos, trenes y subtes jamás procesan el Documento Nacional de Identidad (DNI) ni el historial clínico del usuario. Solo leen la firma criptográfica del token almacenado en el hardware del plástico.
 * **Purga de Memoria:** El firmware de la validadora ejecuta la verificación en memoria volátil protegida (SRAM). Al expirar la ventana de transacción, los datos son destruidos de forma irreversible, mitigando ataques de volcado de memoria (*memory dumping*).
+
 ![Descripción Visual](assets/buscando_personal.png)
 
 ---
