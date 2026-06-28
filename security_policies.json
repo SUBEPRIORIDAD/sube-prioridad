@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org",
+  "title": "Matriz de Permisos y Autorizaciones de Seguridad SUBE Prioridad",
+  "description": "Configuración lógica de control de acceso basado en roles (RBAC) para habilitar permisos entre organismos sin trabas manuales.",
+  "system_version": "1.0.0",
+  "roles_definidos": {
+    "validadora_borde": {
+      "permisos": ["LEER_ATRIBUTO_BINARIO", "ENCOLAR_BATCH_TRANSACCION"],
+      "restricciones": ["PROHIBIDO_LEER_HISTORIAL_MEDICO", "PROHIBIDO_LEER_DNI_USUARIO"]
+    },
+    "bus_interoperabilidad_xroad": {
+      "permisos": ["SINCRONIZAR_ATRIBUTOS_SALUD", "VERIFICAR_FIRMA_LEY_25506"],
+      "restricciones": ["MUTACIÓN_DE_TARIFAS_BASE_BLOQUEADA"]
+    },
+    "clearing_nacion_servicios": {
+      "permisos": ["PROCESAR_BONO_SOLIDARIO", "CREDITAR_SALDO_DIFERIDO"],
+      "restricciones": ["ACCESO_LOG_GEOLOCALIZACION_CRUDO_DENEGADO"]
+    }
+  },
+  "politicas_de_red": {
+    "requiere_tls_mutuo": true,
+    "politica_habeas_data": "STRICT_ANONYMIZATION",
+    "fail_safe_status": "ALLOW_PASSAGE_WITHOUT_ALERTS_ON_HARDWARE_FAILURE"
+  }
+}
