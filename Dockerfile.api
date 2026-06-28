@@ -1,0 +1,20 @@
+# Imagen base ligera optimizada para servidores web en entornos de producción
+FROM python:3.10-slim
+
+# Directorio de ejecución aislado dentro de la sandbox del contenedor
+WORKDIR /api
+
+# Copia el listado de requerimientos para optimizar las capas de caché de Docker
+COPY requirements.txt .
+
+# Instalación de librerías del sistema sin almacenar archivos temporales de instalación
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copia los módulos lógicos requeridos para el funcionamiento de la API central
+COPY main.py config.py cache_manager.py ./
+
+# Expone el puerto de red estándar para comunicaciones HTTP seguras
+EXPOSE 8000
+
+# Comando de inicio: Inicializa el servidor ASGI Uvicorn con tolerancia a fallos
+CMD ["uvicorn", "main.py:app", "--host", "0.0.0.0", "--port", "8000"]
