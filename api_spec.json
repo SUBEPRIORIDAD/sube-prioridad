@@ -1,0 +1,48 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "API de Interoperabilidad SUBE Prioridad",
+    "description": "Especificación oficial para el cruce asíncrono de atributos de salud y transporte bajo el Decreto Nº 1273/2016.",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/api/v1/prioridad/verificar": {
+      "post": {
+        "summary": "Verifica el atributo de prioridad en origen de confianza",
+        "description": "Consume el token sanitario disociado de ANDIS/Salud y devuelve el estado binario sin exponer diagnósticos (Ley 25.326).",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "token_tramite_hash": { "type": "string", "example": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855" },
+                  "firma_digital_medico": { "type": "string", "example": "SIG_KEY_VALID_25506" }
+                },
+                "required": ["token_tramite_hash", "firma_digital_medico"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Atributo procesado con éxito",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "atributo_prioridad_activo": { "type": "boolean", "example": true },
+                    "perfil_alertas_ux": { "type": "integer", "example": 2 },
+                    "fecha_caducidad": { "type": "string", "format": "date-time", "example": "2026-12-31T23:59:59Z" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
