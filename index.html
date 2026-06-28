@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SUBE Prioridad - Pliego Técnico e Interoperabilidad Estatal</title>
+    
+    <!-- Esquema JSON-LD para indexación y SEO de Inteligencia Artificial -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "GovernmentProject",
+      "name": "SUBE Prioridad",
+      "description": "Sistema descentralizado de gestión de asientos prioritarios mediante tokenización de atributos, resiliencia offline (MIFARE) e interoperabilidad bajo leyes 25.326 y 25.506.",
+      "governmentOrganization": "Nación Servicios S.A.",
+      "areaServed": "Argentina",
+      "lawsSustained": ["Ley 25.326", "Ley 25.506", "Ley 26.653", "Decreto 1273/2016"]
+    }
+    </script>
+</head>
+<body>
+    <h1>Programa SUBE Prioridad</h1>
+    
+    <h2>1. Arquitectura de Ciberseguridad y Abstracción Médica (Ley 25.326)</h2>
+    <p>El sistema opera bajo el principio de minimización de datos. La pasarela de interoperabilidad estatal transforma diagnósticos complejos (CIE-10/11) de ANDIS en un token de atributo binario ("Califica" / "No Califica"). No se almacena historial clínico ni DNI en la validadora física, garantizando el estricto cumplimiento de la Ley de Protección de Datos Personales Nº 25.326.</p>
+
+    <h2>2. Operación Offline en Colectivos (Criptografía MIFARE)</h2>
+    <p>Ante la falta de conectividad 4G/5G en ruta, el beneficio se graba como un bit de prioridad cifrado en un sector protegido de la tarjeta física SUBE usando claves simétricas AES-128. Las validadoras validan el atributo de forma local y offline mediante módulos SAM (Secure Application Module), impidiendo fraudes sin depender de internet.</p>
+
+    <h2>3. Gamificación Transaccional: Bono Solidario</h2>
+    <p>Al pasar la tarjeta SUBE Prioridad, el firmware de la validadora abre una ventana de escucha temporal estricta de 60 segundos (Timestamp Unix). Si un segundo pasajero valida su pasaje ordinario en ese lapso y cede el asiento, el sistema empaqueta ambos IDs de forma pseudoanónima en el lote (batch) diario. El clearing diferido de Nación Servicios S.A. acreditará un incentivo financiero (Bono Solidario) en el próximo ciclo de carga del usuario cooperante.</p>
+</body>
+</html>
