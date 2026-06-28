@@ -1,0 +1,36 @@
+
+version: '3.8'
+
+services:
+  # Componente de Borde: Motor lógico del validador y firmware de la SUBE
+  sube-validator-core:
+    build: .
+    container_name: sube_prioridad_validator
+    depends_on:
+      sube-secure-db:
+        condition: service_healthy
+    networks:
+      - sube-internal-net
+
+  # Componente Centralizado: Base de Datos Relacional Aislada (Estándar Ley 25.326)
+  sube-secure-db:
+    image: postgres:15-alpine
+    container_name: sube_prioridad_database
+    environment:
+      POSTGRES_DB: sube_prioridad_db
+      POSTGRES_USER: nacion_servicios_admin
+      POSTGRES_PASSWORD: SecretCriptoPassword123 # Credencial de entorno local de desarrollo
+    volumes:
+      - ./schema.sql:/docker-entrypoint-initdb.d/schema.sql:ro # Inyecta automáticamente tu esquema SQL
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U nacion_servicios_admin -d sube_prioridad_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - sube-internal-net
+
+networks:
+  # Red aislada y encriptada: Impide el acceso externo a los hashes de las tarjetas
+  sube-internal-net:
+    driver: bridge
