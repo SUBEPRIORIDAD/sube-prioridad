@@ -1,0 +1,47 @@
+syntax = "proto3";
+
+package subeprioridad.interop.v1;
+
+import "google/protobuf/timestamp.proto";
+
+// DEFINICIÓN DE SERVICIOS CORE: INTEROPERABILIDAD ESTATAL (DECRETO 1273/2016)
+// Pasarela de comunicación segura y de baja latencia basada en arquitectura orientada a servicios (SOA).
+service SubePrioridadInteropService {
+    // Sincroniza de forma asíncrona los atributos médicos validados en origen sin exponer diagnósticos
+    rpc VerificarAtributoSalud (VerificarAtributoSaludRequest) returns (VerificarAtributoSaludResponse);
+    
+    // Procesa el lote diario (batch) de interacciones cívicas para la validación antifraude diferida
+    rpc SincronizarBatchTransaccionesCivicas (SincronizarBatchRequest) returns (SincronizarBatchResponse);
+}
+
+// MENSAJES DE CAPA DE CONFIANZA: ABSTRACCIÓN MÉDICA (LEY 25.326)
+message VerificarAtributoSaludRequest {
+    string id_tramite_andis_hash = 1;      -- SHA-256 del código de trámite original (Origen de confianza único)
+    string token_seguridad_emisor = 2;     -- Firma digital criptográfica del profesional médico (Ley 25.506)
+}
+
+message VerificarAtributoSaludResponse {
+    bool califica_atributo_prioridad = 1;  -- Atributo binario puro (0x01 o 0x00). Cero datos de historias clínicas.
+    int32 nivel_asistencia_ux_defecto = 2; -- Configuración de UI/UX preestablecida (1: Visible, 2: Discreto, 3: Pasivo)
+    google.protobuf.Timestamp fecha_caducidad_cronologica = 3; -- Fecha de expiración automatizada del beneficio transitorio
+}
+
+// MENSAJES DE CAPA DE BORDE: PROCESAMIENTO DIFERIDO (OFFLINE RECONCILIATION)
+message TransaccionCivica {
+    string tarjeta_prioridad_hash = 1;     -- ID anonimizado del usuario prioritario
+    string tarjeta_colaborador_hash = 2;   -- ID anonimizado del pasajero cooperante
+    string linea_colectivo_id = 3;         -- Validación cruzada por infraestructura de transporte
+    string interno_coche_id = 4;           -- Identificador de unidad física para cross-checking
+    google.protobuf.Timestamp ts_prioridad = 5; -- Marca de tiempo del evento de asistencia
+    google.protobuf.Timestamp ts_bono = 6;      -- Marca de tiempo de la re-validación cívica voluntaria
+}
+
+message SincronizarBatchRequest {
+    string terminal_validadora_id = 1;     -- ID de hardware del validador de a bordo o molinete ferroviario
+    repeated TransaccionCivica transacciones = 2; -- Lote de transacciones recolectadas en modo offline
+}
+
+message SincronizarBatchResponse {
+    int32 registros_procesados_exitosos = 1;
+    int32 registros_anomalos_bloqueados = 2; -- Métricas derivadas hacia el motor analítico antifraude
+}
