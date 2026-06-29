@@ -320,6 +320,23 @@ docs/PLIEGO_TECNICO_EXTENDIDO.md
 
 Ese documento debe leerse como una especificación conceptual, prospectiva y evolutiva. No debe interpretarse como una implementación productiva actualmente desplegada ni como una integración real vigente con organismos públicos, sistemas SUBE, validadoras, hardware embarcado o infraestructura estatal.
 
+## Documentación estratégica del proyecto
+
+La documentación principal del repositorio se organiza en los siguientes documentos:
+
+* [`docs/INDICE_DOCUMENTAL.md`](docs/INDICE_DOCUMENTAL.md): guía de lectura y organización general de la documentación.
+* [`docs/DOSSIER_INSTITUCIONAL_BREVE.md`](docs/DOSSIER_INSTITUCIONAL_BREVE.md): síntesis institucional para autoridades, legisladores, asesores y ciudadanía.
+* [`docs/ESTRATEGIA_LEGISLATIVA_Y_PARTICIPACION_CIUDADANA.md`](docs/ESTRATEGIA_LEGISLATIVA_Y_PARTICIPACION_CIUDADANA.md): estrategia para impulsar el análisis legislativo, administrativo y ciudadano de la propuesta.
+* [`docs/ARQUITECTURA_DE_REFERENCIA.md`](docs/ARQUITECTURA_DE_REFERENCIA.md): visión arquitectónica general del proyecto.
+* [`docs/ROADMAP_IMPLEMENTACION.md`](docs/ROADMAP_IMPLEMENTACION.md): hoja de ruta conceptual para una evolución gradual desde MVP hasta eventuales pruebas piloto o implementaciones de mayor escala.
+* [`docs/DECISIONES_DE_ARQUITECTURA.md`](docs/DECISIONES_DE_ARQUITECTURA.md): decisiones técnicas y conceptuales que orientan el diseño del sistema.
+* [`docs/PRINCIPIOS_DE_GOBERNANZA.md`](docs/PRINCIPIOS_DE_GOBERNANZA.md): criterios de transparencia, protección de datos, auditabilidad y control institucional.
+* [`ARCHITECTURE_GUARDRAILS.md`](ARCHITECTURE_GUARDRAILS.md): límites técnicos que toda evolución del código debe respetar.
+* [`docs/PLIEGO_TECNICO_EXTENDIDO.md`](docs/PLIEGO_TECNICO_EXTENDIDO.md): documento técnico amplio que conserva la visión integral original del proyecto.
+
+Estos documentos deben leerse de manera complementaria. El repositorio representa actualmente un MVP conceptual y demostrativo; toda implementación real deberá ser evaluada por las autoridades competentes.
+
+
 ---
 
 ## 17. Arquitectura de Referencia
