@@ -4,7 +4,7 @@
 
 Este índice organiza la documentación principal del repositorio SUBE Prioridad.
 
-El proyecto se presenta como una propuesta ciudadana de innovación pública, acompañada por un MVP conceptual, documentación de arquitectura, fundamentos institucionales, estrategia legislativa, modelos de presentación ciudadana, modelo de prueba piloto, lineamientos de protección de datos personales, documentación técnica auxiliar y anexos técnicos.
+El proyecto se presenta como una propuesta ciudadana de innovación pública, acompañada por un MVP conceptual, documentación de arquitectura, fundamentos jurídicos, fundamentos institucionales, estrategia legislativa, modelos de presentación ciudadana, modelo de prueba piloto, lineamientos de protección de datos personales, documentación técnica auxiliar y anexos técnicos.
 
 La finalidad de este índice es facilitar la lectura por parte de desarrolladores, legisladores, autoridades públicas, asesores técnicos, universidades, organizaciones de la sociedad civil, ciudadanos interesados y personas que acompañan la propuesta con firmas.
 
@@ -34,7 +34,7 @@ Toda eventual implementación real deberá quedar sujeta a evaluación técnica,
 
 Documento de entrada al repositorio.
 
-Presenta qué es SUBE Prioridad, qué no es, el estado actual del MVP, sus principios de privacidad, la arquitectura general, la forma de ejecución local y la documentación complementaria.
+Presenta qué es SUBE Prioridad, qué no es, el estado actual del MVP, sus principios de privacidad, los fundamentos jurídicos, la arquitectura general, la forma de ejecución local y la documentación complementaria.
 
 Debe leerse primero.
 
@@ -101,6 +101,18 @@ Explica qué datos no deben formar parte del core, por qué el sistema debe trab
 Es un documento central para la viabilidad jurídica, técnica e institucional del proyecto.
 
 Debe leerse junto con los guardrails, las decisiones de arquitectura, los principios de gobernanza y el modelo de prueba piloto.
+
+---
+
+### docs/FUNDAMENTOS_JURIDICOS.md
+
+Reúne los fundamentos jurídicos conceptuales del proyecto.
+
+Desarrolla el enfoque de derechos, igualdad real, accesibilidad efectiva, dignidad, no discriminación, protección de datos personales, razonabilidad, progresividad, transporte público, marco institucional del sistema SUBE, estrategia federal de implementación y prueba piloto.
+
+Incluye referencias a tratados internacionales, leyes nacionales vinculadas con discapacidad, salud, accesibilidad y protección de datos, así como un antecedente provincial reciente de colectivos inclusivos y accesibilidad cognitiva en la Provincia de Buenos Aires.
+
+No constituye dictamen jurídico ni interpretación vinculante, sino una base documental para evaluación por parte de autoridades competentes, legisladores, asesores, universidades y organizaciones sociales.
 
 ---
 
@@ -246,9 +258,10 @@ Para una primera lectura institucional:
 3. docs/PETITORIO_MODELO.md
 4. docs/MODELO_PROYECTO_RESOLUCION.md
 5. docs/PRUEBA_PILOTO_MODELO.md
-6. docs/PROTECCION_DATOS_PERSONALES.md
-7. docs/ESTRATEGIA_LEGISLATIVA_Y_PARTICIPACION_CIUDADANA.md
-8. docs/ROADMAP_IMPLEMENTACION.md
+6. docs/FUNDAMENTOS_JURIDICOS.md
+7. docs/PROTECCION_DATOS_PERSONALES.md
+8. docs/ESTRATEGIA_LEGISLATIVA_Y_PARTICIPACION_CIUDADANA.md
+9. docs/ROADMAP_IMPLEMENTACION.md
 ```
 
 Para una lectura técnica:
@@ -260,7 +273,8 @@ Para una lectura técnica:
 4. docs/DECISIONES_DE_ARQUITECTURA.md
 5. docs/PROTECCION_DATOS_PERSONALES.md
 6. docs/PRUEBA_PILOTO_MODELO.md
-7. docs/PLIEGO_TECNICO_EXTENDIDO.md
+7. docs/FUNDAMENTOS_JURIDICOS.md
+8. docs/PLIEGO_TECNICO_EXTENDIDO.md
 ```
 
 Para una lectura jurídica e institucional:
@@ -269,11 +283,12 @@ Para una lectura jurídica e institucional:
 1. docs/DOSSIER_INSTITUCIONAL_BREVE.md
 2. docs/PETITORIO_MODELO.md
 3. docs/MODELO_PROYECTO_RESOLUCION.md
-4. docs/PRUEBA_PILOTO_MODELO.md
-5. docs/PROTECCION_DATOS_PERSONALES.md
-6. docs/ESTRATEGIA_LEGISLATIVA_Y_PARTICIPACION_CIUDADANA.md
-7. docs/PRINCIPIOS_DE_GOBERNANZA.md
-8. docs/ROADMAP_IMPLEMENTACION.md
+4. docs/FUNDAMENTOS_JURIDICOS.md
+5. docs/PRUEBA_PILOTO_MODELO.md
+6. docs/PROTECCION_DATOS_PERSONALES.md
+7. docs/ESTRATEGIA_LEGISLATIVA_Y_PARTICIPACION_CIUDADANA.md
+8. docs/PRINCIPIOS_DE_GOBERNANZA.md
+9. docs/ROADMAP_IMPLEMENTACION.md
 ```
 
 Para una lectura ciudadana:
@@ -283,8 +298,9 @@ Para una lectura ciudadana:
 2. docs/DOSSIER_INSTITUCIONAL_BREVE.md
 3. docs/PETITORIO_MODELO.md
 4. docs/PRUEBA_PILOTO_MODELO.md
-5. docs/PROTECCION_DATOS_PERSONALES.md
-6. docs/ESTRATEGIA_LEGISLATIVA_Y_PARTICIPACION_CIUDADANA.md
+5. docs/FUNDAMENTOS_JURIDICOS.md
+6. docs/PROTECCION_DATOS_PERSONALES.md
+7. docs/ESTRATEGIA_LEGISLATIVA_Y_PARTICIPACION_CIUDADANA.md
 ```
 
 Para una lectura orientada a prueba piloto:
@@ -292,10 +308,11 @@ Para una lectura orientada a prueba piloto:
 ```text
 1. docs/DOSSIER_INSTITUCIONAL_BREVE.md
 2. docs/PRUEBA_PILOTO_MODELO.md
-3. docs/PROTECCION_DATOS_PERSONALES.md
-4. docs/PRINCIPIOS_DE_GOBERNANZA.md
-5. docs/DECISIONES_DE_ARQUITECTURA.md
-6. docs/ROADMAP_IMPLEMENTACION.md
+3. docs/FUNDAMENTOS_JURIDICOS.md
+4. docs/PROTECCION_DATOS_PERSONALES.md
+5. docs/PRINCIPIOS_DE_GOBERNANZA.md
+6. docs/DECISIONES_DE_ARQUITECTURA.md
+7. docs/ROADMAP_IMPLEMENTACION.md
 ```
 
 Para una lectura orientada a privacidad y datos personales:
@@ -306,7 +323,19 @@ Para una lectura orientada a privacidad y datos personales:
 3. ARCHITECTURE_GUARDRAILS.md
 4. docs/DECISIONES_DE_ARQUITECTURA.md
 5. docs/PRINCIPIOS_DE_GOBERNANZA.md
-6. docs/PRUEBA_PILOTO_MODELO.md
+6. docs/FUNDAMENTOS_JURIDICOS.md
+7. docs/PRUEBA_PILOTO_MODELO.md
+```
+
+Para una lectura orientada a fundamentos jurídicos:
+
+```text
+1. docs/FUNDAMENTOS_JURIDICOS.md
+2. docs/PROTECCION_DATOS_PERSONALES.md
+3. docs/PRUEBA_PILOTO_MODELO.md
+4. docs/MODELO_PROYECTO_RESOLUCION.md
+5. docs/ESTRATEGIA_LEGISLATIVA_Y_PARTICIPACION_CIUDADANA.md
+6. docs/PRINCIPIOS_DE_GOBERNANZA.md
 ```
 
 ---
@@ -322,10 +351,12 @@ Toda la documentación debe interpretarse conforme a los siguientes criterios:
 * Las autoridades competentes conservan la decisión sobre factibilidad, alcance, diseño e implementación.
 * El sistema no debe procesar diagnósticos médicos ni historia clínica en el core.
 * La protección de datos personales es una condición estructural de viabilidad del proyecto.
+* Los fundamentos jurídicos son conceptuales y no constituyen dictamen vinculante.
 * La propuesta no sustituye el régimen legal de asientos prioritarios.
 * El Bono Solidario es una evolución futura, no parte del núcleo inicial.
 * La prueba piloto propuesta es conceptual, orientativa y sujeta a evaluación institucional.
 * La mención de líneas, universidades, fundaciones u organismos no implica designación formal, aval, convenio vigente ni obligación de participación.
+* La referencia a antecedentes normativos, administrativos o provinciales no implica implementación automática.
 * Los archivos técnicos auxiliares ubicados en `docs/` no implican implementación productiva ni disponibilidad operativa real.
 * Toda implementación real debe ser gradual, reversible, auditable y respetuosa de la privacidad.
 
@@ -336,14 +367,13 @@ Toda la documentación debe interpretarse conforme a los siguientes criterios:
 Para fortalecer aún más el repositorio, podrían desarrollarse luego los siguientes documentos:
 
 ```text
-docs/FUNDAMENTOS_JURIDICOS.md
 docs/FUNDAMENTOS_MEDICOS.md
 docs/FUNDAMENTOS_OPERATIVOS.md
 docs/BONO_SOLIDARIO.md
 docs/ANEXOS_ORIGINALES_REFERENCIA.md
 ```
 
-Estos documentos deberán agregarse de manera gradual, evitando repeticiones y manteniendo coherencia con el README, los guardrails, la arquitectura de referencia, el roadmap, el modelo de prueba piloto y los lineamientos de protección de datos personales.
+Estos documentos deberán agregarse de manera gradual, evitando repeticiones y manteniendo coherencia con el README, los guardrails, la arquitectura de referencia, el roadmap, el modelo de prueba piloto, los lineamientos de protección de datos personales y los fundamentos jurídicos.
 
 ---
 
