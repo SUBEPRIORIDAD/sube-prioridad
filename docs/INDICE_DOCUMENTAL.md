@@ -2,9 +2,9 @@
 
 ## 1. Propósito
 
-Este índice organiza la documentación principal del repositorio SUBE Prioridad.
+Este índice organiza la documentación principal del repositorio **SUBE Prioridad**.
 
-El proyecto se presenta como una propuesta ciudadana de innovación pública, acompañada por un MVP conceptual, documentación de arquitectura, fundamentos jurídicos, fundamentos institucionales, estrategia legislativa, modelos de presentación ciudadana, modelo de prueba piloto, lineamientos de protección de datos personales, documentación técnica auxiliar y anexos técnicos.
+El proyecto se presenta como una propuesta ciudadana de innovación pública, acompañada por un MVP conceptual, documentación de arquitectura, fundamentos jurídicos, fundamentos médicos, fundamentos institucionales, estrategia legislativa, modelos de presentación ciudadana, modelo de prueba piloto, protocolo operativo, lineamientos de protección de datos personales, documentación técnica auxiliar y anexos técnicos.
 
 La finalidad de este índice es facilitar la lectura por parte de desarrolladores, legisladores, autoridades públicas, asesores técnicos, universidades, organizaciones de la sociedad civil, ciudadanos interesados y personas que acompañan la propuesta con firmas.
 
@@ -34,7 +34,7 @@ Toda eventual implementación real deberá quedar sujeta a evaluación técnica,
 
 Documento de entrada al repositorio.
 
-Presenta qué es SUBE Prioridad, qué no es, el estado actual del MVP, sus principios de privacidad, los fundamentos jurídicos, la arquitectura general, la forma de ejecución local y la documentación complementaria.
+Presenta qué es SUBE Prioridad, qué no es, el estado actual del MVP, sus principios de privacidad, los fundamentos jurídicos, los fundamentos médicos, la arquitectura general, la forma de ejecución local y la documentación complementaria.
 
 Debe leerse primero.
 
@@ -113,6 +113,30 @@ Desarrolla el enfoque de derechos, igualdad real, accesibilidad efectiva, dignid
 Incluye referencias a tratados internacionales, leyes nacionales vinculadas con discapacidad, salud, accesibilidad y protección de datos, así como un antecedente provincial reciente de colectivos inclusivos y accesibilidad cognitiva en la Provincia de Buenos Aires.
 
 No constituye dictamen jurídico ni interpretación vinculante, sino una base documental para evaluación por parte de autoridades competentes, legisladores, asesores, universidades y organizaciones sociales.
+
+---
+
+### docs/FUNDAMENTOS_MEDICOS.md
+
+Reúne fundamentos médicos, sanitarios y funcionales conceptuales para la iniciativa.
+
+Explica que SUBE Prioridad no diagnostica, no evalúa médicamente, no reemplaza certificados oficiales, no sustituye autoridades sanitarias y no convierte al transporte público en un espacio de evaluación clínica.
+
+Desarrolla la necesidad funcional de viajar sentado, la asistencia preventiva, personas con discapacidad, personas mayores, personas gestantes, movilidad reducida, rehabilitación, enfermedades no visibles, riesgo de caídas, accesibilidad cognitiva, alertas genéricas, no exposición de diagnósticos y evaluación médica funcional de una eventual prueba piloto.
+
+Debe leerse junto con `docs/PROTECCION_DATOS_PERSONALES.md`, `docs/FUNDAMENTOS_JURIDICOS.md` y `docs/PRUEBA_PILOTO_MODELO.md`.
+
+---
+
+### docs/PROTOCOLO_OPERATIVO.md
+
+Protocolo operativo conceptual para ordenar cómo podría funcionar una eventual experiencia de asistencia preventiva dentro del transporte público.
+
+Describe roles, flujo operativo, acreditación previa, atributo técnico de prioridad, modalidades de asistencia, alertas genéricas, canales de alerta, comunicación a bordo, rol del chofer, registro de eventos, incidentes, criterios de suspensión, capacitación mínima, canales de reclamo, evaluación operativa e informe final.
+
+No constituye una instrucción operativa vigente ni una implementación productiva.
+
+Debe interpretarse como una guía conceptual adaptable para pruebas piloto, laboratorios técnicos o evaluaciones institucionales.
 
 ---
 
@@ -258,10 +282,12 @@ Para una primera lectura institucional:
 3. docs/PETITORIO_MODELO.md
 4. docs/MODELO_PROYECTO_RESOLUCION.md
 5. docs/PRUEBA_PILOTO_MODELO.md
-6. docs/FUNDAMENTOS_JURIDICOS.md
-7. docs/PROTECCION_DATOS_PERSONALES.md
-8. docs/ESTRATEGIA_LEGISLATIVA_Y_PARTICIPACION_CIUDADANA.md
-9. docs/ROADMAP_IMPLEMENTACION.md
+6. docs/PROTOCOLO_OPERATIVO.md
+7. docs/FUNDAMENTOS_JURIDICOS.md
+8. docs/FUNDAMENTOS_MEDICOS.md
+9. docs/PROTECCION_DATOS_PERSONALES.md
+10. docs/ESTRATEGIA_LEGISLATIVA_Y_PARTICIPACION_CIUDADANA.md
+11. docs/ROADMAP_IMPLEMENTACION.md
 ```
 
 Para una lectura técnica:
@@ -272,9 +298,11 @@ Para una lectura técnica:
 3. docs/ARQUITECTURA_DE_REFERENCIA.md
 4. docs/DECISIONES_DE_ARQUITECTURA.md
 5. docs/PROTECCION_DATOS_PERSONALES.md
-6. docs/PRUEBA_PILOTO_MODELO.md
-7. docs/FUNDAMENTOS_JURIDICOS.md
-8. docs/PLIEGO_TECNICO_EXTENDIDO.md
+6. docs/PROTOCOLO_OPERATIVO.md
+7. docs/FUNDAMENTOS_MEDICOS.md
+8. docs/PRUEBA_PILOTO_MODELO.md
+9. docs/FUNDAMENTOS_JURIDICOS.md
+10. docs/PLIEGO_TECNICO_EXTENDIDO.md
 ```
 
 Para una lectura jurídica e institucional:
@@ -284,11 +312,13 @@ Para una lectura jurídica e institucional:
 2. docs/PETITORIO_MODELO.md
 3. docs/MODELO_PROYECTO_RESOLUCION.md
 4. docs/FUNDAMENTOS_JURIDICOS.md
-5. docs/PRUEBA_PILOTO_MODELO.md
-6. docs/PROTECCION_DATOS_PERSONALES.md
-7. docs/ESTRATEGIA_LEGISLATIVA_Y_PARTICIPACION_CIUDADANA.md
-8. docs/PRINCIPIOS_DE_GOBERNANZA.md
-9. docs/ROADMAP_IMPLEMENTACION.md
+5. docs/PROTOCOLO_OPERATIVO.md
+6. docs/FUNDAMENTOS_MEDICOS.md
+7. docs/PRUEBA_PILOTO_MODELO.md
+8. docs/PROTECCION_DATOS_PERSONALES.md
+9. docs/ESTRATEGIA_LEGISLATIVA_Y_PARTICIPACION_CIUDADANA.md
+10. docs/PRINCIPIOS_DE_GOBERNANZA.md
+11. docs/ROADMAP_IMPLEMENTACION.md
 ```
 
 Para una lectura ciudadana:
@@ -298,9 +328,11 @@ Para una lectura ciudadana:
 2. docs/DOSSIER_INSTITUCIONAL_BREVE.md
 3. docs/PETITORIO_MODELO.md
 4. docs/PRUEBA_PILOTO_MODELO.md
-5. docs/FUNDAMENTOS_JURIDICOS.md
-6. docs/PROTECCION_DATOS_PERSONALES.md
-7. docs/ESTRATEGIA_LEGISLATIVA_Y_PARTICIPACION_CIUDADANA.md
+5. docs/PROTOCOLO_OPERATIVO.md
+6. docs/FUNDAMENTOS_JURIDICOS.md
+7. docs/FUNDAMENTOS_MEDICOS.md
+8. docs/PROTECCION_DATOS_PERSONALES.md
+9. docs/ESTRATEGIA_LEGISLATIVA_Y_PARTICIPACION_CIUDADANA.md
 ```
 
 Para una lectura orientada a prueba piloto:
@@ -308,11 +340,13 @@ Para una lectura orientada a prueba piloto:
 ```text
 1. docs/DOSSIER_INSTITUCIONAL_BREVE.md
 2. docs/PRUEBA_PILOTO_MODELO.md
-3. docs/FUNDAMENTOS_JURIDICOS.md
-4. docs/PROTECCION_DATOS_PERSONALES.md
-5. docs/PRINCIPIOS_DE_GOBERNANZA.md
-6. docs/DECISIONES_DE_ARQUITECTURA.md
-7. docs/ROADMAP_IMPLEMENTACION.md
+3. docs/PROTOCOLO_OPERATIVO.md
+4. docs/FUNDAMENTOS_JURIDICOS.md
+5. docs/FUNDAMENTOS_MEDICOS.md
+6. docs/PROTECCION_DATOS_PERSONALES.md
+7. docs/PRINCIPIOS_DE_GOBERNANZA.md
+8. docs/DECISIONES_DE_ARQUITECTURA.md
+9. docs/ROADMAP_IMPLEMENTACION.md
 ```
 
 Para una lectura orientada a privacidad y datos personales:
@@ -323,8 +357,10 @@ Para una lectura orientada a privacidad y datos personales:
 3. ARCHITECTURE_GUARDRAILS.md
 4. docs/DECISIONES_DE_ARQUITECTURA.md
 5. docs/PRINCIPIOS_DE_GOBERNANZA.md
-6. docs/FUNDAMENTOS_JURIDICOS.md
-7. docs/PRUEBA_PILOTO_MODELO.md
+6. docs/PROTOCOLO_OPERATIVO.md
+7. docs/FUNDAMENTOS_JURIDICOS.md
+8. docs/FUNDAMENTOS_MEDICOS.md
+9. docs/PRUEBA_PILOTO_MODELO.md
 ```
 
 Para una lectura orientada a fundamentos jurídicos:
@@ -332,10 +368,35 @@ Para una lectura orientada a fundamentos jurídicos:
 ```text
 1. docs/FUNDAMENTOS_JURIDICOS.md
 2. docs/PROTECCION_DATOS_PERSONALES.md
-3. docs/PRUEBA_PILOTO_MODELO.md
-4. docs/MODELO_PROYECTO_RESOLUCION.md
-5. docs/ESTRATEGIA_LEGISLATIVA_Y_PARTICIPACION_CIUDADANA.md
+3. docs/FUNDAMENTOS_MEDICOS.md
+4. docs/PROTOCOLO_OPERATIVO.md
+5. docs/PRUEBA_PILOTO_MODELO.md
+6. docs/MODELO_PROYECTO_RESOLUCION.md
+7. docs/ESTRATEGIA_LEGISLATIVA_Y_PARTICIPACION_CIUDADANA.md
+8. docs/PRINCIPIOS_DE_GOBERNANZA.md
+```
+
+Para una lectura orientada a fundamentos médicos y funcionales:
+
+```text
+1. docs/FUNDAMENTOS_MEDICOS.md
+2. docs/PROTECCION_DATOS_PERSONALES.md
+3. docs/FUNDAMENTOS_JURIDICOS.md
+4. docs/PROTOCOLO_OPERATIVO.md
+5. docs/PRUEBA_PILOTO_MODELO.md
 6. docs/PRINCIPIOS_DE_GOBERNANZA.md
+```
+
+Para una lectura orientada a operación:
+
+```text
+1. docs/PROTOCOLO_OPERATIVO.md
+2. docs/PRUEBA_PILOTO_MODELO.md
+3. docs/PROTECCION_DATOS_PERSONALES.md
+4. docs/FUNDAMENTOS_MEDICOS.md
+5. docs/FUNDAMENTOS_JURIDICOS.md
+6. docs/PRINCIPIOS_DE_GOBERNANZA.md
+7. docs/DECISIONES_DE_ARQUITECTURA.md
 ```
 
 ---
@@ -350,8 +411,11 @@ Toda la documentación debe interpretarse conforme a los siguientes criterios:
 * Los documentos técnicos describen escenarios posibles, no obligaciones de implementación.
 * Las autoridades competentes conservan la decisión sobre factibilidad, alcance, diseño e implementación.
 * El sistema no debe procesar diagnósticos médicos ni historia clínica en el core.
+* El proyecto no diagnostica, no evalúa médicamente y no reemplaza certificados ni autoridades sanitarias.
+* El protocolo operativo es conceptual y no constituye una instrucción vigente ni una implementación productiva.
 * La protección de datos personales es una condición estructural de viabilidad del proyecto.
 * Los fundamentos jurídicos son conceptuales y no constituyen dictamen vinculante.
+* Los fundamentos médicos son conceptuales y no constituyen protocolo médico ni guía clínica.
 * La propuesta no sustituye el régimen legal de asientos prioritarios.
 * El Bono Solidario es una evolución futura, no parte del núcleo inicial.
 * La prueba piloto propuesta es conceptual, orientativa y sujeta a evaluación institucional.
@@ -367,13 +431,11 @@ Toda la documentación debe interpretarse conforme a los siguientes criterios:
 Para fortalecer aún más el repositorio, podrían desarrollarse luego los siguientes documentos:
 
 ```text
-docs/FUNDAMENTOS_MEDICOS.md
-docs/FUNDAMENTOS_OPERATIVOS.md
 docs/BONO_SOLIDARIO.md
 docs/ANEXOS_ORIGINALES_REFERENCIA.md
 ```
 
-Estos documentos deberán agregarse de manera gradual, evitando repeticiones y manteniendo coherencia con el README, los guardrails, la arquitectura de referencia, el roadmap, el modelo de prueba piloto, los lineamientos de protección de datos personales y los fundamentos jurídicos.
+Estos documentos deberán agregarse de manera gradual, evitando repeticiones y manteniendo coherencia con el README, los guardrails, la arquitectura de referencia, el roadmap, el modelo de prueba piloto, el protocolo operativo, los lineamientos de protección de datos personales, los fundamentos jurídicos y los fundamentos médicos.
 
 ---
 
@@ -383,4 +445,4 @@ El Índice Documental tiene por finalidad preservar la coherencia del proyecto.
 
 SUBE Prioridad no debe leerse únicamente como un repositorio de software ni únicamente como un expediente institucional.
 
-Debe entenderse como una arquitectura pública en desarrollo, construida sobre documentación técnica, fundamentos jurídicos, principios de privacidad, participación ciudadana, modelo de prueba piloto, lineamientos de protección de datos personales y una estrategia gradual orientada a permitir su evaluación responsable por parte de las autoridades competentes.
+Debe entenderse como una arquitectura pública en desarrollo, construida sobre documentación técnica, fundamentos jurídicos, fundamentos médicos, principios de privacidad, participación ciudadana, modelo de prueba piloto, protocolo operativo, lineamientos de protección de datos personales y una estrategia gradual orientada a permitir su evaluación responsable por parte de las autoridades competentes.
