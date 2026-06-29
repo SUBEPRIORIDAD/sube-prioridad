@@ -3,13 +3,24 @@ import uuid
 from dataclasses import dataclass
 from typing import Dict, Optional
 
+SIMULATED_EXTERNAL_SERVICES = {
+"ANDIS",
+"SISA",
+"RENAPER",
+"Mi Argentina",
+"Nacion Servicios",
+"Nación Servicios",
+"CNRT",
+}
+
 @dataclass
 class XRoadRequest:
 """
 Solicitud técnica pseudoanonimizada hacia un gateway de interoperabilidad.
 
 ```
-En el MVP no se envían datos personales.
+No contiene DNI, nombre, diagnóstico, domicilio ni historia clínica.
+En esta etapa MVP no representa una conexión real con organismos públicos.
 """
 
 token_hash: str
@@ -24,6 +35,7 @@ service_name: str
 correlation_id: str
 payload: Dict[str, object]
 elapsed_ms: int
+simulated: bool
 
 class XRoadGateway:
 """
@@ -31,9 +43,10 @@ Simulador de gateway de interoperabilidad.
 
 ```
 Objetivo:
-- Representar una futura integración con servicios públicos.
+- Representar una futura integración posible.
 - Mantener trazabilidad técnica mediante correlation_id.
-- Evitar exposición de DNI, nombre, diagnóstico o historia clínica.
+- Evitar exposición de datos personales.
+- No afirmar conexión real con organismos sin convenio, API o autorización.
 """
 
 def __init__(self, simulated_latency_ms: int = 50) -> None:
@@ -69,10 +82,23 @@ def verify_priority_attribute(self, request: XRoadRequest) -> XRoadResponse:
         service_name=request.service_name,
         correlation_id=request.correlation_id,
         elapsed_ms=elapsed_ms,
+        simulated=is_simulated_external_service(request.service_name),
         payload={
             "atributo_prioridad_activo": True,
             "perfil_alertas_ux": 2,
             "fuente": "simulador_xroad_mvp",
+            "datos_sensibles_procesados": False,
+            "integracion_real": False,
         },
     )
+```
+
+def is_simulated_external_service(service_name: str) -> bool:
+normalized = service_name.strip().lower()
+
+```
+return any(
+    service.lower() == normalized
+    for service in SIMULATED_EXTERNAL_SERVICES
+)
 ```
