@@ -4,7 +4,7 @@
 
 Este índice organiza la documentación principal del repositorio SUBE Prioridad.
 
-El proyecto se presenta como una propuesta ciudadana de innovación pública, acompañada por un MVP conceptual, documentación de arquitectura, fundamentos institucionales, estrategia legislativa, modelos de presentación ciudadana y anexos técnicos.
+El proyecto se presenta como una propuesta ciudadana de innovación pública, acompañada por un MVP conceptual, documentación de arquitectura, fundamentos institucionales, estrategia legislativa, modelos de presentación ciudadana, modelo de prueba piloto y anexos técnicos.
 
 La finalidad de este índice es facilitar la lectura por parte de desarrolladores, legisladores, autoridades públicas, asesores técnicos, universidades, organizaciones de la sociedad civil, ciudadanos interesados y personas que acompañan la propuesta con firmas.
 
@@ -138,6 +138,18 @@ Debe interpretarse como una base adaptable a la técnica legislativa o administr
 
 ---
 
+### docs/PRUEBA_PILOTO_MODELO.md
+
+Modelo conceptual para una eventual prueba piloto limitada, voluntaria, reversible y auditable de SUBE Prioridad.
+
+El documento describe objetivos, alcance territorial, duración sugerida, participantes, población objetivo, modelo operativo, modalidades de asistencia, protección de datos, infraestructura tecnológica, interoperabilidad, rol del chofer, relación con asientos prioritarios, indicadores de evaluación, criterios de éxito, criterios de suspensión y comunicación pública.
+
+Incluye además un anexo con actores sugeridos para análisis de prueba piloto, contemplando líneas de colectivo, universidades, fundaciones, organizaciones sociales y organismos locales vinculados con San Isidro y el AMBA.
+
+No constituye una decisión de implementación ni una designación formal de actores, sino una base orientativa para evaluación por parte de las autoridades competentes.
+
+---
+
 ### docs/PLIEGO_TECNICO_EXTENDIDO.md
 
 Documento técnico amplio que conserva la visión integral original del proyecto.
@@ -181,8 +193,9 @@ Para una primera lectura institucional:
 2. docs/DOSSIER_INSTITUCIONAL_BREVE.md
 3. docs/PETITORIO_MODELO.md
 4. docs/MODELO_PROYECTO_RESOLUCION.md
-5. docs/ESTRATEGIA_LEGISLATIVA_Y_PARTICIPACION_CIUDADANA.md
-6. docs/ROADMAP_IMPLEMENTACION.md
+5. docs/PRUEBA_PILOTO_MODELO.md
+6. docs/ESTRATEGIA_LEGISLATIVA_Y_PARTICIPACION_CIUDADANA.md
+7. docs/ROADMAP_IMPLEMENTACION.md
 ```
 
 Para una lectura técnica:
@@ -192,7 +205,8 @@ Para una lectura técnica:
 2. ARCHITECTURE_GUARDRAILS.md
 3. docs/ARQUITECTURA_DE_REFERENCIA.md
 4. docs/DECISIONES_DE_ARQUITECTURA.md
-5. docs/PLIEGO_TECNICO_EXTENDIDO.md
+5. docs/PRUEBA_PILOTO_MODELO.md
+6. docs/PLIEGO_TECNICO_EXTENDIDO.md
 ```
 
 Para una lectura jurídica e institucional:
@@ -201,9 +215,10 @@ Para una lectura jurídica e institucional:
 1. docs/DOSSIER_INSTITUCIONAL_BREVE.md
 2. docs/PETITORIO_MODELO.md
 3. docs/MODELO_PROYECTO_RESOLUCION.md
-4. docs/ESTRATEGIA_LEGISLATIVA_Y_PARTICIPACION_CIUDADANA.md
-5. docs/PRINCIPIOS_DE_GOBERNANZA.md
-6. docs/ROADMAP_IMPLEMENTACION.md
+4. docs/PRUEBA_PILOTO_MODELO.md
+5. docs/ESTRATEGIA_LEGISLATIVA_Y_PARTICIPACION_CIUDADANA.md
+6. docs/PRINCIPIOS_DE_GOBERNANZA.md
+7. docs/ROADMAP_IMPLEMENTACION.md
 ```
 
 Para una lectura ciudadana:
@@ -212,7 +227,18 @@ Para una lectura ciudadana:
 1. README.md
 2. docs/DOSSIER_INSTITUCIONAL_BREVE.md
 3. docs/PETITORIO_MODELO.md
-4. docs/ESTRATEGIA_LEGISLATIVA_Y_PARTICIPACION_CIUDADANA.md
+4. docs/PRUEBA_PILOTO_MODELO.md
+5. docs/ESTRATEGIA_LEGISLATIVA_Y_PARTICIPACION_CIUDADANA.md
+```
+
+Para una lectura orientada a prueba piloto:
+
+```text
+1. docs/DOSSIER_INSTITUCIONAL_BREVE.md
+2. docs/PRUEBA_PILOTO_MODELO.md
+3. docs/PRINCIPIOS_DE_GOBERNANZA.md
+4. docs/DECISIONES_DE_ARQUITECTURA.md
+5. docs/ROADMAP_IMPLEMENTACION.md
 ```
 
 ---
@@ -229,6 +255,8 @@ Toda la documentación debe interpretarse conforme a los siguientes criterios:
 * El sistema no debe procesar diagnósticos médicos ni historia clínica en el core.
 * La propuesta no sustituye el régimen legal de asientos prioritarios.
 * El Bono Solidario es una evolución futura, no parte del núcleo inicial.
+* La prueba piloto propuesta es conceptual, orientativa y sujeta a evaluación institucional.
+* La mención de líneas, universidades, fundaciones u organismos no implica designación formal, aval, convenio vigente ni obligación de participación.
 * Toda implementación real debe ser gradual, reversible, auditable y respetuosa de la privacidad.
 
 ---
@@ -241,13 +269,12 @@ Para fortalecer aún más el repositorio, podrían desarrollarse luego los sigui
 docs/FUNDAMENTOS_JURIDICOS.md
 docs/FUNDAMENTOS_MEDICOS.md
 docs/FUNDAMENTOS_OPERATIVOS.md
-docs/PRUEBA_PILOTO_MODELO.md
 docs/PROTECCION_DATOS_PERSONALES.md
 docs/BONO_SOLIDARIO.md
 docs/ANEXOS_ORIGINALES_REFERENCIA.md
 ```
 
-Estos documentos deberán agregarse de manera gradual, evitando repeticiones y manteniendo coherencia con el README, los guardrails y la arquitectura de referencia.
+Estos documentos deberán agregarse de manera gradual, evitando repeticiones y manteniendo coherencia con el README, los guardrails, la arquitectura de referencia, el roadmap y el modelo de prueba piloto.
 
 ---
 
@@ -257,4 +284,4 @@ El Índice Documental tiene por finalidad preservar la coherencia del proyecto.
 
 SUBE Prioridad no debe leerse únicamente como un repositorio de software ni únicamente como un expediente institucional.
 
-Debe entenderse como una arquitectura pública en desarrollo, construida sobre documentación técnica, fundamentos jurídicos, principios de privacidad, participación ciudadana y una estrategia gradual orientada a permitir su evaluación responsable por parte de las autoridades competentes.
+Debe entenderse como una arquitectura pública en desarrollo, construida sobre documentación técnica, fundamentos jurídicos, principios de privacidad, participación ciudadana, modelo de prueba piloto y una estrategia gradual orientada a permitir su evaluación responsable por parte de las autoridades competentes.
