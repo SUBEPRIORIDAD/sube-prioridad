@@ -4,7 +4,7 @@
 
 SUBE Prioridad es una propuesta ciudadana de innovación pública orientada a analizar herramientas complementarias que puedan facilitar que personas con una necesidad previamente acreditada de viajar sentadas accedan a condiciones de viaje más seguras, respetuosas y adecuadas dentro del transporte público.
 
-Este repositorio contiene un **MVP conceptual, técnico y demostrativo**, acompañado por documentación de arquitectura, fundamentos institucionales, estrategia legislativa, modelo de prueba piloto y anexos técnicos.
+Este repositorio contiene un **MVP conceptual, técnico y demostrativo**, acompañado por documentación de arquitectura, fundamentos institucionales, estrategia legislativa, lineamientos de protección de datos personales, modelo de prueba piloto y anexos técnicos.
 
 ---
 
@@ -19,6 +19,7 @@ API de ejemplo: sí
 Tests básicos: sí
 Docker: sí
 Documentación estratégica: sí
+Lineamientos de protección de datos: sí
 Implementación productiva: no
 Integración real con organismos públicos: no
 Modificación del sistema SUBE: no
@@ -127,6 +128,12 @@ El core del MVP no procesa:
 El modelo técnico trabaja con atributos, tokens o identificadores pseudoanonimizados.
 
 La finalidad es permitir asistencia preventiva sin exponer información sensible de la persona usuaria.
+
+El repositorio incluye un documento específico sobre esta materia en:
+
+```text
+docs/PROTECCION_DATOS_PERSONALES.md
+```
 
 ---
 
@@ -267,6 +274,7 @@ La documentación principal del repositorio se organiza en los siguientes docume
 * [`docs/PETITORIO_MODELO.md`](docs/PETITORIO_MODELO.md): modelo orientativo de petitorio ciudadano para acompañar firmas y presentaciones.
 * [`docs/MODELO_PROYECTO_RESOLUCION.md`](docs/MODELO_PROYECTO_RESOLUCION.md): modelo orientativo para impulsar formalmente la evaluación institucional.
 * [`docs/PRUEBA_PILOTO_MODELO.md`](docs/PRUEBA_PILOTO_MODELO.md): modelo conceptual de prueba piloto limitada, voluntaria, reversible y auditable.
+* [`docs/PROTECCION_DATOS_PERSONALES.md`](docs/PROTECCION_DATOS_PERSONALES.md): lineamientos de privacidad, minimización de datos, separación entre acreditación y operación, prueba piloto e interoperabilidad responsable.
 * [`docs/ESTRATEGIA_LEGISLATIVA_Y_PARTICIPACION_CIUDADANA.md`](docs/ESTRATEGIA_LEGISLATIVA_Y_PARTICIPACION_CIUDADANA.md): estrategia para impulsar el análisis legislativo, administrativo y ciudadano.
 * [`docs/ARQUITECTURA_DE_REFERENCIA.md`](docs/ARQUITECTURA_DE_REFERENCIA.md): visión arquitectónica general del proyecto.
 * [`docs/ROADMAP_IMPLEMENTACION.md`](docs/ROADMAP_IMPLEMENTACION.md): hoja de ruta conceptual para una evolución gradual.
