@@ -322,7 +322,22 @@ Ese documento debe leerse como una especificación conceptual, prospectiva y evo
 
 ---
 
-## 17. Aporte ciudadano
+## 17. Arquitectura de Referencia
+
+La visión de largo plazo del proyecto se documenta en:
+
+```text
+docs/ARQUITECTURA_DE_REFERENCIA.md
+```
+
+Ese documento describe los principios de ingeniería que orientan la evolución de SUBE Prioridad como una arquitectura abierta, modular, escalable y tecnológicamente neutral.
+
+Su contenido complementa al presente README y al Pliego Técnico Extendido, explicando cómo el MVP conceptual podría evolucionar progresivamente desde pruebas piloto hasta implementaciones de mayor escala, siempre sujetas a evaluación técnica, jurídica, presupuestaria y operativa por parte de las autoridades competentes.
+
+La Arquitectura de Referencia no constituye una especificación obligatoria ni una implementación definitiva, sino un marco conceptual destinado a facilitar futuras decisiones de diseño, interoperabilidad y gobernanza.
+
+
+## 18. Aporte ciudadano
 
 SUBE Prioridad se presenta como una propuesta ciudadana de interés público, abierta a análisis, mejora, adaptación y eventual evaluación por parte de los organismos competentes.
 
@@ -332,7 +347,7 @@ Su valor principal reside en abrir una conversación técnica, institucional y s
 
 ---
 
-## 18. Licencia y uso
+## 19. Licencia y uso
 
 Mientras no se defina una licencia específica, este repositorio debe considerarse material de análisis, documentación y desarrollo conceptual.
 
@@ -340,7 +355,7 @@ Antes de cualquier uso institucional, productivo o comercial, deberán revisarse
 
 ---
 
-## 19. Declaración final
+## 20. Declaración final
 
 SUBE Prioridad busca demostrar que una acción cotidiana como la validación de un viaje podría transformarse, cuando las circunstancias lo requieran, en una oportunidad para facilitar asistencia, promover inclusión y fortalecer la solidaridad ciudadana.
 
