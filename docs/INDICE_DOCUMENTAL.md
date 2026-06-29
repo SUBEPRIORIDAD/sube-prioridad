@@ -1,448 +1,449 @@
-# Índice Documental — SUBE Prioridad
+# SUBE Prioridad
 
-## 1. Propósito
+**MVP conceptual y demostrativo para asistencia preventiva, accesibilidad efectiva y convivencia ciudadana en el transporte público.**
 
-Este índice organiza la documentación principal del repositorio **SUBE Prioridad**.
+SUBE Prioridad es una propuesta ciudadana de innovación pública orientada a analizar herramientas complementarias que puedan facilitar que personas con una necesidad previamente acreditada de viajar sentadas accedan a condiciones de viaje más seguras, respetuosas y adecuadas dentro del transporte público.
 
-El proyecto se presenta como una propuesta ciudadana de innovación pública, acompañada por un MVP conceptual, documentación de arquitectura, fundamentos jurídicos, fundamentos médicos, fundamentos institucionales, estrategia legislativa, modelos de presentación ciudadana, modelo de prueba piloto, protocolo operativo, lineamientos de protección de datos personales, documentación técnica auxiliar y anexos técnicos.
-
-La finalidad de este índice es facilitar la lectura por parte de desarrolladores, legisladores, autoridades públicas, asesores técnicos, universidades, organizaciones de la sociedad civil, ciudadanos interesados y personas que acompañan la propuesta con firmas.
+Este repositorio contiene un **MVP conceptual, técnico y demostrativo**, acompañado por documentación de arquitectura, fundamentos jurídicos, fundamentos médicos, estrategia legislativa, lineamientos de protección de datos personales, modelo de prueba piloto, protocolo operativo y anexos técnicos.
 
 ---
 
-## 2. Estado general del repositorio
+## 1. Estado actual del repositorio
 
-El repositorio representa actualmente un MVP conceptual, técnico y demostrativo.
+El estado actual del proyecto es:
 
-No constituye una implementación productiva.
+```text
+MVP conceptual: sí
+Código demostrativo: sí
+API de ejemplo: sí
+Tests básicos: sí
+Docker: sí
+Documentación estratégica: sí
+Fundamentos jurídicos: sí
+Fundamentos médicos: sí
+Protocolo operativo conceptual: sí
+Lineamientos de protección de datos: sí
+Implementación productiva: no
+Integración real con organismos públicos: no
+Modificación del sistema SUBE: no
+Procesamiento de datos médicos sensibles: no
+```
 
-No acredita integración real con organismos públicos.
+El repositorio no representa una implementación oficial, productiva ni integrada actualmente con organismos públicos, sistemas SUBE, validadoras, infraestructura estatal o plataformas externas.
 
-No modifica el sistema SUBE.
-
-No altera el régimen vigente de asientos prioritarios.
-
-No procesa diagnósticos médicos, historia clínica ni datos sensibles en el núcleo del MVP.
-
-Toda eventual implementación real deberá quedar sujeta a evaluación técnica, jurídica, presupuestaria, operativa, social e institucional por parte de las autoridades competentes.
-
----
-
-## 3. Documentación principal
-
-### README.md
-
-Documento de entrada al repositorio.
-
-Presenta qué es SUBE Prioridad, qué no es, el estado actual del MVP, sus principios de privacidad, los fundamentos jurídicos, los fundamentos médicos, la arquitectura general, la forma de ejecución local y la documentación complementaria.
-
-Debe leerse primero.
+Toda eventual implementación real deberá ser evaluada, autorizada y supervisada por las autoridades competentes.
 
 ---
 
-### ARCHITECTURE_GUARDRAILS.md
+## 2. Objetivo del proyecto
 
-Define los límites técnicos y conceptuales que toda evolución del proyecto debe respetar.
+El objetivo de SUBE Prioridad es proponer una arquitectura gradual, modular y respetuosa de la privacidad para fortalecer la accesibilidad efectiva dentro del transporte público.
 
-Incluye reglas sobre privacidad por diseño, minimización de datos, datos prohibidos en el core, interoperabilidad simulada, Bono Solidario como evolución futura, separación entre documentación conceptual y producción, y cambios seguros en el código.
+La propuesta busca analizar si una necesidad previamente acreditada puede traducirse, en el plano operativo, en un atributo técnico de prioridad, sin que el usuario deba exponer públicamente diagnósticos, historia clínica o circunstancias personales sensibles.
 
-Es el documento de control de coherencia técnica.
-
----
-
-### docs/ARQUITECTURA_DE_REFERENCIA.md
-
-Describe la arquitectura conceptual de SUBE Prioridad.
-
-Explica cómo el proyecto puede entenderse como una arquitectura abierta, modular, escalable y tecnológicamente neutral.
-
-Debe leerse para comprender la visión de largo plazo: desde un MVP conceptual hasta eventuales pruebas piloto, implementaciones regionales, nacionales o adaptaciones en otras jurisdicciones.
+El foco del proyecto no es reemplazar derechos existentes, sino contribuir a que puedan ejercerse de manera más efectiva, digna y segura.
 
 ---
 
-### docs/ROADMAP_IMPLEMENTACION.md
+## 3. Qué es SUBE Prioridad
 
-Ordena una posible evolución progresiva del proyecto.
+SUBE Prioridad es:
 
-Describe etapas como investigación y documentación, MVP conceptual, laboratorio técnico, prueba piloto limitada, piloto ampliado, implementación regional, implementación nacional y modelo adaptable a otras jurisdicciones.
+* una propuesta ciudadana de innovación pública;
+* una arquitectura conceptual de asistencia preventiva;
+* un MVP técnico demostrativo;
+* una herramienta pensada para evaluación institucional;
+* una posible base para prueba piloto limitada;
+* una propuesta gradual, reversible y auditable;
+* un modelo orientado a privacidad por diseño;
+* una arquitectura adaptable a distintas jurisdicciones.
 
-No constituye un cronograma obligatorio.
+Su núcleo conceptual puede resumirse así:
 
-Funciona como guía conceptual para evaluar escalabilidad, reversibilidad y control institucional.
-
----
-
-### docs/DECISIONES_DE_ARQUITECTURA.md
-
-Registra las principales decisiones de diseño del proyecto.
-
-Explica, entre otras cuestiones, por qué se usa un atributo técnico y no diagnósticos médicos, por qué el MVP no procesa datos sensibles, por qué las integraciones son simuladas, por qué la arquitectura debe ser neutral tecnológicamente, por qué el Bono Solidario queda desacoplado del core inicial y por qué la implementación debe ser gradual y reversible.
-
-Este documento conecta el código con la filosofía de ingeniería del proyecto.
-
----
-
-### docs/PRINCIPIOS_DE_GOBERNANZA.md
-
-Define criterios institucionales para una eventual evolución del proyecto.
-
-Incluye principios sobre evaluación previa, competencia pública, transparencia, auditabilidad, protección de datos, separación de roles, accesibilidad, no discriminación, interoperabilidad responsable, gestión de riesgos y participación institucional.
-
-Debe leerse antes de pensar cualquier prueba piloto o implementación real.
+```text
+necesidad previamente acreditada
+↓
+atributo técnico de prioridad
+↓
+preferencia de asistencia
+↓
+validación operativa
+↓
+experiencia de viaje más segura y respetuosa
+```
 
 ---
 
-### docs/PROTECCION_DATOS_PERSONALES.md
+## 4. Qué no es SUBE Prioridad
 
-Establece lineamientos conceptuales de protección de datos personales para SUBE Prioridad.
+SUBE Prioridad no es:
 
-Explica qué datos no deben formar parte del core, por qué el sistema debe trabajar con atributos técnicos y no con diagnósticos, cómo separar acreditación institucional de operación técnica, qué recaudos debe tener una prueba piloto y qué límites deben respetarse frente a una eventual interoperabilidad futura.
+* una implementación oficial actualmente desplegada;
+* un sistema productivo;
+* una integración real vigente con organismos públicos;
+* un reemplazo del régimen legal de asientos prioritarios;
+* un subsidio;
+* un beneficio tarifario;
+* un sistema de evaluación médica;
+* una base de datos de diagnósticos;
+* una herramienta de vigilancia;
+* una obligación nueva para choferes;
+* un mecanismo de sanción para pasajeros;
+* una solución tecnológica cerrada;
+* una implementación nacional inmediata.
 
-Es un documento central para la viabilidad jurídica, técnica e institucional del proyecto.
-
-Debe leerse junto con los guardrails, las decisiones de arquitectura, los principios de gobernanza y el modelo de prueba piloto.
-
----
-
-### docs/FUNDAMENTOS_JURIDICOS.md
-
-Reúne los fundamentos jurídicos conceptuales del proyecto.
-
-Desarrolla el enfoque de derechos, igualdad real, accesibilidad efectiva, dignidad, no discriminación, protección de datos personales, razonabilidad, progresividad, transporte público, marco institucional del sistema SUBE, estrategia federal de implementación y prueba piloto.
-
-Incluye referencias a tratados internacionales, leyes nacionales vinculadas con discapacidad, salud, accesibilidad y protección de datos, así como un antecedente provincial reciente de colectivos inclusivos y accesibilidad cognitiva en la Provincia de Buenos Aires.
-
-No constituye dictamen jurídico ni interpretación vinculante, sino una base documental para evaluación por parte de autoridades competentes, legisladores, asesores, universidades y organizaciones sociales.
+La propuesta debe entenderse como una arquitectura abierta, conceptual y evaluable.
 
 ---
 
-### docs/FUNDAMENTOS_MEDICOS.md
+## 5. Principios rectores
 
-Reúne fundamentos médicos, sanitarios y funcionales conceptuales para la iniciativa.
+El proyecto se basa en los siguientes principios:
 
-Explica que SUBE Prioridad no diagnostica, no evalúa médicamente, no reemplaza certificados oficiales, no sustituye autoridades sanitarias y no convierte al transporte público en un espacio de evaluación clínica.
-
-Desarrolla la necesidad funcional de viajar sentado, la asistencia preventiva, personas con discapacidad, personas mayores, personas gestantes, movilidad reducida, rehabilitación, enfermedades no visibles, riesgo de caídas, accesibilidad cognitiva, alertas genéricas, no exposición de diagnósticos y evaluación médica funcional de una eventual prueba piloto.
-
-Debe leerse junto con `docs/PROTECCION_DATOS_PERSONALES.md`, `docs/FUNDAMENTOS_JURIDICOS.md` y `docs/PRUEBA_PILOTO_MODELO.md`.
+* privacidad por diseño;
+* minimización de datos;
+* accesibilidad efectiva;
+* dignidad de las personas;
+* autonomía del usuario;
+* neutralidad tecnológica;
+* interoperabilidad responsable;
+* gradualidad;
+* reversibilidad;
+* auditabilidad;
+* no sustitución de derechos vigentes;
+* no imposición de nuevas cargas operativas al personal de conducción.
 
 ---
 
-### docs/PROTOCOLO_OPERATIVO.md
+## 6. Privacidad y minimización de datos
 
-Protocolo operativo conceptual para ordenar cómo podría funcionar una eventual experiencia de asistencia preventiva dentro del transporte público.
+El core del MVP no procesa:
 
-Describe roles, flujo operativo, acreditación previa, atributo técnico de prioridad, modalidades de asistencia, alertas genéricas, canales de alerta, comunicación a bordo, rol del chofer, registro de eventos, incidentes, criterios de suspensión, capacitación mínima, canales de reclamo, evaluación operativa e informe final.
+* DNI;
+* nombre;
+* apellido;
+* domicilio;
+* diagnóstico médico;
+* historia clínica;
+* certificado médico en texto plano;
+* datos de salud identificables.
+
+El modelo técnico trabaja con atributos, tokens o identificadores pseudoanonimizados.
+
+La finalidad es permitir asistencia preventiva sin exponer información sensible de la persona usuaria.
+
+El repositorio incluye un documento específico sobre esta materia en:
+
+```text
+docs/PROTECCION_DATOS_PERSONALES.md
+```
+
+---
+
+## 7. Fundamentos jurídicos
+
+SUBE Prioridad se apoya en un enfoque jurídico basado en accesibilidad efectiva, igualdad real, dignidad de las personas usuarias, protección de datos personales, razonabilidad, progresividad, no discriminación y evaluación institucional.
+
+El repositorio incluye fundamentos jurídicos conceptuales en:
+
+```text
+docs/FUNDAMENTOS_JURIDICOS.md
+```
+
+Ese documento desarrolla el marco constitucional, convencional, legal, federal e institucional relevante para analizar la iniciativa, incluyendo derechos de personas con discapacidad, personas mayores, personas gestantes, personas con movilidad reducida, protección de datos personales, transporte público, marco SUBE, prueba piloto y antecedentes provinciales de accesibilidad cognitiva.
+
+---
+
+## 8. Fundamentos médicos
+
+SUBE Prioridad también cuenta con fundamentos médicos, sanitarios y funcionales conceptuales.
+
+El proyecto no diagnostica, no evalúa médicamente, no reemplaza certificados oficiales, no sustituye autoridades sanitarias y no convierte al transporte público en un espacio de evaluación clínica.
+
+Su finalidad es reconocer que muchas personas pueden necesitar viajar sentadas o recibir asistencia preventiva por razones permanentes o transitorias, visibles o no visibles, sin verse obligadas a exponer públicamente diagnósticos o documentación médica.
+
+El repositorio incluye estos fundamentos en:
+
+```text
+docs/FUNDAMENTOS_MEDICOS.md
+```
+
+---
+
+## 9. Protocolo operativo conceptual
+
+El proyecto incluye un protocolo operativo conceptual destinado a ordenar cómo podría funcionar una eventual experiencia de asistencia preventiva en el transporte público.
+
+Ese protocolo describe roles, flujo operativo, acreditación previa, atributo técnico de prioridad, modalidades de asistencia, alertas genéricas, canales de alerta, comunicación a bordo, rol del chofer, registro de eventos, incidentes, criterios de suspensión, capacitación mínima, canales de reclamo, evaluación operativa e informe final.
 
 No constituye una instrucción operativa vigente ni una implementación productiva.
 
 Debe interpretarse como una guía conceptual adaptable para pruebas piloto, laboratorios técnicos o evaluaciones institucionales.
 
----
-
-### docs/ESTRATEGIA_LEGISLATIVA_Y_PARTICIPACION_CIUDADANA.md
-
-Ordena la estrategia institucional y ciudadana para impulsar el análisis de SUBE Prioridad en Argentina.
-
-Explica cómo presentar la propuesta ante legisladores, autoridades administrativas, organismos técnicos, universidades, organizaciones sociales y ciudadanía.
-
-También diferencia entre expediente institucional, repositorio técnico, campaña ciudadana y firmas de apoyo.
-
-Su eje central es solicitar evaluación responsable y eventual prueba piloto, no implementación nacional inmediata.
-
----
-
-### docs/DOSSIER_INSTITUCIONAL_BREVE.md
-
-Documento breve para presentación institucional.
-
-Resume el problema público, el objetivo de la propuesta, qué es SUBE Prioridad, qué no es, sus principios rectores, el MVP actual, la propuesta de prueba piloto, la protección de datos, el rol de la ciudadanía y la solicitud institucional.
-
-Es el documento recomendado para acompañar petitorios, reuniones, firmas ciudadanas o primeras conversaciones con legisladores y autoridades.
-
----
-
-### docs/PETITORIO_MODELO.md
-
-Modelo orientativo de petitorio ciudadano para acompañar firmas, pedidos de audiencia, presentaciones administrativas o solicitudes legislativas.
-
-Su finalidad es solicitar que las autoridades competentes reciban, analicen y evalúen la factibilidad de SUBE Prioridad.
-
-No solicita implementación inmediata, sino evaluación responsable y eventual consideración de una prueba piloto limitada, voluntaria, reversible y respetuosa de la privacidad.
-
-Es el documento recomendado para acompañar campañas de firmas ciudadanas y presentaciones iniciales ante organismos públicos.
-
----
-
-### docs/MODELO_PROYECTO_RESOLUCION.md
-
-Modelo orientativo de proyecto de resolución para legisladores, asesores o autoridades que deseen impulsar formalmente el análisis institucional de SUBE Prioridad.
-
-El documento propone solicitar la evaluación jurídica, técnica, operativa, presupuestaria, social e institucional de la iniciativa.
-
-También contempla la eventual realización de una prueba piloto limitada, sin imponer implementación nacional inmediata ni modificar derechos vigentes.
-
-Debe interpretarse como una base adaptable a la técnica legislativa o administrativa correspondiente.
-
----
-
-### docs/PRUEBA_PILOTO_MODELO.md
-
-Modelo conceptual para una eventual prueba piloto limitada, voluntaria, reversible y auditable de SUBE Prioridad.
-
-El documento describe objetivos, alcance territorial, duración sugerida, participantes, población objetivo, modelo operativo, modalidades de asistencia, protección de datos, infraestructura tecnológica, interoperabilidad, rol del chofer, relación con asientos prioritarios, indicadores de evaluación, criterios de éxito, criterios de suspensión y comunicación pública.
-
-Incluye además un anexo con actores sugeridos para análisis de prueba piloto, contemplando líneas de colectivo, universidades, fundaciones, organizaciones sociales y organismos locales vinculados con San Isidro y el AMBA.
-
-No constituye una decisión de implementación ni una designación formal de actores, sino una base orientativa para evaluación por parte de las autoridades competentes.
-
----
-
-### docs/PLIEGO_TECNICO_EXTENDIDO.md
-
-Documento técnico amplio que conserva la visión integral original del proyecto.
-
-Debe interpretarse como una especificación conceptual, prospectiva y evolutiva.
-
-No debe leerse como implementación productiva actualmente desplegada ni como integración real vigente.
-
-Su contenido complementa al README y a la Arquitectura de Referencia.
-
----
-
-## 4. Documentación técnica auxiliar
-
-Además de los documentos principales, el repositorio puede contener archivos auxiliares ubicados dentro de `docs/` para ordenar especificaciones, referencias, políticas o materiales históricos.
-
-### docs/api/api_spec.json
-
-Especificación técnica auxiliar de API.
-
-Debe interpretarse como material de referencia documental, no como garantía de disponibilidad productiva ni integración real vigente.
-
----
-
-### docs/institucional/authors.json
-
-Archivo auxiliar con información institucional o de autoría del proyecto.
-
-Debe utilizarse sólo como referencia documental interna del repositorio.
-
----
-
-### docs/seguridad/security_policies.json
-
-Archivo auxiliar con políticas o referencias de seguridad.
-
-Debe leerse de manera complementaria con `docs/PROTECCION_DATOS_PERSONALES.md`, `ARCHITECTURE_GUARDRAILS.md` y `docs/PRINCIPIOS_DE_GOBERNANZA.md`.
-
-No reemplaza una política formal de seguridad productiva ni una evaluación de impacto.
-
----
-
-### docs/historico/index.html
-
-Archivo histórico o auxiliar conservado dentro de la documentación.
-
-Su ubicación en `docs/historico/` permite preservar material previo sin confundirlo con la portada actual del repositorio.
-
----
-
-## 5. Documentación complementaria sugerida
-
-A medida que el proyecto continúe ordenándose, podrán agregarse carpetas específicas dentro de `docs/`, por ejemplo:
+El documento se encuentra en:
 
 ```text
+docs/PROTOCOLO_OPERATIVO.md
+```
+
+---
+
+## 10. Separación entre acreditación y operación
+
+SUBE Prioridad distingue dos planos:
+
+```text
+Plano institucional:
+acreditación, requisitos, documentación, autoridad competente
+
+Plano operativo:
+atributo técnico, preferencia de asistencia, validación, experiencia de viaje
+```
+
+La acreditación de la necesidad de asistencia no corresponde al sistema técnico del MVP.
+
+Esa acreditación debería quedar, en cualquier implementación real, bajo la órbita de los organismos, profesionales o procedimientos que determinen las autoridades competentes.
+
+---
+
+## 11. Estado del MVP técnico
+
+El MVP actual permite representar algunos componentes de la arquitectura, entre ellos:
+
+* API demostrativa;
+* validación pseudoanonimizada;
+* endpoint de verificación;
+* endpoint de salud;
+* endpoint de guardrails;
+* simulación de interoperabilidad;
+* motor inicial de reglas antifraude;
+* guardrails de arquitectura;
+* tests básicos;
+* ejecución local;
+* ejecución con Docker.
+
+Este MVP no procesa usuarios reales ni se conecta con sistemas productivos.
+
+---
+
+## 12. Endpoints disponibles
+
+La API demostrativa incluye:
+
+```text
+GET  /
+GET  /health
+GET  /project/guardrails
+POST /api/v1/prioridad/verificar
+```
+
+Estos endpoints existen para fines conceptuales, técnicos y de prueba.
+
+No implican conexión real con organismos, sistemas SUBE, validadoras, registros externos o infraestructura estatal.
+
+---
+
+## 13. Interoperabilidad
+
+La arquitectura contempla la posibilidad de interoperabilidad futura con organismos, registros o plataformas externas cuando exista:
+
+* marco jurídico suficiente;
+* autorización institucional;
+* documentación técnica;
+* seguridad informática;
+* trazabilidad;
+* protección de datos personales;
+* finalidad específica.
+
+En el estado actual del repositorio, toda integración externa debe interpretarse como simulada.
+
+Ningún archivo del repositorio acredita conexión real vigente con organismos públicos o privados.
+
+---
+
+## 14. Bono Solidario
+
+El Bono Solidario se considera una posible evolución futura del ecosistema SUBE Prioridad.
+
+No forma parte del núcleo inicial necesario del proyecto.
+
+No debe entenderse como:
+
+* multa;
+* sanción;
+* obligación;
+* ranking público;
+* mecanismo de presión social;
+* beneficio por liberar asientos prioritarios legales;
+* parte indispensable de una primera prueba piloto.
+
+Su eventual análisis debería realizarse sólo después de contar con un sistema base estable, evaluado y autorizado.
+
+---
+
+## 15. Prueba piloto
+
+La primera meta institucional razonable del proyecto es la evaluación de una prueba piloto limitada.
+
+Una prueba piloto debería ser:
+
+* voluntaria;
+* temporal;
+* reversible;
+* auditable;
+* respetuosa de la privacidad;
+* sin exposición de diagnósticos;
+* sin modificación de derechos vigentes;
+* sin nuevas cargas operativas al chofer;
+* con indicadores previamente definidos;
+* con evaluación antes, durante y después.
+
+El repositorio incluye un modelo conceptual de prueba piloto en:
+
+```text
+docs/PRUEBA_PILOTO_MODELO.md
+```
+
+---
+
+## 16. Arquitectura de referencia
+
+SUBE Prioridad no debe leerse únicamente como una aplicación ni como una API.
+
+Debe entenderse como un MVP de una arquitectura de referencia para una posible política pública gradual.
+
+La arquitectura fue pensada para poder evolucionar desde:
+
+```text
+MVP conceptual
+↓
+laboratorio técnico
+↓
+prueba piloto limitada
+↓
+piloto ampliado
+↓
+implementación regional
+↓
+eventual implementación nacional
+↓
+modelo adaptable a otras jurisdicciones
+```
+
+Siempre bajo evaluación técnica, jurídica, presupuestaria, operativa, social e institucional.
+
+---
+
+## 17. Documentación estratégica del proyecto
+
+La documentación principal del repositorio se organiza en los siguientes documentos:
+
+* [`docs/INDICE_DOCUMENTAL.md`](docs/INDICE_DOCUMENTAL.md): guía de lectura y organización general de la documentación.
+* [`docs/DOSSIER_INSTITUCIONAL_BREVE.md`](docs/DOSSIER_INSTITUCIONAL_BREVE.md): síntesis institucional para autoridades, legisladores, asesores y ciudadanía.
+* [`docs/PETITORIO_MODELO.md`](docs/PETITORIO_MODELO.md): modelo orientativo de petitorio ciudadano para acompañar firmas y presentaciones.
+* [`docs/MODELO_PROYECTO_RESOLUCION.md`](docs/MODELO_PROYECTO_RESOLUCION.md): modelo orientativo para impulsar formalmente la evaluación institucional.
+* [`docs/PRUEBA_PILOTO_MODELO.md`](docs/PRUEBA_PILOTO_MODELO.md): modelo conceptual de prueba piloto limitada, voluntaria, reversible y auditable.
+* [`docs/PROTOCOLO_OPERATIVO.md`](docs/PROTOCOLO_OPERATIVO.md): protocolo operativo conceptual para ordenar una eventual experiencia de asistencia preventiva.
+* [`docs/PROTECCION_DATOS_PERSONALES.md`](docs/PROTECCION_DATOS_PERSONALES.md): lineamientos de privacidad, minimización de datos, separación entre acreditación y operación, prueba piloto e interoperabilidad responsable.
+* [`docs/FUNDAMENTOS_JURIDICOS.md`](docs/FUNDAMENTOS_JURIDICOS.md): fundamentos jurídicos, constitucionales, convencionales, federales e institucionales del proyecto.
+* [`docs/FUNDAMENTOS_MEDICOS.md`](docs/FUNDAMENTOS_MEDICOS.md): fundamentos médicos, sanitarios y funcionales conceptuales del proyecto.
+* [`docs/ESTRATEGIA_LEGISLATIVA_Y_PARTICIPACION_CIUDADANA.md`](docs/ESTRATEGIA_LEGISLATIVA_Y_PARTICIPACION_CIUDADANA.md): estrategia para impulsar el análisis legislativo, administrativo y ciudadano.
+* [`docs/ARQUITECTURA_DE_REFERENCIA.md`](docs/ARQUITECTURA_DE_REFERENCIA.md): visión arquitectónica general del proyecto.
+* [`docs/ROADMAP_IMPLEMENTACION.md`](docs/ROADMAP_IMPLEMENTACION.md): hoja de ruta conceptual para una evolución gradual.
+* [`docs/DECISIONES_DE_ARQUITECTURA.md`](docs/DECISIONES_DE_ARQUITECTURA.md): decisiones técnicas y conceptuales que orientan el diseño.
+* [`docs/PRINCIPIOS_DE_GOBERNANZA.md`](docs/PRINCIPIOS_DE_GOBERNANZA.md): criterios de transparencia, protección de datos, auditabilidad y control institucional.
+* [`ARCHITECTURE_GUARDRAILS.md`](ARCHITECTURE_GUARDRAILS.md): límites técnicos que toda evolución del código debe respetar.
+* [`docs/PLIEGO_TECNICO_EXTENDIDO.md`](docs/PLIEGO_TECNICO_EXTENDIDO.md): documento técnico amplio que conserva la visión integral original del proyecto.
+
+Estos documentos deben leerse de manera complementaria.
+
+---
+
+## 18. Ejecución local
+
+Instalar dependencias:
+
+```bash
+pip install -r requirements.txt
+```
+
+Ejecutar la API:
+
+```bash
+uvicorn main:app --reload
+```
+
+Abrir documentación interactiva:
+
+```text
+http://127.0.0.1:8000/docs
+```
+
+---
+
+## 19. Tests
+
+Ejecutar tests:
+
+```bash
+pytest -q
+```
+
+Verificar compilación básica:
+
+```bash
+python -m py_compile main.py validator.py cache_manager.py circuit_breaker.py xroad_gateway.py
+```
+
+---
+
+## 20. Docker
+
+Construir y ejecutar con Docker Compose:
+
+```bash
+docker compose up --build
+```
+
+---
+
+## 21. Estructura técnica orientativa
+
+El repositorio incluye, entre otros archivos:
+
+```text
+main.py
+validator.py
+cache_manager.py
+circuit_breaker.py
+xroad_gateway.py
+test_main.py
+test_antifraud.py
+requirements.txt
+Dockerfile
+docker-compose.yml
+ARCHITECTURE_GUARDRAILS.md
 docs/
-  fundamentos/
-  institucional/
-  juridico/
-  medico/
-  arquitectura/
-  privacidad/
-  interoperabilidad/
-  bono-solidario/
-  anexos/
-  historico/
-  api/
-  seguridad/
 ```
 
-Estas carpetas permitirán separar documentos extensos, borradores, anexos técnicos, políticas auxiliares y versiones históricas sin sobrecargar la documentación principal.
+La estructura podrá evolucionar conforme avance el proyecto, manteniendo coherencia con los guardrails y la documentación estratégica.
 
 ---
 
-## 6. Orden recomendado de lectura
+## 22. Licencia
 
-Para una primera lectura institucional:
+Este proyecto se publica bajo licencia MIT, salvo indicación expresa en contrario para documentos, marcas, logos, archivos institucionales o materiales de terceros.
 
-```text
-1. README.md
-2. docs/DOSSIER_INSTITUCIONAL_BREVE.md
-3. docs/PETITORIO_MODELO.md
-4. docs/MODELO_PROYECTO_RESOLUCION.md
-5. docs/PRUEBA_PILOTO_MODELO.md
-6. docs/PROTOCOLO_OPERATIVO.md
-7. docs/FUNDAMENTOS_JURIDICOS.md
-8. docs/FUNDAMENTOS_MEDICOS.md
-9. docs/PROTECCION_DATOS_PERSONALES.md
-10. docs/ESTRATEGIA_LEGISLATIVA_Y_PARTICIPACION_CIUDADANA.md
-11. docs/ROADMAP_IMPLEMENTACION.md
-```
-
-Para una lectura técnica:
-
-```text
-1. README.md
-2. ARCHITECTURE_GUARDRAILS.md
-3. docs/ARQUITECTURA_DE_REFERENCIA.md
-4. docs/DECISIONES_DE_ARQUITECTURA.md
-5. docs/PROTECCION_DATOS_PERSONALES.md
-6. docs/PROTOCOLO_OPERATIVO.md
-7. docs/FUNDAMENTOS_MEDICOS.md
-8. docs/PRUEBA_PILOTO_MODELO.md
-9. docs/FUNDAMENTOS_JURIDICOS.md
-10. docs/PLIEGO_TECNICO_EXTENDIDO.md
-```
-
-Para una lectura jurídica e institucional:
-
-```text
-1. docs/DOSSIER_INSTITUCIONAL_BREVE.md
-2. docs/PETITORIO_MODELO.md
-3. docs/MODELO_PROYECTO_RESOLUCION.md
-4. docs/FUNDAMENTOS_JURIDICOS.md
-5. docs/PROTOCOLO_OPERATIVO.md
-6. docs/FUNDAMENTOS_MEDICOS.md
-7. docs/PRUEBA_PILOTO_MODELO.md
-8. docs/PROTECCION_DATOS_PERSONALES.md
-9. docs/ESTRATEGIA_LEGISLATIVA_Y_PARTICIPACION_CIUDADANA.md
-10. docs/PRINCIPIOS_DE_GOBERNANZA.md
-11. docs/ROADMAP_IMPLEMENTACION.md
-```
-
-Para una lectura ciudadana:
-
-```text
-1. README.md
-2. docs/DOSSIER_INSTITUCIONAL_BREVE.md
-3. docs/PETITORIO_MODELO.md
-4. docs/PRUEBA_PILOTO_MODELO.md
-5. docs/PROTOCOLO_OPERATIVO.md
-6. docs/FUNDAMENTOS_JURIDICOS.md
-7. docs/FUNDAMENTOS_MEDICOS.md
-8. docs/PROTECCION_DATOS_PERSONALES.md
-9. docs/ESTRATEGIA_LEGISLATIVA_Y_PARTICIPACION_CIUDADANA.md
-```
-
-Para una lectura orientada a prueba piloto:
-
-```text
-1. docs/DOSSIER_INSTITUCIONAL_BREVE.md
-2. docs/PRUEBA_PILOTO_MODELO.md
-3. docs/PROTOCOLO_OPERATIVO.md
-4. docs/FUNDAMENTOS_JURIDICOS.md
-5. docs/FUNDAMENTOS_MEDICOS.md
-6. docs/PROTECCION_DATOS_PERSONALES.md
-7. docs/PRINCIPIOS_DE_GOBERNANZA.md
-8. docs/DECISIONES_DE_ARQUITECTURA.md
-9. docs/ROADMAP_IMPLEMENTACION.md
-```
-
-Para una lectura orientada a privacidad y datos personales:
-
-```text
-1. README.md
-2. docs/PROTECCION_DATOS_PERSONALES.md
-3. ARCHITECTURE_GUARDRAILS.md
-4. docs/DECISIONES_DE_ARQUITECTURA.md
-5. docs/PRINCIPIOS_DE_GOBERNANZA.md
-6. docs/PROTOCOLO_OPERATIVO.md
-7. docs/FUNDAMENTOS_JURIDICOS.md
-8. docs/FUNDAMENTOS_MEDICOS.md
-9. docs/PRUEBA_PILOTO_MODELO.md
-```
-
-Para una lectura orientada a fundamentos jurídicos:
-
-```text
-1. docs/FUNDAMENTOS_JURIDICOS.md
-2. docs/PROTECCION_DATOS_PERSONALES.md
-3. docs/FUNDAMENTOS_MEDICOS.md
-4. docs/PROTOCOLO_OPERATIVO.md
-5. docs/PRUEBA_PILOTO_MODELO.md
-6. docs/MODELO_PROYECTO_RESOLUCION.md
-7. docs/ESTRATEGIA_LEGISLATIVA_Y_PARTICIPACION_CIUDADANA.md
-8. docs/PRINCIPIOS_DE_GOBERNANZA.md
-```
-
-Para una lectura orientada a fundamentos médicos y funcionales:
-
-```text
-1. docs/FUNDAMENTOS_MEDICOS.md
-2. docs/PROTECCION_DATOS_PERSONALES.md
-3. docs/FUNDAMENTOS_JURIDICOS.md
-4. docs/PROTOCOLO_OPERATIVO.md
-5. docs/PRUEBA_PILOTO_MODELO.md
-6. docs/PRINCIPIOS_DE_GOBERNANZA.md
-```
-
-Para una lectura orientada a operación:
-
-```text
-1. docs/PROTOCOLO_OPERATIVO.md
-2. docs/PRUEBA_PILOTO_MODELO.md
-3. docs/PROTECCION_DATOS_PERSONALES.md
-4. docs/FUNDAMENTOS_MEDICOS.md
-5. docs/FUNDAMENTOS_JURIDICOS.md
-6. docs/PRINCIPIOS_DE_GOBERNANZA.md
-7. docs/DECISIONES_DE_ARQUITECTURA.md
-```
+La publicación abierta del repositorio no implica autorización de implementación productiva ni uso institucional por parte de organismos públicos o privados.
 
 ---
 
-## 7. Criterios de interpretación
+## 23. Declaración final
 
-Toda la documentación debe interpretarse conforme a los siguientes criterios:
+SUBE Prioridad es una propuesta ciudadana de innovación pública orientada a fortalecer la accesibilidad efectiva, la asistencia preventiva y la convivencia dentro del transporte público.
 
-* SUBE Prioridad es una propuesta ciudadana de innovación pública.
-* El repositorio contiene un MVP conceptual y demostrativo.
-* Las integraciones externas son simuladas salvo indicación expresa en contrario.
-* Los documentos técnicos describen escenarios posibles, no obligaciones de implementación.
-* Las autoridades competentes conservan la decisión sobre factibilidad, alcance, diseño e implementación.
-* El sistema no debe procesar diagnósticos médicos ni historia clínica en el core.
-* El proyecto no diagnostica, no evalúa médicamente y no reemplaza certificados ni autoridades sanitarias.
-* El protocolo operativo es conceptual y no constituye una instrucción vigente ni una implementación productiva.
-* La protección de datos personales es una condición estructural de viabilidad del proyecto.
-* Los fundamentos jurídicos son conceptuales y no constituyen dictamen vinculante.
-* Los fundamentos médicos son conceptuales y no constituyen protocolo médico ni guía clínica.
-* La propuesta no sustituye el régimen legal de asientos prioritarios.
-* El Bono Solidario es una evolución futura, no parte del núcleo inicial.
-* La prueba piloto propuesta es conceptual, orientativa y sujeta a evaluación institucional.
-* La mención de líneas, universidades, fundaciones u organismos no implica designación formal, aval, convenio vigente ni obligación de participación.
-* La referencia a antecedentes normativos, administrativos o provinciales no implica implementación automática.
-* Los archivos técnicos auxiliares ubicados en `docs/` no implican implementación productiva ni disponibilidad operativa real.
-* Toda implementación real debe ser gradual, reversible, auditable y respetuosa de la privacidad.
+El repositorio no pretende demostrar una solución cerrada ni una implementación definitiva.
 
----
+Su finalidad es ofrecer una arquitectura conceptual, documentada y técnicamente demostrable para que pueda ser analizada, discutida, mejorada y eventualmente evaluada por las autoridades competentes.
 
-## 8. Documentos pendientes recomendados
-
-Para fortalecer aún más el repositorio, podrían desarrollarse luego los siguientes documentos:
-
-```text
-docs/BONO_SOLIDARIO.md
-docs/ANEXOS_ORIGINALES_REFERENCIA.md
-```
-
-Estos documentos deberán agregarse de manera gradual, evitando repeticiones y manteniendo coherencia con el README, los guardrails, la arquitectura de referencia, el roadmap, el modelo de prueba piloto, el protocolo operativo, los lineamientos de protección de datos personales, los fundamentos jurídicos y los fundamentos médicos.
-
----
-
-## 9. Declaración final
-
-El Índice Documental tiene por finalidad preservar la coherencia del proyecto.
-
-SUBE Prioridad no debe leerse únicamente como un repositorio de software ni únicamente como un expediente institucional.
-
-Debe entenderse como una arquitectura pública en desarrollo, construida sobre documentación técnica, fundamentos jurídicos, fundamentos médicos, principios de privacidad, participación ciudadana, modelo de prueba piloto, protocolo operativo, lineamientos de protección de datos personales y una estrategia gradual orientada a permitir su evaluación responsable por parte de las autoridades competentes.
+El valor del proyecto reside en articular tecnología, privacidad, accesibilidad, dignidad, fundamentos jurídicos, fundamentos médicos, protocolo operativo, participación ciudadana y gradualidad institucional en una propuesta seria, prudente y escalable.
