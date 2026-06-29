@@ -1,63 +1,78 @@
-import time
-from typing import Dict, Optional
+# test_antifraud.py
+# Motor Transaccional Antifraude y Control de Colusión - Programa SUBE Prioridad
+# Desarrollado bajo la iniciativa ciudadana de Andrés Federico di Fiore
 
-class SubePrioridadValidator:
-    def __init__(self):
-        # Almacena el último evento de prioridad activo localmente en la validadora
-        self.active_priority_event: Optional[Dict[str, float]] = None
-        self.WINDOW_THRESHOLD_SECONDS = 60.0
+import datetime
+from typing import Dict, Tuple, List
 
-    def process_transaction(self, card_id: str, is_priority_user: bool) -> dict:
-        current_timestamp = time.time()
+class AntiFraudEngine:
+    def __init__(self, repeat_threshold_days: int = 7, max_coincidences: int = 2):
+        """
+        Inicializa el motor predictivo antifraude.
+        Establece los umbrales para el control de comportamiento repetitivo.
+        """
+        # Estructura en memoria SRAM protegida: {(id_prioritario, id_colaborador): [lista_de_timestamps]}
+        self.interaction_history: Dict[Tuple[str, str], List[datetime.datetime]] = {}
+        self.repeat_threshold_days = repeat_threshold_days
+        self.max_coincidences = max_coincidences
+
+    def verify_time_window(self, priority_timestamp: int, collaborator_timestamp: int) -> bool:
+        """
+        Valida la regla de consistencia temporal estricta de 60 segundos
+        entre el paso de la tarjeta prioritaria y la re-validación colaboradora.
+        """
+        delta_t = abs(collaborator_timestamp - priority_timestamp)
+        return delta_t <= 60
+
+    def validate_solidary_bonus(self, priority_card_hash: str, collaborator_card_hash: str, current_time: datetime.datetime) -> bool:
+        """
+        Analiza patrones de comportamiento repetitivo entre los mismos dos identificadores
+        para bloquear el fraude compartido/colusión en el Bono Solidario.
+        """
+        # Clave única simétrica para identificar el par de tarjetas interactuando
+        pair_key = (priority_card_hash, collaborator_card_hash)
         
-        # CASO A: El usuario posee el atributo de prioridad activo en su tarjeta MIFARE
-        if is_priority_user:
-            self.active_priority_event = {
-                "priority_card_id": card_id,
-                "timestamp": current_timestamp
-            }
-            return {
-                "status": "APPROVED",
-                "action": "TRIGGER_DISCRET_ALERT",
-                "msg": "Alerta de asiento prioritario enviada de forma local al habitáculo.",
-                "bono_eligible": False
-            }
-        
-        # CASO B: Transacción ordinaria. Se evalúa la ventana temporal previa
-        if self.active_priority_event:
-            time_delta = current_timestamp - self.active_priority_event["timestamp"]
+        if pair_key not in self.interaction_history:
+            self.interaction_history[pair_key] = [current_time]
+            return True  # Primera interacción registrada de forma limpia
             
-            if time_delta <= self.WINDOW_THRESHOLD_SECONDS:
-                priority_id = self.active_priority_event["priority_card_id"]
-                self.active_priority_event = None # Reset de la ventana temporal local
-                
-                return {
-                    "status": "APPROVED",
-                    "action": "QUEUE_FOR_CLEARING",
-                    "msg": f"Boleto común procesado dentro de delta t ({time_delta:.2f}s).",
-                    "bono_eligible": True,
-                    "meta": {"cooperating_card": card_id, "associated_priority_card": priority_id}
-                }
+        # Limpieza asíncrona de registros fuera de la ventana cronológica de auditoría
+        cutoff_date = current_time - datetime.timedelta(days=self.repeat_threshold_days)
+        self.interaction_history[pair_key] = [t for t in self.interaction_history[pair_key] if t > cutoff_date]
         
-        # CASO C: Transacción común fuera de la ventana de prioridad
-        return {
-            "status": "APPROVED",
-            "action": "STANDARD_FLUID_TRANSACTION",
-            "msg": "Transacción base procesada de forma regular.",
-            "bono_eligible": False
-        }
+        # Filtro duro de restricciones: si superan el límite de coexistencia cíclica, se deniega el bono
+        if len(self.interaction_history[pair_key]) >= self.max_coincidences:
+            # El software dispara una alerta de seguridad silenciosa para auditoría macro
+            # y suspende de forma preventiva la acumulación de beneficios
+            return False
+            
+        self.interaction_history[pair_key].append(current_time)
+        return True
 
-# --- EJECUCIÓN SIMULADA DE LABORATORIO ---
-if __name__ == "__main__":
-    validator = SubePrioridadValidator()
-    
-    print("--- Simulación de Procesamiento Local de Firmware ---")
-    # 1. Pasa tarjeta prioritaria por el bus local
-    print(f"[Evento 1]: {validator.process_transaction('SUBE_PRO_9982', is_priority_user=True)['msg']}")
-    
-    # 2. Pasajero común cede asiento y paga 3 segundos después
-    time.sleep(3) 
-    resultado = validator.process_transaction("SUBE_COM_1143", is_priority_user=False)
-    print(f"[Evento 2]: {resultado['msg']}")
-    print(f" > ¿Elegible para Bono Solidario en el clearing diario?: {resultado['bono_eligible']}")
-    print(f" > Acción en cola de transacciones (Batch): {resultado['action']}")
+    def run_cross_checking(self, priority_tx: dict, collaborator_tx: dict) -> bool:
+        """
+        Ejecuta la auditoría cruzada de infraestructura exigiendo concordancia
+        estricta de coche, ramal, geofencing y consistencia temporal.
+        """
+        # 1. Verificar coincidencia estricta de material rodante
+        if priority_tx.get("interno_coche_id") != collaborator_tx.get("interno_coche_id"):
+            return False
+            
+        if priority_tx.get("linea_colectivo_id") != collaborator_tx.get("linea_colectivo_id"):
+            return False
+
+        # 2. Verificar ventana temporal estricta de 60 segundos
+        time_valid = self.verify_time_window(
+            priority_tx.get("timestamp_nfc", 0), 
+            collaborator_tx.get("timestamp_bono_nfc", 0)
+        )
+        if not time_valid:
+            return False
+
+        # 3. Validar contra el motor de colusión/fraude compartido
+        current_dt = datetime.datetime.fromtimestamp(collaborator_tx.get("timestamp_bono_nfc", 0))
+        return self.validate_solidary_bonus(
+            priority_tx.get("tarjeta_prioridad_hash_anon", ""),
+            collaborator_tx.get("tarjeta_colaborador_hash_anon", ""),
+            current_dt
+        )
