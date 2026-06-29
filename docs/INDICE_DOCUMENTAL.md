@@ -4,7 +4,7 @@
 
 Este índice organiza la documentación principal del repositorio SUBE Prioridad.
 
-El proyecto se presenta como una propuesta ciudadana de innovación pública, acompañada por un MVP conceptual, documentación de arquitectura, fundamentos institucionales, estrategia legislativa, modelos de presentación ciudadana, modelo de prueba piloto y anexos técnicos.
+El proyecto se presenta como una propuesta ciudadana de innovación pública, acompañada por un MVP conceptual, documentación de arquitectura, fundamentos institucionales, estrategia legislativa, modelos de presentación ciudadana, modelo de prueba piloto, lineamientos de protección de datos personales, documentación técnica auxiliar y anexos técnicos.
 
 La finalidad de este índice es facilitar la lectura por parte de desarrolladores, legisladores, autoridades públicas, asesores técnicos, universidades, organizaciones de la sociedad civil, ciudadanos interesados y personas que acompañan la propuesta con firmas.
 
@@ -92,6 +92,18 @@ Debe leerse antes de pensar cualquier prueba piloto o implementación real.
 
 ---
 
+### docs/PROTECCION_DATOS_PERSONALES.md
+
+Establece lineamientos conceptuales de protección de datos personales para SUBE Prioridad.
+
+Explica qué datos no deben formar parte del core, por qué el sistema debe trabajar con atributos técnicos y no con diagnósticos, cómo separar acreditación institucional de operación técnica, qué recaudos debe tener una prueba piloto y qué límites deben respetarse frente a una eventual interoperabilidad futura.
+
+Es un documento central para la viabilidad jurídica, técnica e institucional del proyecto.
+
+Debe leerse junto con los guardrails, las decisiones de arquitectura, los principios de gobernanza y el modelo de prueba piloto.
+
+---
+
 ### docs/ESTRATEGIA_LEGISLATIVA_Y_PARTICIPACION_CIUDADANA.md
 
 Ordena la estrategia institucional y ciudadana para impulsar el análisis de SUBE Prioridad en Argentina.
@@ -162,7 +174,45 @@ Su contenido complementa al README y a la Arquitectura de Referencia.
 
 ---
 
-## 4. Documentación complementaria sugerida
+## 4. Documentación técnica auxiliar
+
+Además de los documentos principales, el repositorio puede contener archivos auxiliares ubicados dentro de `docs/` para ordenar especificaciones, referencias, políticas o materiales históricos.
+
+### docs/api/api_spec.json
+
+Especificación técnica auxiliar de API.
+
+Debe interpretarse como material de referencia documental, no como garantía de disponibilidad productiva ni integración real vigente.
+
+---
+
+### docs/institucional/authors.json
+
+Archivo auxiliar con información institucional o de autoría del proyecto.
+
+Debe utilizarse sólo como referencia documental interna del repositorio.
+
+---
+
+### docs/seguridad/security_policies.json
+
+Archivo auxiliar con políticas o referencias de seguridad.
+
+Debe leerse de manera complementaria con `docs/PROTECCION_DATOS_PERSONALES.md`, `ARCHITECTURE_GUARDRAILS.md` y `docs/PRINCIPIOS_DE_GOBERNANZA.md`.
+
+No reemplaza una política formal de seguridad productiva ni una evaluación de impacto.
+
+---
+
+### docs/historico/index.html
+
+Archivo histórico o auxiliar conservado dentro de la documentación.
+
+Su ubicación en `docs/historico/` permite preservar material previo sin confundirlo con la portada actual del repositorio.
+
+---
+
+## 5. Documentación complementaria sugerida
 
 A medida que el proyecto continúe ordenándose, podrán agregarse carpetas específicas dentro de `docs/`, por ejemplo:
 
@@ -178,13 +228,15 @@ docs/
   bono-solidario/
   anexos/
   historico/
+  api/
+  seguridad/
 ```
 
-Estas carpetas permitirán separar documentos extensos, borradores, anexos técnicos y versiones históricas sin sobrecargar la documentación principal.
+Estas carpetas permitirán separar documentos extensos, borradores, anexos técnicos, políticas auxiliares y versiones históricas sin sobrecargar la documentación principal.
 
 ---
 
-## 5. Orden recomendado de lectura
+## 6. Orden recomendado de lectura
 
 Para una primera lectura institucional:
 
@@ -194,8 +246,9 @@ Para una primera lectura institucional:
 3. docs/PETITORIO_MODELO.md
 4. docs/MODELO_PROYECTO_RESOLUCION.md
 5. docs/PRUEBA_PILOTO_MODELO.md
-6. docs/ESTRATEGIA_LEGISLATIVA_Y_PARTICIPACION_CIUDADANA.md
-7. docs/ROADMAP_IMPLEMENTACION.md
+6. docs/PROTECCION_DATOS_PERSONALES.md
+7. docs/ESTRATEGIA_LEGISLATIVA_Y_PARTICIPACION_CIUDADANA.md
+8. docs/ROADMAP_IMPLEMENTACION.md
 ```
 
 Para una lectura técnica:
@@ -205,8 +258,9 @@ Para una lectura técnica:
 2. ARCHITECTURE_GUARDRAILS.md
 3. docs/ARQUITECTURA_DE_REFERENCIA.md
 4. docs/DECISIONES_DE_ARQUITECTURA.md
-5. docs/PRUEBA_PILOTO_MODELO.md
-6. docs/PLIEGO_TECNICO_EXTENDIDO.md
+5. docs/PROTECCION_DATOS_PERSONALES.md
+6. docs/PRUEBA_PILOTO_MODELO.md
+7. docs/PLIEGO_TECNICO_EXTENDIDO.md
 ```
 
 Para una lectura jurídica e institucional:
@@ -216,9 +270,10 @@ Para una lectura jurídica e institucional:
 2. docs/PETITORIO_MODELO.md
 3. docs/MODELO_PROYECTO_RESOLUCION.md
 4. docs/PRUEBA_PILOTO_MODELO.md
-5. docs/ESTRATEGIA_LEGISLATIVA_Y_PARTICIPACION_CIUDADANA.md
-6. docs/PRINCIPIOS_DE_GOBERNANZA.md
-7. docs/ROADMAP_IMPLEMENTACION.md
+5. docs/PROTECCION_DATOS_PERSONALES.md
+6. docs/ESTRATEGIA_LEGISLATIVA_Y_PARTICIPACION_CIUDADANA.md
+7. docs/PRINCIPIOS_DE_GOBERNANZA.md
+8. docs/ROADMAP_IMPLEMENTACION.md
 ```
 
 Para una lectura ciudadana:
@@ -228,7 +283,8 @@ Para una lectura ciudadana:
 2. docs/DOSSIER_INSTITUCIONAL_BREVE.md
 3. docs/PETITORIO_MODELO.md
 4. docs/PRUEBA_PILOTO_MODELO.md
-5. docs/ESTRATEGIA_LEGISLATIVA_Y_PARTICIPACION_CIUDADANA.md
+5. docs/PROTECCION_DATOS_PERSONALES.md
+6. docs/ESTRATEGIA_LEGISLATIVA_Y_PARTICIPACION_CIUDADANA.md
 ```
 
 Para una lectura orientada a prueba piloto:
@@ -236,14 +292,26 @@ Para una lectura orientada a prueba piloto:
 ```text
 1. docs/DOSSIER_INSTITUCIONAL_BREVE.md
 2. docs/PRUEBA_PILOTO_MODELO.md
-3. docs/PRINCIPIOS_DE_GOBERNANZA.md
+3. docs/PROTECCION_DATOS_PERSONALES.md
+4. docs/PRINCIPIOS_DE_GOBERNANZA.md
+5. docs/DECISIONES_DE_ARQUITECTURA.md
+6. docs/ROADMAP_IMPLEMENTACION.md
+```
+
+Para una lectura orientada a privacidad y datos personales:
+
+```text
+1. README.md
+2. docs/PROTECCION_DATOS_PERSONALES.md
+3. ARCHITECTURE_GUARDRAILS.md
 4. docs/DECISIONES_DE_ARQUITECTURA.md
-5. docs/ROADMAP_IMPLEMENTACION.md
+5. docs/PRINCIPIOS_DE_GOBERNANZA.md
+6. docs/PRUEBA_PILOTO_MODELO.md
 ```
 
 ---
 
-## 6. Criterios de interpretación
+## 7. Criterios de interpretación
 
 Toda la documentación debe interpretarse conforme a los siguientes criterios:
 
@@ -253,15 +321,17 @@ Toda la documentación debe interpretarse conforme a los siguientes criterios:
 * Los documentos técnicos describen escenarios posibles, no obligaciones de implementación.
 * Las autoridades competentes conservan la decisión sobre factibilidad, alcance, diseño e implementación.
 * El sistema no debe procesar diagnósticos médicos ni historia clínica en el core.
+* La protección de datos personales es una condición estructural de viabilidad del proyecto.
 * La propuesta no sustituye el régimen legal de asientos prioritarios.
 * El Bono Solidario es una evolución futura, no parte del núcleo inicial.
 * La prueba piloto propuesta es conceptual, orientativa y sujeta a evaluación institucional.
 * La mención de líneas, universidades, fundaciones u organismos no implica designación formal, aval, convenio vigente ni obligación de participación.
+* Los archivos técnicos auxiliares ubicados en `docs/` no implican implementación productiva ni disponibilidad operativa real.
 * Toda implementación real debe ser gradual, reversible, auditable y respetuosa de la privacidad.
 
 ---
 
-## 7. Documentos pendientes recomendados
+## 8. Documentos pendientes recomendados
 
 Para fortalecer aún más el repositorio, podrían desarrollarse luego los siguientes documentos:
 
@@ -269,19 +339,18 @@ Para fortalecer aún más el repositorio, podrían desarrollarse luego los sigui
 docs/FUNDAMENTOS_JURIDICOS.md
 docs/FUNDAMENTOS_MEDICOS.md
 docs/FUNDAMENTOS_OPERATIVOS.md
-docs/PROTECCION_DATOS_PERSONALES.md
 docs/BONO_SOLIDARIO.md
 docs/ANEXOS_ORIGINALES_REFERENCIA.md
 ```
 
-Estos documentos deberán agregarse de manera gradual, evitando repeticiones y manteniendo coherencia con el README, los guardrails, la arquitectura de referencia, el roadmap y el modelo de prueba piloto.
+Estos documentos deberán agregarse de manera gradual, evitando repeticiones y manteniendo coherencia con el README, los guardrails, la arquitectura de referencia, el roadmap, el modelo de prueba piloto y los lineamientos de protección de datos personales.
 
 ---
 
-## 8. Declaración final
+## 9. Declaración final
 
 El Índice Documental tiene por finalidad preservar la coherencia del proyecto.
 
 SUBE Prioridad no debe leerse únicamente como un repositorio de software ni únicamente como un expediente institucional.
 
-Debe entenderse como una arquitectura pública en desarrollo, construida sobre documentación técnica, fundamentos jurídicos, principios de privacidad, participación ciudadana, modelo de prueba piloto y una estrategia gradual orientada a permitir su evaluación responsable por parte de las autoridades competentes.
+Debe entenderse como una arquitectura pública en desarrollo, construida sobre documentación técnica, fundamentos jurídicos, principios de privacidad, participación ciudadana, modelo de prueba piloto, lineamientos de protección de datos personales y una estrategia gradual orientada a permitir su evaluación responsable por parte de las autoridades competentes.
