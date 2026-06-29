@@ -4,7 +4,9 @@
 
 SUBE Prioridad es una propuesta de innovación pública orientada a facilitar que personas con necesidad acreditada de viajar sentadas puedan acceder de manera más rápida, segura y respetuosa a un asiento dentro del sistema de transporte público.
 
-El presente repositorio contiene una implementación técnica inicial de carácter **conceptual, modular y demostrativo**. No constituye una implementación definitiva, obligatoria ni integrada en producción con organismos públicos o sistemas reales de transporte.
+El presente repositorio contiene una implementación técnica inicial de carácter **conceptual, modular y demostrativo**.
+
+No constituye una implementación definitiva, obligatoria ni integrada en producción con organismos públicos o sistemas reales de transporte.
 
 ---
 
@@ -188,7 +190,9 @@ Principios considerados:
 * auditoría sin datos personales;
 * rechazo de autoasignación.
 
-Ningún evento individual debería ser suficiente para acreditar una interacción de valor. La confianza del sistema debe surgir de la combinación de múltiples señales verificables.
+Ningún evento individual debería ser suficiente para acreditar una interacción de valor.
+
+La confianza del sistema debe surgir de la combinación de múltiples señales verificables.
 
 ---
 
@@ -197,17 +201,18 @@ Ningún evento individual debería ser suficiente para acreditar una interacció
 Archivos principales:
 
 ```text
-main.py                 API principal FastAPI
-validator.py            Motor antifraude inicial
-test_main.py            Tests de API
-test_antifraud.py       Tests del motor antifraude
-cache_manager.py        Caché TTL simple
-circuit_breaker.py      Protección ante fallas de servicios externos
-xroad_gateway.py        Simulador de interoperabilidad
-requirements.txt        Dependencias Python
-Dockerfile              Imagen de ejecución
-docker-compose.yml      Ejecución local con Docker
-ARCHITECTURE_GUARDRAILS.md  Principios de arquitectura
+main.py                         API principal FastAPI
+validator.py                    Motor antifraude inicial
+test_main.py                    Tests de API
+test_antifraud.py               Tests del motor antifraude
+cache_manager.py                Caché TTL simple
+circuit_breaker.py              Protección ante fallas de servicios externos
+xroad_gateway.py                Simulador de interoperabilidad
+requirements.txt                Dependencias Python
+Dockerfile                      Imagen de ejecución
+docker-compose.yml              Ejecución local con Docker
+ARCHITECTURE_GUARDRAILS.md      Principios de arquitectura
+docs/PLIEGO_TECNICO_EXTENDIDO.md Pliego técnico extendido y visión integral
 ```
 
 ---
@@ -305,7 +310,19 @@ Toda modificación futura del repositorio deberá respetar:
 
 ---
 
-## 16. Aporte ciudadano
+## 16. Documentación complementaria
+
+El repositorio conserva documentación ampliada en:
+
+```text
+docs/PLIEGO_TECNICO_EXTENDIDO.md
+```
+
+Ese documento debe leerse como una especificación conceptual, prospectiva y evolutiva. No debe interpretarse como una implementación productiva actualmente desplegada ni como una integración real vigente con organismos públicos, sistemas SUBE, validadoras, hardware embarcado o infraestructura estatal.
+
+---
+
+## 17. Aporte ciudadano
 
 SUBE Prioridad se presenta como una propuesta ciudadana de interés público, abierta a análisis, mejora, adaptación y eventual evaluación por parte de los organismos competentes.
 
@@ -315,7 +332,7 @@ Su valor principal reside en abrir una conversación técnica, institucional y s
 
 ---
 
-## 17. Licencia y uso
+## 18. Licencia y uso
 
 Mientras no se defina una licencia específica, este repositorio debe considerarse material de análisis, documentación y desarrollo conceptual.
 
@@ -323,7 +340,7 @@ Antes de cualquier uso institucional, productivo o comercial, deberán revisarse
 
 ---
 
-## 18. Declaración final
+## 19. Declaración final
 
 SUBE Prioridad busca demostrar que una acción cotidiana como la validación de un viaje podría transformarse, cuando las circunstancias lo requieran, en una oportunidad para facilitar asistencia, promover inclusión y fortalecer la solidaridad ciudadana.
 
