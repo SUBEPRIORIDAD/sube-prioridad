@@ -1,188 +1,193 @@
-from datetime import datetime, timedelta, timezone
+from datetime import date
 from typing import Optional
 
-from fastapi import FastAPI, HTTPException, status
+from fastapi import FastAPI
 from pydantic import BaseModel, Field
 
-
-APP_VERSION = "0.2.0"
-
-PROJECT_GUARDRAILS = {
-    "naturaleza": "MVP conceptual, técnico y demostrativo",
-    "implementacion": "gradual, modular, reversible y sujeta a factibilidad",
-    "datos_sensibles_en_core": False,
-    "diagnostico_medico_en_core": False,
-    "modifica_regimen_asientos_prioritarios": False,
-    "impone_cargas_al_chofer": False,
-    "genera_sanciones_a_pasajeros": False,
-    "modifica_recaudacion_sube": False,
-    "bono_solidario_es_core_inicial": False,
-    "bono_solidario_es_evolucion_futura": True,
-    "integraciones_externas_reales": False,
-}
-
-
-PROHIBITED_CORE_FIELDS = {
-    "dni",
-    "nombre",
-    "apellido",
-    "domicilio",
-    "historia_clinica",
-    "historia_clínica",
-    "diagnostico",
-    "diagnóstico",
-    "diagnostico_medico",
-    "diagnóstico_médico",
-    "certificado_medico",
-    "certificado_médico",
-}
-
-
 app = FastAPI(
-    title="SUBE Prioridad API",
-    description=(
-        "MVP conceptual y demostrativo para validación de atributo de prioridad "
-        "sin exposición de DNI, nombre, diagnóstico médico ni historia clínica. "
-        "El sistema representa una arquitectura posible, no una implementación "
-        "definitiva ni una integración real con organismos externos."
-    ),
-    version=APP_VERSION,
+title="SUBE Prioridad API",
+description=(
+"MVP conceptual y demostrativo para asistencia preventiva, "
+"accesibilidad efectiva y privacidad por diseño en transporte público."
+),
+version="0.1.0",
 )
 
+class VerificacionPrioridadRequest(BaseModel):
+"""
+Solicitud conceptual de verificación.
 
-class VerificationRequest(BaseModel):
-    token_tramite_hash: str = Field(
-        ...,
-        min_length=64,
-        max_length=64,
-        description="Hash SHA-256 pseudoanonimizado del trámite o credencial.",
-    )
-    firma_digital_medico: Optional[str] = Field(
-        default=None,
-        description=(
-            "Referencia técnica opcional de firma digital. "
-            "En el MVP no se valida contra servicios reales."
-        ),
-    )
-    entidad_emisora: Optional[str] = Field(
-        default=None,
-        description=(
-            "Entidad pública o sanitaria emisora. "
-            "Campo informativo para entorno simulado."
-        ),
-    )
-    perfil_asistencia_preferido: Optional[int] = Field(
-        default=2,
-        ge=0,
-        le=3,
-        description=(
-            "Preferencia conceptual de asistencia: "
-            "0 silenciosa, 1 discreta, 2 preventiva, 3 visible."
-        ),
-    )
+```
+Este MVP no recibe DNI, nombre, apellido, diagnóstico médico,
+historia clínica ni certificados médicos en texto plano.
 
+El campo token_prioridad representa un identificador técnico,
+pseudoanonimizado o simulado para fines demostrativos.
+"""
 
-class VerificationResponse(BaseModel):
-    atributo_prioridad_activo: bool
-    perfil_alertas_ux: int
-    fecha_caducidad: datetime
-    motivo: str
-    entorno: str
-    datos_sensibles_procesados: bool
-    integracion_real_con_organismos: bool
+token_prioridad: str = Field(
+    ...,
+    description="Token técnico o identificador pseudoanonimizado de prioridad.",
+    examples=["demo-prioridad-activa"],
+)
 
+linea: Optional[str] = Field(
+    default=None,
+    description="Línea de transporte, sólo para simulación o evaluación técnica.",
+    examples=["60"],
+)
 
-def assert_safe_payload(payload: dict) -> None:
-    """
-    Control defensivo mínimo para impedir que el core reciba datos sensibles.
-    """
+unidad: Optional[str] = Field(
+    default=None,
+    description="Unidad o interno, sólo para simulación o evaluación técnica.",
+    examples=["1234"],
+)
+```
 
-    normalized_keys = {str(key).lower() for key in payload.keys()}
-    forbidden = sorted(PROHIBITED_CORE_FIELDS.intersection(normalized_keys))
+class VerificacionPrioridadResponse(BaseModel):
+"""
+Respuesta conceptual de verificación.
 
-    if forbidden:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail=(
-                "El payload contiene campos prohibidos para el core del MVP: "
-                + ", ".join(forbidden)
-            ),
-        )
+```
+La respuesta no informa diagnósticos, condiciones médicas,
+datos personales identificables ni motivos sensibles.
+"""
 
+prioridad_activa: bool
+perfil_ux: str
+fecha_caducidad: Optional[str]
+motivo: str
+entorno: str
+datos_sensibles_procesados: bool
+integracion_real_con_organismos: bool
+```
 
 @app.get("/")
-def root() -> dict:
-    return {
-        "servicio": "SUBE Prioridad API",
-        "estado": "operativo",
-        "version": APP_VERSION,
-        "naturaleza": "MVP conceptual, gradual y demostrativo",
-        "objetivo": (
-            "Facilitar asistencia preventiva para personas con necesidad "
-            "acreditada de viajar sentadas."
-        ),
-    }
+def root():
+"""
+Endpoint raíz del MVP.
 
+```
+Expone el estado conceptual del proyecto sin afirmar implementación
+productiva ni integración real con sistemas externos.
+"""
+
+return {
+    "proyecto": "SUBE Prioridad",
+    "estado": "MVP conceptual y demostrativo",
+    "descripcion": (
+        "Propuesta ciudadana de innovación pública para asistencia preventiva, "
+        "accesibilidad efectiva y convivencia en el transporte público."
+    ),
+    "implementacion_productiva": False,
+    "integracion_real_con_organismos": False,
+    "procesa_datos_medicos": False,
+    "documentacion": "/docs",
+}
+```
 
 @app.get("/health")
-def health() -> dict:
-    return {
-        "status": "ok",
-        "timestamp": datetime.now(timezone.utc).isoformat(),
-    }
+def health():
+"""
+Endpoint de salud del servicio.
 
+```
+Se utiliza para verificación técnica básica del MVP.
+"""
+
+return {
+    "status": "ok",
+    "service": "sube-prioridad-api",
+    "environment": "mvp-conceptual",
+    "datos_sensibles_procesados": False,
+    "integracion_real_con_organismos": False,
+}
+```
 
 @app.get("/project/guardrails")
-def project_guardrails() -> dict:
-    """
-    Expone principios rectores no sensibles del MVP.
-    """
+def project_guardrails():
+"""
+Devuelve límites conceptuales y técnicos del MVP.
 
-    return PROJECT_GUARDRAILS
+```
+Este endpoint ayuda a mantener alineado el código con la documentación
+institucional del proyecto.
+"""
 
+return {
+    "naturaleza": "MVP conceptual, técnico y demostrativo",
+    "implementacion_productiva": False,
+    "integracion_real_con_organismos": False,
+    "modificacion_sistema_sube": False,
+    "procesamiento_datos_medicos": False,
+    "procesamiento_datos_identificatorios": False,
+    "principios": [
+        "privacidad por diseño",
+        "minimización de datos",
+        "no exposición de diagnósticos",
+        "atributo técnico de prioridad",
+        "separación entre acreditación institucional y operación técnica",
+        "interoperabilidad simulada",
+        "gradualidad",
+        "reversibilidad",
+        "auditabilidad",
+        "no sustitución de asientos prioritarios",
+        "no imposición de nuevas cargas al chofer",
+    ],
+    "datos_no_procesados_en_core": [
+        "DNI",
+        "nombre",
+        "apellido",
+        "domicilio",
+        "diagnóstico médico",
+        "historia clínica",
+        "certificado médico en texto plano",
+        "datos de salud identificables",
+    ],
+}
+```
 
-@app.post(
-    "/api/v1/prioridad/verificar",
-    response_model=VerificationResponse,
-    status_code=status.HTTP_200_OK,
+@app.post("/api/v1/prioridad/verificar", response_model=VerificacionPrioridadResponse)
+def verificar_prioridad(request: VerificacionPrioridadRequest):
+"""
+Verificación conceptual de prioridad.
+
+```
+Este endpoint no consulta organismos reales, no accede al sistema SUBE,
+no procesa datos médicos y no representa una implementación productiva.
+
+Para fines demostrativos:
+- tokens que contengan "activa" devuelven prioridad activa;
+- tokens que contengan "inactive" o "inactiva" devuelven prioridad inactiva;
+- cualquier otro token se considera no activo en el MVP.
+"""
+
+token_normalizado = request.token_prioridad.strip().lower()
+
+prioridad_activa = (
+    "activa" in token_normalizado
+    and "inactiva" not in token_normalizado
+    and "inactive" not in token_normalizado
 )
-def verificar_prioridad(request: VerificationRequest) -> VerificationResponse:
-    """
-    Verifica si un token pseudoanonimizado posee atributo de prioridad activo.
 
-    MVP:
-    - No recibe DNI.
-    - No recibe nombre.
-    - No recibe diagnóstico.
-    - No recibe historia clínica.
-    - No modifica tarifas.
-    - No impone obligaciones al chofer.
-    - No altera el régimen legal de asientos prioritarios.
-    - No implementa todavía el Bono Solidario como core inicial.
-    - No afirma integración real con organismos externos.
-    """
-
-    payload = request.model_dump(exclude_none=True)
-    assert_safe_payload(payload)
-
-    if not request.token_tramite_hash.isalnum():
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="El token_tramite_hash debe ser alfanumérico.",
-        )
-
-    fecha_caducidad = datetime.now(timezone.utc) + timedelta(days=180)
-
-    return VerificationResponse(
-        atributo_prioridad_activo=True,
-        perfil_alertas_ux=request.perfil_asistencia_preferido or 2,
-        fecha_caducidad=fecha_caducidad,
-        motivo=(
-            "Atributo de prioridad validado en entorno MVP. "
-            "La respuesta es conceptual, no implica implementación definitiva "
-            "ni integración real con organismos externos."
-        ),
-        entorno="simulado_mvp",
+if prioridad_activa:
+    return VerificacionPrioridadResponse(
+        prioridad_activa=True,
+        perfil_ux="preventiva",
+        fecha_caducidad=str(date.today().replace(year=date.today().year + 1)),
+        motivo="Atributo técnico de prioridad activo en entorno MVP conceptual.",
+        entorno="mvp-conceptual",
         datos_sensibles_procesados=False,
         integracion_real_con_organismos=False,
     )
+
+return VerificacionPrioridadResponse(
+    prioridad_activa=False,
+    perfil_ux="sin_prioridad_operativa",
+    fecha_caducidad=None,
+    motivo="No se registra atributo técnico activo en la simulación del MVP.",
+    entorno="mvp-conceptual",
+    datos_sensibles_procesados=False,
+    integracion_real_con_organismos=False,
+)
+```
