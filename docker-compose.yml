@@ -1,36 +1,48 @@
+# docker-compose.yml
+# Orquestación de Microservicios Desacoplados (Sandbox) - Red SUBE Prioridad
+# Desarrollado originalmente bajo iniciativa ciudadana abierta por Andrés Federico di Fiore
 
 version: '3.8'
 
 services:
-  # Componente de Borde: Motor lógico del validador y firmware de la SUBE
-  sube-validator-core:
-    build: .
-    container_name: sube_prioridad_validator
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: sube_prioridad_api
+    restart: always
+    environment:
+      - ENV=production
+      - CACHE_TYPE=redis
+    ports:
+      - "8000:8000"
     depends_on:
-      sube-secure-db:
+      db:
         condition: service_healthy
     networks:
-      - sube-internal-net
+      - sube_network
 
-  # Componente Centralizado: Base de Datos Relacional Aislada (Estándar Ley 25.326)
-  sube-secure-db:
+  db:
     image: postgres:15-alpine
-    container_name: sube_prioridad_database
+    container_name: sube_prioridad_db
+    restart: always
     environment:
-      POSTGRES_DB: sube_prioridad_db
-      POSTGRES_USER: nacion_servicios_admin
-      POSTGRES_PASSWORD: SecretCriptoPassword123 # Credencial de entorno local de desarrollo
+      - POSTGRES_DB=sube_prioridad
+      - POSTGRES_USER=sube_admin
+      - POSTGRES_PASSWORD=seguridad_encriptada_token
     volumes:
-      - ./schema.sql:/docker-entrypoint-initdb.d/schema.sql:ro # Inyecta automáticamente tu esquema SQL
+      # Inyecta automáticamente el esquema relacional del pliego al iniciar
+      - ./schema.sql:/docker-entrypoint-initdb.d/schema.sql
+    ports:
+      - "5432:5432"
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U nacion_servicios_admin -d sube_prioridad_db"]
-      interval: 5s
+      test: ["CMD-SHELL", "pg_isready -U sube_admin -d sube_prioridad"]
+      interval: 10s
       timeout: 5s
       retries: 5
     networks:
-      - sube-internal-net
+      - sube_network
 
 networks:
-  # Red aislada y encriptada: Impide el acceso externo a los hashes de las tarjetas
-  sube-internal-net:
+  sube_network:
     driver: bridge
