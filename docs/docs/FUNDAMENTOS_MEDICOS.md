@@ -1,531 +1,416 @@
-# Fundamentos Médicos — SUBE Prioridad
+# Índice Documental — SUBE Prioridad
 
-## 1. Propósito del documento
+## 1. Propósito
 
-El presente documento reúne fundamentos médicos, sanitarios y funcionales conceptuales para la iniciativa **SUBE Prioridad**.
+Este índice organiza la documentación principal del repositorio SUBE Prioridad.
 
-Su finalidad es explicar por qué una herramienta de asistencia preventiva en el transporte público puede resultar relevante para personas que necesitan viajar sentadas por razones de salud, discapacidad, edad, embarazo, movilidad reducida, rehabilitación u otras condiciones permanentes o transitorias.
+El proyecto se presenta como una propuesta ciudadana de innovación pública, acompañada por un MVP conceptual, documentación de arquitectura, fundamentos jurídicos, fundamentos médicos, fundamentos institucionales, estrategia legislativa, modelos de presentación ciudadana, modelo de prueba piloto, lineamientos de protección de datos personales, documentación técnica auxiliar y anexos técnicos.
 
-Este documento no constituye protocolo médico, guía clínica, dictamen sanitario, indicación terapéutica ni sistema de evaluación de personas usuarias.
-
-SUBE Prioridad no diagnostica, no certifica condiciones médicas, no reemplaza al sistema de salud, no sustituye certificados oficiales ni define por sí mismo quién debe acceder a una asistencia.
-
-Toda acreditación médica, sanitaria, funcional o administrativa deberá quedar bajo la órbita de los organismos, profesionales o procedimientos que determinen las autoridades competentes.
+La finalidad de este índice es facilitar la lectura por parte de desarrolladores, legisladores, autoridades públicas, asesores técnicos, universidades, organizaciones de la sociedad civil, ciudadanos interesados y personas que acompañan la propuesta con firmas.
 
 ---
 
-## 2. Naturaleza sanitaria de la propuesta
+## 2. Estado general del repositorio
 
-SUBE Prioridad debe ser entendido como una herramienta de asistencia preventiva, no como un sistema médico.
+El repositorio representa actualmente un MVP conceptual, técnico y demostrativo.
 
-Su objetivo no es clasificar enfermedades ni construir una base de datos sanitaria.
+No constituye una implementación productiva.
 
-Su finalidad es facilitar, en el plano operativo del transporte público, una respuesta respetuosa frente a una necesidad previamente acreditada de viajar sentado o recibir asistencia.
+No acredita integración real con organismos públicos.
 
-El proyecto se apoya en una idea simple:
+No modifica el sistema SUBE.
+
+No altera el régimen vigente de asientos prioritarios.
+
+No procesa diagnósticos médicos, historia clínica ni datos sensibles en el núcleo del MVP.
+
+Toda eventual implementación real deberá quedar sujeta a evaluación técnica, jurídica, presupuestaria, operativa, social e institucional por parte de las autoridades competentes.
+
+---
+
+## 3. Documentación principal
+
+### README.md
+
+Documento de entrada al repositorio.
+
+Presenta qué es SUBE Prioridad, qué no es, el estado actual del MVP, sus principios de privacidad, los fundamentos jurídicos, los fundamentos médicos, la arquitectura general, la forma de ejecución local y la documentación complementaria.
+
+Debe leerse primero.
+
+---
+
+### ARCHITECTURE_GUARDRAILS.md
+
+Define los límites técnicos y conceptuales que toda evolución del proyecto debe respetar.
+
+Incluye reglas sobre privacidad por diseño, minimización de datos, datos prohibidos en el core, interoperabilidad simulada, Bono Solidario como evolución futura, separación entre documentación conceptual y producción, y cambios seguros en el código.
+
+Es el documento de control de coherencia técnica.
+
+---
+
+### docs/ARQUITECTURA_DE_REFERENCIA.md
+
+Describe la arquitectura conceptual de SUBE Prioridad.
+
+Explica cómo el proyecto puede entenderse como una arquitectura abierta, modular, escalable y tecnológicamente neutral.
+
+Debe leerse para comprender la visión de largo plazo: desde un MVP conceptual hasta eventuales pruebas piloto, implementaciones regionales, nacionales o adaptaciones en otras jurisdicciones.
+
+---
+
+### docs/ROADMAP_IMPLEMENTACION.md
+
+Ordena una posible evolución progresiva del proyecto.
+
+Describe etapas como investigación y documentación, MVP conceptual, laboratorio técnico, prueba piloto limitada, piloto ampliado, implementación regional, implementación nacional y modelo adaptable a otras jurisdicciones.
+
+No constituye un cronograma obligatorio.
+
+Funciona como guía conceptual para evaluar escalabilidad, reversibilidad y control institucional.
+
+---
+
+### docs/DECISIONES_DE_ARQUITECTURA.md
+
+Registra las principales decisiones de diseño del proyecto.
+
+Explica, entre otras cuestiones, por qué se usa un atributo técnico y no diagnósticos médicos, por qué el MVP no procesa datos sensibles, por qué las integraciones son simuladas, por qué la arquitectura debe ser neutral tecnológicamente, por qué el Bono Solidario queda desacoplado del core inicial y por qué la implementación debe ser gradual y reversible.
+
+Este documento conecta el código con la filosofía de ingeniería del proyecto.
+
+---
+
+### docs/PRINCIPIOS_DE_GOBERNANZA.md
+
+Define criterios institucionales para una eventual evolución del proyecto.
+
+Incluye principios sobre evaluación previa, competencia pública, transparencia, auditabilidad, protección de datos, separación de roles, accesibilidad, no discriminación, interoperabilidad responsable, gestión de riesgos y participación institucional.
+
+Debe leerse antes de pensar cualquier prueba piloto o implementación real.
+
+---
+
+### docs/PROTECCION_DATOS_PERSONALES.md
+
+Establece lineamientos conceptuales de protección de datos personales para SUBE Prioridad.
+
+Explica qué datos no deben formar parte del core, por qué el sistema debe trabajar con atributos técnicos y no con diagnósticos, cómo separar acreditación institucional de operación técnica, qué recaudos debe tener una prueba piloto y qué límites deben respetarse frente a una eventual interoperabilidad futura.
+
+Es un documento central para la viabilidad jurídica, técnica e institucional del proyecto.
+
+Debe leerse junto con los guardrails, las decisiones de arquitectura, los principios de gobernanza y el modelo de prueba piloto.
+
+---
+
+### docs/FUNDAMENTOS_JURIDICOS.md
+
+Reúne los fundamentos jurídicos conceptuales del proyecto.
+
+Desarrolla el enfoque de derechos, igualdad real, accesibilidad efectiva, dignidad, no discriminación, protección de datos personales, razonabilidad, progresividad, transporte público, marco institucional del sistema SUBE, estrategia federal de implementación y prueba piloto.
+
+Incluye referencias a tratados internacionales, leyes nacionales vinculadas con discapacidad, salud, accesibilidad y protección de datos, así como un antecedente provincial reciente de colectivos inclusivos y accesibilidad cognitiva en la Provincia de Buenos Aires.
+
+No constituye dictamen jurídico ni interpretación vinculante, sino una base documental para evaluación por parte de autoridades competentes, legisladores, asesores, universidades y organizaciones sociales.
+
+---
+
+### docs/FUNDAMENTOS_MEDICOS.md
+
+Reúne fundamentos médicos, sanitarios y funcionales conceptuales para la iniciativa.
+
+Explica que SUBE Prioridad no diagnostica, no evalúa médicamente, no reemplaza certificados oficiales, no sustituye autoridades sanitarias y no convierte al transporte público en un espacio de evaluación clínica.
+
+Desarrolla la necesidad funcional de viajar sentado, la asistencia preventiva, personas con discapacidad, personas mayores, personas gestantes, movilidad reducida, rehabilitación, enfermedades no visibles, riesgo de caídas, accesibilidad cognitiva, alertas genéricas, no exposición de diagnósticos y evaluación médica funcional de una eventual prueba piloto.
+
+Debe leerse junto con `docs/PROTECCION_DATOS_PERSONALES.md`, `docs/FUNDAMENTOS_JURIDICOS.md` y `docs/PRUEBA_PILOTO_MODELO.md`.
+
+---
+
+### docs/ESTRATEGIA_LEGISLATIVA_Y_PARTICIPACION_CIUDADANA.md
+
+Ordena la estrategia institucional y ciudadana para impulsar el análisis de SUBE Prioridad en Argentina.
+
+Explica cómo presentar la propuesta ante legisladores, autoridades administrativas, organismos técnicos, universidades, organizaciones sociales y ciudadanía.
+
+También diferencia entre expediente institucional, repositorio técnico, campaña ciudadana y firmas de apoyo.
+
+Su eje central es solicitar evaluación responsable y eventual prueba piloto, no implementación nacional inmediata.
+
+---
+
+### docs/DOSSIER_INSTITUCIONAL_BREVE.md
+
+Documento breve para presentación institucional.
+
+Resume el problema público, el objetivo de la propuesta, qué es SUBE Prioridad, qué no es, sus principios rectores, el MVP actual, la propuesta de prueba piloto, la protección de datos, el rol de la ciudadanía y la solicitud institucional.
+
+Es el documento recomendado para acompañar petitorios, reuniones, firmas ciudadanas o primeras conversaciones con legisladores y autoridades.
+
+---
+
+### docs/PETITORIO_MODELO.md
+
+Modelo orientativo de petitorio ciudadano para acompañar firmas, pedidos de audiencia, presentaciones administrativas o solicitudes legislativas.
+
+Su finalidad es solicitar que las autoridades competentes reciban, analicen y evalúen la factibilidad de SUBE Prioridad.
+
+No solicita implementación inmediata, sino evaluación responsable y eventual consideración de una prueba piloto limitada, voluntaria, reversible y respetuosa de la privacidad.
+
+Es el documento recomendado para acompañar campañas de firmas ciudadanas y presentaciones iniciales ante organismos públicos.
+
+---
+
+### docs/MODELO_PROYECTO_RESOLUCION.md
+
+Modelo orientativo de proyecto de resolución para legisladores, asesores o autoridades que deseen impulsar formalmente el análisis institucional de SUBE Prioridad.
+
+El documento propone solicitar la evaluación jurídica, técnica, operativa, presupuestaria, social e institucional de la iniciativa.
+
+También contempla la eventual realización de una prueba piloto limitada, sin imponer implementación nacional inmediata ni modificar derechos vigentes.
+
+Debe interpretarse como una base adaptable a la técnica legislativa o administrativa correspondiente.
+
+---
+
+### docs/PRUEBA_PILOTO_MODELO.md
+
+Modelo conceptual para una eventual prueba piloto limitada, voluntaria, reversible y auditable de SUBE Prioridad.
+
+El documento describe objetivos, alcance territorial, duración sugerida, participantes, población objetivo, modelo operativo, modalidades de asistencia, protección de datos, infraestructura tecnológica, interoperabilidad, rol del chofer, relación con asientos prioritarios, indicadores de evaluación, criterios de éxito, criterios de suspensión y comunicación pública.
+
+Incluye además un anexo con actores sugeridos para análisis de prueba piloto, contemplando líneas de colectivo, universidades, fundaciones, organizaciones sociales y organismos locales vinculados con San Isidro y el AMBA.
+
+No constituye una decisión de implementación ni una designación formal de actores, sino una base orientativa para evaluación por parte de las autoridades competentes.
+
+---
+
+### docs/PLIEGO_TECNICO_EXTENDIDO.md
+
+Documento técnico amplio que conserva la visión integral original del proyecto.
+
+Debe interpretarse como una especificación conceptual, prospectiva y evolutiva.
+
+No debe leerse como implementación productiva actualmente desplegada ni como integración real vigente.
+
+Su contenido complementa al README y a la Arquitectura de Referencia.
+
+---
+
+## 4. Documentación técnica auxiliar
+
+Además de los documentos principales, el repositorio puede contener archivos auxiliares ubicados dentro de `docs/` para ordenar especificaciones, referencias, políticas o materiales históricos.
+
+### docs/api/api_spec.json
+
+Especificación técnica auxiliar de API.
+
+Debe interpretarse como material de referencia documental, no como garantía de disponibilidad productiva ni integración real vigente.
+
+---
+
+### docs/institucional/authors.json
+
+Archivo auxiliar con información institucional o de autoría del proyecto.
+
+Debe utilizarse sólo como referencia documental interna del repositorio.
+
+---
+
+### docs/seguridad/security_policies.json
+
+Archivo auxiliar con políticas o referencias de seguridad.
+
+Debe leerse de manera complementaria con `docs/PROTECCION_DATOS_PERSONALES.md`, `ARCHITECTURE_GUARDRAILS.md` y `docs/PRINCIPIOS_DE_GOBERNANZA.md`.
+
+No reemplaza una política formal de seguridad productiva ni una evaluación de impacto.
+
+---
+
+### docs/historico/index.html
+
+Archivo histórico o auxiliar conservado dentro de la documentación.
+
+Su ubicación en `docs/historico/` permite preservar material previo sin confundirlo con la portada actual del repositorio.
+
+---
+
+## 5. Documentación complementaria sugerida
+
+A medida que el proyecto continúe ordenándose, podrán agregarse carpetas específicas dentro de `docs/`, por ejemplo:
 
 ```text
-la necesidad de asistencia puede ser real aunque no sea visible
+docs/
+  fundamentos/
+  institucional/
+  juridico/
+  medico/
+  arquitectura/
+  privacidad/
+  interoperabilidad/
+  bono-solidario/
+  anexos/
+  historico/
+  api/
+  seguridad/
 ```
 
-Muchas personas pueden encontrarse en una situación de riesgo, fatiga, dolor, inestabilidad, fragilidad o vulnerabilidad funcional sin que ello sea evidente para terceros.
+Estas carpetas permitirán separar documentos extensos, borradores, anexos técnicos, políticas auxiliares y versiones históricas sin sobrecargar la documentación principal.
 
 ---
 
-## 3. No medicalización del transporte público
+## 6. Orden recomendado de lectura
 
-El transporte público no debe transformarse en un espacio de evaluación médica.
-
-No corresponde que un chofer, pasajero, inspector, validadora o sistema técnico determine si una persona “merece” o no asistencia en función de una percepción externa.
-
-SUBE Prioridad busca evitar que la persona usuaria tenga que explicar públicamente su condición, mostrar documentación médica, discutir con otros pasajeros o justificar una necesidad que puede haber sido previamente acreditada por los canales correspondientes.
-
-La asistencia debe organizarse de manera tal que reduzca la exposición, el conflicto y la estigmatización.
-
----
-
-## 4. Separación entre acreditación médica y operación técnica
-
-El principio médico-operativo central del proyecto es la separación entre dos planos:
+Para una primera lectura institucional:
 
 ```text
-Plano de acreditación:
-evaluación médica, sanitaria, funcional o administrativa
-realizada por autoridad, profesional u organismo competente
-
-Plano operativo:
-atributo técnico de prioridad
-preferencia de asistencia
-validación en transporte
-alerta o modalidad de asistencia
+1. README.md
+2. docs/DOSSIER_INSTITUCIONAL_BREVE.md
+3. docs/PETITORIO_MODELO.md
+4. docs/MODELO_PROYECTO_RESOLUCION.md
+5. docs/PRUEBA_PILOTO_MODELO.md
+6. docs/FUNDAMENTOS_JURIDICOS.md
+7. docs/FUNDAMENTOS_MEDICOS.md
+8. docs/PROTECCION_DATOS_PERSONALES.md
+9. docs/ESTRATEGIA_LEGISLATIVA_Y_PARTICIPACION_CIUDADANA.md
+10. docs/ROADMAP_IMPLEMENTACION.md
 ```
 
-El sistema técnico no debe conocer el diagnóstico.
-
-El sistema técnico sólo debería recibir, cuando corresponda y bajo autorización institucional, un atributo operativo que indique que la persona está habilitada para solicitar asistencia prioritaria.
-
----
-
-## 5. Necesidad funcional de viajar sentado
-
-Desde una perspectiva funcional, viajar sentado puede ser necesario para reducir riesgos o mejorar condiciones de seguridad durante el traslado.
-
-Algunas personas pueden presentar dificultades para sostenerse de pie durante trayectos prolongados, frenadas, aceleraciones, curvas, aglomeraciones o situaciones de inestabilidad dentro de una unidad de transporte.
-
-La necesidad de viajar sentado puede vincularse con múltiples situaciones, permanentes o transitorias, visibles o no visibles.
-
-SUBE Prioridad no debe listar esas situaciones para diagnosticar, sino para reconocer que la necesidad funcional puede ser diversa y no siempre evidente.
-
----
-
-## 6. Personas con discapacidad
-
-Las personas con discapacidad pueden enfrentar barreras físicas, comunicacionales, cognitivas, sensoriales, sociales u operativas dentro del transporte público.
-
-Algunas discapacidades son visibles y otras no.
-
-Una persona puede requerir asistencia sin utilizar silla de ruedas, bastón, andador u otro elemento externo.
-
-SUBE Prioridad puede contribuir a evitar que la persona tenga que exponer públicamente su diagnóstico o condición para solicitar un asiento o asistencia preventiva.
-
-La herramienta debe ser diseñada desde un enfoque de autonomía, dignidad, accesibilidad y no discriminación.
-
----
-
-## 7. Personas mayores
-
-Las personas mayores pueden presentar mayor riesgo de caídas, lesiones, desequilibrio, fatiga, fragilidad o dificultades para permanecer de pie durante el viaje.
-
-La asistencia preventiva en el transporte público puede contribuir a reducir riesgos evitables y mejorar la experiencia cotidiana de movilidad.
-
-SUBE Prioridad no reemplaza políticas de cuidado ni normas de prioridad existentes, sino que puede funcionar como herramienta complementaria para facilitar una respuesta más oportuna y respetuosa.
-
----
-
-## 8. Personas gestantes
-
-Las personas gestantes pueden necesitar viajar sentadas por seguridad, comodidad, prevención de caídas, fatiga, náuseas, mareos, molestias físicas o indicaciones de cuidado.
-
-La gestación no siempre es visible, especialmente en etapas iniciales o en determinadas circunstancias personales.
-
-La herramienta debe evitar que la persona gestante tenga que exponerse, discutir o justificar públicamente su situación.
-
-Toda incorporación de esta población en una prueba piloto o implementación real deberá respetar criterios de voluntariedad, privacidad y competencia institucional.
-
----
-
-## 9. Personas con movilidad reducida
-
-La movilidad reducida puede ser permanente, temporal, visible o no visible.
-
-Puede derivar de lesiones, cirugías, rehabilitación, dolor, enfermedades crónicas, tratamientos, disminución de fuerza, alteraciones del equilibrio o situaciones funcionales diversas.
-
-SUBE Prioridad permite pensar una asistencia basada en necesidad funcional y no exclusivamente en signos externos.
-
-La herramienta debe evitar que sólo reciban asistencia quienes “parecen” necesitarla.
-
----
-
-## 10. Personas en rehabilitación o tratamiento
-
-Las personas en rehabilitación, recuperación postoperatoria, tratamiento médico, terapia física o seguimiento clínico pueden necesitar condiciones de viaje más seguras.
-
-En muchos casos, esas situaciones son transitorias y no necesariamente visibles.
-
-El sistema podría admitir atributos temporales o con fecha de caducidad, siempre que sean definidos por autoridad competente.
-
-La temporalidad permite evitar habilitaciones indefinidas cuando la necesidad de asistencia es transitoria.
-
----
-
-## 11. Enfermedades no visibles
-
-Existen condiciones de salud que pueden generar fatiga, dolor, mareos, debilidad, riesgo de caídas, intolerancia a permanecer de pie o necesidad de evitar esfuerzos, sin que sean visibles para otros pasajeros.
-
-SUBE Prioridad no debe identificar ni exponer esas condiciones.
-
-Su función es permitir que una necesidad previamente acreditada pueda activar asistencia de manera genérica y respetuosa.
-
-El principio aplicable es:
+Para una lectura técnica:
 
 ```text
-la invisibilidad de una condición no implica inexistencia de necesidad
+1. README.md
+2. ARCHITECTURE_GUARDRAILS.md
+3. docs/ARQUITECTURA_DE_REFERENCIA.md
+4. docs/DECISIONES_DE_ARQUITECTURA.md
+5. docs/PROTECCION_DATOS_PERSONALES.md
+6. docs/FUNDAMENTOS_MEDICOS.md
+7. docs/PRUEBA_PILOTO_MODELO.md
+8. docs/FUNDAMENTOS_JURIDICOS.md
+9. docs/PLIEGO_TECNICO_EXTENDIDO.md
 ```
 
----
-
-## 12. Riesgo de caídas y eventos evitables
-
-Viajar de pie puede aumentar el riesgo de caídas o lesiones en personas con fragilidad, inestabilidad, movilidad reducida, dolor, fatiga o menor capacidad de reacción ante movimientos bruscos.
-
-La asistencia preventiva busca anticipar riesgos antes de que ocurra un daño.
-
-SUBE Prioridad puede ser analizado como una herramienta destinada a reducir situaciones evitables dentro del transporte público, especialmente en horarios de alta ocupación o trayectos prolongados.
-
-La prueba piloto debería medir incidentes, percepción de seguridad y eventuales conflictos, sin convertir el sistema en vigilancia individualizada.
-
----
-
-## 13. Fatiga, dolor y tolerancia al esfuerzo
-
-La necesidad de viajar sentado puede vincularse con fatiga, dolor, dificultad para sostener posturas, intolerancia al esfuerzo, debilidad muscular o disminución de resistencia.
-
-Estas situaciones pueden fluctuar.
-
-Una persona puede necesitar asistencia algunos días, en determinados horarios o durante ciertos tratamientos.
-
-Por eso, la arquitectura debería contemplar atributos configurables, temporales o revisables, evitando rigideces innecesarias.
-
----
-
-## 14. Accesibilidad cognitiva y comunicación comprensible
-
-Algunas personas pueden enfrentar barreras cognitivas o comunicacionales dentro del transporte público.
-
-La accesibilidad no se limita a la movilidad física.
-
-También comprende la posibilidad de comprender señales, anticipar situaciones, orientarse, interactuar con el entorno y recibir asistencia sin confusión o estigmatización.
-
-SUBE Prioridad puede dialogar con políticas de pictogramas, señalética accesible, lenguaje claro y comunicación inclusiva.
-
-La asistencia preventiva debe ser comprensible para el usuario y para el entorno, sin revelar información sensible.
-
----
-
-## 15. Salud mental, ansiedad y exposición pública
-
-Algunas personas pueden experimentar ansiedad, angustia, estrés o malestar frente a la necesidad de pedir ayuda en público, discutir con otros pasajeros o explicar una condición personal.
-
-SUBE Prioridad debe evitar aumentar la exposición o presión social sobre la persona usuaria.
-
-Por eso son importantes las modalidades silenciosa, discreta, preventiva o visible, según preferencia del usuario y viabilidad técnica.
-
-La herramienta debe reducir barreras, no generar nuevas formas de incomodidad o estigmatización.
-
----
-
-## 16. Modalidades de asistencia y autonomía del usuario
-
-No todas las personas necesitan ni desean el mismo tipo de asistencia.
-
-Algunas pueden preferir una modalidad silenciosa.
-
-Otras pueden necesitar una señal discreta.
-
-Otras pueden aceptar una alerta visible o sonora.
-
-La arquitectura puede contemplar distintas modalidades:
+Para una lectura jurídica e institucional:
 
 ```text
-0 = silenciosa
-1 = discreta
-2 = preventiva
-3 = visible
+1. docs/DOSSIER_INSTITUCIONAL_BREVE.md
+2. docs/PETITORIO_MODELO.md
+3. docs/MODELO_PROYECTO_RESOLUCION.md
+4. docs/FUNDAMENTOS_JURIDICOS.md
+5. docs/FUNDAMENTOS_MEDICOS.md
+6. docs/PRUEBA_PILOTO_MODELO.md
+7. docs/PROTECCION_DATOS_PERSONALES.md
+8. docs/ESTRATEGIA_LEGISLATIVA_Y_PARTICIPACION_CIUDADANA.md
+9. docs/PRINCIPIOS_DE_GOBERNANZA.md
+10. docs/ROADMAP_IMPLEMENTACION.md
 ```
 
-Estas modalidades no deben representar diagnósticos ni categorías médicas.
-
-Sólo expresan una preferencia operativa de asistencia.
-
----
-
-## 17. Alertas genéricas
-
-Desde una perspectiva médica y de privacidad, las alertas deben ser genéricas.
-
-No deberían indicar:
-
-* diagnóstico;
-* enfermedad;
-* discapacidad específica;
-* embarazo;
-* edad;
-* tratamiento;
-* rehabilitación;
-* condición clínica;
-* motivo de la prioridad.
-
-Una alerta adecuada debería limitarse a expresar una necesidad general de asistencia.
-
-Ejemplos conceptuales:
+Para una lectura ciudadana:
 
 ```text
-Asistencia prioritaria solicitada
+1. README.md
+2. docs/DOSSIER_INSTITUCIONAL_BREVE.md
+3. docs/PETITORIO_MODELO.md
+4. docs/PRUEBA_PILOTO_MODELO.md
+5. docs/FUNDAMENTOS_JURIDICOS.md
+6. docs/FUNDAMENTOS_MEDICOS.md
+7. docs/PROTECCION_DATOS_PERSONALES.md
+8. docs/ESTRATEGIA_LEGISLATIVA_Y_PARTICIPACION_CIUDADANA.md
 ```
 
+Para una lectura orientada a prueba piloto:
+
 ```text
-Asiento de prioridad solicitado
+1. docs/DOSSIER_INSTITUCIONAL_BREVE.md
+2. docs/PRUEBA_PILOTO_MODELO.md
+3. docs/FUNDAMENTOS_JURIDICOS.md
+4. docs/FUNDAMENTOS_MEDICOS.md
+5. docs/PROTECCION_DATOS_PERSONALES.md
+6. docs/PRINCIPIOS_DE_GOBERNANZA.md
+7. docs/DECISIONES_DE_ARQUITECTURA.md
+8. docs/ROADMAP_IMPLEMENTACION.md
 ```
 
-La decisión final sobre contenido, canal e intensidad de la alerta corresponde a las autoridades competentes.
-
----
-
-## 18. No exposición de diagnósticos
-
-La protección de la intimidad médica es un principio esencial.
-
-La persona usuaria no debería verse obligada a revelar su diagnóstico para acceder a asistencia en el transporte.
-
-El sistema operativo no debe mostrar ni transmitir información médica.
-
-La finalidad es preservar dignidad, confidencialidad y autonomía.
-
-El atributo técnico de prioridad debe ser suficiente para activar la asistencia sin exponer el motivo.
-
----
-
-## 19. Certificados, constancias y documentación médica
-
-SUBE Prioridad no debe almacenar certificados médicos en texto plano dentro del core.
-
-Tampoco debe exigir que el usuario exhiba documentación médica ante terceros dentro de la unidad.
-
-Cualquier documentación respaldatoria, si correspondiera, debería tramitarse ante organismos, profesionales o canales institucionales autorizados.
-
-El transporte público no debe transformarse en ventanilla sanitaria ni en espacio de fiscalización clínica.
-
----
-
-## 20. Atributos temporales y revisables
-
-Desde una perspectiva médica y funcional, muchas necesidades de asistencia pueden ser temporales.
-
-Por ello, la arquitectura podría contemplar atributos con:
-
-* fecha de inicio;
-* fecha de caducidad;
-* renovación;
-* revisión;
-* baja voluntaria;
-* suspensión;
-* actualización por autoridad competente.
-
-Esto permite adaptar el sistema a necesidades permanentes o transitorias sin acumular información médica innecesaria.
-
----
-
-## 21. Grupos posibles de análisis
-
-En una eventual evaluación institucional podrían considerarse, de manera conceptual y no taxativa, grupos como:
-
-* personas con discapacidad;
-* personas mayores;
-* personas gestantes;
-* personas con movilidad reducida;
-* personas en rehabilitación;
-* personas trasplantadas o en lista de espera;
-* personas en tratamientos específicos;
-* niños, niñas o adolescentes con enfermedades que requieran traslados frecuentes;
-* acompañantes autorizados cuando corresponda.
-
-La inclusión de cualquier grupo deberá ser definida por autoridad competente y con criterios de protección de datos personales.
-
----
-
-## 22. Acompañantes
-
-En algunos casos, la necesidad de asistencia puede involucrar también a una persona acompañante.
-
-Esto puede ocurrir con niños, niñas, adolescentes, personas con discapacidad, personas mayores, pacientes en tratamiento o personas que requieren apoyo durante el traslado.
-
-SUBE Prioridad podría analizar, en etapas futuras, si corresponde representar alguna modalidad de asistencia vinculada con acompañantes.
-
-Cualquier diseño de este tipo deberá evitar abusos, respetar privacidad y contar con reglas claras.
-
----
-
-## 23. Niños, niñas y adolescentes
-
-Cuando la población involucrada incluya niños, niñas o adolescentes, la prudencia debe ser reforzada.
-
-Deben contemplarse:
-
-* interés superior del niño;
-* consentimiento o autorización correspondiente;
-* confidencialidad;
-* protección de datos;
-* no exposición pública;
-* acompañamiento adulto cuando corresponda;
-* comunicación clara y accesible;
-* intervención de organismos competentes.
-
-La herramienta no debe revelar diagnósticos ni condiciones de salud de menores de edad.
-
----
-
-## 24. Perspectiva de salud pública
-
-Desde una perspectiva de salud pública, la prevención de caídas, lesiones, conflictos y situaciones de exposición innecesaria puede tener valor social.
-
-El transporte público forma parte de la vida cotidiana y puede incidir en el acceso a salud, educación, trabajo, rehabilitación y participación social.
-
-SUBE Prioridad puede ser analizado como una herramienta de prevención secundaria o funcional, orientada a reducir barreras y riesgos en el desplazamiento.
-
-No debe ser presentado como tratamiento médico, sino como medida de accesibilidad y asistencia preventiva.
-
----
-
-## 25. Evaluación previa a una prueba piloto
-
-Antes de cualquier prueba piloto con usuarios reales, deberían analizarse criterios médicos, funcionales y sanitarios mínimos.
-
-Entre ellos:
+Para una lectura orientada a privacidad y datos personales:
 
 ```text
-[ ] Qué población puede participar.
-[ ] Quién acredita la necesidad de asistencia.
-[ ] Qué documentación se excluye del core.
-[ ] Qué datos no serán tratados.
-[ ] Qué duración tendrá el atributo.
-[ ] Qué modalidad de asistencia se ofrecerá.
-[ ] Cómo se evitará la exposición de diagnósticos.
-[ ] Qué canales de baja o reclamo existirán.
-[ ] Qué indicadores de seguridad y experiencia se medirán.
-[ ] Qué instituciones sanitarias o técnicas serán consultadas.
-[ ] Cómo se protegerá a niños, niñas y adolescentes.
-[ ] Cómo se contemplará la brecha digital.
+1. README.md
+2. docs/PROTECCION_DATOS_PERSONALES.md
+3. ARCHITECTURE_GUARDRAILS.md
+4. docs/DECISIONES_DE_ARQUITECTURA.md
+5. docs/PRINCIPIOS_DE_GOBERNANZA.md
+6. docs/FUNDAMENTOS_JURIDICOS.md
+7. docs/FUNDAMENTOS_MEDICOS.md
+8. docs/PRUEBA_PILOTO_MODELO.md
+```
+
+Para una lectura orientada a fundamentos jurídicos:
+
+```text
+1. docs/FUNDAMENTOS_JURIDICOS.md
+2. docs/PROTECCION_DATOS_PERSONALES.md
+3. docs/FUNDAMENTOS_MEDICOS.md
+4. docs/PRUEBA_PILOTO_MODELO.md
+5. docs/MODELO_PROYECTO_RESOLUCION.md
+6. docs/ESTRATEGIA_LEGISLATIVA_Y_PARTICIPACION_CIUDADANA.md
+7. docs/PRINCIPIOS_DE_GOBERNANZA.md
+```
+
+Para una lectura orientada a fundamentos médicos y funcionales:
+
+```text
+1. docs/FUNDAMENTOS_MEDICOS.md
+2. docs/PROTECCION_DATOS_PERSONALES.md
+3. docs/FUNDAMENTOS_JURIDICOS.md
+4. docs/PRUEBA_PILOTO_MODELO.md
+5. docs/PRINCIPIOS_DE_GOBERNANZA.md
 ```
 
 ---
 
-## 26. Indicadores médicos y funcionales posibles
+## 7. Criterios de interpretación
 
-Una prueba piloto podría evaluar indicadores agregados y no sensibles, tales como:
+Toda la documentación debe interpretarse conforme a los siguientes criterios:
 
-* percepción de seguridad durante el viaje;
-* reducción de situaciones de conflicto;
-* facilidad para solicitar asistencia;
-* percepción de privacidad;
-* necesidad de modalidades silenciosas o discretas;
-* accesibilidad de la herramienta;
-* aceptación por usuarios;
-* aceptación por operadores;
-* incidentes reportados;
-* barreras detectadas;
-* utilidad para personas con necesidades no visibles;
-* necesidad de ajustes.
-
-Los indicadores no deberían exponer diagnósticos ni permitir identificación indebida de usuarios.
-
----
-
-## 27. Participación de instituciones de salud
-
-La participación de instituciones de salud, rehabilitación, discapacidad o accesibilidad puede ser valiosa para diseñar una prueba piloto más segura y adecuada.
-
-Estas instituciones podrían colaborar en:
-
-* criterios funcionales;
-* experiencia de usuario;
-* accesibilidad;
-* comunicación clara;
-* evaluación de riesgos;
-* indicadores agregados;
-* recomendaciones de mejora.
-
-No deberían acceder a datos personales o sensibles salvo fundamento suficiente, autorización institucional y medidas adecuadas de seguridad.
+* SUBE Prioridad es una propuesta ciudadana de innovación pública.
+* El repositorio contiene un MVP conceptual y demostrativo.
+* Las integraciones externas son simuladas salvo indicación expresa en contrario.
+* Los documentos técnicos describen escenarios posibles, no obligaciones de implementación.
+* Las autoridades competentes conservan la decisión sobre factibilidad, alcance, diseño e implementación.
+* El sistema no debe procesar diagnósticos médicos ni historia clínica en el core.
+* El proyecto no diagnostica, no evalúa médicamente y no reemplaza certificados ni autoridades sanitarias.
+* La protección de datos personales es una condición estructural de viabilidad del proyecto.
+* Los fundamentos jurídicos son conceptuales y no constituyen dictamen vinculante.
+* Los fundamentos médicos son conceptuales y no constituyen protocolo médico ni guía clínica.
+* La propuesta no sustituye el régimen legal de asientos prioritarios.
+* El Bono Solidario es una evolución futura, no parte del núcleo inicial.
+* La prueba piloto propuesta es conceptual, orientativa y sujeta a evaluación institucional.
+* La mención de líneas, universidades, fundaciones u organismos no implica designación formal, aval, convenio vigente ni obligación de participación.
+* La referencia a antecedentes normativos, administrativos o provinciales no implica implementación automática.
+* Los archivos técnicos auxiliares ubicados en `docs/` no implican implementación productiva ni disponibilidad operativa real.
+* Toda implementación real debe ser gradual, reversible, auditable y respetuosa de la privacidad.
 
 ---
 
-## 28. Participación de universidades y equipos interdisciplinarios
+## 8. Documentos pendientes recomendados
 
-La evaluación médica y funcional puede enriquecerse con equipos interdisciplinarios.
-
-Podrían intervenir áreas de:
-
-* salud pública;
-* rehabilitación;
-* kinesiología;
-* terapia ocupacional;
-* medicina;
-* psicología;
-* arquitectura accesible;
-* diseño universal;
-* ingeniería;
-* derecho;
-* protección de datos;
-* transporte.
-
-La complejidad del transporte público requiere una mirada interdisciplinaria.
-
----
-
-## 29. Riesgos médicos, sanitarios y sociales a evitar
-
-El diseño del proyecto debe evitar:
-
-* exposición pública de diagnósticos;
-* estigmatización;
-* medicalización del transporte;
-* falsas validaciones médicas por parte del sistema técnico;
-* bases de datos clínicas innecesarias;
-* presión social sobre usuarios;
-* conflictos entre pasajeros;
-* sobrecarga del chofer;
-* exclusión por brecha digital;
-* criterios rígidos que ignoren situaciones transitorias;
-* invisibilización de necesidades no evidentes;
-* uso de alertas que revelen condiciones personales.
-
----
-
-## 30. Relación con protección de datos personales
-
-Los fundamentos médicos deben leerse junto con los lineamientos de protección de datos personales.
-
-El dato médico es especialmente sensible.
-
-Por ello, el diseño correcto debe evitar que el core operativo procese diagnósticos, certificados, historias clínicas o información sanitaria identificable.
-
-La arquitectura adecuada es:
+Para fortalecer aún más el repositorio, podrían desarrollarse luego los siguientes documentos:
 
 ```text
-necesidad acreditada fuera del core
-↓
-atributo técnico de prioridad
-↓
-preferencia de asistencia
-↓
-validación operativa
-↓
-alerta genérica o asistencia
+docs/FUNDAMENTOS_OPERATIVOS.md
+docs/BONO_SOLIDARIO.md
+docs/ANEXOS_ORIGINALES_REFERENCIA.md
 ```
 
----
-
-## 31. Relación con fundamentos jurídicos
-
-Los fundamentos médicos se articulan con los fundamentos jurídicos del proyecto.
-
-La necesidad funcional de asistencia dentro del transporte público se vincula con derechos a la igualdad real, accesibilidad, dignidad, privacidad, no discriminación, movilidad y participación social.
-
-SUBE Prioridad no busca crear una categoría médica nueva.
-
-Busca traducir necesidades ya reconocibles por vías institucionales en una herramienta operativa de asistencia preventiva.
+Estos documentos deberán agregarse de manera gradual, evitando repeticiones y manteniendo coherencia con el README, los guardrails, la arquitectura de referencia, el roadmap, el modelo de prueba piloto, los lineamientos de protección de datos personales, los fundamentos jurídicos y los fundamentos médicos.
 
 ---
 
-## 32. Relación con la prueba piloto
+## 9. Declaración final
 
-El modelo de prueba piloto debe incorporar estos fundamentos médicos sin convertirlos en diagnóstico operativo.
+El Índice Documental tiene por finalidad preservar la coherencia del proyecto.
 
-La prueba piloto debería medir utilidad, privacidad, accesibilidad, seguridad y aceptabilidad.
+SUBE Prioridad no debe leerse únicamente como un repositorio de software ni únicamente como un expediente institucional.
 
-No debería medir ni registrar diagnósticos.
-
-Tampoco debería exigir que los participantes revelen públicamente su situación médica.
-
-La prueba debe servir para generar evidencia institucional, no para construir perfiles clínicos.
-
----
-
-## 33. Declaración final
-
-SUBE Prioridad se apoya en una premisa médica y funcional básica: muchas personas necesitan asistencia para viajar de manera segura, aunque esa necesidad no siempre sea visible.
-
-La respuesta pública no debe obligarlas a exponerse, discutir, justificar diagnósticos o atravesar situaciones humillantes.
-
-El valor sanitario del proyecto reside en proponer una herramienta de asistencia preventiva que respete la dignidad, preserve la privacidad, evite la medicalización del transporte y permita evaluar soluciones graduales para mejorar la experiencia de viaje de personas con necesidades permanentes o transitorias.
-
-Toda implementación real deberá ser evaluada por autoridades competentes, con participación interdisciplinaria y pleno respeto por la protección de datos personales.
+Debe entenderse como una arquitectura pública en desarrollo, construida sobre documentación técnica, fundamentos jurídicos, fundamentos médicos, principios de privacidad, participación ciudadana, modelo de prueba piloto, lineamientos de protección de datos personales y una estrategia gradual orientada a permitir su evaluación responsable por parte de las autoridades competentes.
