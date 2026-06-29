@@ -1,3 +1,11 @@
+> **Nota de alcance**
+>
+> Este documento conserva el pliego técnico extendido y la visión integral original del Programa SUBE Prioridad.
+>
+> Su contenido debe interpretarse como una especificación conceptual, prospectiva y evolutiva, no como una implementación productiva actualmente desplegada ni como una integración real vigente con organismos públicos, sistemas SUBE, validadoras, hardware embarcado o infraestructura estatal.
+>
+> El estado operativo actual del repositorio se encuentra descripto en el `README.md` principal.
+
 # 🏛️ Pliego Técnico: Programa Federal "SUBE Prioridad"
 
 ### **Ideólogo, Autor y Fundador:** Andrés Federico di Fiore  
