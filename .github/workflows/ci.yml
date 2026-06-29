@@ -1,42 +1,36 @@
-name: SUBE Prioridad - Integración Continua (CI)
+name: CI
 
 on:
   push:
-    branches: [ "main" ]
+    branches:
+      - main
   pull_request:
-    branches: [ "main" ]
+    branches:
+      - main
 
 jobs:
-  audit_and_test:
+  test:
+    name: Python tests
     runs-on: ubuntu-latest
 
     steps:
-    # 1. Descarga el código fuente del repositorio en el contenedor virtualizado
-    - name: Descargar código fuente
-      uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-    # 2. Inicializa el entorno de ejecución de Python
-    - name: Configurar entorno Python 3.10
-      uses: actions/setup-python@v5
-      with:
-        python-version: "3.10"
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
 
-    # 3. Valida que el firmware básico y el backend compilen sin errores
-    - name: Validación de sintaxis y compilación del Firmware y API Core
-      run: |
-        python -m py_compile validator.py
-        python -m py_compile main.py
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
 
-    # 4. Ejecuta el Marco de Pruebas Unitarias Automatizadas del Motor Antifraude
-    - name: Ejecución de Test Suite Antifraude (Consistencia Temporal)
-      run: |
-        python -m unittest test_antifraud.py -v
+      - name: Compile Python files
+        run: |
+          python -m py_compile main.py validator.py cache_manager.py circuit_breaker.py xroad_gateway.py
 
-    # 5. Valida la integridad estructural de los esquemas SQL y contratos de APIs
-    - name: Auditoría estática de arquitectura de datos (SQL & Protobuf)
-      run: |
-        echo "Verificando consistencia de schema.sql..."
-        grep -q "sube_prioridad_tokens" schema.sql
-        echo "Verificando estructura de interop_service.proto..."
-        grep -q "SubePrioridadInteropService" interop_service.proto
-        echo "Ecosistema de datos verificado con éxito."
+      - name: Run tests
+        run: |
+          pytest -q

@@ -1,44 +1,69 @@
 import time
+from enum import Enum
+from typing import Callable, TypeVar
 
-class SubeCircuitBreaker:
-    """Implementación del patrón Circuit Breaker para evitar parálisis transaccional por caídas de red."""
-    
-    def __init__(self):
-        self.state = "CLOSED"  # CLOSED (Operación Normal), OPEN (Falla - Modo Contingencia Local)
-        self.failure_count = 0
-        self.FAILURE_THRESHOLD = 3
-        self.cooldown_seconds = 10
-        self.last_failure_time = 0.0
+T = TypeVar("T")
 
-    def registrar_intento(self, exito_conexion: bool) -> str:
-        """Evalúa dinámicamente el estado del enlace con los buses del Ministerio de Salud."""
-        current_time = time.time()
+class CircuitState(str, Enum):
+CLOSED = "closed"
+OPEN = "open"
+HALF_OPEN = "half_open"
 
-        # Si el circuito está abierto, verifica si expiró el tiempo de enfriamiento
-        if self.state == "OPEN":
-            if current_time - self.last_failure_time > self.cooldown_seconds:
-                self.state = "HALF-OPEN"
-                print("🔄 [CIRCUIT BREAKER]: Enlace en modo HALF-OPEN. Intentando reconexión pasiva...")
-            else:
-                return "CONTINGENCIA_LOCAL_OFFLINE_FORCE"
+class CircuitBreaker:
+"""
+Circuit breaker simple para proteger llamadas a servicios externos.
 
-        if exito_conexion:
-            self.failure_count = 0
-            self.state = "CLOSED"
-            return "INTEGRACION_ONLINE_ESTATAL"
+```
+Uso previsto:
+- ANDIS / SISA / RENAPER / gateway X-Road u otros servicios públicos.
+- Si hay demasiados errores consecutivos, se abre el circuito.
+- Luego de un tiempo de recuperación, permite una prueba en estado half-open.
+"""
+
+def __init__(
+    self,
+    failure_threshold: int = 3,
+    recovery_timeout_seconds: int = 30,
+) -> None:
+    self.failure_threshold = failure_threshold
+    self.recovery_timeout_seconds = recovery_timeout_seconds
+    self.failure_count = 0
+    self.last_failure_time = 0.0
+    self.state = CircuitState.CLOSED
+
+def call(self, function: Callable[..., T], *args, **kwargs) -> T:
+    if self.state == CircuitState.OPEN:
+        if self._can_attempt_recovery():
+            self.state = CircuitState.HALF_OPEN
         else:
-            self.failure_count += 1
-            self.last_failure_time = current_time
-            if self.failure_count >= self.FAILURE_THRESHOLD or self.state == "HALF-OPEN":
-                self.state = "OPEN"
-                print("🚨 [CIRCUIT BREAKER]: Abierto por fallas consecutivas del Bus Central. Modo Aislado Activado.")
-                return "CONTINGENCIA_LOCAL_OFFLINE_FORCE"
-            return "REINTENTO_EN_PROGRESO"
+            raise RuntimeError("Circuit breaker abierto: servicio temporalmente no disponible.")
 
-if __name__ == "__main__":
-    breaker = SubeCircuitBreaker()
-    print("🛡️ [FILTRO DE CONTROL DE INERCIA]: Probando aislamiento automático ante tres caídas del backend:")
-    print(f" Intento 1 (Falla): {breaker.registrar_intento(exito_conexion=False)}")
-    print(f" Intento 2 (Falla): {breaker.registrar_intento(exito_conexion=False)}")
-    print(f" Intento 3 (Falla): {breaker.registrar_intento(exito_conexion=False)}")
-    print(f" Intento 4 (Servidor caído): {breaker.registrar_intento(exito_conexion=False)}")
+    try:
+        result = function(*args, **kwargs)
+    except Exception:
+        self._record_failure()
+        raise
+
+    self._record_success()
+    return result
+
+def _record_failure(self) -> None:
+    self.failure_count += 1
+    self.last_failure_time = time.time()
+
+    if self.failure_count >= self.failure_threshold:
+        self.state = CircuitState.OPEN
+
+def _record_success(self) -> None:
+    self.failure_count = 0
+    self.last_failure_time = 0.0
+    self.state = CircuitState.CLOSED
+
+def _can_attempt_recovery(self) -> bool:
+    return (time.time() - self.last_failure_time) >= self.recovery_timeout_seconds
+
+def reset(self) -> None:
+    self.failure_count = 0
+    self.last_failure_time = 0.0
+    self.state = CircuitState.CLOSED
+```

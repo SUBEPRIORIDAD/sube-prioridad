@@ -1,78 +1,125 @@
-# test_antifraud.py
-# Motor Transaccional Antifraude y Control de Colusión - Programa SUBE Prioridad
-# Desarrollado bajo la iniciativa ciudadana de Andrés Federico di Fiore
+from dataclasses import dataclass
+from datetime import datetime, timezone
+from typing import Dict, Tuple
 
-import datetime
-from typing import Dict, Tuple, List
+@dataclass(frozen=True)
+class ValidationEvent:
+"""
+Evento técnico pseudoanonimizado de validación.
+
+```
+No contiene DNI, nombre, diagnóstico, domicilio ni historia clínica.
+"""
+
+card_hash: str
+bus_id: str
+line_id: str
+timestamp: datetime
+```
+
+@dataclass
+class AntiFraudResult:
+approved: bool
+reason: str
+bonus_eligible: bool = False
 
 class AntiFraudEngine:
-    def __init__(self, repeat_threshold_days: int = 7, max_coincidences: int = 2):
-        """
-        Inicializa el motor predictivo antifraude.
-        Establece los umbrales para el control de comportamiento repetitivo.
-        """
-        # Estructura en memoria SRAM protegida: {(id_prioritario, id_colaborador): [lista_de_timestamps]}
-        self.interaction_history: Dict[Tuple[str, str], List[datetime.datetime]] = {}
-        self.repeat_threshold_days = repeat_threshold_days
-        self.max_coincidences = max_coincidences
+"""
+Motor antifraude para el Bono Solidario SUBE Prioridad.
 
-    def verify_time_window(self, priority_timestamp: int, collaborator_timestamp: int) -> bool:
-        """
-        Valida la regla de consistencia temporal estricta de 60 segundos
-        entre el paso de la tarjeta prioritaria y la re-validación colaboradora.
-        """
-        delta_t = abs(collaborator_timestamp - priority_timestamp)
-        return delta_t <= 60
+```
+Regla MVP:
+- La tarjeta colaboradora debe validar dentro de los 60 segundos posteriores
+  a una validación prioritaria.
+- Ambas validaciones deben ocurrir en el mismo colectivo.
+- Ambas validaciones deben ocurrir en la misma línea.
+- Se controla repetición excesiva entre el mismo par de tarjetas.
+"""
 
-    def validate_solidary_bonus(self, priority_card_hash: str, collaborator_card_hash: str, current_time: datetime.datetime) -> bool:
-        """
-        Analiza patrones de comportamiento repetitivo entre los mismos dos identificadores
-        para bloquear el fraude compartido/colusión en el Bono Solidario.
-        """
-        # Clave única simétrica para identificar el par de tarjetas interactuando
-        pair_key = (priority_card_hash, collaborator_card_hash)
-        
-        if pair_key not in self.interaction_history:
-            self.interaction_history[pair_key] = [current_time]
-            return True  # Primera interacción registrada de forma limpia
-            
-        # Limpieza asíncrona de registros fuera de la ventana cronológica de auditoría
-        cutoff_date = current_time - datetime.timedelta(days=self.repeat_threshold_days)
-        self.interaction_history[pair_key] = [t for t in self.interaction_history[pair_key] if t > cutoff_date]
-        
-        # Filtro duro de restricciones: si superan el límite de coexistencia cíclica, se deniega el bono
-        if len(self.interaction_history[pair_key]) >= self.max_coincidences:
-            # El software dispara una alerta de seguridad silenciosa para auditoría macro
-            # y suspende de forma preventiva la acumulación de beneficios
-            return False
-            
-        self.interaction_history[pair_key].append(current_time)
-        return True
+def __init__(
+    self,
+    time_window_seconds: int = 60,
+    max_pair_repetitions: int = 3,
+) -> None:
+    self.time_window_seconds = time_window_seconds
+    self.max_pair_repetitions = max_pair_repetitions
+    self._pair_counter: Dict[Tuple[str, str], int] = {}
 
-    def run_cross_checking(self, priority_tx: dict, collaborator_tx: dict) -> bool:
-        """
-        Ejecuta la auditoría cruzada de infraestructura exigiendo concordancia
-        estricta de coche, ramal, geofencing y consistencia temporal.
-        """
-        # 1. Verificar coincidencia estricta de material rodante
-        if priority_tx.get("interno_coche_id") != collaborator_tx.get("interno_coche_id"):
-            return False
-            
-        if priority_tx.get("linea_colectivo_id") != collaborator_tx.get("linea_colectivo_id"):
-            return False
+def evaluate_bonus(
+    self,
+    priority_event: ValidationEvent,
+    collaborator_event: ValidationEvent,
+) -> AntiFraudResult:
+    self._validate_event(priority_event)
+    self._validate_event(collaborator_event)
 
-        # 2. Verificar ventana temporal estricta de 60 segundos
-        time_valid = self.verify_time_window(
-            priority_tx.get("timestamp_nfc", 0), 
-            collaborator_tx.get("timestamp_bono_nfc", 0)
+    if priority_event.card_hash == collaborator_event.card_hash:
+        return AntiFraudResult(
+            approved=False,
+            reason="La tarjeta prioritaria y la colaboradora no pueden ser la misma.",
         )
-        if not time_valid:
-            return False
 
-        # 3. Validar contra el motor de colusión/fraude compartido
-        current_dt = datetime.datetime.fromtimestamp(collaborator_tx.get("timestamp_bono_nfc", 0))
-        return self.validate_solidary_bonus(
-            priority_tx.get("tarjeta_prioridad_hash_anon", ""),
-            collaborator_tx.get("tarjeta_colaborador_hash_anon", ""),
-            current_dt
+    if collaborator_event.timestamp < priority_event.timestamp:
+        return AntiFraudResult(
+            approved=False,
+            reason="La validación colaboradora no puede ser anterior a la prioritaria.",
         )
+
+    elapsed_seconds = (
+        collaborator_event.timestamp - priority_event.timestamp
+    ).total_seconds()
+
+    if elapsed_seconds > self.time_window_seconds:
+        return AntiFraudResult(
+            approved=False,
+            reason="La validación colaboradora ocurrió fuera de la ventana temporal.",
+        )
+
+    if priority_event.bus_id != collaborator_event.bus_id:
+        return AntiFraudResult(
+            approved=False,
+            reason="Las validaciones no corresponden al mismo colectivo.",
+        )
+
+    if priority_event.line_id != collaborator_event.line_id:
+        return AntiFraudResult(
+            approved=False,
+            reason="Las validaciones no corresponden a la misma línea.",
+        )
+
+    pair = (priority_event.card_hash, collaborator_event.card_hash)
+    current_count = self._pair_counter.get(pair, 0) + 1
+    self._pair_counter[pair] = current_count
+
+    if current_count > self.max_pair_repetitions:
+        return AntiFraudResult(
+            approved=False,
+            reason="Se detectó repetición excesiva entre el mismo par de tarjetas.",
+        )
+
+    return AntiFraudResult(
+        approved=True,
+        reason="Bono Solidario aprobado para entorno MVP.",
+        bonus_eligible=True,
+    )
+
+@staticmethod
+def _validate_event(event: ValidationEvent) -> None:
+    if not event.card_hash:
+        raise ValueError("card_hash es obligatorio.")
+
+    if not event.bus_id:
+        raise ValueError("bus_id es obligatorio.")
+
+    if not event.line_id:
+        raise ValueError("line_id es obligatorio.")
+
+    if event.timestamp.tzinfo is None:
+        raise ValueError("timestamp debe incluir zona horaria.")
+
+def reset_counters(self) -> None:
+    self._pair_counter.clear()
+```
+
+def now_utc() -> datetime:
+return datetime.now(timezone.utc)

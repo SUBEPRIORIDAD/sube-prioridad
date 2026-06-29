@@ -1,44 +1,90 @@
+from datetime import datetime, timedelta, timezone
+from typing import Optional
+
 from fastapi import FastAPI, HTTPException, status
-from pydantic import BaseModel
-from datetime import datetime, timedelta
+from pydantic import BaseModel, Field
+
 
 app = FastAPI(
-    title="Core Backend SUBE Prioridad",
-    description="Motor de microservicios para la tokenización y gobernanza de atributos de movilidad segura."
+    title="SUBE Prioridad API",
+    description=(
+        "MVP técnico para validación de atributo de prioridad "
+        "sin exposición de datos personales ni diagnóstico médico."
+    ),
+    version="0.1.0",
 )
 
-# Modelo de datos de entrada (Cumplimiento de la Capa de Confianza de Entrada)
+
 class VerificationRequest(BaseModel):
-    token_tramite_hash: str
-    firma_digital_medico: str
-
-# Modelo de datos de salida (Principio de Abstracción Médica - Cero diagnósticos clínicos)
-class VerificationResponse(BaseModel):
-    atributo_prioridad_activo: bool
-    perfil_alertas_ux: int  # 1: Visible, 2: Discreto, 3: Pasivo
-    fecha_caducidad: datetime
-
-@app.post(
-    "/api/v1/prioridad/verificar", 
-    response_model=VerificationResponse, 
-    status_code=status.HTTP_200_OK,
-    summary="Endpoint de Homologación de Atributo Binario"
-)
-async def verificar_prioridad(payload: VerificationRequest):
-    # Simulación de auditoría criptográfica del origen de confianza (ANDIS/SISA)
-    if not payload.token_tramite_hash or len(payload.token_tramite_hash) != 64:
-        raise HTTPException(
-            status_code=400, 
-            detail="Formato de token transaccional inválido. Se requiere hash SHA-256."
-        )
-    
-    # Simulación de regla de negocio: Retorna el atributo binario puro disociado del DNI
-    return VerificationResponse(
-        atributo_prioridad_activo=True,
-        perfil_alertas_ux=2, # Por defecto: Perfil discreto orientado al panel de conducción
-        fecha_caducidad=datetime.utcnow() + timedelta(days=180) # Atributo transitorio mutable
+    token_tramite_hash: str = Field(
+        ...,
+        min_length=64,
+        max_length=64,
+        description="Hash SHA-256 pseudoanonimizado del trámite o credencial.",
+    )
+    firma_digital_medico: Optional[str] = Field(
+        default=None,
+        description="Firma digital del profesional o autoridad sanitaria emisora.",
+    )
+    entidad_emisora: Optional[str] = Field(
+        default=None,
+        description="Entidad pública o sanitaria que emitió la validación.",
     )
 
-if __name__ == "__main__":
-    import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+
+class VerificationResponse(BaseModel):
+    atributo_prioridad_activo: bool
+    perfil_alertas_ux: int
+    fecha_caducidad: datetime
+    motivo: str
+
+
+@app.get("/")
+def root() -> dict:
+    return {
+        "servicio": "SUBE Prioridad API",
+        "estado": "operativo",
+        "version": "0.1.0",
+    }
+
+
+@app.get("/health")
+def health() -> dict:
+    return {
+        "status": "ok",
+        "timestamp": datetime.now(timezone.utc).isoformat(),
+    }
+
+
+@app.post(
+    "/api/v1/prioridad/verificar",
+    response_model=VerificationResponse,
+    status_code=status.HTTP_200_OK,
+)
+def verificar_prioridad(request: VerificationRequest) -> VerificationResponse:
+    """
+    Verifica si un token pseudoanonimizado posee atributo de prioridad activo.
+
+    MVP:
+    - No recibe DNI.
+    - No recibe nombre.
+    - No recibe diagnóstico.
+    - No recibe historia clínica.
+    - Trabaja únicamente sobre un hash técnico.
+    """
+
+    if not request.token_tramite_hash.isalnum():
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="El token_tramite_hash debe ser alfanumérico.",
+        )
+
+    fecha_caducidad = datetime.now(timezone.utc) + timedelta(days=180)
+
+    return VerificationResponse(
+        atributo_prioridad_activo=True,
+        perfil_alertas_ux=2,
+        fecha_caducidad=fecha_caducidad,
+        motivo="Atributo de prioridad validado para entorno MVP.",
+    )
+    

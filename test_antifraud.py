@@ -1,78 +1,126 @@
-# test_antifraud.py
-# Motor Transaccional Antifraude y Control de Colusión - Programa SUBE Prioridad
-# Desarrollado bajo la iniciativa ciudadana de Andrés Federico di Fiore
+from datetime import timedelta
 
-import datetime
-from typing import Dict, Tuple, List
+import pytest
 
-class AntiFraudEngine:
-    def __init__(self, repeat_threshold_days: int = 7, max_coincidences: int = 2):
-        """
-        Inicializa el motor predictivo antifraude.
-        Establece los umbrales para el control de comportamiento repetitivo.
-        """
-        # Estructura en memoria SRAM protegida: {(id_prioritario, id_colaborador): [lista_de_timestamps]}
-        self.interaction_history: Dict[Tuple[str, str], List[datetime.datetime]] = {}
-        self.repeat_threshold_days = repeat_threshold_days
-        self.max_coincidences = max_coincidences
+from validator import AntiFraudEngine, ValidationEvent, now_utc
 
-    def verify_time_window(self, priority_timestamp: int, collaborator_timestamp: int) -> bool:
-        """
-        Valida la regla de consistencia temporal estricta de 60 segundos
-        entre el paso de la tarjeta prioritaria y la re-validación colaboradora.
-        """
-        delta_t = abs(collaborator_timestamp - priority_timestamp)
-        return delta_t <= 60
+def make_event(
+card_hash: str,
+bus_id: str = "BUS-001",
+line_id: str = "LINEA-12",
+seconds_after: int = 0,
+) -> ValidationEvent:
+base_time = now_utc()
 
-    def validate_solidary_bonus(self, priority_card_hash: str, collaborator_card_hash: str, current_time: datetime.datetime) -> bool:
-        """
-        Analiza patrones de comportamiento repetitivo entre los mismos dos identificadores
-        para bloquear el fraude compartido/colusión en el Bono Solidario.
-        """
-        # Clave única simétrica para identificar el par de tarjetas interactuando
-        pair_key = (priority_card_hash, collaborator_card_hash)
-        
-        if pair_key not in self.interaction_history:
-            self.interaction_history[pair_key] = [current_time]
-            return True  # Primera interacción registrada de forma limpia
-            
-        # Limpieza asíncrona de registros fuera de la ventana cronológica de auditoría
-        cutoff_date = current_time - datetime.timedelta(days=self.repeat_threshold_days)
-        self.interaction_history[pair_key] = [t for t in self.interaction_history[pair_key] if t > cutoff_date]
-        
-        # Filtro duro de restricciones: si superan el límite de coexistencia cíclica, se deniega el bono
-        if len(self.interaction_history[pair_key]) >= self.max_coincidences:
-            # El software dispara una alerta de seguridad silenciosa para auditoría macro
-            # y suspende de forma preventiva la acumulación de beneficios
-            return False
-            
-        self.interaction_history[pair_key].append(current_time)
-        return True
+```
+return ValidationEvent(
+    card_hash=card_hash,
+    bus_id=bus_id,
+    line_id=line_id,
+    timestamp=base_time + timedelta(seconds=seconds_after),
+)
+```
 
-    def run_cross_checking(self, priority_tx: dict, collaborator_tx: dict) -> bool:
-        """
-        Ejecuta la auditoría cruzada de infraestructura exigiendo concordancia
-        estricta de coche, ramal, geofencing y consistencia temporal.
-        """
-        # 1. Verificar coincidencia estricta de material rodante
-        if priority_tx.get("interno_coche_id") != collaborator_tx.get("interno_coche_id"):
-            return False
-            
-        if priority_tx.get("linea_colectivo_id") != collaborator_tx.get("linea_colectivo_id"):
-            return False
+def test_bonus_aprobado_en_misma_linea_mismo_colectivo_y_dentro_de_60_segundos():
+engine = AntiFraudEngine()
 
-        # 2. Verificar ventana temporal estricta de 60 segundos
-        time_valid = self.verify_time_window(
-            priority_tx.get("timestamp_nfc", 0), 
-            collaborator_tx.get("timestamp_bono_nfc", 0)
-        )
-        if not time_valid:
-            return False
+```
+priority_event = make_event(card_hash="prioritaria-001", seconds_after=0)
+collaborator_event = make_event(card_hash="colaboradora-001", seconds_after=30)
 
-        # 3. Validar contra el motor de colusión/fraude compartido
-        current_dt = datetime.datetime.fromtimestamp(collaborator_tx.get("timestamp_bono_nfc", 0))
-        return self.validate_solidary_bonus(
-            priority_tx.get("tarjeta_prioridad_hash_anon", ""),
-            collaborator_tx.get("tarjeta_colaborador_hash_anon", ""),
-            current_dt
-        )
+result = engine.evaluate_bonus(priority_event, collaborator_event)
+
+assert result.approved is True
+assert result.bonus_eligible is True
+assert "aprobado" in result.reason.lower()
+```
+
+def test_rechaza_si_la_colaboradora_valida_fuera_de_la_ventana_temporal():
+engine = AntiFraudEngine(time_window_seconds=60)
+
+```
+priority_event = make_event(card_hash="prioritaria-001", seconds_after=0)
+collaborator_event = make_event(card_hash="colaboradora-001", seconds_after=61)
+
+result = engine.evaluate_bonus(priority_event, collaborator_event)
+
+assert result.approved is False
+assert result.bonus_eligible is False
+assert "ventana temporal" in result.reason.lower()
+```
+
+def test_rechaza_si_no_es_el_mismo_colectivo():
+engine = AntiFraudEngine()
+
+```
+priority_event = make_event(card_hash="prioritaria-001", bus_id="BUS-001")
+collaborator_event = make_event(card_hash="colaboradora-001", bus_id="BUS-999")
+
+result = engine.evaluate_bonus(priority_event, collaborator_event)
+
+assert result.approved is False
+assert "mismo colectivo" in result.reason.lower()
+```
+
+def test_rechaza_si_no_es_la_misma_linea():
+engine = AntiFraudEngine()
+
+```
+priority_event = make_event(card_hash="prioritaria-001", line_id="LINEA-12")
+collaborator_event = make_event(card_hash="colaboradora-001", line_id="LINEA-99")
+
+result = engine.evaluate_bonus(priority_event, collaborator_event)
+
+assert result.approved is False
+assert "misma línea" in result.reason.lower()
+```
+
+def test_rechaza_si_es_la_misma_tarjeta():
+engine = AntiFraudEngine()
+
+```
+priority_event = make_event(card_hash="tarjeta-001")
+collaborator_event = make_event(card_hash="tarjeta-001", seconds_after=10)
+
+result = engine.evaluate_bonus(priority_event, collaborator_event)
+
+assert result.approved is False
+assert "misma" in result.reason.lower()
+```
+
+def test_rechaza_repeticion_excesiva_del_mismo_par_de_tarjetas():
+engine = AntiFraudEngine(max_pair_repetitions=3)
+
+```
+for _ in range(3):
+    priority_event = make_event(card_hash="prioritaria-001", seconds_after=0)
+    collaborator_event = make_event(card_hash="colaboradora-001", seconds_after=10)
+    result = engine.evaluate_bonus(priority_event, collaborator_event)
+    assert result.approved is True
+
+priority_event = make_event(card_hash="prioritaria-001", seconds_after=0)
+collaborator_event = make_event(card_hash="colaboradora-001", seconds_after=10)
+
+result = engine.evaluate_bonus(priority_event, collaborator_event)
+
+assert result.approved is False
+assert "repetición excesiva" in result.reason.lower()
+```
+
+def test_rechaza_timestamp_sin_zona_horaria():
+engine = AntiFraudEngine()
+
+```
+priority_event = make_event(card_hash="prioritaria-001")
+collaborator_event = make_event(card_hash="colaboradora-001")
+
+collaborator_event = ValidationEvent(
+    card_hash=collaborator_event.card_hash,
+    bus_id=collaborator_event.bus_id,
+    line_id=collaborator_event.line_id,
+    timestamp=collaborator_event.timestamp.replace(tzinfo=None),
+)
+
+with pytest.raises(ValueError):
+    engine.evaluate_bonus(priority_event, collaborator_event)
+```

@@ -1,30 +1,78 @@
-import uuid
 import time
-from typing import Dict
+import uuid
+from dataclasses import dataclass
+from typing import Dict, Optional
 
-class SubeXRoadGateway:
-    """ Gateway de integración federal automatizada bajo el Decreto Nº 1273/2016.
-        Cruza bases de datos de RENAPER, ANSES y ANDIS en milisegundos sin fricción en papel.
-    """
-    
-    def __init__(self):
-        self.producer_member_class = "GOV"
-        self.producer_subsystem = "ANDIS-ATRIBUTOS-TRANSITO"
+@dataclass
+class XRoadRequest:
+"""
+Solicitud técnica pseudoanonimizada hacia un gateway de interoperabilidad.
 
-    def generar_cabecera_interoperable(self, token_consulta: str) -> Dict[str, str]:
-        """Estructura la trama SOAP/REST segura requerida por el bus estatal distribuido."""
-        return {
-            "X-Road-Client": f"AR/{self.producer_member_class}/MIN-TRANSPORTE/SUBE-CORE",
-            "X-Road-Service": f"AR/{self.producer_member_class}/MIN-SALUD/{self.producer_subsystem}",
-            "X-Road-Id": str(uuid.uuid4()), # ID unívoco de transacción estatal para trazabilidad de la auditoría
-            "X-Road-ProtocolVersion": "4.0",
-            "Content-Type": "application/json",
-            "Authorization": f"Bearer TOK_SECURE_XROAD_{int(time.time())}"
-        }
+```
+En el MVP no se envían datos personales.
+"""
 
-if __name__ == "__main__":
-    gateway = SubeXRoadGateway()
-    cabecera = gateway.generar_cabecera_interoperable("hash_ejemplo")
-    print("🔌 [CONEXIÓN ESTATAL SIN PAPELES]: Cabecera X-Road generada para desburocratización automática:")
-    for clave, valor in cabecera.items():
-        print(f"  {clave}: {valor}")
+token_hash: str
+service_name: str
+correlation_id: str
+```
+
+@dataclass
+class XRoadResponse:
+success: bool
+service_name: str
+correlation_id: str
+payload: Dict[str, object]
+elapsed_ms: int
+
+class XRoadGateway:
+"""
+Simulador de gateway de interoperabilidad.
+
+```
+Objetivo:
+- Representar una futura integración con servicios públicos.
+- Mantener trazabilidad técnica mediante correlation_id.
+- Evitar exposición de DNI, nombre, diagnóstico o historia clínica.
+"""
+
+def __init__(self, simulated_latency_ms: int = 50) -> None:
+    self.simulated_latency_ms = simulated_latency_ms
+
+def build_request(
+    self,
+    token_hash: str,
+    service_name: str,
+    correlation_id: Optional[str] = None,
+) -> XRoadRequest:
+    if not token_hash:
+        raise ValueError("token_hash es obligatorio.")
+
+    if not service_name:
+        raise ValueError("service_name es obligatorio.")
+
+    return XRoadRequest(
+        token_hash=token_hash,
+        service_name=service_name,
+        correlation_id=correlation_id or str(uuid.uuid4()),
+    )
+
+def verify_priority_attribute(self, request: XRoadRequest) -> XRoadResponse:
+    start = time.time()
+
+    time.sleep(self.simulated_latency_ms / 1000)
+
+    elapsed_ms = int((time.time() - start) * 1000)
+
+    return XRoadResponse(
+        success=True,
+        service_name=request.service_name,
+        correlation_id=request.correlation_id,
+        elapsed_ms=elapsed_ms,
+        payload={
+            "atributo_prioridad_activo": True,
+            "perfil_alertas_ux": 2,
+            "fuente": "simulador_xroad_mvp",
+        },
+    )
+```
