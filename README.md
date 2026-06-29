@@ -4,7 +4,7 @@
 
 SUBE Prioridad es una propuesta ciudadana de innovación pública orientada a analizar herramientas complementarias que puedan facilitar que personas con una necesidad previamente acreditada de viajar sentadas accedan a condiciones de viaje más seguras, respetuosas y adecuadas dentro del transporte público.
 
-Este repositorio contiene un **MVP conceptual, técnico y demostrativo**, acompañado por documentación de arquitectura, fundamentos institucionales, estrategia legislativa, lineamientos de protección de datos personales, modelo de prueba piloto y anexos técnicos.
+Este repositorio contiene un **MVP conceptual, técnico y demostrativo**, acompañado por documentación de arquitectura, fundamentos jurídicos, fundamentos institucionales, estrategia legislativa, lineamientos de protección de datos personales, modelo de prueba piloto y anexos técnicos.
 
 ---
 
@@ -19,6 +19,7 @@ API de ejemplo: sí
 Tests básicos: sí
 Docker: sí
 Documentación estratégica: sí
+Fundamentos jurídicos: sí
 Lineamientos de protección de datos: sí
 Implementación productiva: no
 Integración real con organismos públicos: no
@@ -137,7 +138,21 @@ docs/PROTECCION_DATOS_PERSONALES.md
 
 ---
 
-## 7. Separación entre acreditación y operación
+## 7. Fundamentos jurídicos
+
+SUBE Prioridad se apoya en un enfoque jurídico basado en accesibilidad efectiva, igualdad real, dignidad de las personas usuarias, protección de datos personales, razonabilidad, progresividad, no discriminación y evaluación institucional.
+
+El repositorio incluye fundamentos jurídicos conceptuales en:
+
+```text
+docs/FUNDAMENTOS_JURIDICOS.md
+```
+
+Ese documento desarrolla el marco constitucional, convencional, legal, federal e institucional relevante para analizar la iniciativa, incluyendo derechos de personas con discapacidad, personas mayores, personas gestantes, personas con movilidad reducida, protección de datos personales, transporte público, marco SUBE, prueba piloto y antecedentes provinciales de accesibilidad cognitiva.
+
+---
+
+## 8. Separación entre acreditación y operación
 
 SUBE Prioridad distingue dos planos:
 
@@ -155,7 +170,7 @@ Esa acreditación debería quedar, en cualquier implementación real, bajo la ó
 
 ---
 
-## 8. Estado del MVP técnico
+## 9. Estado del MVP técnico
 
 El MVP actual permite representar algunos componentes de la arquitectura, entre ellos:
 
@@ -174,7 +189,7 @@ Este MVP no procesa usuarios reales ni se conecta con sistemas productivos.
 
 ---
 
-## 9. Interoperabilidad
+## 10. Interoperabilidad
 
 La arquitectura contempla la posibilidad de interoperabilidad futura con organismos, registros o plataformas externas cuando exista:
 
@@ -192,7 +207,7 @@ Ningún archivo del repositorio acredita conexión real vigente con organismos p
 
 ---
 
-## 10. Bono Solidario
+## 11. Bono Solidario
 
 El Bono Solidario se considera una posible evolución futura del ecosistema SUBE Prioridad.
 
@@ -212,7 +227,7 @@ Su eventual análisis debería realizarse sólo después de contar con un sistem
 
 ---
 
-## 11. Prueba piloto
+## 12. Prueba piloto
 
 La primera meta institucional razonable del proyecto es la evaluación de una prueba piloto limitada.
 
@@ -237,7 +252,7 @@ docs/PRUEBA_PILOTO_MODELO.md
 
 ---
 
-## 12. Arquitectura de referencia
+## 13. Arquitectura de referencia
 
 SUBE Prioridad no debe leerse únicamente como una aplicación ni como una API.
 
@@ -265,7 +280,7 @@ Siempre bajo evaluación técnica, jurídica, presupuestaria, operativa, social 
 
 ---
 
-## 13. Documentación estratégica del proyecto
+## 14. Documentación estratégica del proyecto
 
 La documentación principal del repositorio se organiza en los siguientes documentos:
 
@@ -275,6 +290,7 @@ La documentación principal del repositorio se organiza en los siguientes docume
 * [`docs/MODELO_PROYECTO_RESOLUCION.md`](docs/MODELO_PROYECTO_RESOLUCION.md): modelo orientativo para impulsar formalmente la evaluación institucional.
 * [`docs/PRUEBA_PILOTO_MODELO.md`](docs/PRUEBA_PILOTO_MODELO.md): modelo conceptual de prueba piloto limitada, voluntaria, reversible y auditable.
 * [`docs/PROTECCION_DATOS_PERSONALES.md`](docs/PROTECCION_DATOS_PERSONALES.md): lineamientos de privacidad, minimización de datos, separación entre acreditación y operación, prueba piloto e interoperabilidad responsable.
+* [`docs/FUNDAMENTOS_JURIDICOS.md`](docs/FUNDAMENTOS_JURIDICOS.md): fundamentos jurídicos, constitucionales, convencionales, federales e institucionales del proyecto.
 * [`docs/ESTRATEGIA_LEGISLATIVA_Y_PARTICIPACION_CIUDADANA.md`](docs/ESTRATEGIA_LEGISLATIVA_Y_PARTICIPACION_CIUDADANA.md): estrategia para impulsar el análisis legislativo, administrativo y ciudadano.
 * [`docs/ARQUITECTURA_DE_REFERENCIA.md`](docs/ARQUITECTURA_DE_REFERENCIA.md): visión arquitectónica general del proyecto.
 * [`docs/ROADMAP_IMPLEMENTACION.md`](docs/ROADMAP_IMPLEMENTACION.md): hoja de ruta conceptual para una evolución gradual.
@@ -287,7 +303,7 @@ Estos documentos deben leerse de manera complementaria.
 
 ---
 
-## 14. Ejecución local
+## 15. Ejecución local
 
 Instalar dependencias:
 
@@ -309,7 +325,7 @@ http://127.0.0.1:8000/docs
 
 ---
 
-## 15. Tests
+## 16. Tests
 
 Ejecutar tests:
 
@@ -325,7 +341,7 @@ python -m py_compile main.py validator.py cache_manager.py circuit_breaker.py xr
 
 ---
 
-## 16. Docker
+## 17. Docker
 
 Construir y ejecutar con Docker Compose:
 
@@ -335,7 +351,7 @@ docker compose up --build
 
 ---
 
-## 17. Estructura técnica orientativa
+## 18. Estructura técnica orientativa
 
 El repositorio incluye, entre otros archivos:
 
@@ -358,7 +374,7 @@ La estructura podrá evolucionar conforme avance el proyecto, manteniendo cohere
 
 ---
 
-## 18. Licencia
+## 19. Licencia
 
 Este proyecto se publica bajo licencia MIT, salvo indicación expresa en contrario para documentos, marcas, logos, archivos institucionales o materiales de terceros.
 
@@ -366,7 +382,7 @@ La publicación abierta del repositorio no implica autorización de implementaci
 
 ---
 
-## 19. Declaración final
+## 20. Declaración final
 
 SUBE Prioridad es una propuesta ciudadana de innovación pública orientada a fortalecer la accesibilidad efectiva, la asistencia preventiva y la convivencia dentro del transporte público.
 
@@ -374,4 +390,4 @@ El repositorio no pretende demostrar una solución cerrada ni una implementació
 
 Su finalidad es ofrecer una arquitectura conceptual, documentada y técnicamente demostrable para que pueda ser analizada, discutida, mejorada y eventualmente evaluada por las autoridades competentes.
 
-El valor del proyecto reside en articular tecnología, privacidad, accesibilidad, dignidad, participación ciudadana y gradualidad institucional en una propuesta seria, prudente y escalable.
+El valor del proyecto reside en articular tecnología, privacidad, accesibilidad, dignidad, fundamentos jurídicos, participación ciudadana y gradualidad institucional en una propuesta seria, prudente y escalable.
