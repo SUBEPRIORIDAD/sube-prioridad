@@ -2,43 +2,49 @@
 
 ## 1. Presentación
 
-SUBE Prioridad es una propuesta ciudadana de innovación pública orientada a fortalecer la accesibilidad efectiva, la asistencia preventiva y la convivencia dentro del transporte público argentino.
+**SUBE Prioridad** es una propuesta ciudadana de innovación pública orientada a fortalecer la accesibilidad efectiva, la asistencia preventiva y la convivencia dentro del transporte público.
 
-La iniciativa propone evaluar una herramienta complementaria que permita facilitar que personas con una necesidad previamente acreditada de viajar sentadas puedan acceder a condiciones de viaje más seguras, respetuosas y adecuadas.
+La iniciativa propone analizar si una necesidad previamente acreditada de viajar sentado puede traducirse en un **atributo técnico de prioridad**, sin exponer públicamente diagnósticos médicos, historia clínica, certificados, condiciones personales sensibles ni datos de salud identificables.
 
-El proyecto no se presenta como una implementación actualmente desplegada ni como una solución tecnológica cerrada.
+El proyecto se presenta actualmente como un **MVP conceptual, técnico y demostrativo**, acompañado por documentación institucional, jurídica, médica, operativa, técnica y de protección de datos personales.
 
-Se presenta como una arquitectura de referencia, acompañada por un MVP conceptual y documentación técnica, jurídica, operativa y social, puesta a disposición de las autoridades competentes para su análisis.
+No constituye una implementación oficial vigente, ni una integración real con el sistema SUBE, ni una modificación productiva de validadoras, tarjetas, bases de datos o infraestructura estatal.
 
 ---
 
-## 2. Problema público identificado
+## 2. Problema público
 
-En el transporte público existen personas que, por discapacidad, embarazo, edad avanzada, movilidad reducida, rehabilitación médica u otras circunstancias debidamente acreditadas, pueden necesitar viajar sentadas para preservar su seguridad, salud, bienestar o autonomía.
+En el transporte público existen personas que necesitan viajar sentadas por razones de salud, discapacidad, edad, embarazo, movilidad reducida, rehabilitación, fragilidad, tratamientos, enfermedades no visibles u otras circunstancias permanentes o transitorias.
 
-Muchas de esas necesidades no siempre resultan visibles para el resto de los pasajeros.
+Muchas veces esa necesidad no es visible para terceros.
 
-En la práctica cotidiana, esta falta de visibilidad puede generar:
+La persona usuaria puede verse obligada a:
 
-* dificultades para acceder a un asiento;
-* situaciones incómodas o conflictivas;
-* exposición innecesaria de circunstancias personales;
-* dependencia de explicaciones verbales;
-* barreras de comunicación;
-* riesgos durante el viaje;
-* pérdida de autonomía.
+* pedir ayuda públicamente;
+* explicar una situación íntima;
+* mostrar documentación;
+* discutir con otros pasajeros;
+* exponerse a incomodidad, sospecha o rechazo;
+* viajar de pie aun cuando ello aumente riesgos.
 
-SUBE Prioridad busca analizar una respuesta preventiva, respetuosa y tecnológicamente prudente frente a este problema.
+Esta situación afecta la accesibilidad real, la dignidad, la seguridad y la convivencia dentro del transporte público.
 
 ---
 
 ## 3. Objetivo general
 
-El objetivo general de SUBE Prioridad es facilitar la asistencia preventiva dentro del transporte público mediante un mecanismo complementario, gradual y respetuoso de la privacidad.
+El objetivo general de SUBE Prioridad es proponer una herramienta complementaria de asistencia preventiva que permita evaluar mecanismos técnicos, institucionales y operativos para facilitar que personas con necesidad previamente acreditada puedan solicitar asistencia sin exponer información sensible.
 
-La finalidad no es reemplazar normas vigentes, sino fortalecer su efectividad práctica.
+La propuesta busca fortalecer:
 
-El sistema apunta a que una necesidad previamente acreditada pueda traducirse, en el plano operativo, en un atributo técnico de prioridad, sin exponer diagnósticos ni datos médicos sensibles.
+* accesibilidad efectiva;
+* igualdad real;
+* dignidad de las personas usuarias;
+* convivencia ciudadana;
+* privacidad por diseño;
+* asistencia preventiva;
+* gradualidad institucional;
+* evaluación basada en evidencia.
 
 ---
 
@@ -47,75 +53,15 @@ El sistema apunta a que una necesidad previamente acreditada pueda traducirse, e
 SUBE Prioridad es:
 
 * una propuesta ciudadana de innovación pública;
-* una arquitectura conceptual de asistencia preventiva;
-* un modelo de validación basado en atributos técnicos;
-* un MVP demostrativo en repositorio abierto;
-* una iniciativa orientada a prueba piloto;
-* una herramienta complementaria del régimen vigente;
-* una propuesta gradual, reversible y auditable;
-* una arquitectura adaptable a distintas escalas territoriales.
+* un MVP conceptual y demostrativo;
+* una arquitectura de referencia;
+* una herramienta de análisis institucional;
+* una posible base para prueba piloto limitada;
+* un modelo orientado a privacidad por diseño;
+* una estrategia gradual, reversible y auditable;
+* una iniciativa complementaria de accesibilidad en transporte público.
 
-Su núcleo consiste en analizar cómo las capacidades tecnológicas existentes o futuras del ecosistema de transporte podrían colaborar con la accesibilidad efectiva, sin imponer una solución única ni definitiva.
-
----
-
-## 5. Qué no es SUBE Prioridad
-
-SUBE Prioridad no es:
-
-* una implementación oficial actualmente desplegada;
-* un reemplazo del régimen legal de asientos prioritarios;
-* un subsidio;
-* un beneficio tarifario;
-* un sistema de evaluación médica;
-* una base de datos de diagnósticos;
-* una obligación nueva para los choferes;
-* una sanción para pasajeros;
-* una herramienta de vigilancia;
-* una integración real con organismos públicos en el estado actual del MVP;
-* una imposición tecnológica cerrada.
-
-La propuesta debe ser evaluada por las autoridades competentes antes de cualquier implementación real.
-
----
-
-## 6. Principios rectores
-
-El proyecto se apoya en los siguientes principios:
-
-### Accesibilidad efectiva
-
-La accesibilidad no debe limitarse al reconocimiento formal de derechos, sino procurar condiciones reales de uso seguro, digno y adecuado del transporte público.
-
-### Privacidad por diseño
-
-El sistema no debe exponer diagnósticos, historias clínicas ni información médica identificable.
-
-### Minimización de datos
-
-El núcleo técnico debe utilizar únicamente los datos estrictamente necesarios para validar un atributo de prioridad.
-
-### Gradualidad
-
-La implementación debe comenzar con etapas limitadas, evaluables y reversibles.
-
-### Neutralidad tecnológica
-
-La arquitectura no debe depender de un proveedor, dispositivo, tarjeta, aplicación o hardware específico.
-
-### No sustitución de derechos
-
-La propuesta no modifica ni debilita derechos ya reconocidos por la normativa vigente.
-
-### Control institucional
-
-Toda implementación real debe quedar sujeta a evaluación y decisión de las autoridades competentes.
-
----
-
-## 7. Modelo conceptual
-
-El modelo de SUBE Prioridad puede expresarse de manera simple:
+Su lógica conceptual es:
 
 ```text
 necesidad previamente acreditada
@@ -126,169 +72,398 @@ preferencia de asistencia
 ↓
 validación operativa
 ↓
+alerta genérica o asistencia preventiva
+↓
 experiencia de viaje más segura y respetuosa
 ```
 
-La acreditación de la necesidad no corresponde al sistema técnico, sino a los organismos, profesionales o procedimientos que determinen las autoridades competentes.
+---
 
-El sistema sólo debería operar sobre un atributo técnico previamente habilitado.
+## 5. Qué no es SUBE Prioridad
+
+SUBE Prioridad no es:
+
+* una implementación oficial actualmente vigente;
+* un sistema productivo;
+* una integración real con organismos públicos;
+* una modificación actual del sistema SUBE;
+* una base de datos médica;
+* un sistema de diagnóstico;
+* un reemplazo de certificados oficiales;
+* un subsidio tarifario;
+* una sanción para pasajeros;
+* un reemplazo del régimen de asientos prioritarios;
+* una obligación nueva para choferes;
+* una implementación nacional inmediata.
+
+Toda eventual implementación real deberá ser evaluada, autorizada y supervisada por las autoridades competentes.
 
 ---
 
-## 8. MVP actual
+## 6. Principios rectores
 
-El repositorio público contiene un MVP conceptual y demostrativo.
+La iniciativa se apoya en los siguientes principios:
 
-El MVP permite representar algunos componentes de la arquitectura, tales como:
-
-* validación pseudoanonimizada;
-* endpoint de verificación;
-* guardrails de privacidad;
-* simulador de interoperabilidad;
-* motor inicial de reglas antifraude;
-* documentación de arquitectura;
-* roadmap de implementación;
-* principios de gobernanza.
-
-El MVP no procesa usuarios reales.
-
-No se conecta con organismos públicos.
-
-No modifica el sistema SUBE.
-
-No representa una implementación productiva.
+* privacidad por diseño;
+* minimización de datos;
+* no exposición de diagnósticos;
+* accesibilidad efectiva;
+* dignidad humana;
+* autonomía de la persona usuaria;
+* no discriminación;
+* neutralidad tecnológica;
+* interoperabilidad responsable;
+* gradualidad;
+* reversibilidad;
+* auditabilidad;
+* evaluación institucional;
+* no sustitución de derechos vigentes;
+* no imposición de nuevas cargas al personal de conducción.
 
 ---
 
-## 9. Propuesta de prueba piloto
+## 7. Modelo conceptual
 
-La primera meta institucional razonable es promover una prueba piloto limitada.
+El modelo propuesto separa claramente dos planos.
 
-Una prueba piloto podría desarrollarse en:
+```text
+Plano de acreditación:
+organismos, profesionales, registros o procedimientos competentes
+validan la necesidad de asistencia conforme a reglas públicas
 
-* una línea de colectivo;
-* pocas líneas seleccionadas;
-* un corredor determinado;
-* un municipio;
-* una jurisdicción voluntaria;
-* un entorno institucional controlado.
+Plano operativo:
+el sistema técnico sólo representa un atributo de prioridad
+sin conocer ni exponer el diagnóstico o documentación respaldatoria
+```
 
-La prueba piloto debería ser:
+De este modo, el sistema operativo no necesita saber por qué una persona requiere asistencia.
 
-* voluntaria;
-* temporal;
-* reversible;
-* auditada;
-* respetuosa de la privacidad;
-* sin exposición de diagnósticos;
-* sin nuevas cargas al chofer;
-* sin modificación de derechos vigentes;
-* con métricas claras;
-* con canales de reclamo;
-* con evaluación previa y posterior.
+Sólo necesita saber si existe un atributo técnico habilitado para activar una modalidad de asistencia previamente definida.
 
 ---
 
-## 10. Beneficios esperados
+## 8. Protección de datos personales
 
-Entre los beneficios potenciales que podrían evaluarse se encuentran:
+La protección de datos personales es una condición estructural de viabilidad del proyecto.
 
-* mejora en la accesibilidad efectiva;
-* reducción de situaciones incómodas o conflictivas;
-* mayor autonomía de personas que necesitan asistencia;
-* menor exposición de circunstancias personales;
-* fortalecimiento de la convivencia ciudadana;
-* aprovechamiento prudente de infraestructura existente;
-* generación de evidencia para políticas públicas;
-* posibilidad de escalamiento gradual;
-* construcción de un modelo adaptable a otras jurisdicciones.
+El core del MVP no debe procesar:
 
-Estos beneficios deben ser medidos y verificados en etapas piloto antes de cualquier expansión.
-
----
-
-## 11. Protección de datos
-
-La protección de datos personales es un eje central del proyecto.
-
-El core del sistema no debería procesar:
-
-* diagnóstico médico;
-* historia clínica;
-* certificado médico en texto plano;
 * DNI;
 * nombre;
 * apellido;
 * domicilio;
-* datos sensibles innecesarios.
+* diagnóstico médico;
+* historia clínica;
+* certificado médico en texto plano;
+* datos de salud identificables.
 
-Cualquier implementación real deberá contar con base jurídica suficiente, medidas de seguridad, finalidad determinada, auditoría y evaluación institucional previa.
+La propuesta trabaja con atributos técnicos, tokens, identificadores pseudoanonimizados, modalidades de asistencia y alertas genéricas.
 
----
-
-## 12. Bono Solidario
-
-El Bono Solidario es una posible evolución futura del ecosistema SUBE Prioridad.
-
-No forma parte del núcleo inicial necesario del proyecto.
-
-Su eventual desarrollo sólo debería evaluarse luego de contar con un sistema base estable, reglas antifraude, evidencia verificable, evaluación social y autorización institucional.
-
-No debe funcionar como multa, sanción, obligación, ranking público ni mecanismo de presión social.
-
-Tampoco debe aplicarse sobre asientos prioritarios legales ni transformar deberes existentes en incentivos.
+El objetivo es facilitar asistencia preventiva sin convertir al transporte público en una base de datos médica ni en un espacio de exposición de información sensible.
 
 ---
 
-## 13. Solicitud institucional
+## 9. Fundamento jurídico general
 
-Se solicita a las autoridades competentes considerar, analizar y evaluar la factibilidad jurídica, técnica, operativa, económica, presupuestaria y social de SUBE Prioridad.
+SUBE Prioridad puede ser analizado desde un enfoque jurídico basado en:
 
-En particular, se propone evaluar:
+* igualdad real;
+* accesibilidad efectiva;
+* dignidad de las personas usuarias;
+* no discriminación;
+* protección de datos personales;
+* derechos de personas con discapacidad;
+* derechos de personas mayores;
+* derechos de usuarios del transporte;
+* razonabilidad;
+* progresividad;
+* innovación pública;
+* evaluación institucional.
 
-1. La recepción formal de la iniciativa ciudadana.
-2. La revisión técnica e institucional de la arquitectura propuesta.
-3. La intervención de organismos competentes.
-4. La protección de datos personales.
-5. La compatibilidad con el régimen vigente de transporte y accesibilidad.
-6. La posibilidad de diseñar una prueba piloto limitada.
-7. La definición de métricas de evaluación.
-8. La participación de usuarios, especialistas y actores del sistema.
+La iniciativa no pretende crear un derecho aislado ni imponer una solución cerrada.
 
----
-
-## 14. Rol de la ciudadanía
-
-Las firmas ciudadanas que acompañan la propuesta expresan interés social en que SUBE Prioridad sea evaluado por las autoridades competentes.
-
-El apoyo ciudadano no reemplaza la evaluación técnica ni la decisión estatal.
-
-Su función es visibilizar una necesidad concreta y respaldar el pedido de análisis institucional, legislativo y administrativo de la propuesta.
+Busca ofrecer una herramienta tecnológica e institucional para facilitar el ejercicio efectivo de derechos ya reconocidos.
 
 ---
 
-## 15. Documentación disponible
+## 10. Fundamento médico y funcional
 
-El proyecto cuenta con documentación complementaria organizada en el repositorio, incluyendo:
+SUBE Prioridad no diagnostica ni evalúa médicamente.
+
+Su fundamento médico y funcional parte de una premisa simple:
+
+```text
+una persona puede necesitar asistencia aunque su necesidad no sea visible
+```
+
+La necesidad de viajar sentado puede vincularse con discapacidad, edad, embarazo, movilidad reducida, rehabilitación, tratamientos, dolor, fatiga, fragilidad, riesgo de caídas o enfermedades no visibles.
+
+La herramienta busca evitar que la persona tenga que exponer su situación para recibir asistencia.
+
+---
+
+## 11. Protocolo operativo conceptual
+
+El proyecto incluye un protocolo operativo conceptual para ordenar cómo podría funcionar una eventual experiencia de asistencia preventiva.
+
+Ese protocolo contempla:
+
+* roles institucionales;
+* rol limitado del chofer;
+* acreditación previa;
+* atributo técnico de prioridad;
+* modalidades silenciosa, discreta, preventiva o visible;
+* alertas genéricas;
+* comunicación a bordo;
+* registro mínimo de eventos;
+* tratamiento de incidentes;
+* criterios de suspensión;
+* evaluación operativa;
+* informe final.
+
+No constituye una instrucción vigente ni una implementación productiva.
+
+---
+
+## 12. Prueba piloto como primera meta institucional
+
+La primera meta razonable no es una implementación nacional inmediata.
+
+La primera meta institucional debería ser la evaluación de una **prueba piloto limitada, voluntaria, reversible y auditable**.
+
+Una prueba piloto permitiría analizar:
+
+* utilidad real;
+* privacidad;
+* comprensión social;
+* impacto operativo;
+* carga para choferes;
+* aceptación de usuarios;
+* aceptación de operadores;
+* riesgos;
+* costos;
+* ajustes necesarios;
+* posibilidad de continuidad o cierre.
+
+La prueba piloto debería estar autorizada y supervisada por autoridad competente.
+
+---
+
+## 13. Características mínimas de una prueba piloto
+
+Una prueba piloto debería ser:
+
+```text
+limitada
+voluntaria
+temporal
+reversible
+auditable
+documentada
+respetuosa de la privacidad
+no discriminatoria
+institucionalmente autorizada
+```
+
+También debería contar con:
+
+* alcance territorial definido;
+* duración determinada;
+* población participante delimitada;
+* comunicación clara;
+* canales de reclamo;
+* indicadores de evaluación;
+* criterios de suspensión;
+* informe final.
+
+---
+
+## 14. Relación con asientos prioritarios
+
+SUBE Prioridad no reemplaza el régimen vigente de asientos prioritarios.
+
+La herramienta debe entenderse como complementaria.
+
+Su finalidad es facilitar la asistencia en situaciones donde la necesidad no es visible o donde la persona usuaria prefiere evitar exposición pública.
+
+Ninguna prueba piloto debería reducir derechos existentes ni modificar obligaciones vigentes sin marco normativo suficiente.
+
+---
+
+## 15. Rol del chofer
+
+El chofer no debe ser convertido en evaluador médico, fiscalizador documental ni árbitro principal de conflictos entre pasajeros.
+
+El diseño operativo debe evitar que el personal de conducción tenga que:
+
+* pedir diagnósticos;
+* revisar certificados;
+* decidir quién merece asistencia;
+* resolver disputas por prioridad;
+* administrar datos sensibles;
+* aplicar sanciones.
+
+La conducción segura debe conservar prioridad operativa.
+
+---
+
+## 16. Alertas genéricas
+
+Toda alerta o señal debe ser genérica, no diagnóstica y no estigmatizante.
+
+Ejemplos conceptuales:
+
+```text
+Asistencia prioritaria solicitada
+```
+
+```text
+Asiento de prioridad solicitado
+```
+
+```text
+Se solicita colaboración para asistencia prioritaria
+```
+
+La alerta no debe revelar si la persona es mayor, gestante, persona con discapacidad, paciente en tratamiento, persona trasplantada o portadora de una condición determinada.
+
+---
+
+## 17. Accesibilidad cognitiva y colectivos inclusivos
+
+SUBE Prioridad puede articularse con políticas de accesibilidad cognitiva, pictogramas, señalética clara y comunicación inclusiva.
+
+La reciente tendencia normativa orientada a colectivos inclusivos y herramientas de accesibilidad comunicacional en la Provincia de Buenos Aires abre una ventana institucional para analizar soluciones complementarias.
+
+SUBE Prioridad no sustituye pictogramas ni señalética accesible.
+
+Puede funcionar como una capa adicional de asistencia preventiva basada en atributos técnicos, alertas genéricas y protección de datos personales.
+
+---
+
+## 18. Interoperabilidad responsable
+
+Toda interoperabilidad real con organismos públicos, registros, bases de datos o sistemas externos deberá evaluarse con extrema prudencia.
+
+Debe existir:
+
+* competencia institucional;
+* marco jurídico;
+* autorización;
+* finalidad determinada;
+* minimización de datos;
+* seguridad de la información;
+* trazabilidad;
+* auditoría;
+* documentación técnica;
+* posibilidad de suspensión.
+
+En el estado actual del repositorio, toda integración externa debe interpretarse como simulada.
+
+---
+
+## 19. Bono Solidario
+
+El Bono Solidario debe considerarse una posible evolución futura, no como parte indispensable del núcleo inicial.
+
+No debe ser presentado como multa, sanción, ranking, presión social ni obligación.
+
+Su eventual análisis debería realizarse sólo después de evaluar el sistema base y bajo reglas específicas de voluntariedad, privacidad, antifraude y no discriminación.
+
+---
+
+## 20. Beneficios esperados
+
+Entre los beneficios esperados de una evaluación piloto podrían considerarse:
+
+* mejora de la accesibilidad efectiva;
+* reducción de exposición pública de personas con necesidades no visibles;
+* disminución de conflictos por solicitud de asiento;
+* mayor conciencia ciudadana;
+* mejor convivencia dentro de las unidades;
+* generación de evidencia para políticas públicas;
+* fortalecimiento de privacidad por diseño;
+* articulación entre tecnología y derechos.
+
+Estos beneficios son hipótesis de trabajo que deben ser evaluadas empíricamente.
+
+---
+
+## 21. Riesgos a controlar
+
+El proyecto debe controlar especialmente los siguientes riesgos:
+
+* exposición de diagnósticos;
+* tratamiento innecesario de datos sensibles;
+* estigmatización;
+* sobrecarga del chofer;
+* confusión entre piloto e implementación definitiva;
+* falsas promesas de integración real;
+* presión social indebida;
+* discriminación;
+* fallas técnicas;
+* falta de autorización institucional;
+* ausencia de evaluación posterior.
+
+La documentación del repositorio incorpora guardrails para evitar esos riesgos.
+
+---
+
+## 22. Solicitud institucional sugerida
+
+La solicitud institucional más prudente no es pedir implementación inmediata.
+
+La solicitud recomendada es:
+
+```text
+Tener por presentada la iniciativa ciudadana SUBE Prioridad
+y disponer su análisis técnico, jurídico, operativo, presupuestario,
+social, sanitario y de protección de datos personales,
+a fin de evaluar la factibilidad de una eventual prueba piloto
+limitada, voluntaria, reversible y auditable.
+```
+
+Esta fórmula preserva competencia estatal, evita promesas excesivas y permite abrir un expediente serio de evaluación.
+
+---
+
+## 23. Documentación disponible
+
+El repositorio cuenta o prevé contar con documentación organizada en:
 
 * README general;
-* Arquitectura de Referencia;
-* Roadmap de Implementación;
-* Decisiones de Arquitectura;
-* Principios de Gobernanza;
-* Estrategia Legislativa y Participación Ciudadana;
-* Pliego Técnico Extendido;
-* Guardrails de Arquitectura;
-* Anexos técnicos y fundamentos operativos.
+* índice documental;
+* arquitectura de referencia;
+* roadmap de implementación;
+* decisiones de arquitectura;
+* principios de gobernanza;
+* protección de datos personales;
+* fundamentos jurídicos;
+* fundamentos médicos;
+* protocolo operativo;
+* modelo de prueba piloto;
+* petitorio ciudadano;
+* modelo de proyecto de resolución;
+* pliego técnico extendido.
 
-Esta documentación permite analizar el proyecto desde una perspectiva técnica, jurídica, social, médica, operativa e institucional.
+Esta documentación permite presentar la iniciativa de manera ordenada ante autoridades, legisladores, asesores, universidades, organizaciones sociales y ciudadanía.
 
 ---
 
-## 16. Declaración final
+## 24. Mensaje institucional breve
 
-SUBE Prioridad propone una arquitectura pública, gradual y prudente para fortalecer la accesibilidad efectiva dentro del transporte público argentino.
+SUBE Prioridad es una propuesta ciudadana de innovación pública que busca ser evaluada por las autoridades competentes para analizar una prueba piloto gradual, voluntaria y respetuosa de la privacidad, destinada a fortalecer la accesibilidad efectiva y la asistencia preventiva en el transporte público.
 
-Su valor no reside únicamente en el desarrollo tecnológico, sino en la posibilidad de articular privacidad, asistencia preventiva, convivencia ciudadana, innovación pública y evaluación institucional.
+No propone sustituir derechos vigentes ni imponer una implementación inmediata.
 
-La propuesta no busca imponer una solución cerrada, sino abrir un proceso serio de análisis que permita determinar si una prueba piloto puede contribuir a mejorar la experiencia de viaje de quienes necesitan asistencia sin exponer su dignidad, su intimidad ni sus datos sensibles.
+Propone abrir una instancia seria de análisis técnico, jurídico, operativo, sanitario, social y de protección de datos personales.
+
+---
+
+## 25. Declaración final
+
+SUBE Prioridad busca articular tecnología, accesibilidad, privacidad, dignidad humana, participación ciudadana y evaluación institucional.
+
+Su valor no reside en prometer una solución cerrada, sino en ofrecer una arquitectura conceptual prudente para analizar si una herramienta de asistencia preventiva puede mejorar la experiencia de viaje de personas que necesitan viajar sentadas.
+
+Toda implementación real deberá ser gradual, reversible, auditable y autorizada por las autoridades competentes.
