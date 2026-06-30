@@ -1,125 +1,294 @@
 from dataclasses import dataclass
-from datetime import datetime, timezone
-from typing import Dict, Tuple
-
-
-@dataclass(frozen=True)
-class ValidationEvent:
-    """
-    Evento técnico pseudoanonimizado de validación.
-
-    No contiene DNI, nombre, diagnóstico, domicilio ni historia clínica.
-    """
-
-    card_hash: str
-    bus_id: str
-    line_id: str
-    timestamp: datetime
+from datetime import datetime, timedelta, timezone
+from typing import Any, Dict, List, Optional
 
 
 @dataclass
-class AntiFraudResult:
-    approved: bool
-    reason: str
-    bonus_eligible: bool = False
-
-
-class AntiFraudEngine:
+class EventoValidacion:
     """
-    Motor antifraude para el Bono Solidario SUBE Prioridad.
+    Representa un evento conceptual de validación para el módulo futuro
+    de Bono Solidario.
 
-    Regla MVP:
-    - La tarjeta colaboradora debe validar dentro de los 60 segundos posteriores
-      a una validación prioritaria.
-    - Ambas validaciones deben ocurrir en el mismo colectivo.
-    - Ambas validaciones deben ocurrir en la misma línea.
-    - Se controla repetición excesiva entre el mismo par de tarjetas.
+    Este modelo no pertenece al núcleo inicial de asistencia preventiva.
+    Se conserva como componente experimental y demostrativo para evaluar
+    reglas antifraude en escenarios futuros.
+
+    No debe contener DNI, nombre, apellido, diagnóstico médico, historia
+    clínica, certificados médicos ni datos de salud identificables.
+    """
+
+    tarjeta_id: str
+    linea: str
+    unidad: str
+    timestamp: datetime
+    tipo_evento: str = "validacion"
+
+
+@dataclass
+class ResultadoAntifraude:
+    """
+    Resultado conceptual del análisis antifraude.
+
+    permitido:
+        Indica si el evento supera las reglas demostrativas.
+
+    motivo:
+        Explica la razón principal del resultado.
+
+    alertas:
+        Lista de alertas no sensibles detectadas.
+
+    score_riesgo:
+        Puntaje conceptual de riesgo, entre 0 y 100.
+    """
+
+    permitido: bool
+    motivo: str
+    alertas: List[str]
+    score_riesgo: int
+
+
+class AntifraudValidator:
+    """
+    Motor antifraude conceptual para escenarios futuros de Bono Solidario.
+
+    Este componente no forma parte del core inicial de SUBE Prioridad.
+    No se conecta con SUBE real.
+    No se conecta con Mi Argentina.
+    No se conecta con organismos públicos.
+    No procesa identidad real ni datos médicos.
+
+    Su finalidad actual es demostrar cómo podrían evaluarse reglas técnicas
+    no sensibles en un entorno de simulación.
     """
 
     def __init__(
         self,
-        time_window_seconds: int = 60,
-        max_pair_repetitions: int = 3,
+        ventana_minutos: int = 10,
+        max_eventos_por_ventana: int = 3,
+        max_score_permitido: int = 70,
     ) -> None:
-        self.time_window_seconds = time_window_seconds
-        self.max_pair_repetitions = max_pair_repetitions
-        self._pair_counter: Dict[Tuple[str, str], int] = {}
+        self.ventana_minutos = ventana_minutos
+        self.max_eventos_por_ventana = max_eventos_por_ventana
+        self.max_score_permitido = max_score_permitido
+        self._eventos: List[EventoValidacion] = []
 
-    def evaluate_bonus(
-        self,
-        priority_event: ValidationEvent,
-        collaborator_event: ValidationEvent,
-    ) -> AntiFraudResult:
-        self._validate_event(priority_event)
-        self._validate_event(collaborator_event)
+    def registrar_evento(self, evento: EventoValidacion) -> None:
+        """
+        Registra un evento conceptual en memoria.
 
-        if priority_event.card_hash == collaborator_event.card_hash:
-            return AntiFraudResult(
-                approved=False,
-                reason="La tarjeta prioritaria y la colaboradora no pueden ser la misma.",
+        Este registro es sólo demostrativo. No debe usarse como almacenamiento
+        productivo ni como base de auditoría real.
+        """
+
+        self._eventos.append(evento)
+        self._limpiar_eventos_antiguos(evento.timestamp)
+
+    def validar_evento(self, evento: EventoValidacion) -> ResultadoAntifraude:
+        """
+        Evalúa un evento conceptual con reglas simples antifraude.
+
+        Reglas demostrativas:
+        - tarjeta_id no vacío;
+        - línea no vacía;
+        - unidad no vacía;
+        - timestamp válido;
+        - exceso de validaciones en ventana temporal;
+        - validaciones repetidas en la misma línea y unidad;
+        - validaciones simultáneas en unidades distintas.
+
+        Ninguna regla utiliza datos personales, médicos o identificatorios reales.
+        """
+
+        alertas: List[str] = []
+        score = 0
+
+        errores_basicos = self._validar_campos_basicos(evento)
+        if errores_basicos:
+            return ResultadoAntifraude(
+                permitido=False,
+                motivo="Evento inválido por campos básicos incompletos.",
+                alertas=errores_basicos,
+                score_riesgo=100,
             )
 
-        if collaborator_event.timestamp < priority_event.timestamp:
-            return AntiFraudResult(
-                approved=False,
-                reason="La validación colaboradora no puede ser anterior a la prioritaria.",
-            )
+        eventos_recientes = self._eventos_en_ventana(evento)
 
-        elapsed_seconds = (
-            collaborator_event.timestamp - priority_event.timestamp
-        ).total_seconds()
+        if len(eventos_recientes) >= self.max_eventos_por_ventana:
+            alertas.append("exceso_de_eventos_en_ventana_temporal")
+            score += 35
 
-        if elapsed_seconds > self.time_window_seconds:
-            return AntiFraudResult(
-                approved=False,
-                reason="La validación colaboradora ocurrió fuera de la ventana temporal.",
-            )
+        if self._hay_repeticion_misma_linea_unidad(evento, eventos_recientes):
+            alertas.append("repeticion_misma_linea_y_unidad")
+            score += 25
 
-        if priority_event.bus_id != collaborator_event.bus_id:
-            return AntiFraudResult(
-                approved=False,
-                reason="Las validaciones no corresponden al mismo colectivo.",
-            )
+        if self._hay_unidades_distintas_en_ventana(evento, eventos_recientes):
+            alertas.append("validaciones_en_unidades_distintas")
+            score += 30
 
-        if priority_event.line_id != collaborator_event.line_id:
-            return AntiFraudResult(
-                approved=False,
-                reason="Las validaciones no corresponden a la misma línea.",
-            )
+        if self._hay_timestamp_futuro(evento):
+            alertas.append("timestamp_futuro")
+            score += 40
 
-        pair = (priority_event.card_hash, collaborator_event.card_hash)
-        current_count = self._pair_counter.get(pair, 0) + 1
-        self._pair_counter[pair] = current_count
+        score = min(score, 100)
+        permitido = score < self.max_score_permitido
 
-        if current_count > self.max_pair_repetitions:
-            return AntiFraudResult(
-                approved=False,
-                reason="Se detectó repetición excesiva entre el mismo par de tarjetas.",
-            )
-
-        return AntiFraudResult(
-            approved=True,
-            reason="Bono Solidario aprobado para entorno MVP.",
-            bonus_eligible=True,
+        motivo = (
+            "Evento permitido en entorno demostrativo."
+            if permitido
+            else "Evento observado por reglas antifraude conceptuales."
         )
 
-    @staticmethod
-    def _validate_event(event: ValidationEvent) -> None:
-        if not event.card_hash:
-            raise ValueError("card_hash es obligatorio.")
+        return ResultadoAntifraude(
+            permitido=permitido,
+            motivo=motivo,
+            alertas=alertas,
+            score_riesgo=score,
+        )
 
-        if not event.bus_id:
-            raise ValueError("bus_id es obligatorio.")
+    def validar_y_registrar(self, evento: EventoValidacion) -> ResultadoAntifraude:
+        """
+        Evalúa el evento y, si corresponde, lo registra.
 
-        if not event.line_id:
-            raise ValueError("line_id es obligatorio.")
+        En este MVP demostrativo se registra tanto si está permitido como si
+        genera alertas, para poder simular comportamiento histórico.
+        """
 
-        if event.timestamp.tzinfo is None:
-            raise ValueError("timestamp debe incluir zona horaria.")
+        resultado = self.validar_evento(evento)
+        self.registrar_evento(evento)
+        return resultado
 
-    def reset_counters(self) -> None:
-        self._pair_counter.clear()
+    def reset(self) -> None:
+        """
+        Limpia los eventos registrados en memoria.
+        """
+
+        self._eventos.clear()
+
+    def estado(self) -> Dict[str, Any]:
+        """
+        Devuelve un estado conceptual del validador.
+        """
+
+        return {
+            "componente": "AntifraudValidator",
+            "entorno": "mvp-conceptual",
+            "eventos_en_memoria": len(self._eventos),
+            "ventana_minutos": self.ventana_minutos,
+            "max_eventos_por_ventana": self.max_eventos_por_ventana,
+            "max_score_permitido": self.max_score_permitido,
+            "procesa_datos_sensibles": False,
+            "integracion_real_con_organismos": False,
+            "integracion_real_sube": False,
+            "modulo": "bono_solidario_futuro_experimental",
+        }
+
+    def _validar_campos_basicos(self, evento: EventoValidacion) -> List[str]:
+        errores: List[str] = []
+
+        if not evento.tarjeta_id or not evento.tarjeta_id.strip():
+            errores.append("tarjeta_id_requerido")
+
+        if not evento.linea or not evento.linea.strip():
+            errores.append("linea_requerida")
+
+        if not evento.unidad or not evento.unidad.strip():
+            errores.append("unidad_requerida")
+
+        if not isinstance(evento.timestamp, datetime):
+            errores.append("timestamp_invalido")
+
+        return errores
+
+    def _eventos_en_ventana(self, evento: EventoValidacion) -> List[EventoValidacion]:
+        inicio_ventana = evento.timestamp - timedelta(minutes=self.ventana_minutos)
+
+        return [
+            existente
+            for existente in self._eventos
+            if existente.tarjeta_id == evento.tarjeta_id
+            and inicio_ventana <= existente.timestamp <= evento.timestamp
+        ]
+
+    def _hay_repeticion_misma_linea_unidad(
+        self,
+        evento: EventoValidacion,
+        eventos_recientes: List[EventoValidacion],
+    ) -> bool:
+        return any(
+            existente.linea == evento.linea and existente.unidad == evento.unidad
+            for existente in eventos_recientes
+        )
+
+    def _hay_unidades_distintas_en_ventana(
+        self,
+        evento: EventoValidacion,
+        eventos_recientes: List[EventoValidacion],
+    ) -> bool:
+        return any(
+            existente.linea == evento.linea and existente.unidad != evento.unidad
+            for existente in eventos_recientes
+        )
+
+    def _hay_timestamp_futuro(self, evento: EventoValidacion) -> bool:
+        ahora = datetime.now(timezone.utc)
+
+        timestamp = evento.timestamp
+        if timestamp.tzinfo is None:
+            timestamp = timestamp.replace(tzinfo=timezone.utc)
+
+        return timestamp > ahora + timedelta(minutes=5)
+
+    def _limpiar_eventos_antiguos(self, referencia: datetime) -> None:
+        limite = referencia - timedelta(minutes=self.ventana_minutos * 3)
+
+        self._eventos = [
+            evento for evento in self._eventos if evento.timestamp >= limite
+        ]
 
 
-def now_utc() -> datetime:
-    return datetime.now(timezone.utc)
+def crear_evento_demo(
+    tarjeta_id: str = "token-demo",
+    linea: str = "60",
+    unidad: str = "1234",
+    timestamp: Optional[datetime] = None,
+) -> EventoValidacion:
+    """
+    Crea un evento demostrativo para tests o ejemplos locales.
+    """
+
+    return EventoValidacion(
+        tarjeta_id=tarjeta_id,
+        linea=linea,
+        unidad=unidad,
+        timestamp=timestamp or datetime.now(timezone.utc),
+    )
+
+
+def validar_evento_demo(evento: Optional[EventoValidacion] = None) -> Dict[str, Any]:
+    """
+    Función auxiliar para ejecutar una validación demostrativa simple.
+
+    Devuelve un diccionario serializable.
+    """
+
+    validador = AntifraudValidator()
+    evento_final = evento or crear_evento_demo()
+    resultado = validador.validar_y_registrar(evento_final)
+
+    return {
+        "permitido": resultado.permitido,
+        "motivo": resultado.motivo,
+        "alertas": resultado.alertas,
+        "score_riesgo": resultado.score_riesgo,
+        "estado": validador.estado(),
+    }
+
+
+__all__ = [
+    "EventoValidacion",
+    "ResultadoAntifraude",
+    "AntifraudValidator",
+    "crear_evento_demo",
+    "validar_evento_demo",
+]
