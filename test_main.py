@@ -6,120 +6,144 @@ from main import app
 client = TestClient(app)
 
 
-def test_health_endpoint():
-    response = client.get("/health")
-
-    assert response.status_code == 200
-    body = response.json()
-    assert body["status"] == "ok"
-    assert "timestamp" in body
-
-
 def test_root_endpoint():
     response = client.get("/")
 
     assert response.status_code == 200
-    body = response.json()
 
-    assert body["servicio"] == "SUBE Prioridad API"
-    assert body["estado"] == "operativo"
-    assert body["version"] == "0.2.0"
-    assert "MVP" in body["naturaleza"]
-    assert "asistencia preventiva" in body["objetivo"]
+    data = response.json()
+
+    assert data["proyecto"] == "SUBE Prioridad"
+    assert data["estado"] == "MVP conceptual, técnico y demostrativo"
+    assert data["implementacion_productiva"] is False
+    assert data["integracion_real_con_organismos"] is False
+    assert data["modificacion_sistema_sube"] is False
+    assert data["procesa_datos_medicos"] is False
+    assert data["procesa_datos_identificatorios"] is False
+    assert data["documentacion"] == "/docs"
+    assert data["health"] == "/health"
+    assert data["guardrails"] == "/project/guardrails"
+
+
+def test_health_endpoint():
+    response = client.get("/health")
+
+    assert response.status_code == 200
+
+    data = response.json()
+
+    assert data["status"] == "ok"
+    assert data["service"] == "sube-prioridad-api"
+    assert data["environment"] == "mvp-conceptual"
+    assert data["datos_sensibles_procesados"] is False
+    assert data["integracion_real_con_organismos"] is False
+    assert data["implementacion_productiva"] is False
 
 
 def test_project_guardrails_endpoint():
     response = client.get("/project/guardrails")
 
     assert response.status_code == 200
-    body = response.json()
 
-    assert body["datos_sensibles_en_core"] is False
-    assert body["diagnostico_medico_en_core"] is False
-    assert body["modifica_regimen_asientos_prioritarios"] is False
-    assert body["impone_cargas_al_chofer"] is False
-    assert body["genera_sanciones_a_pasajeros"] is False
-    assert body["modifica_recaudacion_sube"] is False
-    assert body["bono_solidario_es_core_inicial"] is False
-    assert body["bono_solidario_es_evolucion_futura"] is True
-    assert body["integraciones_externas_reales"] is False
+    data = response.json()
 
+    assert data["naturaleza"] == "MVP conceptual, técnico y demostrativo"
+    assert data["implementacion_productiva"] is False
+    assert data["integracion_real_con_organismos"] is False
+    assert data["modificacion_sistema_sube"] is False
+    assert data["procesamiento_datos_medicos"] is False
+    assert data["procesamiento_datos_identificatorios"] is False
 
-def test_verificar_prioridad_endpoint_aprueba_token_valido():
-    token = "a" * 64
+    assert "privacidad por diseño" in data["principios"]
+    assert "minimización de datos" in data["principios"]
+    assert "no exposición de diagnósticos" in data["principios"]
+    assert "atributo técnico de prioridad" in data["principios"]
+    assert "no sustitución de asientos prioritarios" in data["principios"]
+    assert "no imposición de nuevas cargas al chofer" in data["principios"]
 
-    response = client.post(
-        "/api/v1/prioridad/verificar",
-        json={
-            "token_tramite_hash": token,
-            "firma_digital_medico": "firma-demo",
-            "entidad_emisora": "entidad-demo",
-            "perfil_asistencia_preferido": 2,
-        },
-    )
+    assert "DNI" in data["datos_no_procesados_en_core"]
+    assert "diagnóstico médico" in data["datos_no_procesados_en_core"]
+    assert "historia clínica" in data["datos_no_procesados_en_core"]
+    assert "certificado médico en texto plano" in data["datos_no_procesados_en_core"]
 
-    assert response.status_code == 200
-    body = response.json()
-
-    assert body["atributo_prioridad_activo"] is True
-    assert body["perfil_alertas_ux"] == 2
-    assert "fecha_caducidad" in body
-    assert "MVP" in body["motivo"]
-    assert body["entorno"] == "simulado_mvp"
-    assert body["datos_sensibles_procesados"] is False
-    assert body["integracion_real_con_organismos"] is False
+    assert data["integraciones"]["sube"] == "no integrada en este MVP"
+    assert data["integraciones"]["mi_argentina"] == "no integrada en este MVP"
+    assert data["integraciones"]["nacion_servicios"] == "no integrada en este MVP"
 
 
-def test_verificar_prioridad_endpoint_respeta_preferencia_visible():
-    token = "b" * 64
+def test_verificar_prioridad_activa():
+    payload = {
+        "token_prioridad": "demo-prioridad-activa",
+        "linea": "60",
+        "unidad": "1234",
+    }
 
-    response = client.post(
-        "/api/v1/prioridad/verificar",
-        json={
-            "token_tramite_hash": token,
-            "perfil_asistencia_preferido": 3,
-        },
-    )
+    response = client.post("/api/v1/prioridad/verificar", json=payload)
 
     assert response.status_code == 200
-    body = response.json()
 
-    assert body["perfil_alertas_ux"] == 3
+    data = response.json()
 
-
-def test_verificar_prioridad_endpoint_rechaza_token_corto():
-    response = client.post(
-        "/api/v1/prioridad/verificar",
-        json={
-            "token_tramite_hash": "abc",
-        },
-    )
-
-    assert response.status_code == 422
+    assert data["prioridad_activa"] is True
+    assert data["perfil_ux"] == "preventiva"
+    assert data["fecha_caducidad"] is not None
+    assert data["motivo"] == "Atributo técnico de prioridad activo en entorno MVP conceptual."
+    assert data["entorno"] == "mvp-conceptual"
+    assert data["datos_sensibles_procesados"] is False
+    assert data["integracion_real_con_organismos"] is False
 
 
-def test_verificar_prioridad_endpoint_rechaza_token_no_alfanumerico():
-    token = "a" * 63 + "-"
+def test_verificar_prioridad_inactiva():
+    payload = {
+        "token_prioridad": "demo-prioridad-inactiva",
+        "linea": "60",
+        "unidad": "1234",
+    }
 
-    response = client.post(
-        "/api/v1/prioridad/verificar",
-        json={
-            "token_tramite_hash": token,
-        },
-    )
+    response = client.post("/api/v1/prioridad/verificar", json=payload)
 
-    assert response.status_code == 400
+    assert response.status_code == 200
+
+    data = response.json()
+
+    assert data["prioridad_activa"] is False
+    assert data["perfil_ux"] == "sin_prioridad_operativa"
+    assert data["fecha_caducidad"] is None
+    assert data["motivo"] == "No se registra atributo técnico activo en la simulación del MVP."
+    assert data["entorno"] == "mvp-conceptual"
+    assert data["datos_sensibles_procesados"] is False
+    assert data["integracion_real_con_organismos"] is False
 
 
-def test_verificar_prioridad_endpoint_rechaza_perfil_fuera_de_rango():
-    token = "c" * 64
+def test_verificar_prioridad_sin_datos_sensibles():
+    payload = {
+        "token_prioridad": "token-tecnico-demo",
+    }
 
-    response = client.post(
-        "/api/v1/prioridad/verificar",
-        json={
-            "token_tramite_hash": token,
-            "perfil_asistencia_preferido": 9,
-        },
-    )
+    response = client.post("/api/v1/prioridad/verificar", json=payload)
+
+    assert response.status_code == 200
+
+    data = response.json()
+
+    assert "diagnostico" not in data
+    assert "diagnóstico" not in data
+    assert "dni" not in data
+    assert "nombre" not in data
+    assert "apellido" not in data
+    assert "historia_clinica" not in data
+    assert "certificado_medico" not in data
+
+    assert data["datos_sensibles_procesados"] is False
+    assert data["integracion_real_con_organismos"] is False
+
+
+def test_verificar_prioridad_request_invalido_sin_token():
+    payload = {
+        "linea": "60",
+        "unidad": "1234",
+    }
+
+    response = client.post("/api/v1/prioridad/verificar", json=payload)
 
     assert response.status_code == 422
