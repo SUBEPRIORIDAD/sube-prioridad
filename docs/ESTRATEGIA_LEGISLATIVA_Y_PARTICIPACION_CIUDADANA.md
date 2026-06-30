@@ -2,381 +2,932 @@
 
 ## 1. Propósito del documento
 
-Este documento describe una estrategia institucional orientativa para facilitar el análisis legislativo, administrativo y ciudadano de SUBE Prioridad en el ámbito de la República Argentina.
+El presente documento ordena una estrategia legislativa, administrativa e institucional para impulsar el análisis de la iniciativa **SUBE Prioridad**.
 
-No constituye asesoramiento legislativo definitivo, proyecto normativo cerrado ni instrucción dirigida a autoridad alguna.
+Su finalidad es establecer un camino prudente para presentar la propuesta ante legisladores, autoridades públicas, organismos técnicos, universidades, organizaciones sociales, cámaras de transporte, municipios y ciudadanía.
 
-Su finalidad es ordenar los elementos que permitirían presentar la propuesta ante organismos públicos, legisladores, áreas técnicas, universidades, organizaciones de la sociedad civil y ciudadanía interesada.
+El objetivo no es solicitar una implementación inmediata, obligatoria o nacional.
 
-SUBE Prioridad se concibe como una propuesta ciudadana de innovación pública destinada a fortalecer la accesibilidad, la asistencia preventiva y la convivencia dentro del transporte público.
+El objetivo es promover una evaluación seria, técnica, jurídica, operativa, presupuestaria, sanitaria, social, institucional y de protección de datos personales, con miras a una eventual prueba piloto limitada, voluntaria, reversible y auditable.
 
 ---
 
 ## 2. Naturaleza de la iniciativa
 
-SUBE Prioridad no debe presentarse como un sistema terminado ni como una implementación actualmente desplegada.
+SUBE Prioridad es una propuesta ciudadana de innovación pública.
 
-Debe presentarse como:
+Se presenta como:
 
-```text
-propuesta ciudadana
-+
-arquitectura de referencia
-+
-MVP conceptual
-+
-pedido de evaluación institucional
-+
-posible prueba piloto gradual
-```
+* MVP conceptual y demostrativo;
+* arquitectura de referencia;
+* documentación técnica e institucional;
+* propuesta de evaluación pública;
+* posible base para prueba piloto;
+* estrategia gradual de accesibilidad efectiva.
 
-La iniciativa pone a disposición del Estado una arquitectura conceptual y técnica que puede ser analizada, modificada, simplificada, descartada o eventualmente implementada por las autoridades competentes.
+No constituye una política pública vigente.
+
+No representa una integración real actual con organismos públicos.
+
+No modifica el sistema SUBE.
+
+No obliga a operadores ni choferes.
+
+No sustituye el régimen legal de asientos prioritarios.
+
+No procesa diagnósticos médicos ni historia clínica en el núcleo operativo del MVP.
 
 ---
 
 ## 3. Objetivo institucional
 
-El objetivo institucional de SUBE Prioridad es promover el análisis de una herramienta complementaria que permita facilitar que personas con una necesidad previamente acreditada de viajar sentadas puedan acceder a condiciones de viaje más seguras, respetuosas y adecuadas.
+El objetivo institucional principal es que la iniciativa sea recibida, registrada, analizada y evaluada por las autoridades competentes.
 
-La propuesta no busca:
-
-* modificar el régimen vigente de asientos prioritarios;
-* sustituir obligaciones legales existentes;
-* crear un subsidio;
-* crear un beneficio tarifario;
-* imponer sanciones a pasajeros;
-* trasladar nuevas cargas operativas al chofer;
-* exponer diagnósticos médicos;
-* implementar integraciones reales sin autorización.
-
-Su finalidad es analizar mecanismos de asistencia preventiva, accesibilidad efectiva y cooperación ciudadana dentro del transporte público.
-
----
-
-## 4. Eje legislativo principal
-
-La estrategia legislativa debería centrarse en un objetivo prudente:
+La solicitud recomendada es:
 
 ```text
-promover la evaluación de factibilidad y eventual prueba piloto de SUBE Prioridad
+Tener por presentada la iniciativa ciudadana SUBE Prioridad
+y disponer su análisis técnico, jurídico, operativo, presupuestario,
+sanitario, social, institucional y de protección de datos personales,
+a fin de evaluar la factibilidad de una eventual prueba piloto
+limitada, voluntaria, reversible y auditable.
 ```
 
-No resulta recomendable iniciar con una norma que ordene la implementación nacional inmediata.
-
-La primera etapa debería apuntar a que el Congreso Nacional, autoridades administrativas o áreas competentes puedan:
-
-* tomar conocimiento formal de la iniciativa;
-* analizar sus fundamentos;
-* requerir informes técnicos;
-* convocar organismos competentes;
-* evaluar su viabilidad;
-* considerar una prueba piloto;
-* establecer criterios de protección de datos;
-* delimitar responsabilidades;
-* preservar derechos existentes.
+Esta fórmula evita promesas excesivas y respeta las competencias públicas.
 
 ---
 
-## 5. Modelo normativo recomendado
+## 4. Enfoque estratégico
 
-Una vía prudente podría consistir en impulsar una norma de evaluación o promoción institucional, antes que una obligación de implementación plena.
-
-El modelo normativo podría tener como objeto:
-
-1. Declarar de interés el análisis de herramientas tecnológicas orientadas a mejorar la accesibilidad efectiva en el transporte público.
-2. Encomendar a las autoridades competentes la evaluación técnica, jurídica, presupuestaria, operativa y social de SUBE Prioridad.
-3. Autorizar o promover el diseño de pruebas piloto limitadas, voluntarias, reversibles y auditables.
-4. Exigir protección de datos personales y minimización de información sensible.
-5. Garantizar que la propuesta no altere derechos vigentes ni el régimen legal de asientos prioritarios.
-6. Establecer que toda interoperabilidad real requerirá autorización y marco jurídico suficiente.
-7. Prever participación de organismos especializados, usuarios y actores del sistema de transporte.
-
----
-
-## 6. Prueba piloto como primer objetivo concreto
-
-La prueba piloto debe ser el primer objetivo operativo realista.
-
-Una prueba piloto permite:
-
-* evaluar el funcionamiento en escala reducida;
-* identificar riesgos;
-* medir aceptación social;
-* ajustar la experiencia de usuario;
-* verificar impactos operativos;
-* preservar reversibilidad;
-* evitar compromisos presupuestarios prematuros;
-* producir evidencia antes de escalar.
-
-La prueba piloto podría desarrollarse en:
-
-* una línea de colectivo;
-* pocas líneas seleccionadas;
-* un municipio;
-* un corredor determinado;
-* un ámbito universitario o institucional;
-* una jurisdicción que acepte participar voluntariamente.
-
----
-
-## 7. Rol de las firmas ciudadanas
-
-Las firmas de apoyo ciudadano cumplen una función política, institucional y social.
-
-No sustituyen la evaluación técnica ni la decisión de las autoridades competentes, pero permiten demostrar que la propuesta despierta interés público y que existe una comunidad dispuesta a promover su tratamiento.
-
-Las firmas pueden utilizarse para:
-
-* acompañar presentaciones institucionales;
-* solicitar audiencias;
-* respaldar petitorios;
-* demostrar interés social;
-* impulsar tratamiento legislativo;
-* fortalecer la legitimidad ciudadana del proyecto;
-* visibilizar necesidades cotidianas de accesibilidad efectiva.
-
-La campaña de firmas debe mantener un mensaje claro:
+La estrategia debe apoyarse en tres ideas centrales:
 
 ```text
-No se solicita implementación inmediata.
-Se solicita evaluación responsable y prueba piloto.
+no implementación inmediata
+↓
+evaluación institucional seria
+↓
+eventual prueba piloto limitada
+```
+
+SUBE Prioridad debe ser presentado como una propuesta razonable, gradual y evaluable.
+
+No debe presentarse como una solución cerrada, definitiva o técnicamente impuesta.
+
+La fortaleza institucional del proyecto está en su prudencia.
+
+---
+
+## 5. Primer objetivo concreto: apertura de expediente o recepción formal
+
+El primer objetivo institucional debería ser lograr que una autoridad competente reciba formalmente la propuesta.
+
+Ello puede ocurrir mediante:
+
+* presentación administrativa;
+* nota de solicitud;
+* petitorio ciudadano;
+* pedido de audiencia;
+* proyecto de resolución;
+* declaración de interés;
+* comunicación legislativa;
+* expediente municipal;
+* expediente provincial;
+* expediente nacional;
+* reunión técnica documentada.
+
+La recepción formal permite dar trazabilidad institucional al proyecto.
+
+---
+
+## 6. Segunda meta: evaluación interdisciplinaria
+
+Una vez recibida la iniciativa, la meta siguiente debería ser solicitar evaluación por áreas competentes.
+
+Entre ellas podrían intervenir, según corresponda:
+
+* transporte;
+* discapacidad;
+* accesibilidad;
+* salud;
+* protección de datos personales;
+* innovación pública;
+* asuntos jurídicos;
+* modernización;
+* operadores de transporte;
+* universidades;
+* organizaciones sociales;
+* áreas municipales;
+* cámaras empresarias;
+* usuarios.
+
+La evaluación debe ser interdisciplinaria porque el problema no es sólo técnico.
+
+También es jurídico, social, operativo, sanitario, comunicacional y ético.
+
+---
+
+## 7. Tercera meta: eventual prueba piloto
+
+Sólo después de una evaluación previa debería analizarse una prueba piloto.
+
+La prueba piloto debería ser:
+
+```text
+limitada
+voluntaria
+temporal
+reversible
+auditable
+documentada
+respetuosa de la privacidad
+no discriminatoria
+institucionalmente autorizada
+```
+
+La prueba piloto no debe ser presentada como implementación definitiva.
+
+Debe ser presentada como herramienta de aprendizaje institucional.
+
+---
+
+## 8. Vías posibles de impulso
+
+La iniciativa puede impulsarse por distintas vías, no excluyentes entre sí.
+
+### 8.1. Vía legislativa
+
+Mediante proyectos de resolución, comunicación, declaración de interés o pedidos de informe.
+
+Esta vía permite visibilizar la propuesta y solicitar intervención de áreas competentes.
+
+### 8.2. Vía administrativa
+
+Mediante presentaciones ante ministerios, secretarías, agencias, direcciones de transporte, áreas de discapacidad, innovación pública o protección de datos.
+
+Esta vía puede ser más directa para evaluar factibilidad técnica y operativa.
+
+### 8.3. Vía municipal
+
+Mediante concejos deliberantes, áreas municipales de discapacidad, salud, transporte, innovación pública o participación ciudadana.
+
+Esta vía puede ser útil para una prueba piloto territorial limitada.
+
+### 8.4. Vía universitaria o técnica
+
+Mediante convenios de investigación, laboratorios, evaluaciones de accesibilidad, estudios de usuarios o simulaciones técnicas.
+
+Esta vía puede fortalecer evidencia y diseño.
+
+### 8.5. Vía ciudadana
+
+Mediante firmas, petitorios, campañas de difusión, reuniones abiertas y acompañamiento de usuarios.
+
+Esta vía aporta legitimidad social y demuestra interés ciudadano.
+
+---
+
+## 9. Estrategia legislativa recomendada
+
+La estrategia legislativa más prudente consiste en promover un proyecto de resolución o comunicación que solicite evaluación, no implementación obligatoria.
+
+El proyecto debería pedir:
+
+* recepción de la iniciativa;
+* análisis por áreas competentes;
+* evaluación jurídica;
+* evaluación técnica;
+* evaluación operativa;
+* evaluación presupuestaria;
+* evaluación sanitaria;
+* evaluación social;
+* evaluación de protección de datos;
+* posibilidad de prueba piloto;
+* informe final.
+
+Debe evitarse redactar artículos que ordenen modificar validadoras, integrar bases de datos o implementar el sistema de manera inmediata.
+
+---
+
+## 10. Modelo normativo recomendado
+
+El modelo normativo recomendado es:
+
+```text
+Proyecto de Resolución
+↓
+Solicitud de análisis institucional
+↓
+Evaluación de factibilidad
+↓
+Eventual prueba piloto
+↓
+Informe final
+```
+
+Este modelo es jurídicamente más defendible que una ley de implementación inmediata.
+
+También permite construir consensos y corregir riesgos antes de escalar.
+
+---
+
+## 11. Declaración de interés
+
+Una declaración de interés puede ser útil como primer paso político o institucional.
+
+Sin embargo, no debería confundirse con una autorización de implementación.
+
+La declaración de interés puede reconocer:
+
+* valor social de la propuesta;
+* innovación pública;
+* accesibilidad efectiva;
+* protección de datos;
+* participación ciudadana;
+* necesidad de evaluación institucional.
+
+Pero debe aclarar que cualquier avance real requiere autoridad competente y análisis previo.
+
+---
+
+## 12. Pedido de audiencia
+
+El pedido de audiencia puede dirigirse a:
+
+* legisladores;
+* asesores;
+* ministerios;
+* secretarías;
+* direcciones de transporte;
+* áreas de discapacidad;
+* municipios;
+* universidades;
+* cámaras de transporte;
+* organismos de protección de datos;
+* defensorías;
+* organismos de usuarios.
+
+La audiencia debe tener un objetivo concreto:
+
+```text
+presentar la iniciativa
+entregar documentación
+solicitar evaluación
+explorar factibilidad de prueba piloto
 ```
 
 ---
 
-## 8. Mensaje público recomendado
+## 13. Petitorio ciudadano
 
-La comunicación pública debe evitar afirmaciones absolutas o técnicamente no verificadas.
+El petitorio ciudadano debe ser claro y prudente.
 
-No conviene afirmar:
+No debe pedir una implementación inmediata.
 
-* que el sistema ya está integrado a organismos públicos;
-* que funciona sobre infraestructura productiva real;
-* que tiene costo cero;
-* que elimina totalmente el fraude;
-* que resolverá todos los problemas de accesibilidad;
-* que reemplaza el régimen de asientos prioritarios;
-* que el Bono Solidario forma parte de la etapa inicial.
+Debe pedir evaluación institucional.
 
-Mensaje recomendado:
+La fórmula breve recomendada es:
+
+```text
+Solicitamos que la iniciativa ciudadana SUBE Prioridad sea recibida y evaluada por las autoridades competentes, a fin de analizar la factibilidad de una prueba piloto limitada, voluntaria, reversible y respetuosa de la privacidad.
+```
+
+Las firmas ciudadanas deben recolectarse respetando protección de datos personales.
+
+---
+
+## 14. Rol de las firmas ciudadanas
+
+Las firmas cumplen una función de legitimación social.
+
+Demuestran que existe interés ciudadano en discutir herramientas de accesibilidad efectiva y asistencia preventiva.
+
+Sin embargo, las firmas no sustituyen:
+
+* evaluación técnica;
+* evaluación jurídica;
+* autorización institucional;
+* protección de datos;
+* análisis presupuestario;
+* intervención de autoridad competente.
+
+Las firmas acompañan la presentación, no implementan el sistema.
+
+---
+
+## 15. Campaña ciudadana
+
+La campaña ciudadana debe comunicar el proyecto de manera simple, veraz y responsable.
+
+Mensajes recomendados:
+
+```text
+SUBE Prioridad busca ayudar a quienes necesitan viajar sentados sin exponer diagnósticos.
+```
+
+```text
+No pedimos implementación inmediata: pedimos evaluación y prueba piloto.
+```
+
+```text
+La accesibilidad también es privacidad, dignidad y convivencia.
+```
+
+```text
+La tecnología puede facilitar solidaridad sin revelar información sensible.
+```
+
+Debe evitarse lenguaje exagerado o promesas de funcionamiento inmediato.
+
+---
+
+## 16. Mensaje público principal
+
+El mensaje institucional principal recomendado es:
 
 ```text
 SUBE Prioridad es una propuesta ciudadana de innovación pública que busca ser evaluada por las autoridades competentes para analizar una prueba piloto gradual, voluntaria y respetuosa de la privacidad, destinada a fortalecer la accesibilidad efectiva y la asistencia preventiva en el transporte público.
 ```
 
+Este mensaje debe ser utilizado en presentaciones, notas, entrevistas, publicaciones y reuniones.
+
 ---
 
-## 9. Actores institucionales a involucrar
+## 17. Actores institucionales posibles
 
-La evaluación de SUBE Prioridad podría requerir la intervención o consulta de diversos actores, según competencia y etapa del proyecto.
+Según la jurisdicción y estrategia, podrían considerarse los siguientes actores:
 
-Entre ellos:
-
-* organismos nacionales de transporte;
-* autoridades de accesibilidad;
-* organismos vinculados a discapacidad;
-* áreas de protección de datos personales;
-* áreas de modernización e innovación pública;
+* Ministerio o Secretaría de Transporte;
+* áreas de discapacidad;
+* áreas de accesibilidad;
+* autoridad de protección de datos personales;
+* organismos de innovación pública;
+* municipios;
+* concejos deliberantes;
+* legislaturas provinciales;
+* Congreso Nacional;
 * operadores de transporte;
-* jurisdicciones provinciales o municipales;
+* cámaras empresarias;
 * universidades;
-* especialistas en experiencia de usuario;
-* organizaciones de personas con discapacidad;
-* personas mayores;
-* personas gestantes;
-* usuarios del transporte público;
-* especialistas en derecho administrativo, tecnología y datos personales.
+* fundaciones;
+* organizaciones de usuarios;
+* defensorías del pueblo;
+* centros de salud;
+* instituciones de rehabilitación.
 
-La participación debe orientarse a mejorar la calidad del diseño y detectar riesgos antes de cualquier implementación.
-
----
-
-## 10. Dossier institucional mínimo
-
-Para presentar el proyecto ante legisladores o autoridades, se recomienda contar con un dossier institucional breve.
-
-Ese dossier debería incluir:
-
-1. Síntesis ejecutiva.
-2. Problema público identificado.
-3. Objetivo de SUBE Prioridad.
-4. Qué es y qué no es la propuesta.
-5. Principios de privacidad y minimización de datos.
-6. Explicación del MVP conceptual.
-7. Arquitectura de referencia.
-8. Roadmap de implementación gradual.
-9. Propuesta de prueba piloto.
-10. Petitorio.
-11. Anexos técnicos.
-12. Firmas ciudadanas de apoyo.
-
-El dossier debe ser más breve que el pliego técnico y estar redactado para lectura institucional rápida.
+La mención de actores no implica designación formal ni aval.
 
 ---
 
-## 11. Diferencia entre expediente, repositorio y campaña ciudadana
+## 18. Estrategia territorial inicial
 
-SUBE Prioridad puede organizarse en tres planos complementarios.
+Una estrategia territorial inicial podría concentrarse en un municipio o corredor específico.
 
-### Expediente institucional
+El caso de San Isidro o zonas del AMBA puede resultar útil para una evaluación preliminar por:
 
-Contiene la fundamentación jurídica, social, médica, técnica y operativa destinada a autoridades públicas.
+* presencia de transporte urbano y metropolitano;
+* cercanía a centros de salud;
+* posibilidades de articulación municipal;
+* existencia de universidades y organizaciones cercanas;
+* oportunidad institucional derivada de políticas de accesibilidad cognitiva;
+* diversidad de usuarios;
+* posibilidad de prueba piloto limitada.
 
-### Repositorio técnico
-
-Contiene el MVP, documentación de arquitectura, guardrails, roadmap, decisiones de diseño y documentación abierta del proyecto.
-
-### Campaña ciudadana
-
-Contiene firmas, mensajes públicos, pedidos de audiencia, difusión social y acompañamiento ciudadano.
-
-Los tres planos deben ser coherentes, pero no deben mezclarse sin orden.
+La selección final debe ser definida por autoridad competente.
 
 ---
 
-## 12. Riesgos a evitar en la estrategia legislativa
+## 19. Articulación con Provincia de Buenos Aires
 
-La estrategia legislativa debe evitar:
+La reciente tendencia normativa en la Provincia de Buenos Aires orientada a colectivos inclusivos, pictogramas y accesibilidad cognitiva permite presentar SUBE Prioridad como una herramienta complementaria.
 
-* sobredimensionar el estado actual del MVP;
-* presentar simulaciones como integraciones reales;
-* prometer implementación inmediata nacional;
-* presentar el Bono Solidario como núcleo inicial;
-* generar confusión con subsidios o tarifas;
-* insinuar tratamiento de diagnósticos médicos por el sistema;
-* atribuir obligaciones nuevas al chofer;
-* afectar derechos reconocidos;
-* usar lenguaje confrontativo;
-* convertir una propuesta de asistencia en una herramienta de control social.
+La propuesta puede vincularse con:
 
-El enfoque debe ser institucional, prudente y propositivo.
-
----
-
-## 13. Enfoque de derechos
-
-La propuesta debe vincularse con la accesibilidad efectiva, la dignidad, la autonomía personal, la protección de datos y la igualdad real de oportunidades.
-
-El eje no debe ser tecnológico en abstracto.
-
-La tecnología es un medio para facilitar una interacción social más respetuosa dentro del transporte público.
-
-El centro del proyecto debe ser la persona que necesita asistencia y la posibilidad de que el sistema ayude sin exponerla innecesariamente.
-
----
-
-## 14. Enfoque federal
-
-Aunque SUBE Prioridad pueda pensarse inicialmente dentro del ecosistema SUBE, la arquitectura debe conservar un enfoque federal y adaptable.
-
-Una eventual evolución nacional debería considerar:
-
-* diversidad de jurisdicciones;
-* distintos operadores;
-* diferentes realidades urbanas;
-* transporte urbano, suburbano e interurbano;
-* infraestructura tecnológica desigual;
-* brecha digital;
-* necesidades locales;
-* gradualidad presupuestaria.
-
-La arquitectura no debe depender de una única modalidad de implementación.
-
----
-
-## 15. Propuesta de formulación legislativa inicial
-
-Una formulación legislativa prudente podría orientarse a:
-
-```text
-Promover la evaluación de factibilidad técnica, jurídica, presupuestaria, operativa y social de una herramienta de asistencia preventiva en el transporte público denominada SUBE Prioridad, destinada a fortalecer la accesibilidad efectiva, la protección de la dignidad y la convivencia ciudadana, mediante mecanismos graduales, voluntarios, reversibles y respetuosos de la privacidad.
-```
-
-Esta formulación evita imponer implementación inmediata y permite abrir el análisis institucional.
-
----
-
-## 16. Objetivo de corto plazo
-
-El objetivo de corto plazo debería ser:
-
-```text
-lograr que la propuesta sea formalmente recibida, analizada y considerada para una prueba piloto
-```
-
-Para ello se recomienda consolidar:
-
-* README público prudente;
-* arquitectura de referencia;
-* roadmap;
-* principios de gobernanza;
-* documento de estrategia legislativa;
-* dossier institucional breve;
-* petitorio;
-* firmas ciudadanas;
-* anexos técnicos ordenados.
-
----
-
-## 17. Objetivo de mediano plazo
-
-El objetivo de mediano plazo debería ser la conformación de una instancia de evaluación técnica e institucional.
-
-Esa instancia podría analizar:
-
-* viabilidad de una prueba piloto;
-* organismos intervinientes;
-* alcance territorial;
-* requisitos de privacidad;
-* costos;
-* responsabilidades;
-* accesibilidad;
-* métricas de evaluación;
-* riesgos;
-* condiciones de escalabilidad.
-
----
-
-## 18. Objetivo de largo plazo
-
-El objetivo de largo plazo consiste en que SUBE Prioridad pueda evolucionar, si resulta viable, desde una prueba piloto limitada hacia una política pública escalable.
-
-Esa evolución sólo debería producirse si las etapas previas demuestran:
-
-* utilidad pública;
-* aceptación social;
-* protección efectiva de datos;
-* viabilidad técnica;
-* sostenibilidad presupuestaria;
-* compatibilidad operativa;
-* ausencia de impactos negativos relevantes;
-* decisión institucional expresa.
-
----
-
-## 19. Proyección internacional
-
-La arquitectura de SUBE Prioridad puede documentarse como modelo adaptable para otras jurisdicciones, regiones o países.
-
-Esta proyección no debe presentarse como exportación de una implementación cerrada, sino como una arquitectura de referencia basada en principios reutilizables:
-
+* comunicación accesible;
+* convivencia dentro de las unidades;
 * asistencia preventiva;
-* privacidad por diseño;
-* atributo técnico de prioridad;
-* neutralidad tecnológica;
-* implementación gradual;
-* interoperabilidad responsable;
-* gobernanza pública;
-* evaluación contextual.
+* orientación visual;
+* reducción de barreras cognitivas;
+* privacidad;
+* dignidad;
+* no exposición de diagnósticos.
 
-Cada país o región debería adaptar el modelo a su propio sistema de transporte, marco jurídico e infraestructura.
+Esta articulación no implica implementación automática ni obligación directa.
+
+Representa una oportunidad institucional para evaluar soluciones complementarias.
 
 ---
 
-## 20. Declaración final
+## 20. Articulación con Nación
 
-La viabilidad institucional de SUBE Prioridad depende de sostener una estrategia prudente, transparente y gradual.
+La articulación nacional podría ser necesaria si se analiza cualquier relación futura con el sistema SUBE, infraestructura de transporte, estándares técnicos, interoperabilidad o políticas federales.
 
-La propuesta debe presentarse como una iniciativa ciudadana seria, abierta y documentada, orientada a que las autoridades competentes evalúen su factibilidad y, eventualmente, consideren una prueba piloto.
+La presentación ante organismos nacionales debe ser especialmente prudente.
 
-El objetivo no es imponer una solución cerrada, sino ofrecer una arquitectura de innovación pública capaz de ser analizada, mejorada y adaptada en beneficio de la accesibilidad efectiva, la dignidad de las personas y la convivencia ciudadana en el transporte público.
+No debe afirmarse que el proyecto ya está integrado al sistema SUBE.
+
+Debe solicitarse análisis de factibilidad.
+
+La fórmula adecuada es:
+
+```text
+evaluar si la arquitectura conceptual de SUBE Prioridad puede ser considerada como base para una eventual prueba piloto, sin modificación productiva del sistema SUBE ni integración real sin autorización previa.
+```
+
+---
+
+## 21. Articulación con municipios
+
+Los municipios pueden tener un rol relevante en:
+
+* identificación de necesidades locales;
+* contacto con usuarios;
+* áreas de discapacidad;
+* centros de salud;
+* campañas de comunicación;
+* accesibilidad territorial;
+* articulación con organizaciones sociales;
+* evaluación de prueba piloto;
+* recepción de reclamos;
+* acompañamiento comunitario.
+
+La competencia municipal debe analizarse caso por caso, especialmente cuando intervienen líneas bajo jurisdicción provincial o nacional.
+
+---
+
+## 22. Articulación con universidades
+
+Las universidades pueden aportar:
+
+* metodología de evaluación;
+* diseño de indicadores;
+* accesibilidad;
+* protección de datos;
+* ingeniería;
+* salud pública;
+* derecho;
+* arquitectura;
+* diseño universal;
+* evaluación de experiencia de usuario;
+* informes técnicos.
+
+Su participación debe respetar confidencialidad, protección de datos y límites claros de acceso a información.
+
+---
+
+## 23. Articulación con organizaciones sociales
+
+Las organizaciones sociales pueden aportar experiencia directa sobre barreras reales en el transporte público.
+
+Pueden colaborar en:
+
+* validación de problemas;
+* comunicación accesible;
+* consulta a usuarios;
+* identificación de riesgos;
+* mejora del diseño;
+* evaluación cualitativa;
+* difusión responsable.
+
+La participación debe evitar instrumentalizar a personas vulnerables o exponer situaciones personales.
+
+---
+
+## 24. Articulación con operadores de transporte
+
+Los operadores de transporte deberían ser convocados en una etapa de evaluación operativa.
+
+Su aporte puede ser importante para analizar:
+
+* factibilidad técnica;
+* carga operativa;
+* comunicación al chofer;
+* infraestructura disponible;
+* incidentes;
+* costos;
+* mantenimiento;
+* horarios;
+* líneas posibles;
+* protocolos existentes.
+
+No deben asumir competencias médicas ni decidir quién merece asistencia.
+
+---
+
+## 25. Protección de datos como eje de viabilidad
+
+Toda estrategia institucional debe colocar la protección de datos personales en el centro.
+
+La privacidad no debe presentarse como un agregado posterior.
+
+Debe ser parte del diseño, del discurso público, del petitorio, del proyecto normativo y de la prueba piloto.
+
+La frase rectora es:
+
+```text
+asistencia preventiva sin exposición de información sensible
+```
+
+---
+
+## 26. Riesgos comunicacionales a evitar
+
+La comunicación pública debe evitar:
+
+* afirmar que el sistema ya funciona en SUBE;
+* afirmar que ya existe integración con organismos;
+* prometer implementación nacional inmediata;
+* decir que se procesarán certificados médicos;
+* presentar alertas que revelen diagnósticos;
+* hablar de sanciones o castigos;
+* convertir el Bono Solidario en obligación;
+* afirmar que el chofer deberá resolver prioridades;
+* confundir prueba piloto con implementación definitiva;
+* utilizar lenguaje alarmista.
+
+La credibilidad del proyecto depende de la precisión del mensaje.
+
+---
+
+## 27. Riesgos institucionales a evitar
+
+La estrategia institucional debe evitar:
+
+* presentar documentación conceptual como decisión administrativa;
+* designar actores sin autorización;
+* comprometer a líneas, universidades o fundaciones sin acuerdo;
+* pedir modificación de validadoras sin evaluación;
+* pedir cruces de bases de datos sin marco jurídico;
+* omitir protección de datos;
+* omitir costos;
+* omitir impacto operativo;
+* omitir el rol del chofer;
+* ignorar competencias jurisdiccionales;
+* tratar el MVP como producto final.
+
+---
+
+## 28. Dossier institucional mínimo
+
+Para una presentación inicial se recomienda acompañar:
+
+* `README.md`;
+* `docs/DOSSIER_INSTITUCIONAL_BREVE.md`;
+* `docs/PETITORIO_MODELO.md`;
+* `docs/MODELO_PROYECTO_RESOLUCION.md`;
+* `docs/PRUEBA_PILOTO_MODELO.md`;
+* `docs/PROTOCOLO_OPERATIVO.md`;
+* `docs/PROTECCION_DATOS_PERSONALES.md`;
+* `docs/FUNDAMENTOS_JURIDICOS.md`;
+* `docs/FUNDAMENTOS_MEDICOS.md`;
+* `docs/INDICE_DOCUMENTAL.md`.
+
+No es necesario entregar inicialmente todos los documentos técnicos extensos.
+
+---
+
+## 29. Secuencia recomendada de acción
+
+Una secuencia prudente sería:
+
+```text
+ordenar repositorio público
+↓
+preparar dossier institucional breve
+↓
+reunir firmas ciudadanas
+↓
+solicitar audiencia
+↓
+presentar petitorio
+↓
+impulsar proyecto de resolución
+↓
+solicitar evaluación técnica
+↓
+evaluar prueba piloto
+↓
+elaborar informe
+↓
+decidir continuidad, ajuste o cierre
+```
+
+Esta secuencia permite avanzar sin sobreactuar el estado actual del proyecto.
+
+---
+
+## 30. Uso del repositorio público
+
+El repositorio público debe funcionar como respaldo documental y técnico.
+
+Debe mostrar:
+
+* código demostrativo;
+* límites del MVP;
+* documentación institucional;
+* privacidad por diseño;
+* fundamentos jurídicos;
+* fundamentos médicos;
+* protocolo operativo;
+* modelo de prueba piloto;
+* ausencia de implementación productiva;
+* ausencia de integración real.
+
+El repositorio no debe exagerar capacidades técnicas ni prometer funcionamiento real no autorizado.
+
+---
+
+## 31. Relación con medios de comunicación
+
+La relación con medios debe ser prudente.
+
+El mensaje debe centrarse en:
+
+* accesibilidad efectiva;
+* personas con necesidades no visibles;
+* dignidad;
+* privacidad;
+* solidaridad;
+* evaluación institucional;
+* prueba piloto;
+* innovación pública ciudadana.
+
+Debe evitarse presentar el proyecto como si ya estuviera aprobado o funcionando.
+
+---
+
+## 32. Frase breve para medios
+
+Una frase sugerida para medios:
+
+```text
+SUBE Prioridad propone analizar una herramienta para que personas que necesitan viajar sentadas puedan solicitar asistencia sin exponer diagnósticos. No busca implementación inmediata, sino evaluación institucional y una posible prueba piloto respetuosa de la privacidad.
+```
+
+---
+
+## 33. Frase breve para legisladores
+
+Una frase sugerida para legisladores:
+
+```text
+La propuesta no pide implementar ahora, sino abrir una evaluación técnica, jurídica, operativa y de protección de datos para analizar una prueba piloto de asistencia preventiva en transporte público.
+```
+
+---
+
+## 34. Frase breve para ciudadanía
+
+Una frase sugerida para ciudadanía:
+
+```text
+Pedimos que se evalúe una herramienta para viajar con más dignidad: asistencia para quienes necesitan sentarse, sin obligarlos a explicar su diagnóstico.
+```
+
+---
+
+## 35. Indicadores de avance institucional
+
+El proyecto puede considerar avances institucionales cuando se logre:
+
+* recepción formal de la iniciativa;
+* reunión con autoridad o legislador;
+* ingreso de expediente;
+* pedido de informe;
+* declaración de interés;
+* proyecto de resolución;
+* convocatoria a mesa técnica;
+* consulta a organismos de accesibilidad;
+* consulta a protección de datos;
+* análisis de prueba piloto;
+* informe técnico preliminar.
+
+Cada avance debe documentarse.
+
+---
+
+## 36. Participación ciudadana responsable
+
+La participación ciudadana debe ser respetuosa, inclusiva y no confrontativa.
+
+Debe evitar:
+
+* exposición de historias clínicas;
+* publicación de diagnósticos;
+* presión sobre personas usuarias;
+* ataques a choferes u operadores;
+* promesas falsas;
+* difusión de datos personales;
+* uso partidario excluyente;
+* acusaciones sin fundamento.
+
+La campaña debe construir puentes institucionales.
+
+---
+
+## 37. Protección de datos en firmas y campañas
+
+La recolección de firmas debe respetar protección de datos personales.
+
+Debe informarse:
+
+* finalidad de la recolección;
+* responsable;
+* datos solicitados;
+* uso previsto;
+* posibilidad de baja o rectificación;
+* no uso comercial;
+* no cesión indebida;
+* medidas básicas de resguardo.
+
+Los datos de firmantes no deben usarse para fines incompatibles.
+
+---
+
+## 38. Lenguaje recomendado
+
+Usar lenguaje como:
+
+* propuesta ciudadana;
+* evaluación institucional;
+* prueba piloto;
+* asistencia preventiva;
+* accesibilidad efectiva;
+* privacidad por diseño;
+* alertas genéricas;
+* minimización de datos;
+* no exposición de diagnósticos;
+* gradualidad;
+* reversibilidad;
+* auditabilidad.
+
+---
+
+## 39. Lenguaje a evitar
+
+Evitar expresiones como:
+
+* implementación inmediata;
+* obligación nacional automática;
+* integración ya existente;
+* modificación directa de validadoras;
+* cruzar bases médicas;
+* identificar diagnósticos;
+* sancionar pasajeros;
+* premio obligatorio;
+* ranking de solidaridad;
+* sistema definitivo;
+* costo cero garantizado;
+* blindaje absoluto;
+* tecnología infalible.
+
+---
+
+## 40. Relación con el Bono Solidario
+
+El Bono Solidario debe mantenerse separado del núcleo inicial.
+
+En comunicación pública, se recomienda presentarlo como:
+
+```text
+posible evolución futura sujeta a evaluación específica
+```
+
+No debe ser el centro de la primera presentación institucional.
+
+El eje inicial debe ser asistencia preventiva, accesibilidad, privacidad y prueba piloto.
+
+---
+
+## 41. Relación con documentación técnica
+
+La documentación técnica debe servir como respaldo, no como promesa.
+
+Cuando se presenten documentos técnicos, debe aclararse que:
+
+* son conceptuales;
+* no representan implementación productiva;
+* no acreditan integración real;
+* no sustituyen evaluación oficial;
+* deben ser revisados por autoridad competente;
+* son una base para discutir factibilidad.
+
+---
+
+## 42. Estrategia ante objeciones frecuentes
+
+### Objeción: “Esto invade la privacidad.”
+
+Respuesta sugerida:
+
+```text
+La propuesta fue diseñada precisamente para evitar exposición de diagnósticos. El sistema operativo no debería conocer la causa médica, sino sólo un atributo técnico de prioridad.
+```
+
+### Objeción: “Esto carga más trabajo al chofer.”
+
+Respuesta sugerida:
+
+```text
+El protocolo limita expresamente el rol del chofer. No debe verificar certificados, diagnosticar ni resolver disputas. La herramienta debe reducir conflictos, no trasladarlos al conductor.
+```
+
+### Objeción: “Ya existen asientos prioritarios.”
+
+Respuesta sugerida:
+
+```text
+SUBE Prioridad no reemplaza los asientos prioritarios. Busca complementar su ejercicio cuando la necesidad de asistencia no es visible o cuando pedir ayuda implica exposición.
+```
+
+### Objeción: “Puede ser abusado.”
+
+Respuesta sugerida:
+
+```text
+Por eso se propone una prueba piloto limitada, con acreditación previa, indicadores, criterios de suspensión, protección de datos y evaluación institucional.
+```
+
+### Objeción: “No se puede integrar a SUBE.”
+
+Respuesta sugerida:
+
+```text
+El proyecto no afirma integración actual. Propone una arquitectura conceptual para que la autoridad competente evalúe factibilidad técnica, jurídica y operativa.
+```
+
+---
+
+## 43. Documentos recomendados para cada audiencia
+
+### Legisladores
+
+* Dossier institucional breve;
+* Modelo de proyecto de resolución;
+* Fundamentos jurídicos;
+* Protección de datos personales;
+* Modelo de prueba piloto.
+
+### Autoridades técnicas
+
+* README;
+* Arquitectura de referencia;
+* Protocolo operativo;
+* Protección de datos personales;
+* Decisiones de arquitectura;
+* Roadmap.
+
+### Universidades
+
+* Modelo de prueba piloto;
+* Fundamentos médicos;
+* Protección de datos personales;
+* Protocolo operativo;
+* Indicadores sugeridos.
+
+### Ciudadanía
+
+* Dossier institucional breve;
+* Petitorio modelo;
+* Mensaje público breve;
+* README.
+
+### Medios
+
+* Dossier institucional breve;
+* Mensaje institucional breve;
+* Petitorio ciudadano;
+* Resumen de prueba piloto.
+
+---
+
+## 44. Criterios para decidir cuándo avanzar
+
+Antes de avanzar a una etapa superior debería verificarse:
+
+```text
+[ ] Documentación pública ordenada.
+[ ] Mensaje institucional claro.
+[ ] Protección de datos documentada.
+[ ] Fundamentos jurídicos disponibles.
+[ ] Fundamentos médicos disponibles.
+[ ] Protocolo operativo disponible.
+[ ] Modelo de prueba piloto disponible.
+[ ] Petitorio preparado.
+[ ] Proyecto de resolución preparado.
+[ ] Actores sugeridos identificados como orientativos.
+[ ] Riesgos comunicacionales controlados.
+```
+
+---
+
+## 45. Declaración final
+
+La estrategia legislativa y de participación ciudadana de SUBE Prioridad debe construirse sobre prudencia, claridad y seriedad institucional.
+
+La propuesta no busca imponer una implementación inmediata ni sustituir competencias públicas.
+
+Busca abrir una instancia de evaluación responsable para analizar si una herramienta de asistencia preventiva puede mejorar la accesibilidad efectiva, la privacidad y la convivencia dentro del transporte público.
+
+El camino institucional más sólido es avanzar de manera gradual: documentación, presentación, evaluación, prueba piloto y decisión fundada.
+
+La innovación pública sólo puede sostenerse si respeta derechos, protege datos personales, escucha a los usuarios y se somete a control institucional suficiente.
