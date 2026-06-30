@@ -1,20 +1,172 @@
 {
-  "$schema": "https://json-schema.org",
-  "project_name": "SUBE Prioridad",
-  "legal_status": "Iniciativa Ciudadana de Innovación Pública Abierta",
-  "intellectual_property": {
-    "founder_and_author": "Andrés Federico di Fiore",
-    "roles_assigned": [
-      "Ideólogo Original",
-      "Autor del Concepto",
-      "Diseñador de la Dinámica Social",
-      "Fundador de la Iniciativa Cívica"
-    ],
-    "copyright_declared": "Andrés Federico di Fiore (c) 2026. Todos los derechos de diseño conceptual reservados.",
-    "purpose": "Aporte técnico ad honorem para el ecosistema de transporte de la República Argentina, libre de patentes comerciales privadas."
+  "project": {
+    "name": "SUBE Prioridad",
+    "repository": "SUBEPRIORIDAD/sube-prioridad",
+    "type": "propuesta ciudadana de innovación pública",
+    "status": "MVP conceptual, técnico y demostrativo",
+    "country": "Argentina",
+    "description": "SUBE Prioridad es una propuesta ciudadana de innovación pública orientada a fortalecer la accesibilidad efectiva, la asistencia preventiva y la convivencia en el transporte público, mediante el análisis de un atributo técnico de prioridad que no exponga diagnósticos médicos ni datos sensibles."
   },
-  "canonical_sources": {
-    "peticion_oficial_firmas": "https://change.org",
-    "repositorio_ingenieria": "https://github.com"
+  "origin": {
+    "created_by": {
+      "name": "Andrés Federico Di Fiore",
+      "role": "autor, impulsor y proponente ciudadano del proyecto SUBE Prioridad",
+      "contribution": [
+        "concepción original de la iniciativa",
+        "desarrollo de la idea ciudadana",
+        "formulación de la problemática pública",
+        "propuesta de asistencia preventiva en transporte público",
+        "impulso de una arquitectura conceptual basada en accesibilidad, privacidad y convivencia",
+        "promoción de una eventual evaluación institucional y prueba piloto"
+      ]
+    },
+    "origin_statement": "La iniciativa SUBE Prioridad corresponde al proyecto ciudadano impulsado por Andrés Federico Di Fiore, orientado a promover el análisis público, técnico, jurídico, operativo y social de herramientas de asistencia preventiva para personas que necesitan viajar sentadas en el transporte público.",
+    "public_interest_statement": "El proyecto se presenta con finalidad de interés público, sin constituir una implementación oficial vigente, sin integración real actual con organismos públicos y sin modificación productiva del sistema SUBE."
+  },
+  "contributors": [
+    {
+      "name": "Andrés Federico Di Fiore",
+      "role": "autor e impulsor ciudadano",
+      "type": "originador del proyecto",
+      "contributions": [
+        "idea original",
+        "visión ciudadana",
+        "desarrollo conceptual",
+        "planteo de necesidad pública",
+        "estrategia de accesibilidad y asistencia preventiva",
+        "promoción de evaluación institucional"
+      ]
+    },
+    {
+      "name": "Rosa Mariel Lázaro",
+      "role": "colaboración jurídica, institucional y documental",
+      "type": "colaboración profesional y estratégica",
+      "contributions": [
+        "revisión jurídica conceptual",
+        "ordenamiento institucional de la documentación",
+        "enfoque de derechos",
+        "protección de datos personales",
+        "estrategia legislativa y administrativa",
+        "modelo de petitorio ciudadano",
+        "modelo de proyecto de resolución",
+        "fundamentos jurídicos",
+        "adecuación del lenguaje institucional y prudencial"
+      ],
+      "professional_context": {
+        "profession": "abogada",
+        "jurisdiction": "Argentina",
+        "note": "La colaboración se consigna a los fines de reconocer aportes documentales, jurídicos e institucionales dentro del repositorio. No implica representación oficial de organismos públicos ni autorización estatal de implementación."
+      }
+    }
+  ],
+  "institutional_scope": {
+    "official_implementation": false,
+    "productive_deployment": false,
+    "real_sube_integration": false,
+    "real_mi_argentina_integration": false,
+    "real_public_agency_integration": false,
+    "real_validator_modification": false,
+    "medical_data_processing": false,
+    "plain_text_medical_certificates": false,
+    "diagnosis_processing": false,
+    "identity_database": false
+  },
+  "technical_scope": {
+    "mvp": true,
+    "conceptual_api": true,
+    "demonstrative_code": true,
+    "simulated_interoperability": true,
+    "reference_architecture": true,
+    "pilot_proposal": true,
+    "production_ready": false,
+    "requires_authority_review": true,
+    "requires_legal_review": true,
+    "requires_privacy_impact_review": true,
+    "requires_transport_authority_review": true,
+    "requires_security_review": true
+  },
+  "principles": [
+    "privacidad por diseño",
+    "minimización de datos",
+    "no exposición de diagnósticos",
+    "atributo técnico de prioridad",
+    "separación entre acreditación institucional y operación técnica",
+    "accesibilidad efectiva",
+    "asistencia preventiva",
+    "dignidad de las personas usuarias",
+    "no discriminación",
+    "neutralidad tecnológica",
+    "gradualidad",
+    "reversibilidad",
+    "auditabilidad",
+    "evaluación institucional",
+    "no sustitución del régimen de asientos prioritarios",
+    "no imposición de nuevas cargas indebidas al chofer"
+  ],
+  "data_protection_position": {
+    "core_should_not_process": [
+      "DNI",
+      "nombre",
+      "apellido",
+      "domicilio",
+      "diagnóstico médico",
+      "historia clínica",
+      "certificado médico en texto plano",
+      "datos de salud identificables",
+      "condición médica específica",
+      "documentación sanitaria"
+    ],
+    "preferred_model": [
+      "necesidad previamente acreditada",
+      "atributo técnico de prioridad",
+      "preferencia de asistencia",
+      "validación operativa",
+      "alerta genérica o asistencia preventiva"
+    ],
+    "privacy_statement": "El núcleo operativo del proyecto debe evitar el tratamiento de datos sensibles y operar, en su caso, mediante atributos técnicos, tokens, hashes o identificadores pseudoanonimizados."
+  },
+  "legal_and_institutional_notice": {
+    "notice": "Este repositorio contiene documentación y código demostrativo de una propuesta ciudadana. Su contenido no debe interpretarse como decisión administrativa, integración oficial, autorización estatal, modificación del sistema SUBE ni implementación productiva.",
+    "required_future_steps": [
+      "recepción institucional de la propuesta",
+      "evaluación técnica",
+      "evaluación jurídica",
+      "evaluación operativa",
+      "evaluación presupuestaria",
+      "evaluación sanitaria o funcional cuando corresponda",
+      "evaluación de protección de datos personales",
+      "intervención de autoridades competentes",
+      "eventual prueba piloto limitada, voluntaria, reversible y auditable"
+    ]
+  },
+  "repository_governance": {
+    "documentation_language": "es",
+    "intended_audience": [
+      "autoridades públicas",
+      "legisladores",
+      "organismos técnicos",
+      "universidades",
+      "organizaciones sociales",
+      "usuarios del transporte público",
+      "operadores de transporte",
+      "equipos de innovación pública"
+    ],
+    "recommended_use": "El repositorio debe utilizarse como respaldo documental, conceptual y técnico para solicitar evaluación institucional de la iniciativa, no como sistema productivo ni como prueba de integración real.",
+    "citation_suggestion": "SUBE Prioridad, propuesta ciudadana de innovación pública impulsada por Andrés Federico Di Fiore, repositorio público SUBEPRIORIDAD/sube-prioridad."
+  },
+  "license_and_attribution": {
+    "attribution_required": true,
+    "author_credit": "Debe reconocerse a Andrés Federico Di Fiore como autor e impulsor ciudadano original de la iniciativa SUBE Prioridad.",
+    "collaboration_credit": "Debe reconocerse la colaboración jurídica, institucional y documental de Rosa Mariel Lázaro cuando se utilicen los documentos estratégicos, jurídicos o institucionales incorporados al repositorio.",
+    "commercial_use_notice": "Cualquier uso comercial, contratación, implementación productiva o integración institucional deberá contar con las autorizaciones, evaluaciones y acuerdos que correspondan conforme al marco legal aplicable.",
+    "public_interest_notice": "La documentación se orienta a facilitar el análisis público e institucional de una herramienta de accesibilidad y asistencia preventiva en transporte público."
+  },
+  "contact_note": {
+    "note": "Los datos de contacto personales no se incluyen en este archivo por razones de privacidad. Podrán incorporarse canales institucionales o públicos del proyecto si sus titulares lo autorizan expresamente."
+  },
+  "last_review": {
+    "date": "2026-06-29",
+    "status": "versión documental inicial para repositorio público",
+    "review_note": "Archivo orientado a dejar constancia del origen ciudadano del proyecto, sus principales aportes, límites institucionales y reglas mínimas de atribución."
   }
 }
