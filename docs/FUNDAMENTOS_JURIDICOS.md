@@ -191,7 +191,7 @@ La protección jurídica de las personas mayores exige medidas razonables que fa
 
 ---
 
-## 16. Personas gestantes y situaciones transitorias
+## 16. Gestantes y situaciones transitorias
 
 La necesidad de viajar sentada también puede presentarse en personas gestantes o en personas que atraviesan situaciones transitorias de salud, rehabilitación, lesiones, tratamientos o movilidad reducida.
 
@@ -253,7 +253,7 @@ El objetivo es permitir asistencia preventiva sin revelar datos sensibles.
 
 ---
 
-## 20. Alertas genéricas y no exposición de condiciones médicas
+## 20. Alertas genéricas y no exposición médica
 
 Una eventual prueba piloto podría analizar alertas genéricas, no diagnósticas y no estigmatizantes.
 
@@ -815,7 +815,9 @@ Este documento debe leerse junto con:
 * `docs/PETITORIO_MODELO.md`;
 * `docs/MODELO_PROYECTO_RESOLUCION.md`;
 * `docs/PRUEBA_PILOTO_MODELO.md`;
+* `docs/PROTOCOLO_OPERATIVO.md`;
 * `docs/PROTECCION_DATOS_PERSONALES.md`;
+* `docs/FUNDAMENTOS_MEDICOS.md`;
 * `docs/PRINCIPIOS_DE_GOBERNANZA.md`;
 * `docs/DECISIONES_DE_ARQUITECTURA.md`;
 * `docs/ROADMAP_IMPLEMENTACION.md`.
