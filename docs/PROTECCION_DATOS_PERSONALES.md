@@ -2,77 +2,88 @@
 
 ## 1. Propósito del documento
 
-Este documento establece lineamientos conceptuales de protección de datos personales para el proyecto **SUBE Prioridad**.
+El presente documento establece lineamientos conceptuales de protección de datos personales para la iniciativa **SUBE Prioridad**.
 
-Su finalidad es reforzar que la arquitectura propuesta debe desarrollarse bajo criterios de privacidad por diseño, minimización de datos, finalidad determinada, seguridad, proporcionalidad, transparencia y respeto por la dignidad de las personas usuarias.
+Su finalidad es explicar cómo debe interpretarse el proyecto desde una lógica de privacidad por diseño, minimización de datos, separación entre acreditación institucional y operación técnica, no exposición de diagnósticos, interoperabilidad responsable y prueba piloto gradual.
 
-El presente documento no constituye una política de privacidad definitiva, una evaluación de impacto formal ni una autorización para el tratamiento de datos personales.
+Este documento no constituye una política de privacidad productiva, una evaluación de impacto definitiva ni un dictamen jurídico vinculante.
 
-Toda implementación real, prueba piloto o integración con sistemas externos deberá ser evaluada, autorizada y supervisada por las autoridades competentes, conforme a la normativa vigente en materia de protección de datos personales, accesibilidad, transporte público, salud e interoperabilidad administrativa.
+Toda implementación real deberá contar con evaluación técnica, jurídica, institucional y de seguridad de la información por parte de las autoridades competentes.
 
 ---
 
 ## 2. Principio rector
 
-SUBE Prioridad debe facilitar asistencia preventiva sin exponer innecesariamente información personal o sensible de las personas usuarias.
+El principio rector del proyecto es:
 
-La necesidad de viajar sentado o recibir asistencia dentro del transporte público no debe obligar a una persona a revelar públicamente diagnósticos, historia clínica, certificados médicos, circunstancias íntimas o datos de salud identificables.
+```text
+asistencia preventiva sin exposición de información sensible
+```
 
-La arquitectura debe procurar que la asistencia se active mediante un atributo técnico de prioridad previamente habilitado, no mediante la exposición directa de información médica o administrativa.
+SUBE Prioridad no debe convertir al transporte público en una base de datos médica, sanitaria, social o identificatoria.
+
+La necesidad de asistencia debe poder representarse mediante un atributo técnico de prioridad, sin revelar a terceros la causa médica, funcional, personal o administrativa que originó esa habilitación.
 
 ---
 
 ## 3. Estado actual del MVP
 
-El repositorio actual contiene un MVP conceptual, técnico y demostrativo.
+El estado actual del repositorio es conceptual, técnico y demostrativo.
 
-En su estado actual, el MVP:
+El MVP no representa una implementación productiva.
 
-* no procesa usuarios reales;
-* no se conecta con organismos públicos;
-* no modifica el sistema SUBE;
-* no consulta bases estatales reales;
-* no valida diagnósticos médicos;
-* no almacena historia clínica;
-* no procesa certificados médicos en texto plano;
-* no representa una implementación productiva;
-* no acredita interoperabilidad real vigente.
+No se encuentra integrado a organismos públicos.
 
-Toda integración externa prevista en el repositorio debe interpretarse como simulada, salvo indicación expresa, autorización institucional y documentación técnica correspondiente.
+No modifica el sistema SUBE.
+
+No opera sobre validadoras reales.
+
+No procesa usuarios reales.
+
+No procesa datos médicos reales.
+
+No almacena documentación sanitaria.
+
+Toda interoperabilidad externa debe interpretarse como simulada salvo autorización institucional expresa y documentación técnica verificable.
 
 ---
 
-## 4. Datos que no deben formar parte del core
+## 4. Datos que no forman parte del core
 
-El núcleo técnico de SUBE Prioridad no debería procesar ni almacenar los siguientes datos:
+El core operativo del MVP no debe procesar:
 
 * DNI;
 * nombre;
 * apellido;
 * domicilio;
+* teléfono;
+* correo electrónico personal;
 * diagnóstico médico;
 * historia clínica;
 * certificado médico en texto plano;
-* datos de salud identificables;
-* información clínica;
-* información sobre tratamientos;
-* documentación médica escaneada;
-* datos familiares innecesarios;
+* constancias sanitarias;
+* estudios médicos;
+* tratamientos;
+* medicación;
+* condición de discapacidad específica;
+* embarazo;
+* edad exacta;
+* condición oncológica;
+* trasplante;
+* rehabilitación;
 * datos biométricos;
-* información no necesaria para la finalidad de asistencia preventiva.
+* datos de salud identificables.
 
-La exclusión de estos datos del core es una decisión central de arquitectura.
-
-El sistema debe trabajar, en la mayor medida posible, con atributos técnicos, tokens, hashes o identificadores pseudoanonimizados.
+La exclusión de estos datos es una condición estructural del diseño.
 
 ---
 
 ## 5. Atributo técnico de prioridad
 
-El modelo correcto de SUBE Prioridad no es:
+El modelo correcto no es:
 
 ```text
-diagnóstico médico → exposición pública → asistencia
+persona identificada + diagnóstico + exposición en transporte
 ```
 
 El modelo correcto es:
@@ -86,505 +97,615 @@ preferencia de asistencia
 ↓
 validación operativa
 ↓
-asistencia preventiva
+alerta genérica o asistencia preventiva
 ```
 
-El atributo técnico de prioridad no debe revelar el motivo médico, social o personal por el cual una persona requiere asistencia.
+El atributo técnico de prioridad no debe revelar la causa de la asistencia.
 
-Su función es indicar, en términos operativos, que existe una habilitación previa para activar una modalidad de asistencia dentro del transporte.
+Sólo debe indicar que, conforme a reglas definidas por autoridad competente, la persona se encuentra habilitada para solicitar asistencia preventiva.
 
 ---
 
 ## 6. Separación entre acreditación y operación
 
-SUBE Prioridad debe separar claramente dos planos.
+SUBE Prioridad debe separar dos planos:
 
-### Plano institucional
+```text
+Plano de acreditación:
+organismos, profesionales, registros o procedimientos competentes
+que validan la necesidad de asistencia
 
-Comprende:
+Plano operativo:
+sistema técnico que representa un atributo de prioridad
+sin conocer el diagnóstico ni la documentación respaldatoria
+```
 
-* criterios de acceso;
-* requisitos;
-* documentación respaldatoria;
-* intervención de autoridades competentes;
-* validación previa;
-* control jurídico;
-* eventuales procedimientos administrativos.
+La acreditación puede involucrar criterios médicos, funcionales, sanitarios, administrativos o sociales.
 
-### Plano operativo
-
-Comprende:
-
-* atributo técnico;
-* token o identificador pseudoanonimizado;
-* preferencia de asistencia;
-* validación en entorno de transporte;
-* señal o registro operativo;
-* métricas agregadas.
-
-El sistema técnico no debe transformarse en evaluador médico, sanitario ni administrativo.
-
-La acreditación de la necesidad de asistencia deberá quedar bajo la órbita de los organismos, profesionales o procedimientos que determinen las autoridades competentes.
+Pero el sistema operativo no debe almacenar ni exponer esos fundamentos.
 
 ---
 
 ## 7. Finalidad determinada
 
-Cualquier tratamiento de datos personales vinculado con SUBE Prioridad deberá tener una finalidad clara, específica y legítima.
-
-La finalidad principal debe ser:
+La finalidad conceptual del sistema es:
 
 ```text
 facilitar asistencia preventiva y accesibilidad efectiva dentro del transporte público
 ```
 
-No deberían utilizarse datos del sistema para finalidades incompatibles, tales como:
+El atributo técnico de prioridad no debe utilizarse para fines incompatibles, tales como:
 
-* vigilancia individualizada;
+* vigilancia;
 * perfilamiento comercial;
-* control migratorio;
+* publicidad;
 * scoring social;
-* ranking público de usuarios;
-* publicidad personalizada;
-* evaluación médica no autorizada;
-* sanciones sociales;
-* exposición de diagnósticos;
-* beneficios o castigos no previstos por autoridad competente.
+* control policial;
+* ranking de usuarios;
+* sanciones;
+* discriminación;
+* análisis médico no autorizado;
+* decisiones tarifarias automáticas;
+* cesión a terceros sin marco jurídico;
+* investigación no autorizada con datos personales.
+
+Toda finalidad adicional requeriría evaluación y autorización específica.
 
 ---
 
 ## 8. Minimización de datos
 
-La arquitectura debe aplicar el principio de minimización.
+El sistema debe tratar la menor cantidad posible de datos.
 
-Esto significa que sólo deberían tratarse los datos estrictamente necesarios para cumplir la finalidad de asistencia preventiva.
-
-Antes de incorporar cualquier dato al sistema, debería preguntarse:
+La pregunta rectora debe ser:
 
 ```text
-¿Este dato es indispensable para facilitar la asistencia?
-¿Existe una alternativa menos invasiva?
-¿Puede reemplazarse por un atributo técnico?
-¿Puede evitarse su almacenamiento?
-¿Puede procesarse de forma pseudoanonimizada?
-¿Puede limitarse temporalmente?
+¿este dato es estrictamente necesario para activar asistencia preventiva?
 ```
 
-Si la respuesta demuestra que el dato no es necesario, no debería incorporarse.
+Si la respuesta es no, el dato no debe ingresar al core operativo.
+
+La minimización debe aplicarse a:
+
+* datos de entrada;
+* datos de salida;
+* registros técnicos;
+* logs;
+* métricas;
+* reportes;
+* evaluaciones;
+* interoperabilidad;
+* documentación de prueba piloto.
 
 ---
 
 ## 9. Pseudoanonimización
 
-El MVP debe priorizar identificadores pseudoanonimizados.
-
-La pseudoanonimización permite reducir riesgos al separar la operación técnica de la identidad directa del usuario.
-
-Entre los mecanismos posibles se encuentran:
+Cuando se requiera identificar técnicamente una habilitación, debe priorizarse el uso de:
 
 * tokens;
 * hashes;
-* identificadores técnicos;
-* atributos binarios o discretos;
+* identificadores pseudoanonimizados;
+* atributos técnicos;
 * claves temporales;
-* referencias no reversibles dentro del core;
-* separación entre sistemas de acreditación y sistemas operativos.
+* credenciales no diagnósticas;
+* registros agregados.
 
-La pseudoanonimización no elimina todos los riesgos, pero reduce la exposición directa de datos personales y debe combinarse con medidas organizativas, técnicas y jurídicas.
+La pseudoanonimización no equivale a anonimización absoluta.
+
+Por eso debe combinarse con medidas de seguridad, control de acceso, finalidad específica y conservación limitada.
 
 ---
 
 ## 10. Preferencias de asistencia
 
-SUBE Prioridad debe reconocer que no todas las personas desean recibir asistencia de la misma manera.
+SUBE Prioridad puede contemplar preferencias operativas de asistencia.
 
-La arquitectura puede contemplar preferencias de asistencia, tales como:
+Estas preferencias no deben ser interpretadas como diagnósticos ni categorías médicas.
+
+Un esquema conceptual posible es:
 
 ```text
-0 = modalidad silenciosa
-1 = modalidad discreta
-2 = modalidad preventiva
-3 = modalidad visible
+0 = silenciosa
+1 = discreta
+2 = preventiva
+3 = visible
 ```
 
-Estas preferencias no deben representar diagnósticos, categorías médicas ni perfiles de salud.
+Estas categorías sólo representan modalidades de experiencia de usuario.
 
-Sólo deben expresar la forma en que el usuario desea interactuar con el sistema, dentro de los límites técnicos y operativos definidos por la autoridad competente.
-
----
-
-## 11. Modalidad silenciosa y discreta
-
-La privacidad debe permitir que una persona reciba asistencia sin exposición pública innecesaria.
-
-Por ello, la arquitectura debe admitir modalidades silenciosas o discretas cuando resulten técnicamente viables.
-
-Estas modalidades pueden ser útiles para personas que:
-
-* no desean revelar una situación personal;
-* atraviesan una condición transitoria;
-* tienen una discapacidad no visible;
-* están en rehabilitación;
-* requieren asistencia sin señalización pública;
-* prefieren autonomía y menor exposición.
-
-La asistencia debe estar al servicio de la persona, no al revés.
+No deben revelar por qué la persona solicita asistencia.
 
 ---
 
-## 12. Prueba piloto y datos personales
+## 11. Modalidad silenciosa
 
-Toda prueba piloto deberá diseñarse con criterios reforzados de protección de datos.
+La modalidad silenciosa puede permitir una asistencia sin señal pública.
 
-Antes de iniciar una prueba piloto deberían definirse:
+Puede ser útil para preservar la privacidad en situaciones donde la persona usuaria no desea exposición.
 
-* qué datos se utilizarán;
-* qué datos no se utilizarán;
-* quién será responsable de cada tratamiento;
-* quién tendrá acceso;
-* con qué finalidad;
-* por cuánto tiempo;
-* cómo se protegerán;
-* cómo se informará a los usuarios;
-* cómo podrán ejercer sus derechos;
-* cómo se auditará el sistema;
-* cómo se eliminarán o anonimizarán datos al finalizar la prueba.
-
-La prueba piloto no debe convertirse en una base permanente de datos personales sin evaluación formal.
+Debe evitar registros innecesarios y no debe generar trazabilidad individual excesiva.
 
 ---
 
-## 13. Consentimiento y voluntariedad en prueba piloto
+## 12. Modalidad discreta
 
-Cuando una prueba piloto incluya participación de usuarios reales, la participación debería ser voluntaria e informada.
+La modalidad discreta puede emitir una señal limitada, atenuada o dirigida a un canal específico.
 
-La persona usuaria debería recibir información clara sobre:
+Debe buscar equilibrio entre efectividad y privacidad.
+
+Su diseño debe evitar que terceros puedan inferir una condición médica o personal específica.
+
+---
+
+## 13. Modalidad preventiva
+
+La modalidad preventiva puede emitir una indicación general que facilite colaboración dentro de la unidad.
+
+Debe ser genérica, no diagnóstica y no estigmatizante.
+
+La comunicación debería limitarse a expresar que se solicita asistencia prioritaria, sin informar causa.
+
+---
+
+## 14. Modalidad visible
+
+La modalidad visible requiere especial prudencia.
+
+Toda señal visual o sonora pública puede aumentar la exposición de la persona usuaria.
+
+Antes de utilizarse en una prueba piloto real, debería evaluarse:
+
+* comprensión por parte del público;
+* riesgo de estigmatización;
+* impacto sobre privacidad;
+* intensidad sonora;
+* visibilidad;
+* duración;
+* posibilidad de abuso;
+* alternativas menos invasivas;
+* consentimiento del usuario;
+* canales de baja o modificación de preferencia.
+
+---
+
+## 15. Alertas genéricas
+
+Las alertas deben ser genéricas.
+
+No deben indicar:
+
+* diagnóstico;
+* enfermedad;
+* discapacidad específica;
+* edad;
+* embarazo;
+* tratamiento;
+* rehabilitación;
+* condición clínica;
+* grupo protegido;
+* causa de la prioridad.
+
+Ejemplos conceptuales adecuados:
+
+```text
+Asistencia prioritaria solicitada
+```
+
+```text
+Asiento de prioridad solicitado
+```
+
+```text
+Se solicita colaboración para asistencia prioritaria
+```
+
+La autoridad competente deberá definir el texto final, canal, duración e intensidad de cualquier alerta.
+
+---
+
+## 16. Datos en una prueba piloto
+
+Una prueba piloto real debería trabajar con datos mínimos y, cuando sea posible, agregados.
+
+Podrían relevarse indicadores como:
+
+* cantidad de activaciones;
+* horario;
+* línea o unidad;
+* modalidad utilizada;
+* fallas técnicas;
+* reclamos;
+* incidentes;
+* percepción de privacidad;
+* comprensión de la alerta;
+* aceptación social;
+* utilidad percibida.
+
+No deberían relevarse diagnósticos ni datos médicos individualizados.
+
+---
+
+## 17. Consentimiento y voluntariedad
+
+En una etapa piloto, la participación de usuarios prioritarios debería ser voluntaria e informada.
+
+La persona debería conocer:
 
 * objetivo de la prueba;
 * duración;
 * alcance territorial;
-* datos involucrados;
+* datos tratados;
 * datos excluidos;
-* posibles riesgos;
+* modalidad de asistencia;
 * canales de consulta;
-* mecanismos de reclamo;
-* posibilidad de baja;
-* alternativas disponibles;
-* autoridad u organismo responsable.
+* mecanismos de baja;
+* riesgos posibles;
+* autoridad responsable.
 
-La participación voluntaria no sustituye la necesidad de base jurídica, seguridad y control institucional.
+La voluntariedad no debe ser meramente formal.
 
----
-
-## 14. Canales alternativos y brecha digital
-
-La protección de datos también debe contemplar accesibilidad.
-
-No debe exigirse a todos los usuarios el uso exclusivo de herramientas digitales complejas.
-
-Una implementación real debería evaluar canales alternativos para personas que no puedan o no deseen utilizar:
-
-* teléfonos inteligentes;
-* aplicaciones móviles;
-* conectividad permanente;
-* lectura digital compleja;
-* interfaces visuales;
-* trámites exclusivamente en línea.
-
-La privacidad no debe construirse a costa de excluir a quienes enfrentan barreras digitales.
+La persona debe poder darse de baja sin trato discriminatorio.
 
 ---
 
-## 15. Interoperabilidad futura
+## 18. Brecha digital y canales alternativos
 
-Toda interoperabilidad real con organismos, registros, plataformas públicas o sistemas privados deberá contar con:
+La protección de datos también exige contemplar accesibilidad real.
 
-* marco jurídico suficiente;
-* autorización institucional;
-* finalidad específica;
-* documentación técnica;
-* medidas de seguridad;
-* control de acceso;
+El sistema no debe excluir a personas por falta de teléfono inteligente, conectividad, alfabetización digital o acceso a trámites digitales.
+
+Una eventual implementación debería prever canales alternativos, presenciales o asistidos, definidos por autoridad competente.
+
+La privacidad no debe depender de la capacidad tecnológica individual.
+
+---
+
+## 19. Interoperabilidad futura
+
+Toda interoperabilidad futura deberá ser especialmente prudente.
+
+No corresponde afirmar que el proyecto ya cuenta con integración real con organismos públicos o privados.
+
+La interoperabilidad sólo podría analizarse si existe:
+
+* competencia institucional;
+* base jurídica;
+* finalidad determinada;
+* autorización;
+* minimización de datos;
+* seguridad de la información;
 * trazabilidad;
-* evaluación de riesgos;
 * auditoría;
-* limitación de datos;
-* mecanismos de revocación o suspensión.
+* conservación limitada;
+* posibilidad de suspensión;
+* documentación técnica;
+* evaluación de impacto.
 
-En el MVP actual, las integraciones son simuladas.
-
-Ningún documento del repositorio debe interpretarse como prueba de conexión real vigente con organismos públicos o privados.
-
----
-
-## 16. Riesgos a evitar
-
-La arquitectura debe evitar especialmente los siguientes riesgos:
-
-* exposición pública de diagnósticos;
-* creación innecesaria de bases de datos médicas;
-* tratamiento de datos sensibles sin fundamento;
-* identificación directa en el core operativo;
-* uso secundario de datos;
-* perfilamiento de usuarios vulnerables;
-* vigilancia individualizada;
-* conservación indefinida de registros;
-* acceso indebido por terceros;
-* confusión entre simulación e integración real;
-* presión social sobre personas usuarias;
-* discriminación o estigmatización;
-* dependencia de un único proveedor o plataforma.
+En el estado actual del MVP, toda integración externa debe interpretarse como simulada.
 
 ---
 
-## 17. Seguridad de la información
+## 20. Cruce de bases de datos
 
-Una eventual implementación real deberá contemplar medidas de seguridad adecuadas al riesgo.
+El cruce de bases de datos puede generar riesgos significativos.
 
-Entre ellas podrían analizarse:
+Por eso no debe presentarse como automático, simple ni habilitado por defecto.
 
-* control de acceso;
-* segregación de roles;
-* cifrado cuando corresponda;
-* registros de auditoría;
+Cualquier eventual verificación contra registros externos debería diseñarse para que el sistema operativo reciba únicamente el resultado necesario, por ejemplo:
+
+```text
+atributo habilitado: sí / no
+```
+
+sin recibir diagnóstico, historia clínica, certificado o documentación respaldatoria.
+
+---
+
+## 21. Seguridad de la información
+
+Una implementación real debería contemplar medidas de seguridad proporcionales al riesgo.
+
+Entre ellas:
+
+* cifrado en tránsito;
+* cifrado en reposo cuando corresponda;
+* control de accesos;
 * gestión de claves;
-* entornos separados de prueba y producción;
+* registros de auditoría;
+* segregación de entornos;
 * revisión de código;
-* monitoreo de incidentes;
-* políticas de conservación;
-* eliminación segura;
 * pruebas de seguridad;
-* respuesta ante incidentes.
+* gestión de incidentes;
+* limitación de permisos;
+* trazabilidad de accesos;
+* monitoreo;
+* respaldo y recuperación;
+* eliminación segura.
 
-El MVP conceptual no reemplaza una evaluación de seguridad productiva.
-
----
-
-## 18. Registro y trazabilidad
-
-La trazabilidad debe orientarse a auditar el funcionamiento del sistema, no a vigilar individualmente a las personas.
-
-Los registros deberían ser:
-
-* proporcionales;
-* limitados;
-* seguros;
-* auditables;
-* orientados a la finalidad declarada;
-* conservados sólo por el tiempo necesario;
-* preferentemente agregados o pseudoanonimizados.
-
-Todo registro debe poder justificarse por una necesidad técnica, operativa, jurídica o de auditoría.
+El MVP actual no debe ser interpretado como infraestructura productiva segura.
 
 ---
 
-## 19. Conservación y eliminación
+## 22. Logs y trazabilidad
 
-Los datos vinculados con una prueba piloto o implementación real no deberían conservarse indefinidamente.
+Los logs deben diseñarse con minimización.
 
-Deberían definirse criterios sobre:
+No deben registrar diagnósticos ni datos médicos.
+
+No deben registrar información identificatoria innecesaria.
+
+Los logs deben limitarse a lo necesario para:
+
+* depuración técnica;
+* seguridad;
+* auditoría;
+* evaluación agregada;
+* detección de fallas;
+* prevención de abuso.
+
+La conservación debe ser limitada y justificada.
+
+---
+
+## 23. Conservación y eliminación
+
+Los datos deben conservarse sólo durante el tiempo necesario para la finalidad definida.
+
+En una prueba piloto debería establecerse:
 
 * plazo de conservación;
-* finalidad de conservación;
-* eliminación segura;
-* anonimización cuando corresponda;
-* conservación agregada para estadísticas;
-* bloqueo o restricción de acceso;
-* cierre de pilotos;
-* eliminación de datos de usuarios dados de baja.
+* procedimiento de eliminación;
+* bloqueo o anonimización;
+* tratamiento de bajas voluntarias;
+* conservación de métricas agregadas;
+* eliminación de registros técnicos innecesarios.
 
-La conservación debe ser proporcional a la finalidad.
+La finalización de una prueba piloto no debe justificar acumulación indefinida de datos.
 
 ---
 
-## 20. Transparencia hacia el usuario
+## 24. Transparencia
 
-La información al usuario debe ser clara, accesible y comprensible.
+Los usuarios deben recibir información clara y accesible.
 
-Debe explicarse:
+La comunicación debería explicar:
 
-* qué hace el sistema;
-* qué no hace;
-* qué datos utiliza;
-* qué datos no utiliza;
-* qué significa el atributo de prioridad;
-* qué modalidades de asistencia existen;
-* quién administra el sistema;
-* cómo se protege la privacidad;
+* qué es SUBE Prioridad;
+* qué no es;
+* qué datos usa;
+* qué datos no usa;
+* para qué se usa el atributo;
+* quién es responsable;
 * cómo reclamar;
-* cómo solicitar baja;
-* cómo corregir errores;
-* qué autoridad interviene.
+* cómo darse de baja;
+* qué derechos conserva el usuario;
+* que no se exponen diagnósticos.
 
-La transparencia fortalece la confianza pública y reduce malentendidos.
+La transparencia debe utilizar lenguaje simple.
 
 ---
 
-## 21. Derechos de las personas usuarias
+## 25. Derechos de las personas usuarias
 
-Toda implementación real debería garantizar mecanismos para que las personas puedan ejercer los derechos que les correspondan conforme a la normativa aplicable.
+Toda implementación real debería respetar los derechos de las personas titulares de datos.
 
-Entre ellos, según corresponda:
+Entre ellos:
 
-* acceso a información sobre el tratamiento;
-* rectificación de datos incorrectos;
+* acceso;
+* rectificación;
 * actualización;
-* supresión o baja cuando proceda;
-* oposición o revocación en los casos aplicables;
-* reclamo ante canales institucionales;
-* información sobre responsables del tratamiento.
+* supresión cuando corresponda;
+* oposición;
+* información;
+* baja voluntaria;
+* canales de reclamo;
+* trato digno;
+* no discriminación.
 
-Estos mecanismos deben ser accesibles, simples y no discriminatorios.
-
----
-
-## 22. Datos de salud y especial prudencia
-
-La información vinculada con salud, discapacidad, rehabilitación, movilidad reducida o condiciones personales requiere especial prudencia.
-
-SUBE Prioridad debe evitar que el sistema operativo de transporte procese directamente diagnósticos o documentación clínica.
-
-La eventual acreditación de una condición o necesidad deberá quedar separada del uso operativo del atributo.
-
-El sistema de transporte no debe transformarse en repositorio de información médica.
+La asistencia preventiva no debe exigir renunciar a la privacidad.
 
 ---
 
-## 23. Rol de universidades, fundaciones e instituciones
+## 26. Datos de salud
 
-La participación de universidades, fundaciones, organizaciones sociales o instituciones de salud en una prueba piloto deberá respetar estrictamente la privacidad de las personas usuarias.
+Los datos de salud merecen protección reforzada.
 
-Estas instituciones podrían colaborar en:
+SUBE Prioridad debe evitar que el core operativo trate datos de salud identificables.
 
-* evaluación metodológica;
-* accesibilidad;
-* experiencia de usuario;
-* análisis social;
-* diseño de indicadores;
-* revisión ética;
-* recomendaciones de mejora.
+Cuando exista una necesidad médica o funcional previamente acreditada, esa acreditación debe quedar fuera del sistema operativo de transporte, bajo reglas definidas por autoridad competente.
 
-Pero no deberían acceder a datos personales o sensibles salvo que exista fundamento, autorización, finalidad específica, medidas de seguridad y marco institucional suficiente.
-
-Siempre que sea posible, los informes deberían trabajar con datos agregados, anonimizados o pseudoanonimizados.
+El transporte no debe convertirse en una extensión de la historia clínica.
 
 ---
 
-## 24. Bono Solidario y datos personales
+## 27. Menores de edad
 
-El Bono Solidario, al ser una posible evolución futura, requiere especial cautela desde el punto de vista de datos personales.
+Si una prueba piloto incluyera niños, niñas o adolescentes, deberían aplicarse salvaguardas reforzadas.
 
-Su eventual diseño no debería generar:
+Entre ellas:
+
+* interés superior del niño;
+* autorización correspondiente;
+* protección de identidad;
+* no exposición de diagnóstico;
+* acompañamiento adulto cuando corresponda;
+* comunicación clara;
+* limitación de datos;
+* intervención de organismos competentes.
+
+El sistema no debe revelar condiciones de salud de menores.
+
+---
+
+## 28. Universidades, fundaciones y organizaciones sociales
+
+La participación de universidades, fundaciones u organizaciones sociales puede ser valiosa para evaluación, accesibilidad y diseño.
+
+Pero su intervención debe respetar límites claros.
+
+No deberían acceder a datos personales o sensibles salvo autorización específica, finalidad determinada y medidas de seguridad adecuadas.
+
+Siempre que sea posible, deberían trabajar con datos agregados, anonimizados o pseudoanonimizados.
+
+---
+
+## 29. Operadores de transporte
+
+Los operadores de transporte pueden participar en una prueba piloto mediante coordinación operativa, soporte técnico, comunicación, relevamiento de incidentes y evaluación.
+
+No deberían recibir diagnósticos ni documentación médica.
+
+Tampoco deberían decidir por sí mismos quién accede a asistencia prioritaria.
+
+Su rol debe estar definido por autoridad competente.
+
+---
+
+## 30. Personal de conducción
+
+El personal de conducción no debe ser convertido en evaluador médico ni fiscalizador de datos personales.
+
+No debe solicitar diagnósticos.
+
+No debe revisar certificados médicos.
+
+No debe decidir si una persona merece prioridad.
+
+No debe administrar datos sensibles.
+
+El diseño debe proteger tanto al usuario como al chofer.
+
+---
+
+## 31. Bono Solidario
+
+El Bono Solidario, como evolución futura, requiere tratamiento separado.
+
+No debe integrarse al núcleo inicial sin evaluación específica.
+
+Desde la perspectiva de protección de datos, debe evitar:
 
 * rankings públicos;
-* exposición de usuarios colaboradores;
-* vigilancia entre pasajeros;
 * presión social;
-* historial público de conductas;
-* incentivos basados en datos sensibles;
-* mecanismos de sanción;
-* tratamiento innecesario de identidad real.
+* vigilancia entre pasajeros;
+* exposición de usuarios prioritarios;
+* identificación de colaboradores;
+* incentivos indebidos;
+* uso comercial de datos;
+* sanciones encubiertas.
 
-Cualquier análisis futuro del Bono Solidario debería incorporar reglas antifraude, minimización de datos, auditoría, voluntariedad y límites claros respecto del régimen legal de asientos prioritarios.
+Su eventual diseño deberá contar con lineamientos propios de privacidad y antifraude.
 
 ---
 
-## 25. Evaluación de impacto
+## 32. Evaluación de impacto
 
-Antes de cualquier prueba piloto con usuarios reales, debería analizarse la conveniencia de realizar una evaluación de impacto en privacidad y protección de datos.
+Antes de una prueba piloto real debería evaluarse el impacto en protección de datos personales.
 
-Esa evaluación podría considerar:
+La evaluación debería analizar:
 
-* finalidad del tratamiento;
-* tipos de datos;
-* actores intervinientes;
+* finalidad;
+* necesidad;
+* proporcionalidad;
 * riesgos;
-* medidas de mitigación;
-* alternativas menos invasivas;
-* base jurídica;
-* seguridad;
-* conservación;
+* datos tratados;
+* datos excluidos;
+* responsables;
+* encargados;
+* medidas de seguridad;
+* consentimiento o base jurídica;
 * derechos de usuarios;
-* gobernanza;
-* mecanismos de auditoría.
-
-Una evaluación previa permite detectar riesgos antes de que afecten a las personas.
-
----
-
-## 26. Principio de no discriminación
-
-La protección de datos también debe prevenir usos discriminatorios.
-
-El sistema no debe utilizarse para:
-
-* clasificar públicamente personas;
-* exponer condiciones de salud;
-* generar estigmas;
-* limitar derechos;
-* condicionar el acceso al transporte;
-* excluir a quienes no usan tecnología;
-* crear categorías indebidas de usuarios;
-* producir tratos humillantes.
-
-El atributo de prioridad debe estar orientado a facilitar asistencia, no a etiquetar personas.
+* conservación;
+* interoperabilidad;
+* incidentes;
+* canales de reclamo;
+* criterios de suspensión.
 
 ---
 
-## 27. Relación con el repositorio técnico
+## 33. No discriminación
 
-El código del MVP debe mantenerse alineado con estos lineamientos.
+La protección de datos también cumple una función antidiscriminatoria.
 
-Toda evolución del código debería evitar introducir campos sensibles en el core.
+La exposición de condiciones médicas, funcionales o personales puede generar estigma, trato desigual o conflictos.
 
-En particular, no deberían agregarse sin revisión:
+Por eso el sistema debe evitar señales que permitan inferir diagnósticos o categorías sensibles.
 
-* campos de DNI;
+La asistencia debe basarse en dignidad, no en exposición.
+
+---
+
+## 34. Relación con el código del repositorio
+
+El código del MVP debe respetar estos principios.
+
+Los endpoints, modelos, validadores, simuladores y tests no deberían incorporar campos como:
+
+* DNI;
 * nombre;
 * apellido;
 * diagnóstico;
 * historia clínica;
 * certificado médico;
-* domicilio;
-* datos clínicos;
-* identidad real de usuarios colaboradores;
-* registros innecesarios.
+* condición médica específica.
 
-Los cambios técnicos deberán respetar los guardrails de arquitectura y las decisiones de diseño del proyecto.
-
----
-
-## 28. Checklist mínimo para una prueba piloto
-
-Antes de una prueba piloto con usuarios reales, debería verificarse como mínimo:
+Los tests deberían verificar que el sistema declare explícitamente:
 
 ```text
-[ ] Se definió la autoridad responsable.
-[ ] Se definió la finalidad del tratamiento.
-[ ] Se identificaron los datos estrictamente necesarios.
-[ ] Se excluyeron diagnósticos e historia clínica del core operativo.
-[ ] Se definieron roles y accesos.
-[ ] Se informó a los usuarios.
-[ ] Se previeron canales de baja o reclamo.
-[ ] Se establecieron medidas de seguridad.
-[ ] Se definió plazo de conservación.
-[ ] Se establecieron criterios de eliminación o anonimización.
-[ ] Se evaluaron riesgos.
-[ ] Se definieron métricas agregadas.
-[ ] Se documentó la interoperabilidad, si existiere.
-[ ] Se aclaró que toda integración real requiere autorización.
-[ ] Se contemplaron canales alternativos para brecha digital.
-[ ] Se verificó que no se alteran derechos vigentes.
+datos_sensibles_procesados: false
+integracion_real_con_organismos: false
 ```
 
 ---
 
-## 29. Declaración final
+## 35. Checklist mínimo para prueba piloto
 
-La protección de datos personales no es un componente accesorio de SUBE Prioridad.
+Antes de cualquier prueba piloto real debería verificarse:
 
-Es una condición estructural de viabilidad.
+```text
+[ ] Autoridad responsable definida.
+[ ] Finalidad documentada.
+[ ] Alcance territorial definido.
+[ ] Participación voluntaria.
+[ ] Datos excluidos del core.
+[ ] Modalidad de asistencia definida.
+[ ] Texto de alerta aprobado.
+[ ] Evaluación de privacidad realizada.
+[ ] Seguridad de la información evaluada.
+[ ] Interoperabilidad prevista o descartada.
+[ ] Canales de baja y reclamo.
+[ ] Plazos de conservación.
+[ ] Indicadores agregados.
+[ ] Criterios de suspensión.
+[ ] Informe final previsto.
+```
 
-El proyecto sólo puede sostenerse como propuesta de innovación pública si garantiza que la asistencia preventiva se diseñe sin exponer diagnósticos, sin crear bases médicas innecesarias, sin vigilar a las personas usuarias y sin afectar su dignidad.
+---
 
-SUBE Prioridad debe demostrar que es posible fortalecer la accesibilidad efectiva dentro del transporte público mediante una arquitectura gradual, prudente, respetuosa de la privacidad y sometida a evaluación institucional.
+## 36. Relación con otros documentos del repositorio
+
+Este documento debe leerse junto con:
+
+* `README.md`;
+* `ARCHITECTURE_GUARDRAILS.md`;
+* `docs/INDICE_DOCUMENTAL.md`;
+* `docs/FUNDAMENTOS_JURIDICOS.md`;
+* `docs/FUNDAMENTOS_MEDICOS.md`;
+* `docs/PROTOCOLO_OPERATIVO.md`;
+* `docs/PRUEBA_PILOTO_MODELO.md`;
+* `docs/PRINCIPIOS_DE_GOBERNANZA.md`;
+* `docs/DECISIONES_DE_ARQUITECTURA.md`;
+* `docs/ROADMAP_IMPLEMENTACION.md`.
+
+---
+
+## 37. Declaración final
+
+SUBE Prioridad sólo resulta jurídicamente, técnica e institucionalmente defendible si la privacidad forma parte de su diseño desde el inicio.
+
+La asistencia preventiva no debe exigir exposición de diagnósticos, historia clínica ni documentación médica.
+
+El valor del proyecto reside en demostrar que es posible pensar una herramienta de accesibilidad efectiva basada en atributos técnicos, minimización de datos, alertas genéricas, voluntariedad, evaluación institucional y protección reforzada de la dignidad de las personas usuarias.
+
+Toda implementación real deberá ser gradual, reversible, auditable y respetuosa de la normativa aplicable en materia de protección de datos personales.
