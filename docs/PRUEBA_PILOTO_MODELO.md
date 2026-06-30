@@ -2,775 +2,620 @@
 
 ## 1. Propósito del documento
 
-El presente documento propone un modelo conceptual de prueba piloto para la iniciativa **SUBE Prioridad**.
+El presente documento establece un modelo conceptual para una eventual **prueba piloto limitada, voluntaria, reversible y auditable** de la iniciativa **SUBE Prioridad**.
 
-Su finalidad es ofrecer una base de trabajo para que autoridades públicas, organismos técnicos, operadores de transporte, legisladores, universidades u otros actores institucionales puedan analizar una eventual experiencia inicial, limitada, voluntaria, reversible y auditable.
+Su finalidad es ordenar los elementos mínimos que deberían considerarse antes, durante y después de una experiencia institucional orientada a evaluar herramientas de asistencia preventiva en el transporte público.
 
-Este documento no constituye una decisión de implementación, una especificación técnica definitiva ni una obligación para autoridad alguna.
+Este documento no constituye una implementación vigente, una instrucción obligatoria, una decisión administrativa ni una integración real con el sistema SUBE.
 
-Toda prueba piloto real deberá ser diseñada, autorizada y supervisada por los organismos competentes, conforme a la normativa vigente, la infraestructura disponible y las evaluaciones técnicas, jurídicas, presupuestarias, operativas y sociales que correspondan.
-
----
-
-## 2. Objetivo de la prueba piloto
-
-La prueba piloto tendría por objetivo evaluar, en escala reducida, la viabilidad de una herramienta complementaria destinada a facilitar la asistencia preventiva dentro del transporte público.
-
-En particular, buscaría analizar si un atributo técnico de prioridad, previamente habilitado por autoridad competente, puede contribuir a que personas que necesitan viajar sentadas accedan a condiciones de viaje más seguras, respetuosas y adecuadas.
-
-La prueba piloto no tendría por finalidad implementar el sistema a nivel nacional ni sustituir derechos vigentes.
+Toda prueba piloto real deberá ser evaluada, autorizada, adaptada y supervisada por las autoridades competentes.
 
 ---
 
-## 3. Principios rectores
+## 2. Objetivo general de la prueba piloto
+
+El objetivo general de la prueba piloto sería evaluar si una herramienta de asistencia preventiva basada en un atributo técnico de prioridad puede mejorar la experiencia de viaje de personas que necesitan viajar sentadas, sin exponer diagnósticos, historia clínica, certificados médicos ni datos sensibles.
+
+La prueba buscaría medir:
+
+* utilidad operativa;
+* privacidad;
+* comprensión por parte de usuarios y pasajeros;
+* impacto en convivencia;
+* factibilidad técnica;
+* carga operativa;
+* riesgos;
+* aceptación social;
+* posibilidad de ajuste o escalabilidad.
+
+---
+
+## 3. Principios de la prueba piloto
 
 Toda prueba piloto debería respetar los siguientes principios:
 
 * voluntariedad;
-* gradualidad;
+* temporalidad;
 * reversibilidad;
-* protección de datos personales;
+* auditabilidad;
+* privacidad por diseño;
 * minimización de datos;
-* no exposición de diagnósticos médicos;
-* no modificación del régimen legal de asientos prioritarios;
-* no imposición de nuevas cargas al chofer;
-* accesibilidad universal;
-* neutralidad tecnológica;
-* evaluación previa y posterior;
-* participación institucional;
-* transparencia frente a los usuarios.
+* no exposición de diagnósticos;
+* no discriminación;
+* accesibilidad efectiva;
+* dignidad de las personas usuarias;
+* no sustitución del régimen legal de asientos prioritarios;
+* no imposición de cargas indebidas al chofer;
+* evaluación institucional previa, durante y posterior.
 
 ---
 
-## 4. Alcance territorial sugerido
+## 4. Alcance territorial
 
-La prueba piloto debería realizarse en un ámbito acotado.
+El alcance territorial debería ser limitado y claramente definido.
 
-Algunas alternativas posibles:
+Podría consistir en:
 
 * una línea de colectivo;
-* pocas líneas seleccionadas;
-* un corredor determinado;
+* un conjunto reducido de líneas;
+* un corredor específico;
+* una zona urbana determinada;
+* una terminal;
 * un municipio;
-* una jurisdicción voluntaria;
-* un ámbito universitario o institucional;
-* un entorno técnico controlado con participación de usuarios voluntarios.
+* un tramo de alta demanda;
+* una experiencia controlada en laboratorio técnico.
 
-La selección del ámbito debería considerar:
+El alcance debe ser lo suficientemente acotado para permitir supervisión, medición y corrección.
 
-* disponibilidad operativa;
-* cantidad de usuarios;
-* factibilidad técnica;
-* diversidad de horarios;
-* accesibilidad del recorrido;
-* cooperación del operador;
-* capacidad de medición;
-* posibilidad de reversión.
+No debe presentarse como implementación nacional inmediata.
 
 ---
 
-## 5. Criterios para la selección de líneas, instituciones y actores de apoyo
+## 5. Selección de líneas, unidades o corredores
 
-La eventual prueba piloto podría contemplar la recomendación de líneas de colectivo, instituciones académicas, organismos técnicos, fundaciones u organizaciones de la sociedad civil que, por su experiencia, localización, capacidad técnica o vinculación con la temática, puedan colaborar en el diseño, evaluación o acompañamiento del proceso.
+La selección de líneas, unidades o corredores debería responder a criterios objetivos.
 
-Dichas recomendaciones deberán interpretarse como propuestas orientativas, no vinculantes y sujetas a la decisión de las autoridades competentes.
+Podrían considerarse:
 
-La selección final de líneas, operadores, jurisdicciones e instituciones participantes deberá considerar criterios técnicos, jurídicos, operativos, presupuestarios, sociales y territoriales.
+* volumen de pasajeros;
+* presencia de población vulnerable;
+* cercanía a hospitales, centros de salud o instituciones de rehabilitación;
+* accesibilidad territorial;
+* disponibilidad de operadores;
+* factibilidad técnica;
+* participación municipal;
+* existencia de políticas locales de accesibilidad;
+* posibilidad de evaluación por universidades u organizaciones sociales;
+* diversidad de horarios y condiciones de uso.
 
-### 5.1. Criterios para recomendar líneas de colectivo
-
-Para una prueba piloto inicial podrían priorizarse líneas o recorridos que reúnan algunas de las siguientes condiciones:
-
-* alta circulación de usuarios;
-* conexión con hospitales, centros de salud, universidades, terminales, centros administrativos o zonas de alta demanda social;
-* presencia frecuente de personas mayores, personas con discapacidad, personas gestantes o usuarios con movilidad reducida;
-* recorridos urbanos representativos;
-* factibilidad de monitoreo;
-* cooperación del operador;
-* posibilidad de implementación reversible;
-* existencia de infraestructura compatible o adaptable;
-* diversidad de horarios y condiciones de viaje;
-* bajo riesgo de complejidad operativa excesiva.
-
-La recomendación de líneas específicas deberá acompañarse, cuando sea posible, con una breve justificación técnica o social.
-
-Ejemplo de formulación prudente:
-
-```text
-A modo orientativo, podrían analizarse como posibles ámbitos de prueba piloto aquellas líneas de colectivo que conecten hospitales, universidades, centros administrativos, estaciones de transferencia o zonas de alta circulación de personas con necesidades de asistencia, siempre que exista conformidad de las autoridades competentes y factibilidad operativa.
-```
-
-### 5.2. Participación de universidades
-
-Las universidades podrían cumplir un rol relevante en la evaluación técnica, social, jurídica, ética y operativa de la prueba piloto.
-
-Su participación podría orientarse a:
-
-* diseño de indicadores;
-* evaluación de accesibilidad;
-* análisis de experiencia de usuario;
-* protección de datos personales;
-* estudios de impacto social;
-* seguimiento metodológico;
-* elaboración de informes;
-* análisis de escalabilidad;
-* participación de equipos interdisciplinarios;
-* auditoría académica independiente.
-
-La intervención universitaria permitiría fortalecer la calidad técnica del piloto y aportar evidencia objetiva para futuras decisiones públicas.
-
-La eventual participación de universidades deberá instrumentarse mediante los acuerdos, convenios o mecanismos institucionales que correspondan.
-
-### 5.3. Participación de fundaciones y organizaciones de la sociedad civil
-
-También podrían ser convocadas fundaciones, asociaciones civiles u organizaciones vinculadas con:
-
-* discapacidad;
-* accesibilidad;
-* personas mayores;
-* movilidad reducida;
-* salud comunitaria;
-* derechos de usuarios;
-* inclusión digital;
-* transporte público;
-* innovación pública;
-* protección de datos;
-* diseño inclusivo.
-
-Su rol podría consistir en acompañar la difusión, detectar barreras, colaborar en la evaluación de la experiencia de usuarios, aportar perspectiva territorial y contribuir a que la prueba piloto preserve un enfoque centrado en la dignidad de las personas.
-
-La participación de organizaciones sociales deberá ser consultiva, colaborativa y respetuosa de las competencias de las autoridades públicas.
-
-### 5.4. Participación de organismos públicos y áreas técnicas
-
-La prueba piloto debería contemplar, según corresponda, la participación o consulta de organismos y áreas con competencia en:
-
-* transporte público;
-* accesibilidad;
-* discapacidad;
-* salud, cuando corresponda;
-* protección de datos personales;
-* modernización administrativa;
-* innovación tecnológica;
-* defensa de usuarios;
-* gobiernos locales;
-* operadores de transporte.
-
-La intervención de estos actores resulta necesaria para garantizar que cualquier experiencia piloto sea jurídicamente viable, técnicamente segura, operativamente razonable y respetuosa de los derechos de las personas usuarias.
-
-### 5.5. Mesa técnica de acompañamiento
-
-Podría evaluarse la conformación de una mesa técnica de acompañamiento de la prueba piloto.
-
-Dicha mesa podría tener carácter consultivo y estar integrada por representantes de áreas públicas competentes, operadores, universidades, organizaciones sociales, especialistas y usuarios.
-
-Sus funciones podrían incluir:
-
-* revisar el diseño del piloto;
-* proponer indicadores;
-* analizar riesgos;
-* acompañar la comunicación pública;
-* evaluar reportes periódicos;
-* formular recomendaciones;
-* colaborar en el informe final.
-
-La mesa técnica no debería sustituir la competencia decisoria de las autoridades responsables, sino contribuir a una evaluación más amplia, transparente y participativa.
+La selección deberá ser definida por autoridad competente.
 
 ---
 
 ## 6. Duración sugerida
 
-La prueba piloto debería tener una duración temporal definida.
+La prueba piloto debería tener una duración determinada desde el inicio.
 
-A modo orientativo, podrían analizarse etapas de:
+Podría estructurarse en etapas:
 
 ```text
-30 días de preparación técnica
-+
-60 a 90 días de prueba operativa
-+
-30 días de evaluación posterior
+preparación
+↓
+simulación técnica
+↓
+implementación controlada
+↓
+relevamiento de resultados
+↓
+evaluación
+↓
+decisión de continuidad, ajuste o cierre
 ```
 
-La duración final deberá ser definida por las autoridades competentes.
-
-La prueba no debería transformarse automáticamente en implementación permanente sin evaluación formal.
+Una duración razonable podría ubicarse entre tres y seis meses, aunque el plazo final dependerá de la autoridad competente, el alcance territorial, la cantidad de usuarios y la complejidad técnica.
 
 ---
 
-## 7. Participantes
+## 7. Participantes posibles
 
-La prueba piloto podría involucrar, según corresponda:
+Una prueba piloto podría involucrar, según corresponda:
 
-* usuarios prioritarios voluntarios;
+* autoridad de transporte;
+* autoridad local o municipal;
+* organismos de discapacidad o accesibilidad;
+* autoridad de protección de datos personales;
 * operadores de transporte;
-* organismos públicos competentes;
-* áreas técnicas;
-* especialistas en accesibilidad;
-* especialistas en protección de datos;
+* usuarios prioritarios voluntarios;
+* pasajeros en general;
+* personal de conducción;
+* inspectores o personal de apoyo;
 * universidades;
-* organizaciones de usuarios;
-* personal de atención o soporte;
+* fundaciones;
+* organizaciones sociales;
+* áreas de salud;
+* equipos técnicos;
 * equipos de evaluación.
 
-La participación de usuarios prioritarios debería ser voluntaria, informada y respetuosa de su autonomía.
+La participación de cada actor debe quedar formalmente definida antes del inicio.
 
 ---
 
 ## 8. Población objetivo conceptual
 
-La prueba piloto podría contemplar personas con necesidad previamente acreditada de viajar sentadas, conforme a los criterios que determinen las autoridades competentes.
+La población objetivo conceptual incluye personas que podrían necesitar asistencia preventiva para viajar sentadas.
 
-Entre los grupos que podrían ser considerados, de manera conceptual y no taxativa, se encuentran:
+A título orientativo, podrían considerarse:
 
 * personas con discapacidad;
-* personas gestantes;
 * personas mayores;
+* personas gestantes;
 * personas con movilidad reducida;
-* personas en procesos de rehabilitación;
-* personas comprendidas en programas específicos que determinen las autoridades.
+* personas en rehabilitación;
+* personas con enfermedades no visibles;
+* personas trasplantadas o en lista de espera;
+* personas en tratamientos médicos;
+* niños, niñas o adolescentes que requieran traslados frecuentes por razones de salud;
+* acompañantes autorizados cuando corresponda.
 
-La prueba piloto no debería transformar al sistema de transporte en evaluador médico ni administrativo.
-
-La acreditación corresponde exclusivamente a los organismos, profesionales o procedimientos que determinen las autoridades competentes.
+La inclusión efectiva de cada grupo deberá ser definida por autoridad competente, con criterios de protección de datos personales y no discriminación.
 
 ---
 
 ## 9. Modelo operativo conceptual
 
-El modelo operativo podría estructurarse de la siguiente manera:
+El modelo operativo de la prueba piloto podría seguir el siguiente esquema:
 
 ```text
-acreditación previa por autoridad competente
+acreditación previa
 ↓
-habilitación de atributo técnico de prioridad
+atributo técnico de prioridad
 ↓
-configuración de preferencia de asistencia
+preferencia de asistencia
 ↓
-validación del viaje en entorno piloto
+validación o activación
 ↓
-emisión de señal, alerta o registro según modalidad elegida
+alerta genérica o modalidad de asistencia
 ↓
-medición de resultados
+reacción del entorno
 ↓
-evaluación institucional
+registro mínimo
+↓
+evaluación agregada
 ```
 
-El sistema no debería requerir que el usuario revele públicamente su diagnóstico, historia clínica o circunstancia personal.
+El sistema operativo no debe conocer el diagnóstico ni la documentación médica que originó la habilitación.
 
 ---
 
 ## 10. Modalidades de asistencia
 
-La prueba piloto podría permitir distintas modalidades de asistencia, respetando la preferencia del usuario.
+La prueba piloto podría evaluar distintas modalidades de asistencia.
 
-### Modalidad silenciosa
+### 10.1. Modalidad silenciosa
 
-No genera alerta pública.
+No emite alerta pública.
 
-Permite registro interno o validación técnica sin exposición visible.
+Puede servir para validar funcionamiento técnico sin exposición.
 
-### Modalidad discreta
+### 10.2. Modalidad discreta
 
-Genera una señal atenuada o dirigida a un entorno específico.
+Emite una señal limitada, atenuada o dirigida a un canal específico.
 
-Busca facilitar asistencia sin exposición amplia.
+Busca equilibrar asistencia y privacidad.
 
-### Modalidad preventiva
+### 10.3. Modalidad preventiva
 
-Permite advertencias o indicadores de asistencia moderados.
+Emite una indicación general de asistencia sin revelar causa.
 
-Busca anticipar una necesidad sin identificar diagnóstico.
+Puede facilitar colaboración dentro de la unidad.
 
-### Modalidad visible
+### 10.4. Modalidad visible
 
-Genera una señal más clara de necesidad de asistencia, siempre sin revelar información médica.
+Emite una señal más clara, visual o sonora, siempre genérica y no diagnóstica.
 
-La elección de modalidad debería ser voluntaria y configurable dentro de los límites técnicos y operativos definidos por la autoridad competente.
+Debe evaluarse con especial prudencia por su mayor impacto sobre la exposición pública.
 
 ---
 
 ## 11. Protección de datos personales
 
-La prueba piloto deberá diseñarse bajo criterios estrictos de privacidad.
+La prueba piloto debe excluir del core operativo:
 
-El núcleo operativo no debería procesar ni exponer:
-
+* DNI;
+* nombre;
+* apellido;
+* domicilio;
 * diagnóstico médico;
 * historia clínica;
-* certificado médico en texto plano;
+* certificados médicos;
 * datos de salud identificables;
-* información innecesaria para la finalidad de asistencia.
+* documentación sanitaria;
+* causa específica de la prioridad.
 
-Cuando se requiera algún tratamiento de datos personales, deberá contar con:
+El sistema debe operar con atributos técnicos, tokens, hashes o identificadores pseudoanonimizados.
 
-* base jurídica suficiente;
-* finalidad determinada;
-* minimización de datos;
-* medidas de seguridad;
-* control de acceso;
-* trazabilidad;
-* plazo de conservación limitado;
-* canales de información al usuario;
-* evaluación institucional previa.
+La finalidad debe limitarse a asistencia preventiva y evaluación institucional.
 
 ---
 
-## 12. Infraestructura tecnológica
+## 12. Interoperabilidad
 
-La prueba piloto debería priorizar la reutilización prudente de infraestructura existente o técnicamente disponible.
+En una primera prueba piloto, la interoperabilidad real con organismos externos debería evitarse salvo que exista marco jurídico, autorización, seguridad, documentación técnica y evaluación de impacto.
 
-No debería depender de una única tecnología, proveedor, validador, tarjeta, aplicación o hardware específico.
+En ausencia de esas condiciones, la interoperabilidad debe ser simulada.
 
-La arquitectura deberá permitir:
-
-* simulación previa;
-* operación en entorno acotado;
-* desactivación del piloto;
-* auditoría de eventos;
-* adaptación progresiva;
-* reemplazo de componentes;
-* integración futura sólo si existe autorización institucional.
+La prueba piloto no debe presentarse como conexión real con organismos públicos, registros médicos, bases de discapacidad, sistemas SUBE o validadoras reales, salvo autorización expresa y documentada.
 
 ---
 
-## 13. Interoperabilidad
+## 13. Infraestructura tecnológica
 
-En una primera etapa, la prueba piloto podría funcionar con interoperabilidad simulada o controlada.
+La infraestructura tecnológica deberá ser proporcional al alcance del piloto.
 
-Toda interoperabilidad real con organismos públicos, plataformas digitales, registros administrativos o sistemas de identidad deberá contar con:
+Podrían evaluarse componentes como:
 
-* autorización institucional;
-* marco jurídico;
+* API demostrativa;
+* entorno de laboratorio;
+* simulador de validación;
+* registro técnico mínimo;
+* interfaz de prueba;
+* señal visual o sonora conceptual;
+* dispositivo de demostración;
+* tablero de indicadores agregados;
 * documentación técnica;
-* seguridad informática;
-* protección de datos;
-* trazabilidad;
-* auditoría;
-* finalidad específica.
+* mecanismos de auditoría.
 
-La prueba piloto no debe presumir integraciones reales por el solo hecho de existir documentación conceptual o código demostrativo.
+La infraestructura de prueba no debe confundirse con infraestructura productiva.
 
 ---
 
 ## 14. Rol del chofer
 
-La prueba piloto no debería imponer al chofer tareas de evaluación médica, validación social, fiscalización, mediación o resolución de conflictos entre pasajeros.
+El chofer no debe ser colocado en una posición de evaluador médico ni de árbitro de conflictos.
 
-El diseño debe evitar que el personal de conducción tenga que:
+Durante la prueba piloto, su rol debería ser claro y limitado.
 
-* interpretar diagnósticos;
-* decidir si una persona merece prioridad;
-* resolver disputas por asientos;
-* controlar documentación médica;
-* aplicar sanciones;
-* administrar el sistema.
+No debería:
 
-La herramienta debe estar diseñada para minimizar cargas operativas y preservar la seguridad de la conducción.
+* pedir diagnósticos;
+* revisar certificados;
+* decidir quién merece asistencia;
+* administrar datos;
+* resolver disputas por prioridad;
+* aplicar sanciones.
+
+La conducción segura debe conservar prioridad operativa.
 
 ---
 
 ## 15. Relación con asientos prioritarios
 
-La prueba piloto no deberá modificar, sustituir, limitar ni debilitar el régimen legal vigente de asientos prioritarios.
+SUBE Prioridad no reemplaza el régimen legal de asientos prioritarios.
 
-Los derechos y obligaciones actualmente reconocidos deben permanecer intactos.
+La prueba piloto debe dejar expresamente aclarado que:
 
-SUBE Prioridad debe analizarse como una herramienta complementaria destinada a fortalecer la accesibilidad efectiva, especialmente frente a necesidades de asistencia que no siempre resultan visibles.
-
----
-
-## 16. Bono Solidario
-
-El Bono Solidario no debería formar parte de la primera prueba piloto del sistema base.
-
-Su eventual análisis correspondería a etapas posteriores, luego de verificar el funcionamiento estable de la herramienta principal.
-
-En caso de evaluarse en el futuro, debería ser:
-
-* voluntario;
-* posterior;
-* desacoplado del núcleo inicial;
-* sujeto a reglas antifraude;
-* sin sanciones;
-* sin rankings públicos;
-* sin presión social;
-* sin aplicación sobre asientos prioritarios legales.
+* los asientos prioritarios conservan su régimen vigente;
+* la herramienta es complementaria;
+* no se reducen derechos existentes;
+* no se crea una categoría superior de derecho;
+* no se modifica la normativa aplicable;
+* la asistencia busca mejorar convivencia y accesibilidad efectiva.
 
 ---
 
-## 17. Indicadores de evaluación
+## 16. Comunicación pública
+
+La comunicación pública debe ser clara, prudente y no exagerada.
+
+Debe explicar que:
+
+* se trata de una prueba piloto conceptual o institucional;
+* no es una implementación definitiva;
+* no se exponen diagnósticos;
+* no se modifica el sistema SUBE real sin autorización;
+* no se reemplazan asientos prioritarios;
+* no se sanciona a pasajeros;
+* se busca mejorar accesibilidad y convivencia;
+* la participación de usuarios prioritarios es voluntaria.
+
+Debe evitarse toda promesa de implementación inmediata o nacional.
+
+---
+
+## 17. Comunicación a usuarios prioritarios
+
+Los usuarios prioritarios que participen en una prueba piloto deberían recibir información clara sobre:
+
+* objetivo;
+* duración;
+* alcance;
+* modalidad de asistencia;
+* datos tratados;
+* datos excluidos;
+* derechos;
+* baja voluntaria;
+* canales de reclamo;
+* riesgos;
+* autoridad responsable;
+* límites del piloto.
+
+La participación debe ser informada y voluntaria.
+
+---
+
+## 18. Comunicación a pasajeros en general
+
+Los pasajeros en general deberían recibir información simple y accesible.
+
+Un ejemplo conceptual podría ser:
+
+```text
+Este servicio participa de una prueba de asistencia prioritaria.
+La señal no informa diagnósticos ni condiciones personales.
+Se solicita colaborar con quienes necesitan viajar sentados.
+```
+
+El texto definitivo deberá ser aprobado por autoridad competente.
+
+---
+
+## 19. Indicadores de evaluación
 
 La prueba piloto debería definir indicadores antes de comenzar.
 
-Algunos indicadores posibles:
+Podrían incluirse:
 
-* cantidad de usuarios voluntarios;
-* cantidad de validaciones realizadas;
-* tasa de funcionamiento correcto;
-* tiempos de respuesta;
+* cantidad de activaciones;
+* porcentaje de activaciones correctas;
+* fallas técnicas;
+* incidentes de convivencia;
+* reclamos;
 * percepción de privacidad;
-* facilidad de uso;
-* satisfacción de usuarios prioritarios;
-* percepción de otros pasajeros;
-* opinión de operadores;
-* incidentes reportados;
-* reclamos recibidos;
-* errores técnicos;
-* eventos fallidos;
-* conflictos observados;
-* accesibilidad de la interfaz;
-* necesidad de canales alternativos;
-* costos operativos estimados.
+* percepción de seguridad;
+* comprensión de la alerta;
+* aceptación por usuarios;
+* aceptación por pasajeros;
+* aceptación por choferes;
+* carga operativa;
+* necesidad de ajustes;
+* bajas voluntarias;
+* utilidad percibida.
 
-Los indicadores deberán ser definidos de manera precisa por los equipos técnicos e institucionales.
+Los indicadores deben ser agregados y no sensibles.
 
 ---
 
-## 18. Evaluación previa
+## 20. Evaluación previa
 
-Antes de iniciar la prueba piloto deberían analizarse:
+Antes de iniciar la prueba piloto debería elaborarse una evaluación previa que incluya:
 
-* marco jurídico aplicable;
-* protección de datos personales;
+* autoridad responsable;
+* marco jurídico;
 * alcance territorial;
-* duración;
-* población participante;
-* infraestructura necesaria;
-* responsabilidades institucionales;
-* canales de reclamo;
-* soporte técnico;
+* población objetivo;
+* modalidad de asistencia;
+* datos tratados;
+* datos excluidos;
+* riesgos de privacidad;
+* riesgos operativos;
 * comunicación pública;
 * capacitación mínima;
-* riesgos;
+* canales de reclamo;
 * criterios de suspensión;
-* métricas de evaluación.
-
-La evaluación previa debe documentarse.
+* indicadores;
+* informe final previsto.
 
 ---
 
-## 19. Evaluación durante la prueba
+## 21. Evaluación durante la prueba
 
-Durante la prueba piloto deberían monitorearse:
+Durante la prueba piloto debería realizarse seguimiento periódico.
 
-* funcionamiento técnico;
+Ese seguimiento podría incluir:
+
+* monitoreo técnico;
+* relevamiento de incidentes;
+* recepción de reclamos;
+* evaluación de comprensión;
+* ajustes documentados;
+* revisión de privacidad;
+* control de carga operativa;
+* reuniones de seguimiento;
+* informes parciales.
+
+La prueba debe poder ajustarse o suspenderse si aparecen riesgos relevantes.
+
+---
+
+## 22. Evaluación posterior
+
+Finalizada la prueba piloto debería elaborarse un informe final.
+
+Ese informe podría incluir:
+
+* alcance efectivo;
+* duración;
+* actores participantes;
+* indicadores;
+* resultados;
 * incidentes;
 * reclamos;
-* accesibilidad;
-* experiencia de usuario;
-* privacidad;
-* compatibilidad operativa;
-* efectos no deseados;
-* necesidad de ajustes;
-* cumplimiento del alcance definido.
-
-El monitoreo no debe transformarse en vigilancia individualizada ni exposición indebida de usuarios.
-
----
-
-## 20. Evaluación posterior
-
-Finalizada la prueba piloto, debería elaborarse un informe de evaluación.
-
-Ese informe podría considerar:
-
-* resultados obtenidos;
-* problemas detectados;
-* beneficios observados;
+* fallas técnicas;
+* ajustes realizados;
+* riesgos detectados;
 * percepción de usuarios;
-* impacto operativo;
-* incidentes de privacidad;
-* costos estimados;
+* percepción de operadores;
 * recomendaciones;
-* ajustes necesarios;
-* conveniencia o no de ampliar la prueba;
-* condiciones mínimas para una etapa posterior.
+* decisión sugerida de cierre, ajuste, repetición o ampliación.
 
-Ninguna ampliación debería ser automática.
+El informe no debe incluir diagnósticos ni datos personales innecesarios.
 
 ---
 
-## 21. Criterios de éxito
+## 23. Criterios de éxito
 
-La prueba piloto podría considerarse positiva si demuestra, entre otros aspectos:
+Una prueba piloto podría considerarse favorable si demuestra:
 
 * utilidad para usuarios prioritarios;
-* ausencia de exposición indebida de datos sensibles;
-* aceptación razonable;
-* funcionamiento técnico estable;
-* baja complejidad operativa;
-* ausencia de nuevas cargas relevantes para el chofer;
-* compatibilidad con derechos vigentes;
-* posibilidad de auditoría;
-* costos razonables;
-* capacidad de corrección y reversión.
+* respeto de privacidad;
+* ausencia de exposición de diagnósticos;
+* baja conflictividad;
+* comprensión adecuada;
+* carga operativa razonable;
+* aceptación social suficiente;
+* factibilidad técnica;
+* posibilidad de ajustes;
+* indicadores positivos;
+* ausencia de riesgos no mitigados.
+
+El éxito no debe medirse únicamente por cantidad de activaciones.
 
 ---
 
-## 22. Criterios de suspensión o revisión
+## 24. Criterios de suspensión o revisión
 
-La prueba piloto debería poder suspenderse o revisarse si se detectan:
+La prueba piloto debería poder suspenderse, pausarse o revisarse si se verifican:
 
-* riesgos para la privacidad;
 * exposición de datos sensibles;
-* conflictos relevantes;
-* fallas técnicas reiteradas;
+* conflictos reiterados;
 * rechazo social significativo;
-* complejidad operativa excesiva;
-* afectación de derechos vigentes;
-* uso indebido del sistema;
-* ausencia de autorización institucional suficiente;
+* fallas técnicas graves;
+* sobrecarga al chofer;
+* uso indebido;
 * imposibilidad de auditoría;
-* costos no sostenibles.
+* falta de autorización;
+* afectación de derechos;
+* problemas de seguridad;
+* incumplimiento de protección de datos;
+* riesgos no previstos.
 
-La reversibilidad debe ser parte del diseño desde el inicio.
-
----
-
-## 23. Comunicación pública
-
-La comunicación de la prueba piloto deberá ser clara y prudente.
-
-Debe explicarse:
-
-* qué se está probando;
-* qué no se está probando;
-* quiénes participan;
-* qué datos se utilizan;
-* qué datos no se utilizan;
-* qué derechos conserva el usuario;
-* cómo se reclama;
-* cuánto dura la prueba;
-* quién la supervisa;
-* cómo se evaluarán los resultados.
-
-No debe presentarse como implementación definitiva ni como sistema obligatorio.
+La reversibilidad debe formar parte del diseño inicial.
 
 ---
 
-## 24. Documentación asociada
+## 25. Checklist mínimo de inicio
 
-La prueba piloto debería leerse junto con:
+Antes de iniciar una prueba piloto debería verificarse:
 
-* Dossier Institucional Breve;
-* Petitorio Modelo;
-* Modelo de Proyecto de Resolución;
-* Estrategia Legislativa y Participación Ciudadana;
-* Arquitectura de Referencia;
-* Roadmap de Implementación;
-* Decisiones de Arquitectura;
-* Principios de Gobernanza;
-* Pliego Técnico Extendido;
-* Guardrails de Arquitectura.
-
----
-
-## Anexo I — Actores sugeridos para análisis de prueba piloto
-
-La siguiente nómina reúne líneas de colectivo, universidades, fundaciones, organizaciones sociales, instituciones técnicas y actores públicos que podrían ser considerados, a modo meramente orientativo, para el análisis de una eventual prueba piloto de SUBE Prioridad.
-
-La inclusión de un actor en este anexo no implica designación formal, obligación de participación, aval institucional, convenio vigente ni decisión administrativa alguna.
-
-Su finalidad es ordenar posibles recomendaciones para que las autoridades competentes puedan analizarlas, aceptarlas, modificarlas o descartarlas según criterios técnicos, jurídicos, operativos, presupuestarios, territoriales y sociales.
-
-Toda referencia a líneas, instituciones u organizaciones deberá ser verificada por las autoridades competentes antes de cualquier convocatoria formal.
+```text
+[ ] Autoridad responsable definida.
+[ ] Alcance territorial delimitado.
+[ ] Duración establecida.
+[ ] Población participante definida.
+[ ] Participación voluntaria documentada.
+[ ] Modalidades de asistencia definidas.
+[ ] Texto de alerta aprobado.
+[ ] Protección de datos evaluada.
+[ ] Datos excluidos del core definidos.
+[ ] Interoperabilidad prevista o descartada.
+[ ] Rol del chofer delimitado.
+[ ] Comunicación pública preparada.
+[ ] Capacitación mínima realizada.
+[ ] Canales de reclamo habilitados.
+[ ] Indicadores definidos.
+[ ] Criterios de suspensión establecidos.
+[ ] Informe final previsto.
+```
 
 ---
 
-### 1. Líneas de colectivo sugeridas
+## 26. Actores sugeridos para análisis preliminar en San Isidro y AMBA
 
-Para una primera experiencia piloto podría resultar conveniente analizar líneas con presencia relevante en el Partido de San Isidro y corredores vinculados con centros de salud, universidades, áreas administrativas, estaciones de transferencia o zonas de alta circulación de personas que podrían requerir asistencia.
+La siguiente enumeración tiene carácter meramente orientativo.
 
-#### 1.1. Líneas con presencia relevante en San Isidro
+No implica designación formal, aval, convenio vigente, obligación de participación ni intervención efectiva de los actores mencionados.
 
-**Línea 60**
+Toda convocatoria, consulta o participación deberá ser definida por autoridad competente.
 
-Conecta sectores de la Ciudad Autónoma de Buenos Aires con San Isidro y Tigre, con diversos ramales que atraviesan o se vinculan con el corredor norte.
+### 26.1. Líneas de colectivo con presencia o incidencia en San Isidro
 
-Podría ser considerada por su alta circulación, diversidad de usuarios, amplitud territorial y presencia histórica en la zona norte del AMBA.
+A modo de análisis preliminar podrían considerarse líneas con presencia territorial o circulación en el área de San Isidro y zonas cercanas, tales como:
 
-**Línea 168**
+* Línea 60;
+* Línea 168;
+* Línea 203;
+* Línea 343;
+* Línea 71.
 
-Une La Boca con San Isidro, atravesando sectores relevantes del municipio.
+La selección final deberá ser verificada por la autoridad de transporte competente.
 
-Podría ser considerada por su conexión directa con San Isidro y por su potencial utilidad para evaluar recorridos urbanos con alta demanda.
+### 26.2. Líneas AMBA para análisis comparativo
 
-**Línea 203**
+También podrían analizarse, como referencia comparativa, líneas con alta circulación urbana o relevancia metropolitana, tales como:
 
-Conecta Puente Saavedra con Moreno y Pilar, atravesando avenidas principales del corredor norte, incluyendo zonas vinculadas con San Isidro.
+* Línea 95;
+* Línea 102;
+* Línea 28.
 
-Podría ser considerada por su carácter interjurisdiccional, su circulación por arterias relevantes y su capacidad para representar viajes de media distancia dentro del AMBA.
+La mención de estas líneas no implica obligación de participación ni factibilidad técnica automática.
 
-**Línea 343**
+### 26.3. Universidades y ámbitos académicos sugeridos
 
-Línea provincial con recorridos relevantes en zona norte y oeste del conurbano bonaerense, incluyendo conexiones tradicionales vinculadas con San Isidro y localidades cercanas.
+Podrían consultarse universidades o áreas académicas con experiencia en accesibilidad, diseño, transporte, ingeniería, salud pública, derecho, tecnología o evaluación de políticas públicas, tales como:
 
-Podría ser considerada por su rol de articulación territorial entre municipios.
+* Universidad Nacional de General Sarmiento;
+* Universidad Tecnológica Nacional, Facultad Regional Delta o espacios vinculados al área de San Isidro;
+* Universidad Nacional de La Plata, Facultad de Arquitectura y Urbanismo;
+* colegios profesionales vinculados con arquitectura, accesibilidad, ingeniería o diseño universal.
 
-**Línea 71**
+Toda participación académica deberá respetar protección de datos personales, confidencialidad y ausencia de acceso innecesario a información sensible.
 
-Conecta Plaza Miserere con Villa Adelina, en el límite del Partido de San Isidro.
+### 26.4. Fundaciones y organizaciones sociales sugeridas
 
-Podría ser considerada por su cercanía territorial con San Isidro y su utilidad para evaluar recorridos urbanos vinculados con barrios residenciales y zonas de transferencia.
+Podrían consultarse organizaciones con experiencia en discapacidad, accesibilidad, inclusión, rehabilitación, deporte adaptado, asistencia social o acompañamiento comunitario, tales como:
 
-#### 1.2. Líneas del AMBA aptas como referencia comparativa
+* Fundación Rumbos;
+* Fundación Baccigalupo;
+* Asociación Civil Nosotros;
+* CILSA;
+* INERE Martínez;
+* Fundación Potenciar Solidario;
+* Fundación Flechabus.
 
-**Línea 95**
+La mención es meramente orientativa y no implica aval, convenio ni designación formal.
 
-Une Colegiales con Avellaneda.
+### 26.5. Sector municipal y comunitario
 
-Aunque no atraviesa San Isidro, podría ser considerada como línea testigo para comparar dinámicas de viaje en CABA y zona sur del AMBA.
+En una experiencia territorial podrían intervenir, según corresponda:
 
-**Línea 102**
+* Concejo Deliberante de San Isidro;
+* áreas municipales de discapacidad;
+* áreas municipales de salud;
+* centros de atención primaria de la salud;
+* áreas de transporte;
+* áreas de innovación pública;
+* defensorías o áreas de derechos ciudadanos;
+* organizaciones barriales;
+* centros de jubilados;
+* instituciones educativas o sanitarias cercanas.
 
-Recorre sectores de la Ciudad Autónoma de Buenos Aires, incluyendo el trayecto entre Palermo y Barracas.
-
-Podría ser considerada como referencia urbana dentro de CABA para evaluar funcionamiento en recorridos de alta densidad.
-
-**Línea 28**
-
-Línea nacional tradicional que bordea o se vincula con el corredor de Avenida General Paz y permite conexión con nodos de transferencia hacia zona norte, como Ciudad Universitaria o Puente Saavedra.
-
-No debe ser presentada como una línea propia de San Isidro, sino como posible referencia comparativa dentro del AMBA.
-
----
-
-### 2. Universidades y sector académico sugerido
-
-La participación académica podría fortalecer la evaluación técnica, social, jurídica, urbana, tecnológica y metodológica de una eventual prueba piloto.
-
-Las universidades sugeridas podrían intervenir mediante convenios, programas de investigación, observatorios, laboratorios, cátedras, institutos o equipos interdisciplinarios, siempre que exista conformidad institucional.
-
-**Universidad Nacional de General Sarmiento — UNGS**
-
-Podría ser considerada por su experiencia en análisis territorial, estudios urbanos, políticas públicas y dinámicas del conurbano bonaerense.
-
-Su participación podría orientarse al análisis territorial, evaluación social, indicadores urbanos y sistematización de resultados.
-
-**Universidad Tecnológica Nacional — Facultad Regional Delta / Extensión Áulica San Isidro**
-
-Podría ser considerada por su perfil tecnológico y su posible aporte en análisis de sistemas, arquitectura técnica, interoperabilidad, pruebas de software, seguridad lógica y soporte metodológico del MVP.
-
-**Universidad Nacional de La Plata — Facultad de Arquitectura y Urbanismo**
-
-Podría ser considerada por su trayectoria académica en accesibilidad física, diseño universal, urbanismo, movilidad y hábitat inclusivo.
-
-Su participación podría orientarse al análisis de accesibilidad, diseño inclusivo, experiencia espacial y evaluación de barreras físicas o comunicacionales.
-
-En caso de requerirse intervención profesional específica vinculada con arquitectura, accesibilidad o urbanismo, también podría evaluarse la consulta al colegio profesional correspondiente, como el Colegio de Arquitectos de la Provincia de Buenos Aires, según jurisdicción y competencia.
+La intervención municipal dependerá de competencia, voluntad institucional, alcance del piloto y coordinación con autoridades superiores.
 
 ---
 
-### 3. Fundaciones, asociaciones civiles y organizaciones sociales sugeridas
+## 27. Relación con otros documentos del repositorio
 
-Las organizaciones de la sociedad civil podrían aportar conocimiento territorial, experiencia directa con usuarios, perspectiva de accesibilidad, validación social y acompañamiento comunitario.
+Este documento debe leerse junto con:
 
-Su participación debería ser consultiva, colaborativa y respetuosa de las competencias estatales.
-
-**Fundación Rumbos**
-
-Organización especializada en accesibilidad urbana, hábitat inclusivo y eliminación de barreras.
-
-Podría aportar perspectiva técnica y social sobre accesibilidad, diseño inclusivo y movilidad cotidiana.
-
-**Fundación Baccigalupo**
-
-Organización vinculada con integración a través del deporte adaptado.
-
-Podría aportar experiencia en inclusión, discapacidad, autonomía personal y trabajo comunitario.
-
-**Asociación Civil Nosotros**
-
-Organización dedicada a la inclusión de personas con discapacidad intelectual, con presencia relevante en San Isidro.
-
-Podría aportar perspectiva territorial, experiencia comunitaria y acompañamiento en accesibilidad cognitiva e inclusión social.
-
-**CILSA**
-
-Organización de alcance nacional vinculada con inclusión, accesibilidad social y apoyo a personas con discapacidad.
-
-Podría aportar experiencia institucional, enfoque federal, conocimiento de usuarios y perspectiva de inclusión.
-
-**INERE Martínez**
-
-Institución de neurorehabilitación ubicada en Martínez, Partido de San Isidro.
-
-Podría aportar perspectiva sanitaria, rehabilitación funcional, movilidad reducida y necesidades de asistencia en traslados cotidianos.
-
-**Fundación Potenciar Solidario**
-
-Organización orientada al fortalecimiento de proyectos sociales y articulación de impacto.
-
-Podría colaborar en vinculación institucional, articulación con organizaciones y acompañamiento de impacto social.
-
-**Fundación Flechabus**
-
-Rama de responsabilidad social vinculada con una empresa de transporte.
-
-Podría aportar experiencia en movilidad, responsabilidad social empresaria, transporte de pasajeros y articulación con proyectos de impacto social.
+* `README.md`;
+* `ARCHITECTURE_GUARDRAILS.md`;
+* `docs/INDICE_DOCUMENTAL.md`;
+* `docs/PROTOCOLO_OPERATIVO.md`;
+* `docs/PROTECCION_DATOS_PERSONALES.md`;
+* `docs/FUNDAMENTOS_JURIDICOS.md`;
+* `docs/FUNDAMENTOS_MEDICOS.md`;
+* `docs/PRINCIPIOS_DE_GOBERNANZA.md`;
+* `docs/DECISIONES_DE_ARQUITECTURA.md`;
+* `docs/ROADMAP_IMPLEMENTACION.md`.
 
 ---
 
-### 4. Sector municipal y organismos locales sugeridos
+## 28. Declaración final
 
-Para una eventual prueba piloto territorialmente acotada, podría resultar relevante la participación o consulta de áreas municipales y organismos locales con competencia en accesibilidad, salud, discapacidad, transporte, participación ciudadana y control institucional.
+La prueba piloto de SUBE Prioridad debe ser entendida como una herramienta de evaluación, no como una implementación definitiva.
 
-**Concejo Deliberante de San Isidro**
+Su valor reside en permitir que autoridades competentes, usuarios, operadores, universidades y organizaciones sociales puedan analizar de manera controlada si una herramienta de asistencia preventiva mejora la accesibilidad efectiva y la convivencia dentro del transporte público.
 
-Podría intervenir como ámbito institucional de recepción, debate, acompañamiento o validación normativa local, en caso de que la prueba piloto requiera tratamiento municipal, declaración de interés, pedido de informes o articulación territorial.
+Toda prueba deberá ser limitada, voluntaria, reversible, auditable, respetuosa de la privacidad y compatible con los derechos vigentes.
 
-**Centros de Atención Primaria de la Salud de San Isidro**
-
-La red local de centros de salud podría ser relevante para comprender necesidades territoriales, población usuaria, situaciones de movilidad reducida, personas mayores, rehabilitación y asistencia cotidiana.
-
-Cualquier eventual participación vinculada con información de salud deberá respetar estrictamente la normativa de protección de datos personales, confidencialidad, finalidad determinada y competencia de las autoridades sanitarias.
-
-**Dirección de Discapacidad / áreas municipales vinculadas con discapacidad e inclusión**
-
-Las áreas municipales competentes en discapacidad e inclusión podrían colaborar en la evaluación territorial, identificación de barreras, accesibilidad, canales de participación, orientación a usuarios y articulación con organizaciones locales.
-
-Su intervención debería respetar las competencias municipales y coordinarse con los organismos provinciales o nacionales que correspondan.
-
----
-
-### 5. Criterios para la selección final
-
-La selección final de líneas, instituciones y actores participantes deberá ser realizada por las autoridades competentes.
-
-Para ello podrían considerarse, entre otros criterios:
-
-* factibilidad operativa;
-* jurisdicción competente;
-* disponibilidad del operador;
-* conectividad con hospitales, centros de salud, universidades o estaciones de transferencia;
-* presencia de población potencialmente beneficiaria;
-* accesibilidad del recorrido;
-* volumen de pasajeros;
-* posibilidad de medición;
-* cooperación institucional;
-* protección de datos personales;
-* capacidad de reversión;
-* costos estimados;
-* impacto social;
-* seguridad jurídica.
-
----
-
-### 6. Fórmula de prudencia institucional
-
-La presente nómina constituye una base de trabajo orientativa.
-
-No implica obligación de participación, convenio vigente, autorización institucional, aval formal ni decisión administrativa alguna por parte de los actores mencionados.
-
-Cualquier contacto, convocatoria, convenio, prueba operativa o participación efectiva deberá ser evaluada, autorizada y formalizada por las autoridades competentes y por cada institución involucrada, conforme a sus propios procedimientos internos.
-
----
-
-## 25. Declaración final
-
-La prueba piloto constituye el puente entre la propuesta ciudadana y una eventual política pública.
-
-Su valor reside en permitir que SUBE Prioridad sea evaluado en condiciones reales, pero acotadas, medibles, reversibles y respetuosas de la privacidad.
-
-El objetivo no es demostrar una solución cerrada, sino generar evidencia para que las autoridades competentes puedan decidir, con información suficiente, si la arquitectura propuesta resulta útil, viable y conveniente para fortalecer la accesibilidad efectiva dentro del transporte público argentino.
+La innovación pública sólo resulta legítima cuando se somete a evaluación suficiente, protege la dignidad de las personas usuarias y evita convertir la asistencia en exposición, vigilancia o discriminación.
