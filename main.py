@@ -1,41 +1,23 @@
-"""
-SUBE Prioridad — API demostrativa del MVP.
-
-Esta API forma parte de un MVP conceptual y demostrativo.
-
-No representa implementación oficial vigente.
-No representa integración real con SUBE.
-No representa conexión real con organismos públicos.
-No modifica validadoras reales.
-No procesa DNI.
-No procesa nombre ni apellido.
-No procesa domicilio.
-No procesa diagnóstico.
-No procesa historia clínica.
-No procesa CUD.
-No procesa certificados médicos.
-No genera sanciones.
-No genera vigilancia.
-No reemplaza derechos vigentes.
-
-Finalidad:
-    Demostrar cómo una necesidad previamente acreditada fuera del transporte
-    podría representarse mediante un atributo técnico mínimo, no sensible,
-    verificable de manera demostrativa y respetuoso de la privacidad.
-"""
-
-from __future__ import annotations
-
 from datetime import datetime, timezone
-from enum import Enum
+from enum import IntEnum
 from typing import Any, Dict, List, Optional
 
 from fastapi import FastAPI
 from pydantic import BaseModel, Field, model_validator
 
+from bono_solidario_simulator import (
+    DEFAULT_EVENT_TTL_MINUTES,
+    DemoRecognitionLedger,
+    SeatType,
+    create_demo_solidary_event,
+    create_demo_transport_context,
+    result_to_dict as bono_result_to_dict,
+    simulate_solidary_recognition,
+)
+
 
 APP_NAME = "SUBE Prioridad"
-APP_VERSION = "0.2.1"
+APP_VERSION = "0.3.0"
 DEMO_MODE = True
 
 
@@ -68,114 +50,82 @@ PROHIBITED_FIELDS = {
 
 
 DEMO_PRIORITY_REGISTRY = {
-    "demo-priority-attribute-001": {
-        "priority_status": "demo_active",
-        "default_assistance_preference": 2,
-        "description": "Atributo técnico demostrativo activo.",
-    },
-    "demo-priority-attribute-preventive": {
-        "priority_status": "demo_active",
-        "default_assistance_preference": 2,
-        "description": "Atributo técnico demostrativo preventivo.",
-    },
-    "demo-priority-attribute-visible": {
-        "priority_status": "demo_active",
-        "default_assistance_preference": 3,
-        "description": "Atributo técnico demostrativo visible.",
-    },
+    "demo-priority-attribute-001",
+    "demo-priority-attribute-preventive",
+    "demo-priority-attribute-visible",
 }
 
 
-class AssistancePreference(int, Enum):
+DEMO_BONO_SOLIDARIO_LEDGER = DemoRecognitionLedger()
+
+
+class AssistancePreference(IntEnum):
     """
-    Preferencias demostrativas de asistencia.
+    Preferencia demostrativa de asistencia.
 
-    No representan diagnósticos.
-    No representan categorías médicas.
-    Sólo indican modalidad operativa de asistencia.
-    """
-
-    SILENCIOSA = 0
-    DISCRETA = 1
-    PREVENTIVA = 2
-    VISIBLE = 3
-
-
-class VerificationStatus(str, Enum):
-    """
-    Estados posibles de la verificación demostrativa.
+    No representa clasificación médica.
+    No representa diagnóstico.
+    No representa CUD.
     """
 
+    SILENCIOSA = 1
+    DISCRETA = 2
+    PREVENTIVA = 3
+    VISIBLE = 4
+
+
+class VerificationStatus(str):
     VALID = "valid"
     INVALID = "invalid"
 
 
 class VerificationRequest(BaseModel):
     """
-    Solicitud de verificación demostrativa.
+    Solicitud demostrativa de verificación de prioridad.
 
-    Se aceptan nombres en castellano para facilitar uso desde Swagger UI,
-    pero el contenido sigue siendo técnico y no sensible.
+    El endpoint no acepta DNI, nombre, diagnóstico, CUD ni documentación médica.
     """
 
     token_prioridad: str = Field(
         ...,
         description=(
-            "Token técnico demostrativo. No debe ser DNI, CUD, diagnóstico, "
-            "certificado médico ni texto libre de beneficio."
+            "Token técnico demostrativo de prioridad. "
+            "No debe contener DNI, nombre, diagnóstico, CUD ni texto libre."
         ),
         examples=["demo-priority-attribute-001"],
     )
     preferencia_asistencia: Optional[AssistancePreference] = Field(
-        default=None,
-        description=(
-            "Preferencia demostrativa: 0 silenciosa, 1 discreta, "
-            "2 preventiva, 3 visible."
-        ),
-        examples=[2],
+        default=AssistancePreference.PREVENTIVA,
+        description="Preferencia demostrativa de asistencia configurada por el usuario.",
     )
     linea: Optional[str] = Field(
         default=None,
-        description="Identificador demostrativo de línea. No representa operación real.",
+        description="Identificador demostrativo de línea o recorrido.",
         examples=["demo-linea-001"],
     )
     unidad: Optional[str] = Field(
         default=None,
-        description="Identificador demostrativo de unidad. No representa unidad real.",
+        description="Identificador demostrativo de unidad de transporte.",
         examples=["demo-unidad-001"],
     )
 
     @model_validator(mode="before")
     @classmethod
     def reject_sensitive_fields(cls, values: Any) -> Any:
-        if not isinstance(values, dict):
-            return values
-
-        normalized_keys = {str(key).strip().lower() for key in values.keys()}
-        forbidden = sorted(normalized_keys.intersection(PROHIBITED_FIELDS))
-
-        if forbidden:
-            raise ValueError(
-                "La solicitud contiene campos prohibidos para SUBE Prioridad: "
-                + ", ".join(forbidden)
-            )
-
+        if isinstance(values, dict):
+            _assert_no_prohibited_fields(values)
         return values
 
 
 class VerificationResponse(BaseModel):
-    """
-    Respuesta demostrativa de verificación.
-    """
-
     project: str
     version: str
     demo_mode: bool
-    status: VerificationStatus
+    status: str
     prioridad_activa: bool
     token_verificado: bool
     motivo: str
-    preferencia_asistencia: Optional[int]
+    preferencia_asistencia: Optional[AssistancePreference]
     alerta: str
     privacidad: str
     rol_chofer: str
@@ -185,20 +135,127 @@ class VerificationResponse(BaseModel):
     advertencias: List[str]
 
 
-class GuardrailsResponse(BaseModel):
+class BonoSolidarioSimulationRequest(BaseModel):
+    """
+    Solicitud demostrativa del Bono Solidario.
+
+    Este endpoint está separado del core de prioridad.
+    No acredita puntos reales.
+    No sincroniza con Red SUBE real.
+    No otorga beneficios reales.
+    """
+
+    event_demo_id: str = Field(
+        ...,
+        description="Identificador demostrativo único del evento solidario.",
+        examples=["demo-solidary-event-api-001"],
+    )
+    priority_user_token: str = Field(
+        ...,
+        description="Token demostrativo no sensible del usuario SUBE Prioridad.",
+        examples=["demo-priority-user-001"],
+    )
+    collaborator_token: str = Field(
+        ...,
+        description="Token demostrativo no sensible del pasajero colaborador.",
+        examples=["demo-collaborator-001"],
+    )
+    priority_user_decides_to_recognize: bool = Field(
+        ...,
+        description=(
+            "Decisión voluntaria del usuario SUBE Prioridad. "
+            "Sin esta decisión no hay Bono Solidario."
+        ),
+        examples=[True],
+    )
+    seat_type: SeatType = Field(
+        default=SeatType.GENERAL_USE,
+        description=(
+            "Tipo de asiento. El Bono Solidario sólo aplica conceptualmente "
+            "a asientos de uso general."
+        ),
+    )
+    voluntary_seat_yield: bool = Field(
+        default=True,
+        description="Indica si existió una cesión voluntaria de asiento.",
+    )
+    country: str = Field(
+        default="Argentina",
+        description="País del contexto demostrativo.",
+    )
+    vehicle_demo_id: str = Field(
+        default="demo-bus-001",
+        description="Unidad demostrativa del transporte.",
+    )
+    route_demo_id: str = Field(
+        default="demo-route-001",
+        description="Ruta o línea demostrativa.",
+    )
+    trip_demo_id: str = Field(
+        default="demo-trip-001",
+        description="Viaje demostrativo.",
+    )
+    time_window_demo_id: str = Field(
+        default="demo-window-001",
+        description="Ventana temporal demostrativa.",
+    )
+    expected_vehicle_demo_id: Optional[str] = Field(
+        default=None,
+        description="Unidad esperada para validar coincidencia demostrativa.",
+    )
+    expected_route_demo_id: Optional[str] = Field(
+        default=None,
+        description="Ruta esperada para validar coincidencia demostrativa.",
+    )
+    expected_trip_demo_id: Optional[str] = Field(
+        default=None,
+        description="Viaje esperado para validar coincidencia demostrativa.",
+    )
+    expected_time_window_demo_id: Optional[str] = Field(
+        default=None,
+        description="Ventana temporal esperada para validar coincidencia demostrativa.",
+    )
+    ttl_minutes: int = Field(
+        default=DEFAULT_EVENT_TTL_MINUTES,
+        ge=1,
+        le=60,
+        description="Tiempo de vida demostrativo del evento en minutos.",
+    )
+
+    @model_validator(mode="before")
+    @classmethod
+    def reject_sensitive_fields(cls, values: Any) -> Any:
+        if isinstance(values, dict):
+            _assert_no_prohibited_fields(values)
+        return values
+
+
+class BonoSolidarioSimulationResponse(BaseModel):
     project: str
+    module: str
     version: str
     demo_mode: bool
-    guardrails: List[str]
+    status: str
+    solidary_point_demo: int
+    recognition_enabled_by_priority_user: bool
+    same_transport_context: bool
+    review_required: bool
+    risk_flags: List[str]
+    reason: str
+    privacy_notice: str
+    driver_burden: str
+    warnings: List[str]
+    timestamp_utc: str
 
 
 app = FastAPI(
-    title="SUBE Prioridad — MVP API",
+    title=APP_NAME,
     version=APP_VERSION,
     description=(
-        "API demostrativa para validar un atributo técnico mínimo y no sensible. "
-        "No representa implementación oficial, integración real con SUBE ni "
-        "conexión con organismos públicos."
+        "MVP conceptual y demostrativo de SUBE Prioridad. "
+        "No es una implementación oficial. "
+        "No integra SUBE real. "
+        "No procesa datos sensibles reales."
     ),
 )
 
@@ -210,16 +267,28 @@ def root() -> Dict[str, Any]:
         "version": APP_VERSION,
         "demo_mode": DEMO_MODE,
         "status": "ok",
-        "message": "SUBE Prioridad — MVP conceptual y demostrativo.",
-        "documentation": "/docs",
-        "guardrails": "/project/guardrails",
+        "description": (
+            "Propuesta ciudadana de innovación pública para asistencia preventiva "
+            "en transporte público."
+        ),
+        "core": {
+            "priority_verification": "/api/v1/prioridad/verificar",
+            "bono_solidario_future_module": "/api/v1/bono-solidario/simular",
+        },
+        "guardrails": [
+            "No implementación oficial vigente.",
+            "No integración real con SUBE.",
+            "No conexión real con organismos públicos.",
+            "No procesamiento de DNI, diagnóstico, CUD ni datos médicos.",
+            "Bono Solidario separado del token de prioridad.",
+        ],
     }
 
 
 @app.get("/health")
 def health() -> Dict[str, Any]:
     return {
-        "status": "healthy",
+        "status": "ok",
         "project": APP_NAME,
         "version": APP_VERSION,
         "demo_mode": DEMO_MODE,
@@ -227,79 +296,68 @@ def health() -> Dict[str, Any]:
     }
 
 
-@app.get("/project/guardrails", response_model=GuardrailsResponse)
-def project_guardrails() -> GuardrailsResponse:
-    return GuardrailsResponse(
-        project=APP_NAME,
-        version=APP_VERSION,
-        demo_mode=DEMO_MODE,
-        guardrails=[
-            "MVP conceptual y demostrativo.",
-            "Sin implementación oficial vigente.",
-            "Sin integración real con SUBE.",
-            "Sin conexión real con organismos públicos.",
-            "Sin modificación de validadoras reales.",
-            "Sin procesamiento de DNI.",
-            "Sin procesamiento de diagnósticos.",
-            "Sin procesamiento de CUD.",
-            "Sin certificados médicos en el core.",
-            "Sin historia clínica.",
-            "Sin vigilancia.",
-            "Sin sanciones.",
-            "Sin ranking de pasajeros.",
-            "Sin sobrecarga al personal de conducción.",
-            "Separación entre acreditación institucional y operación técnica.",
-            "El transporte no necesita conocer el diagnóstico.",
+@app.get("/project/guardrails")
+def project_guardrails() -> Dict[str, Any]:
+    return {
+        "project": APP_NAME,
+        "version": APP_VERSION,
+        "demo_mode": DEMO_MODE,
+        "guardrails": [
+            "SUBE Prioridad es una propuesta conceptual y demostrativa.",
+            "No es una implementación oficial vigente.",
+            "No modifica el sistema SUBE real.",
+            "No modifica validadoras reales.",
+            "No procesa DNI.",
+            "No procesa nombre ni apellido.",
+            "No procesa domicilio.",
+            "No procesa diagnóstico.",
+            "No procesa historia clínica.",
+            "No procesa CUD.",
+            "No procesa certificados médicos.",
+            "No reemplaza los asientos prioritarios legales.",
+            "No traslada cargas operativas al chofer.",
+            "No genera vigilancia.",
+            "No genera rankings de pasajeros.",
+            "No genera sanciones.",
+            "El Bono Solidario es un módulo futuro, opcional y separado.",
+            "El Bono Solidario queda en manos del usuario SUBE Prioridad.",
         ],
-    )
+    }
 
 
 @app.post(
     "/api/v1/prioridad/verificar",
     response_model=VerificationResponse,
-    summary="Verificar Prioridad",
 )
 def verificar_prioridad(request: VerificationRequest) -> VerificationResponse:
     """
-    Verifica de manera demostrativa un atributo técnico de prioridad.
+    Verifica un atributo técnico demostrativo de prioridad.
 
-    Importante:
-        - No interpreta texto libre.
-        - No valida beneficios reales.
-        - No valida CUD.
-        - No consulta organismos públicos.
-        - No procesa datos sensibles.
-        - No activa prioridad por palabras mágicas.
+    Este endpoint no interpreta texto libre.
+    Este endpoint no activa prioridad por frases como bono solidario,
+    tarifa social, beneficio vigente o viajar gratis.
     """
     token = request.token_prioridad.strip()
 
     if _looks_like_free_text_or_benefit(token):
-        return _invalid_response(
-            motivo=(
-                "El valor recibido parece describir un beneficio, trámite o texto libre. "
-                "El MVP no interpreta beneficios reales ni textos descriptivos. "
-                "Debe utilizarse un atributo técnico demostrativo previamente emitido."
-            ),
+        return _invalid_priority_response(
             request=request,
+            motivo=(
+                "El valor recibido parece texto libre, beneficio tarifario o frase descriptiva. "
+                "La prioridad no se activa por palabras mágicas ni por menciones a Bono Solidario, "
+                "tarifa social o beneficios. Debe utilizarse un atributo técnico demostrativo "
+                "previamente emitido."
+            ),
         )
 
-    registry_entry = DEMO_PRIORITY_REGISTRY.get(token)
-
-    if registry_entry is None:
-        return _invalid_response(
-            motivo=(
-                "No se registra atributo técnico demostrativo activo para el token informado. "
-                "Esto evita falsos positivos: el sistema no activa prioridad por frases, "
-                "palabras sueltas ni tokens inventados."
-            ),
+    if token not in DEMO_PRIORITY_REGISTRY:
+        return _invalid_priority_response(
             request=request,
+            motivo=(
+                "No se registra un atributo técnico demostrativo de prioridad para el token informado. "
+                "El MVP evita falsos positivos y no presume prioridad por texto libre."
+            ),
         )
-
-    preference = (
-        request.preferencia_asistencia
-        if request.preferencia_asistencia is not None
-        else AssistancePreference(registry_entry["default_assistance_preference"])
-    )
 
     return VerificationResponse(
         project=APP_NAME,
@@ -310,29 +368,81 @@ def verificar_prioridad(request: VerificationRequest) -> VerificationResponse:
         token_verificado=True,
         motivo=(
             "Atributo técnico demostrativo verificado. "
-            "La prioridad se activa sólo porque el token existe en el registro demo, "
-            "no por interpretación de texto libre."
+            "La prioridad activa no revela diagnóstico ni documentación sensible."
         ),
-        preferencia_asistencia=int(preference.value),
-        alerta=_build_alert(preference),
+        preferencia_asistencia=request.preferencia_asistencia,
+        alerta=_build_priority_alert(request.preferencia_asistencia),
         privacidad=(
-            "La verificación demostrativa no revela DNI, nombre, diagnóstico, CUD, "
-            "certificado médico ni historia clínica."
+            "El transporte sólo recibe una señal genérica de asistencia. "
+            "No recibe DNI, nombre, diagnóstico, CUD, historia clínica ni certificado médico."
         ),
         rol_chofer=(
-            "El personal de conducción no evalúa diagnósticos, no solicita certificados "
-            "y no administra datos sensibles."
+            "El personal de conducción no debe diagnosticar, validar documentación médica "
+            "ni administrar beneficios."
         ),
         linea=request.linea,
         unidad=request.unidad,
         timestamp_utc=_now_utc(),
-        advertencias=_common_warnings(),
+        advertencias=_common_priority_warnings(),
     )
 
 
-def _invalid_response(
-    motivo: str,
+@app.post(
+    "/api/v1/bono-solidario/simular",
+    response_model=BonoSolidarioSimulationResponse,
+)
+def simular_bono_solidario(
+    request: BonoSolidarioSimulationRequest,
+) -> BonoSolidarioSimulationResponse:
+    """
+    Simula el módulo futuro de Bono Solidario.
+
+    El Bono Solidario está separado de la prioridad.
+    No activa prioridad.
+    No otorga puntos reales.
+    No sincroniza con Red SUBE real.
+    """
+    actual_context = create_demo_transport_context(
+        country=request.country,
+        vehicle_demo_id=request.vehicle_demo_id,
+        route_demo_id=request.route_demo_id,
+        trip_demo_id=request.trip_demo_id,
+        time_window_demo_id=request.time_window_demo_id,
+    )
+
+    expected_context = create_demo_transport_context(
+        country=request.country,
+        vehicle_demo_id=request.expected_vehicle_demo_id or request.vehicle_demo_id,
+        route_demo_id=request.expected_route_demo_id or request.route_demo_id,
+        trip_demo_id=request.expected_trip_demo_id or request.trip_demo_id,
+        time_window_demo_id=(
+            request.expected_time_window_demo_id or request.time_window_demo_id
+        ),
+    )
+
+    event = create_demo_solidary_event(
+        event_demo_id=request.event_demo_id,
+        priority_user_token=request.priority_user_token,
+        collaborator_token=request.collaborator_token,
+        priority_user_decides_to_recognize=request.priority_user_decides_to_recognize,
+        seat_type=request.seat_type,
+        voluntary_seat_yield=request.voluntary_seat_yield,
+        transport_context=actual_context,
+        ttl_minutes=request.ttl_minutes,
+    )
+
+    result = simulate_solidary_recognition(
+        event=event,
+        expected_context=expected_context,
+        ledger=DEMO_BONO_SOLIDARIO_LEDGER,
+    )
+
+    return BonoSolidarioSimulationResponse(**bono_result_to_dict(result))
+
+
+def _invalid_priority_response(
     request: VerificationRequest,
+    motivo: str,
 ) -> VerificationResponse:
     return VerificationResponse(
         project=APP_NAME,
@@ -342,31 +452,54 @@ def _invalid_response(
         prioridad_activa=False,
         token_verificado=False,
         motivo=motivo,
-        preferencia_asistencia=None,
+        preferencia_asistencia=request.preferencia_asistencia,
         alerta=(
-            "No se emite alerta de prioridad. "
-            "La respuesta inválida no implica decisión médica ni sanción."
+            "No se emite alerta de prioridad porque el atributo técnico demostrativo "
+            "no fue verificado."
         ),
         privacidad=(
-            "No se procesa ni solicita información sensible para esta respuesta."
+            "No se procesa información sensible. "
+            "No se infiere diagnóstico ni condición personal."
         ),
         rol_chofer=(
-            "El personal de conducción no debe resolver la validez del atributo."
+            "El personal de conducción no debe resolver la validez de tokens, "
+            "beneficios o condiciones personales."
         ),
         linea=request.linea,
         unidad=request.unidad,
         timestamp_utc=_now_utc(),
-        advertencias=_common_warnings(),
+        advertencias=_common_priority_warnings(),
+    )
+
+
+def _build_priority_alert(
+    preference: Optional[AssistancePreference],
+) -> str:
+    if preference == AssistancePreference.SILENCIOSA:
+        return (
+            "Registro interno demostrativo sin alerta visible. "
+            "La asistencia queda limitada a la preferencia silenciosa del usuario."
+        )
+
+    if preference == AssistancePreference.DISCRETA:
+        return (
+            "Alerta discreta demostrativa: podría requerirse asistencia preventiva "
+            "sin exponer datos personales."
+        )
+
+    if preference == AssistancePreference.VISIBLE:
+        return (
+            "Alerta visible demostrativa: solicitud genérica de colaboración preventiva "
+            "sin revelar diagnóstico."
+        )
+
+    return (
+        "Alerta preventiva demostrativa: una persona podría requerir viajar sentada "
+        "o recibir colaboración voluntaria."
     )
 
 
 def _looks_like_free_text_or_benefit(token: str) -> bool:
-    """
-    Detecta valores que no son atributos técnicos demostrativos.
-
-    Esto evita confundir frases descriptivas, beneficios o textos libres
-    con un token técnico emitido.
-    """
     normalized = token.lower().strip()
 
     suspicious_terms = {
@@ -377,6 +510,7 @@ def _looks_like_free_text_or_benefit(token: str) -> bool:
         "beneficio",
         "vigente",
         "gratis",
+        "viajar",
         "cud",
         "andis",
         "medico",
@@ -384,6 +518,9 @@ def _looks_like_free_text_or_benefit(token: str) -> bool:
         "diagnostico",
         "diagnóstico",
         "certificado",
+        "sancion",
+        "sanción",
+        "ranking",
     }
 
     if any(term in normalized for term in suspicious_terms):
@@ -395,26 +532,18 @@ def _looks_like_free_text_or_benefit(token: str) -> bool:
     return False
 
 
-def _build_alert(preference: AssistancePreference) -> str:
-    messages = {
-        AssistancePreference.SILENCIOSA: (
-            "Preferencia silenciosa registrada. Sin alerta visible."
-        ),
-        AssistancePreference.DISCRETA: (
-            "Asistencia prioritaria solicitada de manera discreta."
-        ),
-        AssistancePreference.PREVENTIVA: (
-            "Asistencia preventiva sugerida. Mensaje genérico sin diagnóstico."
-        ),
-        AssistancePreference.VISIBLE: (
-            "Asistencia prioritaria visible solicitada. Mensaje genérico sin diagnóstico."
-        ),
-    }
+def _assert_no_prohibited_fields(payload: Dict[str, Any]) -> None:
+    normalized_keys = {str(key).strip().lower() for key in payload.keys()}
+    forbidden = sorted(normalized_keys.intersection(PROHIBITED_FIELDS))
 
-    return messages[preference]
+    if forbidden:
+        raise ValueError(
+            "El payload contiene campos prohibidos para SUBE Prioridad: "
+            + ", ".join(forbidden)
+        )
 
 
-def _common_warnings() -> List[str]:
+def _common_priority_warnings() -> List[str]:
     return [
         "MVP conceptual y demostrativo.",
         "Sin implementación oficial vigente.",
@@ -426,6 +555,7 @@ def _common_warnings() -> List[str]:
         "Sin validación de CUD real.",
         "Sin firma gubernamental real en el core.",
         "Sin sanciones, vigilancia ni ranking de pasajeros.",
+        "Bono Solidario separado del token de prioridad.",
     ]
 
 
