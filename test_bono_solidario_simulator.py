@@ -8,6 +8,7 @@ No integra SUBE real.
 No integra Red SUBE real.
 No acredita puntos reales.
 No otorga beneficios reales.
+No modifica tarifas.
 No procesa DNI, nombre, domicilio, diagnóstico, CUD ni certificados médicos.
 No genera sanciones.
 No genera rankings.
@@ -21,11 +22,6 @@ Regla operativa conceptual:
     Sólo puede analizarse cuando otro pasajero cede voluntariamente un asiento
     de uso general dentro de un transporte público de Argentina, y el usuario
     SUBE Prioridad decide reconocer ese acto solidario.
-
-Regla de blindaje:
-    Ningún evento individual debe ser suficiente por sí solo para construir
-    confianza productiva. Esta demo usa validaciones mínimas, anti-replay,
-    límites por viaje y señales de riesgo.
 """
 
 from __future__ import annotations
