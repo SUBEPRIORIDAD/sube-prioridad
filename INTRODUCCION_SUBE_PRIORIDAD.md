@@ -1,12 +1,24 @@
 # Introducción a SUBE Prioridad
 
+## Documento de presentación general del proyecto ciudadano
+
 ## Una propuesta ciudadana para una accesibilidad más efectiva, asistencia preventiva y convivencia en el transporte público
 
 ---
 
-## ¿Qué es SUBE Prioridad?
+# En pocas palabras
+
+SUBE Prioridad propone analizar cómo una herramienta tecnológica, diseñada bajo criterios de privacidad, accesibilidad y gradualidad institucional, podría ayudar a que personas con una necesidad previamente acreditada de viajar sentadas reciban asistencia preventiva dentro del transporte público.
+
+La propuesta busca explorar una alternativa donde la tecnología pueda facilitar una experiencia de viaje más segura y respetuosa, sin exponer diagnósticos, sin almacenar información médica innecesaria y sin modificar los derechos existentes.
+
+---
+
+# ¿Qué es SUBE Prioridad?
 
 SUBE Prioridad es una iniciativa ciudadana de innovación pública que propone analizar cómo la tecnología puede contribuir a mejorar la experiencia de viaje de personas que cuentan con una necesidad previamente acreditada de viajar sentadas o recibir asistencia preventiva dentro del transporte público.
+
+La expresión **necesidad previamente acreditada** refiere a una condición reconocida mediante los mecanismos, organismos, profesionales o procedimientos que determinen las autoridades competentes.
 
 La propuesta busca explorar una solución gradual, respetuosa de la privacidad y adaptable a distintas jurisdicciones, donde una necesidad de asistencia pueda transformarse en un atributo técnico de prioridad sin obligar a la persona usuaria a exponer públicamente diagnósticos, condiciones médicas o información personal sensible.
 
@@ -39,7 +51,7 @@ Esto puede generar dificultades:
 * falta de herramientas preventivas;
 * situaciones donde una persona necesita ayuda pero evita pedirla.
 
-SUBE Prioridad plantea analizar si una herramienta tecnológica puede ayudar a reducir esas situaciones, preservando siempre la dignidad y privacidad de las personas.
+SUBE Prioridad plantea analizar si una herramienta tecnológica puede ayudar a reducir esas situaciones, preservando siempre la dignidad, autonomía y privacidad de las personas.
 
 ---
 
@@ -65,6 +77,10 @@ Determina que una persona cuenta con una necesidad de prioridad.
 
 Ese proceso correspondería a organismos, profesionales o mecanismos definidos por las autoridades competentes.
 
+El sistema tecnológico no debe determinar, interpretar ni diagnosticar esa necesidad.
+
+---
+
 ## La operación
 
 Permite que un sistema técnico pueda reconocer una preferencia de asistencia sin conocer detalles personales innecesarios.
@@ -77,7 +93,7 @@ Necesita saber únicamente si existe una condición de prioridad operativa.
 
 # ¿Cómo funcionaría conceptualmente?
 
-SUBE Prioridad propone una arquitectura donde la información sensible no viaja al sistema de transporte.
+SUBE Prioridad propone una arquitectura donde la información sensible no viaje al sistema de transporte.
 
 Un ejemplo conceptual:
 
@@ -134,6 +150,23 @@ SUBE Prioridad busca estudiar si la tecnología puede actuar como facilitador, n
 
 ---
 
+# Más que una aplicación
+
+SUBE Prioridad no propone resolver una problemática social únicamente mediante tecnología.
+
+La tecnología es considerada una herramienta complementaria dentro de un modelo más amplio que incluye:
+
+* derechos existentes;
+* accesibilidad;
+* convivencia ciudadana;
+* criterios institucionales;
+* protección de datos;
+* evaluación gradual.
+
+El componente tecnológico solo busca facilitar una interacción que actualmente puede depender exclusivamente de la explicación personal o de la percepción de terceros.
+
+---
+
 # ¿Qué NO es SUBE Prioridad?
 
 SUBE Prioridad no es:
@@ -146,10 +179,14 @@ SUBE Prioridad no es:
 * un sistema de vigilancia;
 * una base de datos médicos;
 * una herramienta de diagnóstico;
+* una evaluación médica;
 * una obligación nueva para choferes;
-* un reemplazo de los asientos prioritarios existentes.
+* un reemplazo de los asientos prioritarios existentes;
+* un sistema que crea nuevas categorías de personas.
 
 Tampoco busca identificar públicamente a las personas usuarias ni exponer sus condiciones personales.
+
+La propuesta no reemplaza la decisión de las autoridades competentes.
 
 ---
 
@@ -173,6 +210,24 @@ La regla fundamental es:
 ```text
 la persona no debe revelar más información de la necesaria para recibir asistencia
 ```
+
+---
+
+# Principios del proyecto
+
+SUBE Prioridad se basa en los siguientes principios:
+
+* privacidad por diseño;
+* minimización de datos;
+* accesibilidad efectiva;
+* dignidad de las personas;
+* autonomía del usuario;
+* gradualidad;
+* reversibilidad;
+* auditabilidad;
+* neutralidad institucional;
+* interoperabilidad responsable;
+* no sustitución de derechos existentes.
 
 ---
 
