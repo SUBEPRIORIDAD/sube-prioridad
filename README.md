@@ -4,7 +4,7 @@
 
 SUBE Prioridad es una propuesta ciudadana de innovación pública orientada a analizar herramientas complementarias que puedan facilitar que personas con una necesidad previamente acreditada de viajar sentadas accedan a condiciones de viaje más seguras, respetuosas y adecuadas dentro del transporte público.
 
-Este repositorio contiene un **MVP conceptual, técnico y demostrativo**, acompañado por documentación de arquitectura, fundamentos jurídicos, fundamentos médicos, estrategia legislativa, lineamientos de protección de datos personales, modelo de prueba piloto, protocolo operativo, gobernanza, decisiones de arquitectura, neutralidad institucional, custodia pública, política de marca y anexos técnicos.
+Este repositorio contiene un **MVP conceptual, técnico y demostrativo**, acompañado por documentación de arquitectura, fundamentos jurídicos, fundamentos médicos, estrategia legislativa, lineamientos de protección de datos personales, modelo de prueba piloto, protocolo operativo, gobernanza, decisiones de arquitectura, neutralidad institucional, custodia pública, política de marca, modelo de condiciones para donación y custodia, y anexos técnicos.
 
 ---
 
@@ -16,7 +16,7 @@ La documentación principal se encuentra organizada en:
 
 [`docs/INDICE_DOCUMENTAL.md`](docs/INDICE_DOCUMENTAL.md)
 
-Se recomienda comenzar por ese índice para comprender el alcance del MVP, los límites del proyecto, la arquitectura de referencia, la prueba piloto propuesta, los fundamentos jurídicos y médicos, la estrategia institucional, los principios de gobernanza, las decisiones de arquitectura, la neutralidad institucional, la custodia pública, la política de marca y el pliego técnico extendido.
+Se recomienda comenzar por ese índice para comprender el alcance del MVP, los límites del proyecto, la arquitectura de referencia, la prueba piloto propuesta, los fundamentos jurídicos y médicos, la estrategia institucional, los principios de gobernanza, las decisiones de arquitectura, la neutralidad institucional, la custodia pública, la política de marca, el modelo de condiciones para donación y custodia, y el pliego técnico extendido.
 
 La versión 1.0 no representa una implementación oficial vigente ni una integración productiva con SUBE, organismos públicos, validadoras, hardware embarcado o infraestructura estatal.
 
@@ -41,6 +41,7 @@ Principios de gobernanza: sí
 Decisiones de arquitectura: sí
 Neutralidad institucional y custodia pública: sí
 Política de marca: sí
+Modelo de condiciones para donación y custodia: sí
 Implementación productiva: no
 Integración real con organismos públicos: no
 Modificación del sistema SUBE: no
@@ -161,6 +162,7 @@ El proyecto se basa en los siguientes principios:
 * neutralidad institucional;
 * no apropiación partidaria;
 * protección de la identidad pública del proyecto;
+* donación o transferencia institucional condicionada a principios fundacionales;
 * no sustitución de derechos vigentes;
 * no imposición de nuevas cargas operativas al personal de conducción.
 
@@ -453,6 +455,7 @@ La documentación principal del repositorio se organiza en los siguientes docume
 * [`docs/PRINCIPIOS_DE_GOBERNANZA.md`](docs/PRINCIPIOS_DE_GOBERNANZA.md): criterios de transparencia, protección de datos, auditabilidad y control institucional.
 * [`docs/NEUTRALIDAD_INSTITUCIONAL_Y_CUSTODIA_PUBLICA.md`](docs/NEUTRALIDAD_INSTITUCIONAL_Y_CUSTODIA_PUBLICA.md): criterios para preservar el carácter ciudadano, abierto, no partidario, auditable y social del proyecto frente a donaciones, adopciones institucionales, forks o usos públicos.
 * [`docs/POLITICA_DE_MARCA.md`](docs/POLITICA_DE_MARCA.md): criterios para el uso responsable del nombre, identidad, logotipos, denominaciones y referencias públicas vinculadas con SUBE Prioridad.
+* [`docs/MODELO_CONDICIONES_DONACION_Y_CUSTODIA.md`](docs/MODELO_CONDICIONES_DONACION_Y_CUSTODIA.md): modelo conceptual de condiciones para una eventual donación, convenio, transferencia, adopción institucional o custodia neutral del proyecto.
 * [`ARCHITECTURE_GUARDRAILS.md`](ARCHITECTURE_GUARDRAILS.md): límites técnicos que toda evolución del código debe respetar.
 * [`docs/PLIEGO_TECNICO_EXTENDIDO.md`](docs/PLIEGO_TECNICO_EXTENDIDO.md): documento técnico amplio que conserva la visión integral original del proyecto.
 
@@ -506,7 +509,21 @@ Ese documento debe leerse antes de cualquier uso institucional, público, comerc
 
 ---
 
-## 25. Ejecución local
+## 25. Modelo de condiciones para donación y custodia
+
+Antes de cualquier donación, transferencia, convenio, adopción institucional, autorización de uso de marca o prueba piloto real, deberían definirse condiciones mínimas para preservar la finalidad original del proyecto.
+
+El repositorio incluye un modelo conceptual sobre esta materia en:
+
+[`docs/MODELO_CONDICIONES_DONACION_Y_CUSTODIA.md`](docs/MODELO_CONDICIONES_DONACION_Y_CUSTODIA.md)
+
+Ese documento ordena cláusulas sobre finalidad pública, neutralidad no partidaria, atribución de origen, uso de marca, código abierto, protección de datos, separación entre acreditación y operación, rol del chofer, no vigilancia, prueba piloto limitada, gobernanza multi-actor, auditoría, trazabilidad pública, proveedores privados, forks, incumplimientos y revisión jurídica.
+
+No constituye un contrato vigente ni una donación aceptada. Debe ser revisado y adaptado jurídicamente antes de cualquier uso formal.
+
+---
+
+## 26. Ejecución local
 
 Instalar dependencias:
 
@@ -528,7 +545,7 @@ http://127.0.0.1:8000/docs
 
 ---
 
-## 26. Tests
+## 27. Tests
 
 Ejecutar tests:
 
@@ -544,7 +561,7 @@ python -m py_compile main.py validator.py cache_manager.py circuit_breaker.py xr
 
 ---
 
-## 27. Docker
+## 28. Docker
 
 Construir y ejecutar con Docker Compose:
 
@@ -554,7 +571,7 @@ docker compose up --build
 
 ---
 
-## 28. Estructura técnica orientativa
+## 29. Estructura técnica orientativa
 
 El repositorio incluye, entre otros archivos:
 
@@ -577,7 +594,7 @@ La estructura podrá evolucionar conforme avance el proyecto, manteniendo cohere
 
 ---
 
-## 29. Regla de interpretación general
+## 30. Regla de interpretación general
 
 Todo el repositorio debe interpretarse bajo estas reglas:
 
@@ -597,12 +614,13 @@ no apropiación partidaria
 no uso electoral
 no cierre opaco del código
 no uso irrestricto de marca
+no donación o transferencia sin condiciones fundacionales
 no explotación comercial incompatible con el interés público
 ```
 
 ---
 
-## 30. Autoría e iniciativa
+## 31. Autoría e iniciativa
 
 SUBE Prioridad es una iniciativa ciudadana de innovación pública impulsada por Andrés Federico Di Fiore.
 
@@ -612,7 +630,7 @@ La atribución de origen debe preservarse en toda presentación, fork, evaluaci�
 
 ---
 
-## 31. Licencia
+## 32. Licencia
 
 Este proyecto se publica bajo licencia MIT, salvo indicación expresa en contrario para documentos, marcas, logos, archivos institucionales o materiales de terceros.
 
@@ -624,7 +642,7 @@ Cualquier eventual revisión de licenciamiento, migración a copyleft, adenda de
 
 ---
 
-## 32. Declaración final
+## 33. Declaración final
 
 SUBE Prioridad es una propuesta ciudadana de innovación pública orientada a fortalecer la accesibilidad efectiva, la asistencia preventiva y la convivencia dentro del transporte público.
 
@@ -632,8 +650,8 @@ El repositorio no pretende demostrar una solución cerrada ni una implementació
 
 Su finalidad es ofrecer una arquitectura conceptual, documentada y técnicamente demostrable para que pueda ser analizada, discutida, mejorada y eventualmente evaluada por las autoridades competentes.
 
-El valor del proyecto reside en articular tecnología, privacidad, accesibilidad, dignidad, fundamentos jurídicos, fundamentos médicos, protocolo operativo, participación ciudadana, gobernanza, gradualidad institucional, neutralidad no partidaria, custodia pública, política de marca y código abierto en una propuesta seria, prudente y escalable.
+El valor del proyecto reside en articular tecnología, privacidad, accesibilidad, dignidad, fundamentos jurídicos, fundamentos médicos, protocolo operativo, participación ciudadana, gobernanza, gradualidad institucional, neutralidad no partidaria, custodia pública, política de marca, modelo de condiciones para donación y custodia, y código abierto en una propuesta seria, prudente y escalable.
 
 La versión documental 1.0 consolida el repositorio como una base pública, abierta y auditable para explorar si una necesidad previamente acreditada puede representarse mediante un atributo técnico de prioridad, mínimo y no sensible, que facilite asistencia preventiva sin exponer diagnósticos, sin alterar el sistema de cobro, sin sustituir derechos existentes y sin trasladar cargas indebidas al personal de conducción.
 
-La apertura del proyecto no habilita su apropiación partidaria, su uso electoral, el borramiento de su origen ciudadano, el uso irrestricto de su marca ni su transformación en una herramienta de vigilancia, sanción, negocio cerrado o propaganda institucional incompatible con sus principios fundacionales.
+La apertura del proyecto no habilita su apropiación partidaria, su uso electoral, el borramiento de su origen ciudadano, el uso irrestricto de su marca, una donación sin condiciones fundacionales ni su transformación en una herramienta de vigilancia, sanción, negocio cerrado o propaganda institucional incompatible con sus principios fundacionales.
