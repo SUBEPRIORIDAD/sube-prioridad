@@ -8,7 +8,7 @@
 
 Este documento organiza la documentación principal del repositorio SUBE Prioridad.
 
-Su finalidad es permitir una lectura ordenada, gradual y comprensible del proyecto, diferenciando documentos introductorios, ejecutivos, técnicos, jurídicos, médicos, operativos, institucionales, de gobernanza, de protección de datos, de marca, de custodia pública y de cierre documental.
+Su finalidad es permitir una lectura ordenada, gradual y comprensible del proyecto, diferenciando documentos introductorios, ejecutivos, técnicos, jurídicos, médicos, operativos, institucionales, de gobernanza, de protección de datos, de marca, de custodia pública, de cierre documental y de control final.
 
 SUBE Prioridad debe interpretarse como una iniciativa ciudadana abierta, conceptual, demostrativa y documentada, impulsada originalmente por Andrés Federico Di Fiore, orientada al análisis de accesibilidad efectiva, asistencia preventiva y convivencia dentro del transporte público.
 
@@ -29,6 +29,7 @@ mapa de lectura
 README actualizado
 índice documental
 cierre documental de versión 1.0
+checklist de cierre V1
 arquitectura de referencia
 guardrails técnicos
 fundamentos jurídicos
@@ -66,9 +67,10 @@ Para una primera aproximación al proyecto, se recomienda leer en este orden:
 4. README.md
 5. docs/INDICE_DOCUMENTAL.md
 6. docs/CIERRE_VERSION_DOCUMENTAL_1_0.md
+7. docs/CHECKLIST_CIERRE_V1.md
 ```
 
-Este recorrido permite comprender primero la idea general, luego la síntesis institucional, después las rutas de lectura por perfil, más tarde la visión completa del repositorio, luego la organización documental detallada y finalmente el estado de consolidación de la versión documental 1.0.
+Este recorrido permite comprender primero la idea general, luego la síntesis institucional, después las rutas de lectura por perfil, más tarde la visión completa del repositorio, luego la organización documental detallada, después el estado de consolidación de la versión documental 1.0 y finalmente el checklist de control previo a revisión, presentación, tag o release.
 
 ---
 
@@ -191,6 +193,24 @@ Deja constancia del cierre de la versión documental 1.0.
 Ordena el estado actual del repositorio, identifica los documentos consolidados, fija reglas de interpretación, enumera límites fundacionales y recomienda evitar sobreediciones innecesarias sobre documentos ya cerrados.
 
 Debe leerse antes de etiquetar, presentar, comunicar o utilizar la versión documental 1.0 como base institucional, técnica, ciudadana o estratégica.
+
+---
+
+### 4.6. Checklist de cierre V1
+
+Archivo:
+
+```text
+docs/CHECKLIST_CIERRE_V1.md
+```
+
+Función:
+
+Funciona como lista de verificación final para la versión documental 1.0.
+
+Permite controlar documentos de entrada, README, resumen ejecutivo, índice documental, mapa de lectura, cierre documental, arquitectura, fundamentos jurídicos, fundamentos médicos, protección de datos, protocolo operativo, prueba piloto, gobernanza, marca, donación/custodia, código demostrativo, tests, Docker, enlaces internos, advertencias obligatorias, atribución de origen, licencia y preparación de release.
+
+Debe leerse como herramienta práctica de control antes de etiquetar, presentar, comunicar o utilizar la versión documental 1.0 como base institucional, técnica, ciudadana o estratégica.
 
 ---
 
@@ -743,6 +763,32 @@ Este documento debe leerse como constancia de cierre documental y como punto de 
 
 ---
 
+### 10.2. Checklist de cierre V1
+
+Archivo:
+
+```text
+docs/CHECKLIST_CIERRE_V1.md
+```
+
+Función:
+
+Ordena el control final de la versión documental 1.0.
+
+Debe utilizarse antes de:
+
+- una revisión final;
+- una presentación institucional;
+- una comunicación pública;
+- una prueba piloto;
+- una donación, cesión, convenio o custodia;
+- una release;
+- un tag de versión.
+
+No agrega contenido sustantivo nuevo, sino que verifica que los documentos, enlaces, advertencias, principios, tests y reglas de interpretación estén correctamente consolidados.
+
+---
+
 ## 11. Documentos técnicos de ejecución y código
 
 ### 11.1. Código demostrativo
@@ -820,6 +866,7 @@ docs/NEUTRALIDAD_INSTITUCIONAL_Y_CUSTODIA_PUBLICA.md
 docs/POLITICA_DE_MARCA.md
 docs/MODELO_CONDICIONES_DONACION_Y_CUSTODIA.md
 docs/CIERRE_VERSION_DOCUMENTAL_1_0.md
+docs/CHECKLIST_CIERRE_V1.md
 ```
 
 Ninguna prueba piloto debería avanzar sin evaluación jurídica, técnica, operativa, médica, institucional y de protección de datos personales.
@@ -841,6 +888,7 @@ docs/PROTECCION_DATOS_PERSONALES.md
 README.md
 docs/RESUMEN_EJECUTIVO.md
 docs/CIERRE_VERSION_DOCUMENTAL_1_0.md
+docs/CHECKLIST_CIERRE_V1.md
 ```
 
 Estos documentos buscan evitar:
@@ -871,6 +919,7 @@ docs/DECISIONES_DE_ARQUITECTURA.md
 docs/PROTECCION_DATOS_PERSONALES.md
 docs/PRINCIPIOS_DE_GOBERNANZA.md
 docs/CIERRE_VERSION_DOCUMENTAL_1_0.md
+docs/CHECKLIST_CIERRE_V1.md
 ```
 
 Toda modificación técnica debe respetar los guardrails fundacionales del proyecto.
@@ -932,21 +981,22 @@ Para una revisión institucional completa, se recomienda este orden:
 4. docs/INDICE_DOCUMENTAL.md
 5. docs/MAPA_DE_LECTURA.md
 6. docs/CIERRE_VERSION_DOCUMENTAL_1_0.md
-7. docs/FUNDAMENTOS_JURIDICOS.md
-8. docs/FUNDAMENTOS_MEDICOS.md
-9. docs/PROTECCION_DATOS_PERSONALES.md
-10. docs/PROTOCOLO_OPERATIVO.md
-11. docs/PRUEBA_PILOTO_MODELO.md
-12. ARCHITECTURE_GUARDRAILS.md
-13. docs/ARQUITECTURA_DE_REFERENCIA.md
-14. docs/DECISIONES_DE_ARQUITECTURA.md
-15. docs/ROADMAP_IMPLEMENTACION.md
-16. docs/PRINCIPIOS_DE_GOBERNANZA.md
-17. docs/NEUTRALIDAD_INSTITUCIONAL_Y_CUSTODIA_PUBLICA.md
-18. docs/POLITICA_DE_MARCA.md
-19. docs/MODELO_CONDICIONES_DONACION_Y_CUSTODIA.md
-20. docs/ESTRATEGIA_LEGISLATIVA_Y_PARTICIPACION_CIUDADANA.md
-21. docs/PLIEGO_TECNICO_EXTENDIDO.md
+7. docs/CHECKLIST_CIERRE_V1.md
+8. docs/FUNDAMENTOS_JURIDICOS.md
+9. docs/FUNDAMENTOS_MEDICOS.md
+10. docs/PROTECCION_DATOS_PERSONALES.md
+11. docs/PROTOCOLO_OPERATIVO.md
+12. docs/PRUEBA_PILOTO_MODELO.md
+13. ARCHITECTURE_GUARDRAILS.md
+14. docs/ARQUITECTURA_DE_REFERENCIA.md
+15. docs/DECISIONES_DE_ARQUITECTURA.md
+16. docs/ROADMAP_IMPLEMENTACION.md
+17. docs/PRINCIPIOS_DE_GOBERNANZA.md
+18. docs/NEUTRALIDAD_INSTITUCIONAL_Y_CUSTODIA_PUBLICA.md
+19. docs/POLITICA_DE_MARCA.md
+20. docs/MODELO_CONDICIONES_DONACION_Y_CUSTODIA.md
+21. docs/ESTRATEGIA_LEGISLATIVA_Y_PARTICIPACION_CIUDADANA.md
+22. docs/PLIEGO_TECNICO_EXTENDIDO.md
 ```
 
 Este orden permite avanzar desde la comprensión general hacia la evaluación jurídica, médica, operativa, técnica, institucional y estratégica.
@@ -1076,8 +1126,9 @@ Su objetivo es aportar una base para analizar si una arquitectura tecnológica r
 
 La lectura integral del repositorio debe preservar siempre el carácter ciudadano, abierto, no partidario, auditable y social del proyecto.
 
-El documento específico de cierre de esta etapa es:
+Los documentos específicos de cierre y control de esta etapa son:
 
 ```text
 docs/CIERRE_VERSION_DOCUMENTAL_1_0.md
+docs/CHECKLIST_CIERRE_V1.md
 ```
