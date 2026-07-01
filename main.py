@@ -26,20 +26,21 @@ from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel, Field
 
 from bono_solidario_simulator import (
+    SeatType,
     create_demo_solidary_event,
     result_to_dict as bono_result_to_dict,
     simulate_solidary_recognition,
 )
 
 
-APP_VERSION = "0.4.0"
-
-PROJECT_NAME = "SUBE Prioridad"
+APP_NAME = "SUBE Prioridad"
+PROJECT_NAME = APP_NAME
+APP_VERSION = "0.4.1"
 DEMO_MODE = True
 
 
 app = FastAPI(
-    title="SUBE Prioridad API",
+    title=APP_NAME,
     description=(
         "API demo conceptual para asistencia preventiva, alertas de prioridad "
         "y Bono Solidario en transporte público."
@@ -96,6 +97,7 @@ class SolidaryBonusMvpEndToEndRequest(BaseModel):
 @app.get("/")
 def root() -> Dict[str, Any]:
     return {
+        "app_name": APP_NAME,
         "project": PROJECT_NAME,
         "version": APP_VERSION,
         "demo_mode": DEMO_MODE,
@@ -111,16 +113,18 @@ def root() -> Dict[str, Any]:
 @app.get("/health")
 def health() -> Dict[str, Any]:
     return {
-        "status": "healthy",
+        "app_name": APP_NAME,
         "project": PROJECT_NAME,
         "version": APP_VERSION,
         "demo_mode": DEMO_MODE,
+        "status": "healthy",
     }
 
 
 @app.get("/project/guardrails")
 def project_guardrails() -> Dict[str, Any]:
     return {
+        "app_name": APP_NAME,
         "project": PROJECT_NAME,
         "demo_mode": DEMO_MODE,
         "guardrails": [
@@ -178,6 +182,7 @@ def verificar_prioridad(
         risk_flags.append("validation_payment_not_confirmed")
 
     return {
+        "app_name": APP_NAME,
         "project": PROJECT_NAME,
         "demo_mode": DEMO_MODE,
         "eligible": eligible,
@@ -204,9 +209,12 @@ def simular_bono_solidario(
 
     Este endpoint conserva la simulación simple previa del proyecto.
     """
-    seat_type = request.seat_type
+    seat_type_map = {
+        "general_use": SeatType.GENERAL_USE,
+        "legal_priority": SeatType.LEGAL_PRIORITY,
+    }
 
-    if seat_type not in {"general_use", "legal_priority"}:
+    if request.seat_type not in seat_type_map:
         raise HTTPException(
             status_code=400,
             detail="seat_type debe ser general_use o legal_priority.",
@@ -218,7 +226,7 @@ def simular_bono_solidario(
         voluntary_seat_yield=request.voluntary_seat_yield,
         priority_user_confirms=request.priority_user_confirms,
         same_transport_context=request.same_transport_context,
-        seat_type=seat_type,
+        seat_type=seat_type_map[request.seat_type],
     )
 
     result = simulate_solidary_recognition(event)
@@ -232,11 +240,6 @@ def bono_solidario_mvp_end_to_end(
 ) -> Dict[str, Any]:
     """
     Ejecuta el flujo end-to-end del Bono Solidario MVP.
-
-    Escenarios:
-        - mobile_to_mobile
-        - priority_phone_nfc_card
-        - validator_assisted_card_tap
 
     Este endpoint:
         - evalúa la opción MVP;
