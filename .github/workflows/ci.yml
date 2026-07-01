@@ -98,37 +98,21 @@ jobs:
 
           assert result["project"] == "SUBE Prioridad"
           assert result["demo_mode"] is True
+          assert result["status"] == "valid"
 
-          status = result.get("status")
-          assert status in {"valid", "active", "ok"}
+          assert "assistance_preference" in result
+          assert "alert_message" in result
+          assert "privacy_notice" in result
+          assert "warnings" in result
 
-          priority_active = (
-              result.get("priority_active")
-              if "priority_active" in result
-              else result.get("prioridad_activa")
-          )
-
-          if priority_active is None:
-              priority_active = result.get("active")
-
-          assert priority_active is True
-
-          validated_attribute = (
-              result.get("validated_attribute")
-              if "validated_attribute" in result
-              else result.get("atributo_validado")
-          )
-
-          if validated_attribute is None:
-              validated_attribute = result.get("token_verificado", True)
-
-          assert validated_attribute is True
-
-          warnings = result.get("warnings", result.get("advertencias", []))
-          warnings_text = " ".join(warnings).lower()
+          warnings_text = " ".join(result["warnings"]).lower()
+          privacy_text = result["privacy_notice"].lower()
 
           assert "sube" in warnings_text
           assert "sin integración real" in warnings_text or "sin integracion real" in warnings_text
+          assert "diagnóstico" in privacy_text or "diagnostico" in privacy_text
+          assert "dni" in privacy_text
+          assert "cud" in privacy_text
 
           print("MVP simulator output verified.")
           PY
