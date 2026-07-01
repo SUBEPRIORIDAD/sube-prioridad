@@ -6,13 +6,17 @@ Regla central:
     No tener celular, app, NFC, BLE, conectividad o tablet no bloquea por sí solo.
     Tener celular disponible tampoco significa haber usado sincronización móvil.
 
-Este módulo mantiene compatibilidad con nombres anteriores usados por tests:
+Este módulo conserva compatibilidad con nombres usados por tests anteriores:
     - priority_token
     - collaborator_token
     - access_context
     - in_vehicle_sync_window_minutes
     - station_platform_sync_window_minutes
+    - terminal_sync_window_minutes
+    - offline_sync_window_minutes
     - device_session_name
+    - payment_token
+    - linked_to_payment
 """
 
 from __future__ import annotations
@@ -25,7 +29,7 @@ from typing import Any, Dict, List, Optional
 
 PROJECT_NAME = "SUBE Prioridad"
 MODULE_NAME = "Guardia Demo de Proximidad Móvil No Excluyente"
-GUARD_VERSION = "0.2.3"
+GUARD_VERSION = "0.2.4"
 DEMO_MODE = True
 
 
@@ -119,6 +123,14 @@ class ProximityGuardPolicy:
     def station_platform_sync_window_minutes(self) -> int:
         return self.station_platform_max_minutes
 
+    @property
+    def terminal_sync_window_minutes(self) -> int:
+        return self.terminal_max_minutes
+
+    @property
+    def offline_sync_window_minutes(self) -> int:
+        return self.offline_deferred_validation_window_minutes
+
 
 @dataclass(frozen=True)
 class MobileDeviceBindingDemo:
@@ -131,6 +143,14 @@ class MobileDeviceBindingDemo:
     @property
     def device_session_name(self) -> str:
         return self.device_session_demo_token
+
+    @property
+    def payment_token(self) -> str:
+        return self.payment_method_demo_token
+
+    @property
+    def linked_to_payment(self) -> bool:
+        return self.voluntarily_linked_to_payment
 
 
 @dataclass(frozen=True)
@@ -282,21 +302,17 @@ def create_demo_mobile_device_binding(
     if "linked_to_payment" in legacy_kwargs:
         voluntarily_linked_to_payment = legacy_kwargs["linked_to_payment"]
 
-    for field_name, value in {
+    required = {
         "user_token": user_token,
         "device_session_demo_token": device_session_demo_token,
         "payment_method_demo_token": payment_method_demo_token,
-    }.items():
+    }
+
+    for field_name, value in required.items():
         if not value or not str(value).strip():
             raise ValueError(f"El campo demostrativo {field_name} no puede estar vacío.")
 
-    assert_no_prohibited_fields(
-        {
-            "user_token": user_token,
-            "device_session_demo_token": device_session_demo_token,
-            "payment_method_demo_token": payment_method_demo_token,
-        }
-    )
+    assert_no_prohibited_fields(required)
 
     return MobileDeviceBindingDemo(
         user_token=user_token.strip(),
@@ -358,25 +374,19 @@ def create_demo_proximity_signal(
     if "payment_token" in legacy_kwargs:
         priority_payment_method_demo_token = legacy_kwargs["payment_token"]
 
-    for field_name, value in {
+    required = {
         "sync_event_demo_id": sync_event_demo_id,
         "priority_user_token": priority_user_token,
         "collaborator_user_token": collaborator_user_token,
         "priority_payment_method_demo_token": priority_payment_method_demo_token,
         "collaborator_payment_method_demo_token": collaborator_payment_method_demo_token,
-    }.items():
+    }
+
+    for field_name, value in required.items():
         if not value or not str(value).strip():
             raise ValueError(f"El campo demostrativo {field_name} no puede estar vacío.")
 
-    assert_no_prohibited_fields(
-        {
-            "sync_event_demo_id": sync_event_demo_id,
-            "priority_user_token": priority_user_token,
-            "collaborator_user_token": collaborator_user_token,
-            "priority_payment_method_demo_token": priority_payment_method_demo_token,
-            "collaborator_payment_method_demo_token": collaborator_payment_method_demo_token,
-        }
-    )
+    assert_no_prohibited_fields(required)
 
     now = proximity_attempt_timestamp_utc or datetime.now(timezone.utc)
     access_started = access_window_started_at_utc or now - timedelta(minutes=2)
@@ -532,7 +542,10 @@ def evaluate_mobile_proximity_sync_guard(
         audit_flags=audit_flags,
         blocks_solidary_bonus_flow=False,
         requires_audit_review=True,
-        reason="Flujo aceptado sin evidencia móvil. La falta o no uso de móvil no bloquea por sí solo.",
+        reason=(
+            "Flujo aceptado sin evidencia móvil. La falta o no uso de móvil "
+            "no bloquea por sí solo."
+        ),
     )
 
 
