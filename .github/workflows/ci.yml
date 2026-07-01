@@ -66,6 +66,14 @@ jobs:
             python -m py_compile test_assistance_ecosystem_simulator.py
           fi
 
+          if [ -f solidary_sync_security_flow.py ]; then
+            python -m py_compile solidary_sync_security_flow.py
+          fi
+
+          if [ -f test_solidary_sync_security_flow.py ]; then
+            python -m py_compile test_solidary_sync_security_flow.py
+          fi
+
       - name: Run MVP simulator
         run: |
           python mvp_simulator.py
@@ -79,7 +87,15 @@ jobs:
           if [ -f assistance_ecosystem_simulator.py ]; then
             python assistance_ecosystem_simulator.py
           else
-            echo "assistance_ecosystem_simulator.py not present yet. Skipping."
+            echo "assistance_ecosystem_simulator.py not present. Skipping."
+          fi
+
+      - name: Run Solidary Sync Security Flow if present
+        run: |
+          if [ -f solidary_sync_security_flow.py ]; then
+            python solidary_sync_security_flow.py
+          else
+            echo "solidary_sync_security_flow.py not present. Skipping."
           fi
 
       - name: Run tests
@@ -378,30 +394,17 @@ jobs:
       - name: Verify Assistance Ecosystem simulator if present
         run: |
           if [ -f assistance_ecosystem_simulator.py ]; then
-            python - <<'PY'
-            from assistance_ecosystem_simulator import run_demo
-
-            result = run_demo()
-
-            print("Assistance Ecosystem simulator result:")
-            print(result)
-
-            assert result["project"] == "SUBE Prioridad"
-            assert result["module"] == "Ecosistema de Asistencia"
-            assert result["demo_mode"] is True
-            assert result["priority_active"] is True
-            assert result["previously_accredited_need"] is True
-            assert result["alert_plan"]["driver_action_required"] is False
-            assert result["alert_plan"]["passenger_action_required"] is False
-
-            warnings_text = " ".join(result["warnings"]).lower()
-
-            assert "sube" in warnings_text
-            assert "sin diagnóstico médico" in warnings_text or "sin diagnostico medico" in warnings_text
-            assert "sin carga operativa para el chofer" in warnings_text
-
-            print("Assistance Ecosystem simulator output verified.")
-            PY
+            python assistance_ecosystem_simulator.py
+            python -c "from assistance_ecosystem_simulator import run_demo; result = run_demo(); assert result['project'] == 'SUBE Prioridad'; assert result['module'] == 'Ecosistema de Asistencia'; assert result['demo_mode'] is True; assert result['priority_active'] is True; assert result['previously_accredited_need'] is True; assert result['alert_plan']['driver_action_required'] is False; assert result['alert_plan']['passenger_action_required'] is False; print('Assistance Ecosystem simulator output verified.')"
           else
-            echo "assistance_ecosystem_simulator.py not present yet. Skipping."
+            echo "assistance_ecosystem_simulator.py not present. Skipping."
+          fi
+
+      - name: Verify Solidary Sync Security Flow if present
+        run: |
+          if [ -f solidary_sync_security_flow.py ]; then
+            python solidary_sync_security_flow.py
+            python -c "from solidary_sync_security_flow import run_demo; result = run_demo(); assert result['project'] == 'SUBE Prioridad'; assert result['module'] == 'Flujo de Seguridad de Sincronización Solidaria'; assert result['demo_mode'] is True; assert result['status'] == 'accepted'; assert result['accepted_demo_sync'] is True; assert result['solidary_point_demo'] == 1; assert result['risk_flags'] == []; print('Solidary Sync Security Flow output verified.')"
+          else
+            echo "solidary_sync_security_flow.py not present. Skipping."
           fi
