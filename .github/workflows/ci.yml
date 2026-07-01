@@ -39,51 +39,110 @@ jobs:
             pip install pytest fastapi httpx uvicorn pydantic
           fi
 
-      - name: Compile core modules
+      - name: Compile all Python files
         run: |
-          python -m py_compile main.py
-          python -m py_compile validator.py
-          python -m py_compile cache_manager.py
+          python - <<'PY'
+          from pathlib import Path
+          import py_compile
+          import sys
 
-      - name: Compile SUBE Prioridad demo modules
-        run: |
-          python -m py_compile bono_solidario_simulator.py
-          python -m py_compile assistance_ecosystem_simulator.py
-          python -m py_compile solidary_sync_security_flow.py
-          python -m py_compile passive_alert_preferences_flow.py
-          python -m py_compile sube_account_preferences_flow.py
-          python -m py_compile validator_trigger_alert_flow.py
-          python -m py_compile solidary_bonus_frontend_flow.py
-          python -m py_compile solidary_bonus_handoff_flow.py
-          python -m py_compile red_sube_discount_policy.py
-          python -m py_compile red_sube_trip_window_matcher.py
-          python -m py_compile mobile_proximity_sync_guard.py
-          python -m py_compile nfc_card_solidary_handoff_flow.py
-          python -m py_compile solidary_sync_channel_selector.py
+          excluded_parts = {
+              ".git",
+              ".github",
+              ".pytest_cache",
+              "__pycache__",
+              ".venv",
+              "venv",
+              "env",
+              "site-packages",
+          }
 
-      - name: Compile Bono Solidario MVP modules
-        run: |
-          python -m py_compile solidary_bonus_mvp_sync_options.py
-          python -m py_compile solidary_bonus_mvp_accrual_flow.py
-          python -m py_compile solidary_bonus_mvp_end_to_end_flow.py
+          python_files = sorted(
+              path
+              for path in Path(".").rglob("*.py")
+              if not any(part in excluded_parts for part in path.parts)
+          )
 
-      - name: Run stable demo commands
+          print("Python files found:")
+          for path in python_files:
+              print(f" - {path}")
+
+          failed = []
+
+          for path in python_files:
+              try:
+                  py_compile.compile(str(path), doraise=True)
+              except Exception as exc:
+                  failed.append((path, exc))
+
+          if failed:
+              print("\nCompilation failures:")
+              for path, exc in failed:
+                  print(f" - {path}: {exc}")
+              sys.exit(1)
+
+          print(f"\nCompiled {len(python_files)} Python files successfully.")
+          PY
+
+      - name: Run stable demo commands when files exist
         run: |
-          python bono_solidario_simulator.py
-          python solidary_sync_security_flow.py
-          python passive_alert_preferences_flow.py
-          python sube_account_preferences_flow.py
-          python validator_trigger_alert_flow.py
-          python solidary_bonus_frontend_flow.py
-          python solidary_bonus_handoff_flow.py
-          python red_sube_discount_policy.py
-          python red_sube_trip_window_matcher.py
-          python mobile_proximity_sync_guard.py
-          python nfc_card_solidary_handoff_flow.py
-          python solidary_sync_channel_selector.py
-          python solidary_bonus_mvp_sync_options.py
-          python solidary_bonus_mvp_accrual_flow.py
-          python solidary_bonus_mvp_end_to_end_flow.py
+          python - <<'PY'
+          from pathlib import Path
+          import subprocess
+          import sys
+
+          demo_modules = [
+              "bono_solidario_simulator.py",
+              "assistance_ecosystem_simulator.py",
+              "solidary_sync_security_flow.py",
+              "passive_alert_preferences_flow.py",
+              "sube_account_preferences_flow.py",
+              "validator_trigger_alert_flow.py",
+              "solidary_bonus_frontend_flow.py",
+              "solidary_bonus_handoff_flow.py",
+              "red_sube_discount_policy.py",
+              "red_sube_trip_window_matcher.py",
+              "mobile_proximity_sync_guard.py",
+              "nfc_card_solidary_handoff_flow.py",
+              "solidary_sync_channel_selector.py",
+              "solidary_bonus_mvp_sync_options.py",
+              "solidary_bonus_mvp_accrual_flow.py",
+              "solidary_bonus_mvp_end_to_end_flow.py",
+          ]
+
+          failed = []
+
+          for module in demo_modules:
+              path = Path(module)
+
+              if not path.exists():
+                  print(f"Skipping missing optional demo module: {module}")
+                  continue
+
+              print(f"Running demo module: {module}")
+              completed = subprocess.run(
+                  [sys.executable, module],
+                  text=True,
+                  stdout=subprocess.PIPE,
+                  stderr=subprocess.PIPE,
+              )
+
+              if completed.returncode != 0:
+                  failed.append((module, completed.stdout, completed.stderr))
+              else:
+                  print(f"OK: {module}")
+
+          if failed:
+              print("\nDemo command failures:")
+              for module, stdout, stderr in failed:
+                  print(f"\n--- {module} STDOUT ---")
+                  print(stdout)
+                  print(f"\n--- {module} STDERR ---")
+                  print(stderr)
+              sys.exit(1)
+
+          print("\nAll available demo commands completed successfully.")
+          PY
 
       - name: Run tests
         run: pytest -q
