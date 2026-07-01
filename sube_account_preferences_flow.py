@@ -47,7 +47,7 @@ from typing import Any, Dict, List, Optional
 
 PROJECT_NAME = "SUBE Prioridad"
 MODULE_NAME = "Preferencias desde Cuenta SUBE"
-FLOW_VERSION = "0.1.0"
+FLOW_VERSION = "0.1.1"
 DEMO_MODE = True
 
 
@@ -300,18 +300,29 @@ def create_demo_preference_update_request(
 ) -> PreferenceUpdateRequest:
     """
     Crea una solicitud demostrativa de actualización de preferencias.
+
+    Regla importante:
+        - None significa usar destinos demostrativos por defecto.
+        - [] significa que el usuario o el canal no solicitó ningún destino,
+          y debe ser evaluado como riesgo de seguridad.
     """
     if not request_demo_id or not request_demo_id.strip():
         raise ValueError("El identificador demostrativo de solicitud no puede estar vacío.")
 
     assert_no_prohibited_fields({"request_demo_id": request_demo_id})
 
+    sync_targets = (
+        _default_sync_targets()
+        if requested_sync_targets is None
+        else requested_sync_targets
+    )
+
     return PreferenceUpdateRequest(
         request_demo_id=request_demo_id.strip(),
         source=source,
         account_context=account_context or create_demo_sube_account_context(),
         preferences=preferences or create_demo_user_assistance_preferences(),
-        requested_sync_targets=requested_sync_targets or _default_sync_targets(),
+        requested_sync_targets=sync_targets,
         user_confirms_update=user_confirms_update,
     )
 
