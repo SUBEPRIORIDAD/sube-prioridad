@@ -23,15 +23,16 @@ Para comprender el proyecto de manera ordenada, se recomienda leer los documento
 5. `docs/DECISIONES_DE_ARQUITECTURA.md`
 6. `docs/PRINCIPIOS_DE_GOBERNANZA.md`
 7. `docs/NEUTRALIDAD_INSTITUCIONAL_Y_CUSTODIA_PUBLICA.md`
-8. `docs/PROTECCION_DATOS_PERSONALES.md`
-9. `docs/PROTOCOLO_OPERATIVO.md`
-10. `docs/PRUEBA_PILOTO_MODELO.md`
-11. `docs/FUNDAMENTOS_JURIDICOS.md`
-12. `docs/FUNDAMENTOS_MEDICOS.md`
-13. `docs/DOSSIER_INSTITUCIONAL_BREVE.md`
-14. `docs/MODELO_PROYECTO_RESOLUCION.md`
-15. `docs/ESTRATEGIA_LEGISLATIVA_Y_PARTICIPACION_CIUDADANA.md`
-16. `docs/PLIEGO_TECNICO_EXTENDIDO.md`
+8. `docs/POLITICA_DE_MARCA.md`
+9. `docs/PROTECCION_DATOS_PERSONALES.md`
+10. `docs/PROTOCOLO_OPERATIVO.md`
+11. `docs/PRUEBA_PILOTO_MODELO.md`
+12. `docs/FUNDAMENTOS_JURIDICOS.md`
+13. `docs/FUNDAMENTOS_MEDICOS.md`
+14. `docs/DOSSIER_INSTITUCIONAL_BREVE.md`
+15. `docs/MODELO_PROYECTO_RESOLUCION.md`
+16. `docs/ESTRATEGIA_LEGISLATIVA_Y_PARTICIPACION_CIUDADANA.md`
+17. `docs/PLIEGO_TECNICO_EXTENDIDO.md`
 
 ---
 
@@ -56,6 +57,7 @@ Puntos centrales:
 - No sustitución del régimen vigente de asientos prioritarios.
 - Neutralidad institucional.
 - No apropiación partidaria.
+- Política de marca.
 - Preservación de atribución de origen.
 
 ---
@@ -217,6 +219,38 @@ Define principios sobre:
 - entidad de custodia neutral.
 
 Debe leerse antes de cualquier donación, convenio, adopción institucional, prueba piloto, fork relevante o presentación pública del proyecto.
+
+---
+
+## docs/POLITICA_DE_MARCA.md
+
+Establece criterios para el uso responsable del nombre, identidad, denominación, logotipos, isotipos, pictogramas, materiales visuales y referencias públicas vinculadas con SUBE Prioridad.
+
+Su finalidad es preservar el carácter ciudadano, abierto, social, no partidario, auditable y orientado al interés público del proyecto impulsado originalmente por Andrés Federico Di Fiore.
+
+Aclara que la apertura del código o de la documentación no implica autorización automática para utilizar la marca o identidad visual de forma irrestricta.
+
+Define criterios sobre:
+
+- uso responsable de la denominación SUBE Prioridad;
+- atribución de origen;
+- usos permitidos sin autorización especial;
+- usos que requieren autorización o revisión previa;
+- usos prohibidos;
+- uso por organismos públicos;
+- uso por legisladores, partidos o bloques políticos;
+- uso por proveedores privados;
+- uso por universidades y organizaciones sociales;
+- forks y proyectos derivados;
+- prohibición de confusión institucional;
+- identidad visual;
+- registro marcario;
+- política de autorización;
+- revocación o cese de uso;
+- relación entre código abierto y marca;
+- relación con donación o adopción institucional.
+
+Debe leerse antes de cualquier uso institucional, público, comercial, partidario, legislativo, comunicacional o derivado de la identidad SUBE Prioridad.
 
 ---
 
@@ -413,6 +447,7 @@ Su lectura debe realizarse junto con:
 - `docs/DECISIONES_DE_ARQUITECTURA.md`;
 - `docs/PRINCIPIOS_DE_GOBERNANZA.md`;
 - `docs/NEUTRALIDAD_INSTITUCIONAL_Y_CUSTODIA_PUBLICA.md`;
+- `docs/POLITICA_DE_MARCA.md`;
 - `docs/PROTECCION_DATOS_PERSONALES.md`.
 
 Este documento conserva la visión técnica original, pero debe quedar subordinado a los límites actuales del MVP y a la nota de alcance incluida al inicio del propio archivo.
@@ -462,6 +497,7 @@ no sustitución de derechos vigentes
 no apropiación partidaria
 no uso electoral
 no cierre opaco del código
+no uso irrestricto de marca
 no explotación comercial incompatible con el interés público
 ```
 
@@ -550,6 +586,20 @@ Debe leerse antes de cualquier transferencia, convenio, donación con cargo, pol
 
 ---
 
+## Política de marca
+
+La apertura del código y de la documentación no implica autorización automática para utilizar la marca, nombre, logotipos, identidad visual o denominaciones vinculadas con SUBE Prioridad de manera irrestricta.
+
+La marca debe utilizarse únicamente de manera compatible con la finalidad original del proyecto: asistencia preventiva, privacidad por diseño, neutralidad institucional, código abierto, auditabilidad, finalidad social y atribución de origen.
+
+El documento específico sobre esta materia es:
+
+`docs/POLITICA_DE_MARCA.md`
+
+Debe leerse antes de cualquier uso institucional, público, comercial, partidario, legislativo, comunicacional o derivado de la identidad SUBE Prioridad.
+
+---
+
 ## Declaración de cierre documental v1.0
 
 La versión documental 1.0 de SUBE Prioridad consolida el repositorio como una propuesta ciudadana de innovación pública, de código abierto, orientada a evaluar una arquitectura de asistencia preventiva en el transporte público argentino.
@@ -560,4 +610,4 @@ SUBE Prioridad no pretende imponer una solución cerrada ni afirmar una implemen
 
 Propone explorar si una necesidad previamente acreditada puede representarse mediante un atributo técnico de prioridad, mínimo y no sensible, que facilite asistencia preventiva sin exponer diagnósticos, sin alterar el sistema de cobro, sin sustituir derechos existentes y sin trasladar cargas indebidas al personal de conducción.
 
-La apertura del proyecto no habilita su apropiación partidaria, su uso electoral, el borramiento de su origen ciudadano ni su transformación en una herramienta de vigilancia, sanción, negocio cerrado o propaganda institucional incompatible con sus principios fundacionales.
+La apertura del proyecto no habilita su apropiación partidaria, su uso electoral, el uso irrestricto de su marca, el borramiento de su origen ciudadano ni su transformación en una herramienta de vigilancia, sanción, negocio cerrado o propaganda institucional incompatible con sus principios fundacionales.
