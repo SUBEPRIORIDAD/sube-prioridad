@@ -4,7 +4,21 @@
 
 SUBE Prioridad es una propuesta ciudadana de innovación pública orientada a analizar herramientas complementarias que puedan facilitar que personas con una necesidad previamente acreditada de viajar sentadas accedan a condiciones de viaje más seguras, respetuosas y adecuadas dentro del transporte público.
 
-Este repositorio contiene un **MVP conceptual, técnico y demostrativo**, acompañado por documentación de arquitectura, fundamentos jurídicos, fundamentos médicos, estrategia legislativa, lineamientos de protección de datos personales, modelo de prueba piloto, protocolo operativo y anexos técnicos.
+Este repositorio contiene un **MVP conceptual, técnico y demostrativo**, acompañado por documentación de arquitectura, fundamentos jurídicos, fundamentos médicos, estrategia legislativa, lineamientos de protección de datos personales, modelo de prueba piloto, protocolo operativo, gobernanza, decisiones de arquitectura y anexos técnicos.
+
+---
+
+## Versión documental 1.0
+
+Este repositorio consolida la versión documental 1.0 de SUBE Prioridad.
+
+La documentación principal se encuentra organizada en:
+
+[`docs/INDICE_DOCUMENTAL.md`](docs/INDICE_DOCUMENTAL.md)
+
+Se recomienda comenzar por ese índice para comprender el alcance del MVP, los límites del proyecto, la arquitectura de referencia, la prueba piloto propuesta, los fundamentos jurídicos y médicos, la estrategia institucional, los principios de gobernanza, las decisiones de arquitectura y el pliego técnico extendido.
+
+La versión 1.0 no representa una implementación oficial vigente ni una integración productiva con SUBE, organismos públicos, validadoras, hardware embarcado o infraestructura estatal.
 
 ---
 
@@ -23,6 +37,8 @@ Fundamentos jurídicos: sí
 Fundamentos médicos: sí
 Protocolo operativo conceptual: sí
 Lineamientos de protección de datos: sí
+Principios de gobernanza: sí
+Decisiones de arquitectura: sí
 Implementación productiva: no
 Integración real con organismos públicos: no
 Modificación del sistema SUBE: no
@@ -74,13 +90,42 @@ experiencia de viaje más segura y respetuosa
 
 ---
 
-## 4. Qué no es SUBE Prioridad
+## 4. Núcleo funcional del MVP piloto
+
+La prueba piloto conceptual de SUBE Prioridad busca evaluar si una necesidad previamente acreditada puede representarse mediante un atributo técnico mínimo, no sensible y configurable por la persona usuaria.
+
+El flujo funcional esperado es:
+
+```text
+persona con necesidad previamente acreditada
+↓
+atributo técnico de prioridad
+↓
+preferencia de asistencia
+↓
+validación demostrativa
+↓
+alerta genérica, discreta o visible
+↓
+colaboración voluntaria o asistencia preventiva
+↓
+evaluación agregada
+```
+
+El sistema no debe revelar diagnósticos, historia clínica, certificados médicos, DNI, nombre, domicilio ni datos sensibles.
+
+La finalidad del MVP no es probar una integración productiva con SUBE, sino demostrar una arquitectura de asistencia preventiva capaz de reducir fricción social, proteger la privacidad y facilitar una experiencia de viaje más segura y respetuosa.
+
+---
+
+## 5. Qué no es SUBE Prioridad
 
 SUBE Prioridad no es:
 
 * una implementación oficial actualmente desplegada;
 * un sistema productivo;
 * una integración real vigente con organismos públicos;
+* una conexión real vigente con ANDIS, SISA, RENAPER, Mi Argentina, Nación Servicios S.A. o CNRT;
 * un reemplazo del régimen legal de asientos prioritarios;
 * un subsidio;
 * un beneficio tarifario;
@@ -89,6 +134,7 @@ SUBE Prioridad no es:
 * una herramienta de vigilancia;
 * una obligación nueva para choferes;
 * un mecanismo de sanción para pasajeros;
+* un ranking público de usuarios;
 * una solución tecnológica cerrada;
 * una implementación nacional inmediata.
 
@@ -96,7 +142,7 @@ La propuesta debe entenderse como una arquitectura abierta, conceptual y evaluab
 
 ---
 
-## 5. Principios rectores
+## 6. Principios rectores
 
 El proyecto se basa en los siguientes principios:
 
@@ -115,7 +161,7 @@ El proyecto se basa en los siguientes principios:
 
 ---
 
-## 6. Privacidad y minimización de datos
+## 7. Privacidad y minimización de datos
 
 El core del MVP no procesa:
 
@@ -126,35 +172,38 @@ El core del MVP no procesa:
 * diagnóstico médico;
 * historia clínica;
 * certificado médico en texto plano;
-* datos de salud identificables.
+* datos de salud identificables;
+* identidad real de pasajeros colaboradores.
 
 El modelo técnico trabaja con atributos, tokens o identificadores pseudoanonimizados.
 
 La finalidad es permitir asistencia preventiva sin exponer información sensible de la persona usuaria.
 
-El repositorio incluye un documento específico sobre esta materia en:
+La regla central es:
 
 ```text
-docs/PROTECCION_DATOS_PERSONALES.md
+el transporte no necesita conocer el diagnóstico
 ```
+
+El repositorio incluye un documento específico sobre esta materia en:
+
+[`docs/PROTECCION_DATOS_PERSONALES.md`](docs/PROTECCION_DATOS_PERSONALES.md)
 
 ---
 
-## 7. Fundamentos jurídicos
+## 8. Fundamentos jurídicos
 
 SUBE Prioridad se apoya en un enfoque jurídico basado en accesibilidad efectiva, igualdad real, dignidad de las personas usuarias, protección de datos personales, razonabilidad, progresividad, no discriminación y evaluación institucional.
 
 El repositorio incluye fundamentos jurídicos conceptuales en:
 
-```text
-docs/FUNDAMENTOS_JURIDICOS.md
-```
+[`docs/FUNDAMENTOS_JURIDICOS.md`](docs/FUNDAMENTOS_JURIDICOS.md)
 
 Ese documento desarrolla el marco constitucional, convencional, legal, federal e institucional relevante para analizar la iniciativa, incluyendo derechos de personas con discapacidad, personas mayores, personas gestantes, personas con movilidad reducida, protección de datos personales, transporte público, marco SUBE, prueba piloto y antecedentes provinciales de accesibilidad cognitiva.
 
 ---
 
-## 8. Fundamentos médicos
+## 9. Fundamentos médicos
 
 SUBE Prioridad también cuenta con fundamentos médicos, sanitarios y funcionales conceptuales.
 
@@ -164,13 +213,11 @@ Su finalidad es reconocer que muchas personas pueden necesitar viajar sentadas o
 
 El repositorio incluye estos fundamentos en:
 
-```text
-docs/FUNDAMENTOS_MEDICOS.md
-```
+[`docs/FUNDAMENTOS_MEDICOS.md`](docs/FUNDAMENTOS_MEDICOS.md)
 
 ---
 
-## 9. Protocolo operativo conceptual
+## 10. Protocolo operativo conceptual
 
 El proyecto incluye un protocolo operativo conceptual destinado a ordenar cómo podría funcionar una eventual experiencia de asistencia preventiva en el transporte público.
 
@@ -182,13 +229,11 @@ Debe interpretarse como una guía conceptual adaptable para pruebas piloto, labo
 
 El documento se encuentra en:
 
-```text
-docs/PROTOCOLO_OPERATIVO.md
-```
+[`docs/PROTOCOLO_OPERATIVO.md`](docs/PROTOCOLO_OPERATIVO.md)
 
 ---
 
-## 10. Separación entre acreditación y operación
+## 11. Separación entre acreditación y operación
 
 SUBE Prioridad distingue dos planos:
 
@@ -206,7 +251,53 @@ Esa acreditación debería quedar, en cualquier implementación real, bajo la ó
 
 ---
 
-## 11. Estado del MVP técnico
+## 12. Rol del usuario
+
+La persona usuaria debe conservar autonomía sobre la forma en que desea recibir asistencia.
+
+El MVP contempla preferencias conceptuales como:
+
+```text
+0 = silenciosa
+1 = discreta
+2 = preventiva
+3 = visible
+```
+
+Estas preferencias no representan diagnósticos ni categorías médicas.
+
+Sólo indican modalidades de experiencia de usuario.
+
+---
+
+## 13. Rol del chofer
+
+El personal de conducción no debe ser convertido en:
+
+* evaluador médico;
+* fiscalizador documental;
+* administrador de datos sensibles;
+* árbitro principal de conflictos entre pasajeros;
+* aplicador de sanciones;
+* responsable de decidir quién merece asistencia.
+
+La conducción segura debe conservar prioridad operativa.
+
+El sistema debe reducir conflictos, no trasladarlos al chofer.
+
+---
+
+## 14. Colaboración voluntaria
+
+SUBE Prioridad no obliga a otros pasajeros a actuar.
+
+La asistencia o cesión de asiento debe mantenerse como conducta voluntaria, solidaria y no sancionatoria.
+
+El sistema no debe generar multas, castigos, rankings públicos ni presión social indebida.
+
+---
+
+## 15. Estado del MVP técnico
 
 El MVP actual permite representar algunos componentes de la arquitectura, entre ellos:
 
@@ -226,7 +317,7 @@ Este MVP no procesa usuarios reales ni se conecta con sistemas productivos.
 
 ---
 
-## 12. Endpoints disponibles
+## 16. Endpoints disponibles
 
 La API demostrativa incluye:
 
@@ -243,7 +334,7 @@ No implican conexión real con organismos, sistemas SUBE, validadoras, registros
 
 ---
 
-## 13. Interoperabilidad
+## 17. Interoperabilidad
 
 La arquitectura contempla la posibilidad de interoperabilidad futura con organismos, registros o plataformas externas cuando exista:
 
@@ -261,7 +352,7 @@ Ningún archivo del repositorio acredita conexión real vigente con organismos p
 
 ---
 
-## 14. Bono Solidario
+## 18. Bono Solidario
 
 El Bono Solidario se considera una posible evolución futura del ecosistema SUBE Prioridad.
 
@@ -274,6 +365,7 @@ No debe entenderse como:
 * obligación;
 * ranking público;
 * mecanismo de presión social;
+* sistema de vigilancia;
 * beneficio por liberar asientos prioritarios legales;
 * parte indispensable de una primera prueba piloto.
 
@@ -281,7 +373,7 @@ Su eventual análisis debería realizarse sólo después de contar con un sistem
 
 ---
 
-## 15. Prueba piloto
+## 19. Prueba piloto
 
 La primera meta institucional razonable del proyecto es la evaluación de una prueba piloto limitada.
 
@@ -300,13 +392,11 @@ Una prueba piloto debería ser:
 
 El repositorio incluye un modelo conceptual de prueba piloto en:
 
-```text
-docs/PRUEBA_PILOTO_MODELO.md
-```
+[`docs/PRUEBA_PILOTO_MODELO.md`](docs/PRUEBA_PILOTO_MODELO.md)
 
 ---
 
-## 16. Arquitectura de referencia
+## 20. Arquitectura de referencia
 
 SUBE Prioridad no debe leerse únicamente como una aplicación ni como una API.
 
@@ -332,9 +422,13 @@ modelo adaptable a otras jurisdicciones
 
 Siempre bajo evaluación técnica, jurídica, presupuestaria, operativa, social e institucional.
 
+El documento de arquitectura de referencia se encuentra en:
+
+[`docs/ARQUITECTURA_DE_REFERENCIA.md`](docs/ARQUITECTURA_DE_REFERENCIA.md)
+
 ---
 
-## 17. Documentación estratégica del proyecto
+## 21. Documentación estratégica del proyecto
 
 La documentación principal del repositorio se organiza en los siguientes documentos:
 
@@ -357,9 +451,27 @@ La documentación principal del repositorio se organiza en los siguientes docume
 
 Estos documentos deben leerse de manera complementaria.
 
+Se recomienda comenzar por:
+
+[`docs/INDICE_DOCUMENTAL.md`](docs/INDICE_DOCUMENTAL.md)
+
 ---
 
-## 18. Ejecución local
+## 22. Pliego técnico extendido
+
+El repositorio conserva un pliego técnico extendido con la visión integral original del Programa SUBE Prioridad.
+
+Ese documento debe interpretarse como documentación conceptual, prospectiva y evolutiva.
+
+No representa una implementación productiva ni una integración real vigente con SUBE, organismos públicos, validadoras, hardware embarcado ni infraestructura estatal.
+
+Ver:
+
+[`docs/PLIEGO_TECNICO_EXTENDIDO.md`](docs/PLIEGO_TECNICO_EXTENDIDO.md)
+
+---
+
+## 23. Ejecución local
 
 Instalar dependencias:
 
@@ -381,7 +493,7 @@ http://127.0.0.1:8000/docs
 
 ---
 
-## 19. Tests
+## 24. Tests
 
 Ejecutar tests:
 
@@ -397,7 +509,7 @@ python -m py_compile main.py validator.py cache_manager.py circuit_breaker.py xr
 
 ---
 
-## 20. Docker
+## 25. Docker
 
 Construir y ejecutar con Docker Compose:
 
@@ -407,7 +519,7 @@ docker compose up --build
 
 ---
 
-## 21. Estructura técnica orientativa
+## 26. Estructura técnica orientativa
 
 El repositorio incluye, entre otros archivos:
 
@@ -430,7 +542,35 @@ La estructura podrá evolucionar conforme avance el proyecto, manteniendo cohere
 
 ---
 
-## 22. Licencia
+## 27. Regla de interpretación general
+
+Todo el repositorio debe interpretarse bajo estas reglas:
+
+```text
+MVP conceptual
+no implementación oficial vigente
+no integración real con SUBE
+no conexión real con organismos públicos
+no procesamiento de datos sensibles
+no diagnóstico médico en el core
+no modificación actual de validadoras reales
+no alteración del cobro del transporte
+no sanciones automáticas
+no nuevas cargas indebidas al chofer
+no sustitución de derechos vigentes
+```
+
+---
+
+## 28. Autoría e iniciativa
+
+SUBE Prioridad es una iniciativa ciudadana de innovación pública impulsada por Andrés Federico Di Fiore.
+
+El repositorio se pone a disposición como base abierta para análisis, discusión, mejora, evaluación institucional y eventual prueba piloto por parte de autoridades competentes, universidades, organizaciones sociales, operadores y ciudadanía.
+
+---
+
+## 29. Licencia
 
 Este proyecto se publica bajo licencia MIT, salvo indicación expresa en contrario para documentos, marcas, logos, archivos institucionales o materiales de terceros.
 
@@ -438,7 +578,7 @@ La publicación abierta del repositorio no implica autorización de implementaci
 
 ---
 
-## 23. Declaración final
+## 30. Declaración final
 
 SUBE Prioridad es una propuesta ciudadana de innovación pública orientada a fortalecer la accesibilidad efectiva, la asistencia preventiva y la convivencia dentro del transporte público.
 
@@ -446,4 +586,6 @@ El repositorio no pretende demostrar una solución cerrada ni una implementació
 
 Su finalidad es ofrecer una arquitectura conceptual, documentada y técnicamente demostrable para que pueda ser analizada, discutida, mejorada y eventualmente evaluada por las autoridades competentes.
 
-El valor del proyecto reside en articular tecnología, privacidad, accesibilidad, dignidad, fundamentos jurídicos, fundamentos médicos, protocolo operativo, participación ciudadana y gradualidad institucional en una propuesta seria, prudente y escalable.
+El valor del proyecto reside en articular tecnología, privacidad, accesibilidad, dignidad, fundamentos jurídicos, fundamentos médicos, protocolo operativo, participación ciudadana, gobernanza, gradualidad institucional y código abierto en una propuesta seria, prudente y escalable.
+
+La versión documental 1.0 consolida el repositorio como una base pública, abierta y auditable para explorar si una necesidad previamente acreditada puede representarse mediante un atributo técnico de prioridad, mínimo y no sensible, que facilite asistencia preventiva sin exponer diagnósticos, sin alterar el sistema de cobro, sin sustituir derechos existentes y sin trasladar cargas indebidas al personal de conducción.
