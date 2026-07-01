@@ -1,42 +1,31 @@
 """
 SUBE Prioridad — Simulador conceptual blindado de Bono Solidario.
 
-Este módulo forma parte de una línea futura, opcional y separada del core
-inicial de prioridad.
+Módulo futuro, opcional y separado del core de prioridad.
 
 No representa implementación oficial vigente.
-No representa integración real con SUBE.
-No representa integración real con Red SUBE.
+No integra SUBE real.
+No integra Red SUBE real.
 No acredita puntos reales.
 No otorga beneficios reales.
-No modifica tarifas.
-No procesa DNI.
-No procesa nombre ni apellido.
-No procesa domicilio.
-No procesa diagnóstico.
-No procesa historia clínica.
-No procesa CUD.
-No procesa certificados médicos.
+No procesa DNI, nombre, domicilio, diagnóstico, CUD ni certificados médicos.
 No genera sanciones.
 No genera rankings.
 No genera vigilancia.
-No obliga a pasajeros.
 No impone cargas al personal de conducción.
-
-Finalidad:
-    Demostrar, de manera conceptual y ejecutable, cómo podría registrarse
-    un reconocimiento solidario futuro cuando un usuario SUBE Prioridad
-    decide voluntariamente reconocer que otra persona le cedió un asiento
-    de uso general dentro de un transporte público de Argentina.
 
 Regla central:
     El Bono Solidario queda en manos del usuario SUBE Prioridad.
 
+Regla operativa conceptual:
+    Sólo puede analizarse cuando otro pasajero cede voluntariamente un asiento
+    de uso general dentro de un transporte público de Argentina, y el usuario
+    SUBE Prioridad decide reconocer ese acto solidario.
+
 Regla de blindaje:
     Ningún evento individual debe ser suficiente por sí solo para construir
-    confianza productiva. Esta demo usa validaciones mínimas, límites y
-    señales de riesgo para mostrar cómo evitar abusos sin convertir el
-    sistema en una herramienta de vigilancia.
+    confianza productiva. Esta demo usa validaciones mínimas, anti-replay,
+    límites por viaje y señales de riesgo.
 """
 
 from __future__ import annotations
@@ -86,33 +75,11 @@ PROHIBITED_FIELDS = {
 
 
 class SeatType(str, Enum):
-    """
-    Tipo de asiento involucrado en el acto solidario.
-
-    El Bono Solidario sólo debe considerarse para asientos de uso general.
-    No debe premiar la liberación de asientos prioritarios legales.
-    """
-
     GENERAL_USE = "general_use"
     LEGAL_PRIORITY = "legal_priority"
 
 
 class SolidaryRecognitionStatus(str, Enum):
-    """
-    Estados posibles del reconocimiento solidario demostrativo.
-
-    ACCEPTED:
-        El evento cumple las reglas mínimas de la demo.
-
-    REJECTED:
-        El evento incumple una regla dura.
-
-    NEEDS_REVIEW:
-        El evento no necesariamente es inválido, pero presenta un patrón
-        que en una implementación futura debería revisarse antes de acreditar
-        cualquier reconocimiento.
-    """
-
     ACCEPTED = "accepted"
     REJECTED = "rejected"
     NEEDS_REVIEW = "needs_review"
@@ -120,15 +87,6 @@ class SolidaryRecognitionStatus(str, Enum):
 
 @dataclass(frozen=True)
 class TransportContext:
-    """
-    Contexto operativo mínimo y demostrativo.
-
-    No representa una unidad real.
-    No representa una línea real.
-    No representa una operación productiva.
-    No implica geolocalización.
-    """
-
     country: str
     vehicle_demo_id: str
     route_demo_id: str
@@ -138,13 +96,6 @@ class TransportContext:
 
 @dataclass(frozen=True)
 class SolidarySeatYieldEvent:
-    """
-    Evento conceptual de cesión voluntaria de asiento.
-
-    El evento no identifica personas reales.
-    Sólo representa tokens demostrativos no sensibles.
-    """
-
     event_demo_id: str
     priority_user_token: str
     collaborator_token: str
@@ -158,14 +109,6 @@ class SolidarySeatYieldEvent:
 
 @dataclass(frozen=True)
 class SolidaryRecognitionResult:
-    """
-    Resultado del reconocimiento solidario demostrativo.
-
-    No acredita puntos reales.
-    No sincroniza con Red SUBE real.
-    No otorga beneficios reales.
-    """
-
     project: str
     module: str
     version: str
@@ -185,23 +128,11 @@ class SolidaryRecognitionResult:
 
 @dataclass
 class DemoRecognitionLedger:
-    """
-    Libro demostrativo en memoria para blindaje del Bono Solidario.
-
-    No es una base de datos.
-    No persiste información real.
-    No identifica personas reales.
-    Sólo permite simular reglas anti-replay y límites por viaje.
-    """
-
     used_event_ids: Set[str] = field(default_factory=set)
     recognitions_by_priority_user_trip: Dict[str, int] = field(default_factory=dict)
     recognitions_by_collaborator_trip: Dict[str, int] = field(default_factory=dict)
 
     def register_accepted_event(self, event: SolidarySeatYieldEvent) -> None:
-        """
-        Registra un evento aceptado dentro del ledger demostrativo.
-        """
         self.used_event_ids.add(event.event_demo_id)
 
         priority_key = _priority_user_trip_key(event)
@@ -216,10 +147,6 @@ class DemoRecognitionLedger:
 
 
 def assert_no_prohibited_fields(payload: Dict[str, Any]) -> None:
-    """
-    Rechaza cualquier payload que intente incluir datos personales,
-    sensibles, médicos o incompatibles con el proyecto.
-    """
     normalized_keys = {str(key).strip().lower() for key in payload.keys()}
     forbidden = sorted(normalized_keys.intersection(PROHIBITED_FIELDS))
 
@@ -237,12 +164,6 @@ def create_demo_transport_context(
     trip_demo_id: str = "demo-trip-001",
     time_window_demo_id: str = "demo-window-001",
 ) -> TransportContext:
-    """
-    Crea un contexto demostrativo de transporte público de Argentina.
-
-    La referencia a Argentina responde al alcance conceptual del proyecto.
-    No representa operación real.
-    """
     return TransportContext(
         country=country,
         vehicle_demo_id=vehicle_demo_id,
@@ -263,11 +184,6 @@ def create_demo_solidary_event(
     issued_at_utc: Optional[datetime] = None,
     ttl_minutes: int = DEFAULT_EVENT_TTL_MINUTES,
 ) -> SolidarySeatYieldEvent:
-    """
-    Crea un evento demostrativo de cesión voluntaria de asiento.
-
-    El reconocimiento queda siempre en manos del usuario SUBE Prioridad.
-    """
     if not event_demo_id or not event_demo_id.strip():
         raise ValueError("El identificador demostrativo del evento no puede estar vacío.")
 
@@ -277,12 +193,13 @@ def create_demo_solidary_event(
     if not collaborator_token or not collaborator_token.strip():
         raise ValueError("El token demostrativo del colaborador no puede estar vacío.")
 
-    payload = {
-        "event_demo_id": event_demo_id,
-        "priority_user_token": priority_user_token,
-        "collaborator_token": collaborator_token,
-    }
-    assert_no_prohibited_fields(payload)
+    assert_no_prohibited_fields(
+        {
+            "event_demo_id": event_demo_id,
+            "priority_user_token": priority_user_token,
+            "collaborator_token": collaborator_token,
+        }
+    )
 
     issued_at = issued_at_utc or datetime.now(timezone.utc)
     expires_at = issued_at + timedelta(minutes=ttl_minutes)
@@ -306,22 +223,6 @@ def simulate_solidary_recognition(
     ledger: Optional[DemoRecognitionLedger] = None,
     now_utc: Optional[datetime] = None,
 ) -> SolidaryRecognitionResult:
-    """
-    Simula el reconocimiento conceptual del Bono Solidario.
-
-    Condiciones mínimas:
-        - transporte público de Argentina;
-        - cesión voluntaria;
-        - asiento de uso general;
-        - decisión voluntaria del usuario SUBE Prioridad;
-        - mismo contexto demostrativo de transporte;
-        - evento no expirado;
-        - evento no reutilizado;
-        - usuario prioritario y colaborador no pueden ser el mismo token;
-        - límites demostrativos por viaje;
-        - sin datos sensibles;
-        - sin intervención del chofer.
-    """
     assert_no_prohibited_fields(
         {
             "event_demo_id": event.event_demo_id,
@@ -511,9 +412,6 @@ def simulate_solidary_recognition(
 
 
 def result_to_dict(result: SolidaryRecognitionResult) -> Dict[str, Any]:
-    """
-    Convierte el resultado a un diccionario serializable.
-    """
     return {
         "project": result.project,
         "module": result.module,
@@ -534,11 +432,6 @@ def result_to_dict(result: SolidaryRecognitionResult) -> Dict[str, Any]:
 
 
 def run_demo() -> Dict[str, Any]:
-    """
-    Ejecuta una simulación completa del Bono Solidario.
-
-    Esta función sirve para pruebas locales y GitHub Actions.
-    """
     context = create_demo_transport_context()
     ledger = DemoRecognitionLedger()
 
@@ -565,13 +458,6 @@ def _same_transport_context(
     actual: TransportContext,
     expected: TransportContext,
 ) -> bool:
-    """
-    Verifica coincidencia mínima demostrativa del contexto operativo.
-
-    No realiza geolocalización real.
-    No consulta sistemas externos.
-    No identifica personas.
-    """
     return (
         actual.country == expected.country
         and actual.vehicle_demo_id == expected.vehicle_demo_id
@@ -606,12 +492,6 @@ def _collaborator_trip_key(event: SolidarySeatYieldEvent) -> str:
 
 
 def _looks_like_free_text(token: str) -> bool:
-    """
-    Detecta valores que parecen frases libres o intentos de abuso.
-
-    La demo no interpreta frases.
-    Sólo acepta tokens técnicos demostrativos simples.
-    """
     normalized = token.lower().strip()
 
     suspicious_terms = {
@@ -661,12 +541,8 @@ def _rejected_result(
         review_required=False,
         risk_flags=risk_flags or [],
         reason=reason,
-        privacy_notice=(
-            "No se procesa ni solicita información sensible para esta respuesta."
-        ),
-        driver_burden=(
-            "El personal de conducción no debe resolver ni administrar el reconocimiento."
-        ),
+        privacy_notice="No se procesa ni solicita información sensible para esta respuesta.",
+        driver_burden="El personal de conducción no debe resolver ni administrar el reconocimiento.",
         warnings=_common_warnings(),
         timestamp_utc=_now_utc(),
     )
@@ -690,12 +566,8 @@ def _needs_review_result(
         review_required=True,
         risk_flags=risk_flags or [],
         reason=reason,
-        privacy_notice=(
-            "No se procesa ni solicita información sensible para esta respuesta."
-        ),
-        driver_burden=(
-            "El personal de conducción no debe resolver ni administrar el reconocimiento."
-        ),
+        privacy_notice="No se procesa ni solicita información sensible para esta respuesta.",
+        driver_burden="El personal de conducción no debe resolver ni administrar el reconocimiento.",
         warnings=_common_warnings(),
         timestamp_utc=_now_utc(),
     )
