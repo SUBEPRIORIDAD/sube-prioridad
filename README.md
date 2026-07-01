@@ -4,7 +4,7 @@
 
 SUBE Prioridad es una propuesta ciudadana de innovación pública orientada a analizar herramientas complementarias que puedan facilitar que personas con una necesidad previamente acreditada de viajar sentadas accedan a condiciones de viaje más seguras, respetuosas y adecuadas dentro del transporte público.
 
-Este repositorio contiene un **MVP conceptual, técnico y demostrativo**, acompañado por documentación de arquitectura, fundamentos jurídicos, fundamentos médicos, estrategia legislativa, lineamientos de protección de datos personales, modelo de prueba piloto, protocolo operativo, gobernanza, decisiones de arquitectura, neutralidad institucional, custodia pública y anexos técnicos.
+Este repositorio contiene un **MVP conceptual, técnico y demostrativo**, acompañado por documentación de arquitectura, fundamentos jurídicos, fundamentos médicos, estrategia legislativa, lineamientos de protección de datos personales, modelo de prueba piloto, protocolo operativo, gobernanza, decisiones de arquitectura, neutralidad institucional, custodia pública, política de marca y anexos técnicos.
 
 ---
 
@@ -16,7 +16,7 @@ La documentación principal se encuentra organizada en:
 
 [`docs/INDICE_DOCUMENTAL.md`](docs/INDICE_DOCUMENTAL.md)
 
-Se recomienda comenzar por ese índice para comprender el alcance del MVP, los límites del proyecto, la arquitectura de referencia, la prueba piloto propuesta, los fundamentos jurídicos y médicos, la estrategia institucional, los principios de gobernanza, las decisiones de arquitectura, la neutralidad institucional, la custodia pública y el pliego técnico extendido.
+Se recomienda comenzar por ese índice para comprender el alcance del MVP, los límites del proyecto, la arquitectura de referencia, la prueba piloto propuesta, los fundamentos jurídicos y médicos, la estrategia institucional, los principios de gobernanza, las decisiones de arquitectura, la neutralidad institucional, la custodia pública, la política de marca y el pliego técnico extendido.
 
 La versión 1.0 no representa una implementación oficial vigente ni una integración productiva con SUBE, organismos públicos, validadoras, hardware embarcado o infraestructura estatal.
 
@@ -40,6 +40,7 @@ Lineamientos de protección de datos: sí
 Principios de gobernanza: sí
 Decisiones de arquitectura: sí
 Neutralidad institucional y custodia pública: sí
+Política de marca: sí
 Implementación productiva: no
 Integración real con organismos públicos: no
 Modificación del sistema SUBE: no
@@ -159,6 +160,7 @@ El proyecto se basa en los siguientes principios:
 * auditabilidad;
 * neutralidad institucional;
 * no apropiación partidaria;
+* protección de la identidad pública del proyecto;
 * no sustitución de derechos vigentes;
 * no imposición de nuevas cargas operativas al personal de conducción.
 
@@ -450,6 +452,7 @@ La documentación principal del repositorio se organiza en los siguientes docume
 * [`docs/DECISIONES_DE_ARQUITECTURA.md`](docs/DECISIONES_DE_ARQUITECTURA.md): decisiones técnicas y conceptuales que orientan el diseño.
 * [`docs/PRINCIPIOS_DE_GOBERNANZA.md`](docs/PRINCIPIOS_DE_GOBERNANZA.md): criterios de transparencia, protección de datos, auditabilidad y control institucional.
 * [`docs/NEUTRALIDAD_INSTITUCIONAL_Y_CUSTODIA_PUBLICA.md`](docs/NEUTRALIDAD_INSTITUCIONAL_Y_CUSTODIA_PUBLICA.md): criterios para preservar el carácter ciudadano, abierto, no partidario, auditable y social del proyecto frente a donaciones, adopciones institucionales, forks o usos públicos.
+* [`docs/POLITICA_DE_MARCA.md`](docs/POLITICA_DE_MARCA.md): criterios para el uso responsable del nombre, identidad, logotipos, denominaciones y referencias públicas vinculadas con SUBE Prioridad.
 * [`ARCHITECTURE_GUARDRAILS.md`](ARCHITECTURE_GUARDRAILS.md): límites técnicos que toda evolución del código debe respetar.
 * [`docs/PLIEGO_TECNICO_EXTENDIDO.md`](docs/PLIEGO_TECNICO_EXTENDIDO.md): documento técnico amplio que conserva la visión integral original del proyecto.
 
@@ -489,7 +492,21 @@ Ese documento debe leerse antes de cualquier transferencia, convenio, donación 
 
 ---
 
-## 24. Ejecución local
+## 24. Política de marca
+
+La apertura del código y de la documentación no implica autorización automática para utilizar la marca, nombre, logotipos, identidad visual o denominaciones vinculadas con SUBE Prioridad de manera irrestricta.
+
+La marca debe utilizarse únicamente de manera compatible con la finalidad original del proyecto: asistencia preventiva, privacidad por diseño, neutralidad institucional, código abierto, auditabilidad, finalidad social y atribución de origen.
+
+El repositorio incluye un documento específico sobre esta materia en:
+
+[`docs/POLITICA_DE_MARCA.md`](docs/POLITICA_DE_MARCA.md)
+
+Ese documento debe leerse antes de cualquier uso institucional, público, comercial, partidario, legislativo, comunicacional o derivado de la identidad SUBE Prioridad.
+
+---
+
+## 25. Ejecución local
 
 Instalar dependencias:
 
@@ -511,7 +528,7 @@ http://127.0.0.1:8000/docs
 
 ---
 
-## 25. Tests
+## 26. Tests
 
 Ejecutar tests:
 
@@ -527,7 +544,7 @@ python -m py_compile main.py validator.py cache_manager.py circuit_breaker.py xr
 
 ---
 
-## 26. Docker
+## 27. Docker
 
 Construir y ejecutar con Docker Compose:
 
@@ -537,7 +554,7 @@ docker compose up --build
 
 ---
 
-## 27. Estructura técnica orientativa
+## 28. Estructura técnica orientativa
 
 El repositorio incluye, entre otros archivos:
 
@@ -560,7 +577,7 @@ La estructura podrá evolucionar conforme avance el proyecto, manteniendo cohere
 
 ---
 
-## 28. Regla de interpretación general
+## 29. Regla de interpretación general
 
 Todo el repositorio debe interpretarse bajo estas reglas:
 
@@ -579,11 +596,13 @@ no sustitución de derechos vigentes
 no apropiación partidaria
 no uso electoral
 no cierre opaco del código
+no uso irrestricto de marca
+no explotación comercial incompatible con el interés público
 ```
 
 ---
 
-## 29. Autoría e iniciativa
+## 30. Autoría e iniciativa
 
 SUBE Prioridad es una iniciativa ciudadana de innovación pública impulsada por Andrés Federico Di Fiore.
 
@@ -593,7 +612,7 @@ La atribución de origen debe preservarse en toda presentación, fork, evaluaci�
 
 ---
 
-## 30. Licencia
+## 31. Licencia
 
 Este proyecto se publica bajo licencia MIT, salvo indicación expresa en contrario para documentos, marcas, logos, archivos institucionales o materiales de terceros.
 
@@ -605,7 +624,7 @@ Cualquier eventual revisión de licenciamiento, migración a copyleft, adenda de
 
 ---
 
-## 31. Declaración final
+## 32. Declaración final
 
 SUBE Prioridad es una propuesta ciudadana de innovación pública orientada a fortalecer la accesibilidad efectiva, la asistencia preventiva y la convivencia dentro del transporte público.
 
@@ -613,8 +632,8 @@ El repositorio no pretende demostrar una solución cerrada ni una implementació
 
 Su finalidad es ofrecer una arquitectura conceptual, documentada y técnicamente demostrable para que pueda ser analizada, discutida, mejorada y eventualmente evaluada por las autoridades competentes.
 
-El valor del proyecto reside en articular tecnología, privacidad, accesibilidad, dignidad, fundamentos jurídicos, fundamentos médicos, protocolo operativo, participación ciudadana, gobernanza, gradualidad institucional, neutralidad no partidaria, custodia pública y código abierto en una propuesta seria, prudente y escalable.
+El valor del proyecto reside en articular tecnología, privacidad, accesibilidad, dignidad, fundamentos jurídicos, fundamentos médicos, protocolo operativo, participación ciudadana, gobernanza, gradualidad institucional, neutralidad no partidaria, custodia pública, política de marca y código abierto en una propuesta seria, prudente y escalable.
 
 La versión documental 1.0 consolida el repositorio como una base pública, abierta y auditable para explorar si una necesidad previamente acreditada puede representarse mediante un atributo técnico de prioridad, mínimo y no sensible, que facilite asistencia preventiva sin exponer diagnósticos, sin alterar el sistema de cobro, sin sustituir derechos existentes y sin trasladar cargas indebidas al personal de conducción.
 
-La apertura del proyecto no habilita su apropiación partidaria, su uso electoral, el borramiento de su origen ciudadano ni su transformación en una herramienta de vigilancia, sanción, negocio cerrado o propaganda institucional incompatible con sus principios fundacionales.
+La apertura del proyecto no habilita su apropiación partidaria, su uso electoral, el borramiento de su origen ciudadano, el uso irrestricto de su marca ni su transformación en una herramienta de vigilancia, sanción, negocio cerrado o propaganda institucional incompatible con sus principios fundacionales.
