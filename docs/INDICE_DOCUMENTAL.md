@@ -24,15 +24,16 @@ Para comprender el proyecto de manera ordenada, se recomienda leer los documento
 6. `docs/PRINCIPIOS_DE_GOBERNANZA.md`
 7. `docs/NEUTRALIDAD_INSTITUCIONAL_Y_CUSTODIA_PUBLICA.md`
 8. `docs/POLITICA_DE_MARCA.md`
-9. `docs/PROTECCION_DATOS_PERSONALES.md`
-10. `docs/PROTOCOLO_OPERATIVO.md`
-11. `docs/PRUEBA_PILOTO_MODELO.md`
-12. `docs/FUNDAMENTOS_JURIDICOS.md`
-13. `docs/FUNDAMENTOS_MEDICOS.md`
-14. `docs/DOSSIER_INSTITUCIONAL_BREVE.md`
-15. `docs/MODELO_PROYECTO_RESOLUCION.md`
-16. `docs/ESTRATEGIA_LEGISLATIVA_Y_PARTICIPACION_CIUDADANA.md`
-17. `docs/PLIEGO_TECNICO_EXTENDIDO.md`
+9. `docs/MODELO_CONDICIONES_DONACION_Y_CUSTODIA.md`
+10. `docs/PROTECCION_DATOS_PERSONALES.md`
+11. `docs/PROTOCOLO_OPERATIVO.md`
+12. `docs/PRUEBA_PILOTO_MODELO.md`
+13. `docs/FUNDAMENTOS_JURIDICOS.md`
+14. `docs/FUNDAMENTOS_MEDICOS.md`
+15. `docs/DOSSIER_INSTITUCIONAL_BREVE.md`
+16. `docs/MODELO_PROYECTO_RESOLUCION.md`
+17. `docs/ESTRATEGIA_LEGISLATIVA_Y_PARTICIPACION_CIUDADANA.md`
+18. `docs/PLIEGO_TECNICO_EXTENDIDO.md`
 
 ---
 
@@ -58,6 +59,7 @@ Puntos centrales:
 - Neutralidad institucional.
 - No apropiación partidaria.
 - Política de marca.
+- Modelo de condiciones para donación y custodia.
 - Preservación de atribución de origen.
 
 ---
@@ -251,6 +253,43 @@ Define criterios sobre:
 - relación con donación o adopción institucional.
 
 Debe leerse antes de cualquier uso institucional, público, comercial, partidario, legislativo, comunicacional o derivado de la identidad SUBE Prioridad.
+
+---
+
+## docs/MODELO_CONDICIONES_DONACION_Y_CUSTODIA.md
+
+Contiene un modelo conceptual de condiciones para una eventual donación, cesión, transferencia, convenio de colaboración o puesta a disposición institucional de SUBE Prioridad.
+
+Su finalidad es preservar la voluntad original de Andrés Federico Di Fiore y evitar que el proyecto sea utilizado para fines incompatibles con su carácter ciudadano, abierto, social, no partidario, auditable y orientado al interés público.
+
+No constituye por sí mismo un contrato vigente, una donación aceptada, un acto administrativo, una licencia definitiva, un dictamen jurídico ni una presentación formal ante autoridad pública.
+
+Define condiciones sobre:
+
+- finalidad pública;
+- neutralidad no partidaria;
+- atribución de origen;
+- uso de marca;
+- código abierto y transparencia;
+- protección de datos personales;
+- separación entre acreditación y operación;
+- no sustitución de derechos vigentes;
+- protección del rol del chofer;
+- no vigilancia y no sanción;
+- Bono Solidario como evolución separada;
+- prueba piloto limitada;
+- gobernanza multi-actor;
+- auditoría;
+- trazabilidad pública;
+- comunicación pública;
+- proveedores privados;
+- forks y adaptaciones;
+- incumplimientos;
+- no exclusividad;
+- entidad de custodia;
+- revisión jurídica previa.
+
+Debe leerse antes de cualquier donación, convenio, transferencia, adopción institucional, autorización de uso de marca, prueba piloto real o entrega del proyecto a organismos públicos o privados.
 
 ---
 
@@ -448,6 +487,7 @@ Su lectura debe realizarse junto con:
 - `docs/PRINCIPIOS_DE_GOBERNANZA.md`;
 - `docs/NEUTRALIDAD_INSTITUCIONAL_Y_CUSTODIA_PUBLICA.md`;
 - `docs/POLITICA_DE_MARCA.md`;
+- `docs/MODELO_CONDICIONES_DONACION_Y_CUSTODIA.md`;
 - `docs/PROTECCION_DATOS_PERSONALES.md`.
 
 Este documento conserva la visión técnica original, pero debe quedar subordinado a los límites actuales del MVP y a la nota de alcance incluida al inicio del propio archivo.
@@ -498,6 +538,7 @@ no apropiación partidaria
 no uso electoral
 no cierre opaco del código
 no uso irrestricto de marca
+no donación o transferencia sin condiciones fundacionales
 no explotación comercial incompatible con el interés público
 ```
 
@@ -600,6 +641,20 @@ Debe leerse antes de cualquier uso institucional, público, comercial, partidari
 
 ---
 
+## Modelo de condiciones para donación y custodia
+
+Antes de cualquier donación, cesión, transferencia, convenio, adopción institucional, autorización de uso de marca o prueba piloto real, deberían definirse condiciones mínimas para preservar la finalidad original del proyecto.
+
+El documento específico sobre esta materia es:
+
+`docs/MODELO_CONDICIONES_DONACION_Y_CUSTODIA.md`
+
+Ese documento ordena cláusulas sobre finalidad pública, neutralidad no partidaria, atribución de origen, uso de marca, código abierto, protección de datos, separación entre acreditación y operación, rol del chofer, no vigilancia, prueba piloto limitada, gobernanza multi-actor, auditoría, trazabilidad pública, proveedores privados, forks, incumplimientos y revisión jurídica.
+
+No constituye un contrato vigente ni una donación aceptada. Debe ser revisado y adaptado jurídicamente antes de cualquier uso formal.
+
+---
+
 ## Declaración de cierre documental v1.0
 
 La versión documental 1.0 de SUBE Prioridad consolida el repositorio como una propuesta ciudadana de innovación pública, de código abierto, orientada a evaluar una arquitectura de asistencia preventiva en el transporte público argentino.
@@ -610,4 +665,4 @@ SUBE Prioridad no pretende imponer una solución cerrada ni afirmar una implemen
 
 Propone explorar si una necesidad previamente acreditada puede representarse mediante un atributo técnico de prioridad, mínimo y no sensible, que facilite asistencia preventiva sin exponer diagnósticos, sin alterar el sistema de cobro, sin sustituir derechos existentes y sin trasladar cargas indebidas al personal de conducción.
 
-La apertura del proyecto no habilita su apropiación partidaria, su uso electoral, el uso irrestricto de su marca, el borramiento de su origen ciudadano ni su transformación en una herramienta de vigilancia, sanción, negocio cerrado o propaganda institucional incompatible con sus principios fundacionales.
+La apertura del proyecto no habilita su apropiación partidaria, su uso electoral, el uso irrestricto de su marca, una donación sin condiciones fundacionales, el borramiento de su origen ciudadano ni su transformación en una herramienta de vigilancia, sanción, negocio cerrado o propaganda institucional incompatible con sus principios fundacionales.
