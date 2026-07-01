@@ -1,67 +1,125 @@
-# Principios de Gobernanza — SUBE Prioridad
+# Índice Documental — SUBE Prioridad
 
-## 1. Propósito del documento
+## Propósito del índice
 
-Este documento establece principios de gobernanza para orientar la evaluación, evolución e implementación progresiva de SUBE Prioridad.
+Este documento organiza la documentación principal del repositorio SUBE Prioridad.
 
-No constituye una norma jurídica, una decisión administrativa ni una estructura institucional obligatoria.
+Su finalidad es facilitar la lectura, navegación, evaluación institucional y comprensión pública del proyecto.
 
-Su finalidad es definir criterios mínimos de transparencia, responsabilidad, protección de datos, auditabilidad y control público que deberían guiar cualquier evolución del proyecto desde el MVP conceptual hacia eventuales pruebas piloto o implementaciones de mayor escala.
+SUBE Prioridad debe interpretarse como una propuesta ciudadana de innovación pública, de código abierto, orientada a explorar una arquitectura de asistencia preventiva en transporte público.
 
----
-
-## 2. Gobernanza pública y competencia institucional
-
-SUBE Prioridad se concibe como una propuesta ciudadana de innovación pública puesta a disposición de las autoridades competentes.
-
-Toda implementación real deberá quedar bajo la evaluación, decisión y supervisión de los organismos con competencia en materia de:
-
-- transporte público;
-- accesibilidad;
-- discapacidad;
-- protección de datos personales;
-- salud, cuando corresponda;
-- innovación tecnológica;
-- modernización administrativa;
-- seguridad de la información;
-- defensa de usuarios y consumidores;
-- jurisdicciones locales involucradas.
-
-El repositorio no sustituye competencias públicas ni constituye autorización de implementación.
+El repositorio contiene un MVP conceptual, técnico y demostrativo. No constituye una implementación oficial vigente, una integración real con sistemas SUBE, organismos públicos, validadoras, hardware embarcado ni infraestructura estatal.
 
 ---
 
-## 3. Principio de evaluación previa
+## Lectura recomendada
 
-Ninguna funcionalidad debería pasar del plano conceptual al operativo sin evaluación previa.
+Para comprender el proyecto de manera ordenada, se recomienda leer los documentos en este orden:
 
-Cada etapa deberá analizar, como mínimo:
-
-- factibilidad técnica;
-- factibilidad jurídica;
-- factibilidad presupuestaria;
-- impacto operativo;
-- protección de datos personales;
-- accesibilidad;
-- seguridad informática;
-- experiencia de usuario;
-- aceptación social;
-- riesgos de uso indebido;
-- alternativas menos invasivas.
-
-La evaluación debe preceder al despliegue, especialmente cuando existan usuarios reales o datos personales involucrados.
+1. `README.md`
+2. `ARCHITECTURE_GUARDRAILS.md`
+3. `docs/ARQUITECTURA_DE_REFERENCIA.md`
+4. `docs/ROADMAP_IMPLEMENTACION.md`
+5. `docs/DECISIONES_DE_ARQUITECTURA.md`
+6. `docs/PRINCIPIOS_DE_GOBERNANZA.md`
+7. `docs/NEUTRALIDAD_INSTITUCIONAL_Y_CUSTODIA_PUBLICA.md`
+8. `docs/PROTECCION_DATOS_PERSONALES.md`
+9. `docs/PROTOCOLO_OPERATIVO.md`
+10. `docs/PRUEBA_PILOTO_MODELO.md`
+11. `docs/FUNDAMENTOS_JURIDICOS.md`
+12. `docs/FUNDAMENTOS_MEDICOS.md`
+13. `docs/DOSSIER_INSTITUCIONAL_BREVE.md`
+14. `docs/MODELO_PROYECTO_RESOLUCION.md`
+15. `docs/ESTRATEGIA_LEGISLATIVA_Y_PARTICIPACION_CIUDADANA.md`
+16. `docs/PLIEGO_TECNICO_EXTENDIDO.md`
 
 ---
 
-## 4. Principio de gradualidad
+## README.md
 
-La gobernanza del proyecto debe respetar una evolución gradual.
+Documento principal de entrada al repositorio.
 
-SUBE Prioridad no debe implementarse como un sistema cerrado, masivo o definitivo desde el inicio.
+Explica qué es SUBE Prioridad, cuál es su alcance actual, qué componentes contiene el MVP, qué límites tiene el proyecto y cómo debe interpretarse públicamente.
 
-El proceso recomendado es:
+Debe leerse como la presentación general del proyecto.
+
+Puntos centrales:
+
+- MVP conceptual y demostrativo.
+- Propuesta ciudadana de innovación pública.
+- Privacidad por diseño.
+- No procesamiento de datos sensibles.
+- Integraciones externas simuladas.
+- No implementación oficial vigente.
+- No modificación actual del sistema SUBE.
+- No imposición de nuevas cargas al chofer.
+- No sustitución del régimen vigente de asientos prioritarios.
+- Neutralidad institucional.
+- No apropiación partidaria.
+- Preservación de atribución de origen.
+
+---
+
+## ARCHITECTURE_GUARDRAILS.md
+
+Define los límites técnicos y conceptuales que el código del repositorio no debe vulnerar.
+
+Funciona como regla madre de arquitectura para preservar la coherencia del MVP.
+
+Establece:
+
+- naturaleza conceptual del MVP;
+- datos prohibidos en el core;
+- modelo correcto de atributo técnico de prioridad;
+- interoperabilidad simulada;
+- límites del Bono Solidario;
+- separación entre documentación, simulación y producción;
+- regla de cambios seguros;
+- criterio de mínima intervención.
+
+Debe consultarse antes de modificar código o documentación técnica.
+
+---
+
+## docs/ARQUITECTURA_DE_REFERENCIA.md
+
+Describe la arquitectura conceptual de referencia de SUBE Prioridad.
+
+No constituye una arquitectura productiva obligatoria, una especificación cerrada ni una integración real vigente.
+
+Explica el modelo general del sistema:
 
 ```text
+necesidad previamente acreditada
+↓
+atributo técnico de prioridad
+↓
+preferencia de asistencia
+↓
+validación operativa
+↓
+alerta genérica o asistencia preventiva
+↓
+evaluación institucional agregada
+```
+
+Incluye principios de diseño, separación entre acreditación y operación, módulos conceptuales, privacidad por arquitectura, interoperabilidad responsable, escalabilidad gradual y relación con el MVP actual.
+
+Debe leerse como el documento técnico-institucional central de la versión 1.0.
+
+---
+
+## docs/ROADMAP_IMPLEMENTACION.md
+
+Presenta una hoja de ruta conceptual para la evolución progresiva de SUBE Prioridad.
+
+No constituye un cronograma obligatorio ni una decisión administrativa.
+
+Ordena el crecimiento posible del proyecto en etapas:
+
+```text
+investigación y documentación
+↓
 MVP conceptual
 ↓
 laboratorio técnico
@@ -70,485 +128,436 @@ prueba piloto limitada
 ↓
 piloto ampliado
 ↓
-evaluación regional
+implementación regional
 ↓
 eventual implementación nacional
+↓
+modelo adaptable a otras jurisdicciones
 ```
 
-Cada etapa debe contar con objetivos, alcance, responsables, indicadores y criterios de cierre o continuidad.
+Cada fase requiere evaluación previa, autorización institucional, análisis jurídico, protección de datos y revisión operativa.
+
+Debe leerse como guía de evolución prudente, gradual, reversible y auditable.
 
 ---
 
-## 5. Principio de reversibilidad
+## docs/DECISIONES_DE_ARQUITECTURA.md
 
-Toda prueba piloto o implementación progresiva debe poder suspenderse, modificarse o revertirse si aparecen riesgos relevantes.
+Registra las principales decisiones de arquitectura adoptadas para el desarrollo conceptual y técnico de SUBE Prioridad.
 
-La reversibilidad debe contemplarse desde el diseño inicial.
+Explica por qué el proyecto utiliza:
 
-Causales posibles de pausa, revisión o cierre:
+- atributo técnico de prioridad en lugar de diagnóstico médico;
+- separación entre acreditación y operación;
+- privacidad por diseño;
+- interoperabilidad simulada en el MVP;
+- neutralidad tecnológica;
+- implementación gradual, reversible y auditable;
+- alertas genéricas y no diagnósticas;
+- preferencias de asistencia controladas por el usuario;
+- registros mínimos y evaluación agregada;
+- Bono Solidario como evolución futura;
+- protección del rol del chofer;
+- tests y compilación como regla de cambio seguro.
 
-- exposición de datos sensibles;
-- fallas técnicas graves;
-- rechazo social significativo;
-- conflictos reiterados;
-- sobrecarga del personal de conducción;
-- ausencia de autorización suficiente;
-- incumplimiento de criterios de privacidad;
-- imposibilidad de auditoría;
-- afectación de derechos vigentes;
-- resultados negativos de evaluación.
-
-La innovación pública no debe avanzar de manera irreversible sin evidencia suficiente.
-
----
-
-## 6. Principio de auditabilidad
-
-Toda evolución del proyecto debe permitir auditoría técnica, institucional y documental.
-
-La auditabilidad implica conservar evidencia sobre:
-
-- decisiones adoptadas;
-- responsables institucionales;
-- cambios técnicos;
-- criterios de diseño;
-- riesgos identificados;
-- medidas de mitigación;
-- resultados de pruebas;
-- incidentes;
-- reclamos;
-- evaluaciones;
-- informes finales.
-
-La auditoría debe poder realizarse sin acceder a diagnósticos médicos ni datos personales innecesarios.
+Debe leerse como criterio de diseño para orientar la evolución del MVP, la documentación técnica y eventuales pruebas piloto.
 
 ---
 
-## 7. Principio de transparencia
+## docs/PRINCIPIOS_DE_GOBERNANZA.md
 
-La ciudadanía, los usuarios participantes y los actores institucionales deben poder conocer el alcance real del proyecto.
+Establece criterios de gobernanza para orientar la evaluación, evolución e implementación progresiva de SUBE Prioridad.
 
-La comunicación debe explicar claramente:
-
-- qué es SUBE Prioridad;
-- qué no es;
-- qué se está evaluando;
-- qué datos se tratan;
-- qué datos no se tratan;
-- quién es responsable;
-- qué derechos conservan las personas usuarias;
-- cómo reclamar;
-- cómo darse de baja en una prueba piloto;
-- qué límites tiene el sistema.
-
-La transparencia debe usar lenguaje claro, accesible y no técnico cuando esté dirigida al público general.
-
----
-
-## 8. Principio de responsabilidad institucional
-
-Toda prueba piloto o implementación real debe contar con responsables definidos.
-
-La gobernanza debe identificar:
-
-- autoridad responsable;
-- áreas técnicas intervinientes;
-- responsables de protección de datos;
-- responsables operativos;
-- operadores involucrados;
-- canales de atención;
-- mecanismos de reporte;
-- responsables de evaluación;
-- responsables de comunicación pública.
-
-La ausencia de responsables claros aumenta riesgos jurídicos, técnicos y sociales.
-
----
-
-## 9. Protección de datos como eje de gobernanza
-
-La protección de datos personales no debe ser tratada como un requisito secundario.
-
-Debe formar parte de la gobernanza central del proyecto.
-
-Toda etapa debe respetar:
-
-- finalidad determinada;
-- minimización de datos;
-- no exposición de diagnósticos;
-- pseudoanonimización cuando corresponda;
-- seguridad de la información;
-- conservación limitada;
-- control de accesos;
-- trazabilidad;
-- canales de ejercicio de derechos;
-- evaluación de impacto cuando corresponda.
-
-El core operativo no debe procesar diagnósticos, historia clínica ni certificados médicos en texto plano.
-
----
-
-## 10. Separación entre acreditación y operación
-
-La gobernanza debe preservar la separación entre:
-
-```text
-Plano de acreditación:
-organismos, profesionales, registros o procedimientos competentes
-validan la necesidad de asistencia
-
-Plano operativo:
-el sistema técnico representa un atributo de prioridad
-sin conocer ni exponer el diagnóstico o documentación respaldatoria
-```
-
-Esta separación protege la privacidad y evita que operadores de transporte, choferes, validadoras o módulos técnicos asuman funciones médicas o documentales.
-
----
-
-## 11. Participación ciudadana e institucional
-
-SUBE Prioridad nace como propuesta ciudadana y puede enriquecerse mediante participación plural.
-
-Podrían participar, según corresponda:
-
-- usuarios;
-- personas con discapacidad;
-- personas mayores;
-- organizaciones sociales;
-- fundaciones;
-- universidades;
-- operadores de transporte;
-- municipios;
-- áreas de accesibilidad;
-- áreas de salud;
-- áreas de innovación pública;
-- organismos de protección de datos;
-- especialistas técnicos.
-
-La participación no implica acceso automático a datos personales ni designación formal.
-
-Toda intervención deberá respetar competencia institucional, finalidad definida y protección de datos.
-
----
-
-## 12. Participación de universidades y organizaciones sociales
-
-La participación académica o social puede aportar valor en evaluación, accesibilidad, diseño, comunicación, medición de impacto y revisión ética.
-
-Sin embargo, las universidades, fundaciones u organizaciones sociales no deberían acceder a datos personales o sensibles salvo autorización específica, finalidad determinada y medidas de seguridad adecuadas.
-
-Siempre que sea posible, su trabajo debería realizarse con información agregada, anonimizada o pseudoanonimizada.
-
----
-
-## 13. Gobernanza del rol del chofer
-
-La gobernanza debe proteger el rol del personal de conducción.
-
-El chofer no debe ser convertido en:
-
-- evaluador médico;
-- fiscalizador documental;
-- administrador de datos sensibles;
-- árbitro principal de conflictos entre pasajeros;
-- aplicador de sanciones;
-- responsable de decidir quién merece asistencia.
-
-La conducción segura debe conservar prioridad operativa.
-
-El sistema debe reducir conflictos, no trasladarlos al chofer.
-
----
-
-## 14. Gobernanza de alertas y comunicación
-
-Toda alerta o modalidad de asistencia debe ser aprobada y evaluada antes de utilizarse en una prueba real.
-
-La gobernanza debe definir:
-
-- texto de la alerta;
-- canal utilizado;
-- duración;
-- intensidad;
-- modalidad silenciosa, discreta, preventiva o visible;
-- criterios de uso;
-- posibilidad de baja o cambio de preferencia;
-- evaluación de comprensión;
-- riesgos de estigmatización.
-
-Las alertas deben ser genéricas, no diagnósticas y no estigmatizantes.
-
----
-
-## 15. Gobernanza de interoperabilidad
-
-Toda interoperabilidad real con organismos, registros, bases de datos, sistemas SUBE, validadoras u otras plataformas externas requiere evaluación específica.
-
-Debe existir:
+Define principios de:
 
 - competencia institucional;
-- marco jurídico;
-- autorización;
-- documentación técnica;
-- finalidad determinada;
-- minimización de datos;
-- seguridad de la información;
-- trazabilidad;
-- auditoría;
-- posibilidad de suspensión.
-
-En el MVP actual, toda interoperabilidad debe interpretarse como simulada.
-
----
-
-## 16. Gobernanza de tecnología y proveedores
-
-SUBE Prioridad debe preservar neutralidad tecnológica.
-
-La gobernanza no debe quedar atada a una marca, proveedor, aplicación, tarjeta, validadora, protocolo o plataforma específica.
-
-Toda decisión tecnológica debería considerar:
-
-- seguridad;
-- costos;
-- disponibilidad;
-- accesibilidad;
-- compatibilidad;
-- mantenimiento;
-- interoperabilidad;
+- evaluación previa;
+- gradualidad;
+- reversibilidad;
+- auditabilidad;
+- transparencia;
+- responsabilidad institucional;
 - protección de datos;
-- sostenibilidad;
-- dependencia tecnológica;
-- posibilidad de reemplazo.
+- participación ciudadana;
+- neutralidad tecnológica;
+- gestión de incidentes;
+- gobernanza documental;
+- gobernanza del código;
+- gobernanza federal;
+- adaptación internacional.
 
-El repositorio propone una arquitectura de referencia, no una contratación ni una solución propietaria cerrada.
+Debe leerse como guía conceptual para eventuales pruebas piloto o implementaciones de mayor escala.
+
+No constituye una norma jurídica ni una estructura institucional obligatoria.
 
 ---
 
-## 17. Gobernanza de indicadores
+## docs/NEUTRALIDAD_INSTITUCIONAL_Y_CUSTODIA_PUBLICA.md
 
-Toda prueba piloto debe definir indicadores antes de comenzar.
+Establece criterios para preservar el carácter ciudadano, abierto, social, no partidario y auditable de SUBE Prioridad.
 
-Los indicadores deberían permitir evaluar:
+Su finalidad es prevenir usos incompatibles con la voluntad original de Andrés Federico Di Fiore, tales como apropiación partidaria, uso electoral, cierre opaco del código, explotación comercial incompatible, eliminación de atribución, uso indebido de la marca o implementación sin respeto de los guardrails fundacionales.
 
-- utilidad real;
-- aceptación social;
-- privacidad;
-- comprensión de alertas;
-- carga operativa;
+Define principios sobre:
+
+- neutralidad no partidaria;
+- atribución de origen;
+- código abierto y transparencia;
+- evaluación de copyleft;
+- licencia documental;
+- política de marca;
+- donación con cargo o transferencia condicionada;
+- comité de gobernanza multi-actor;
+- política de Estado transversal;
+- trazabilidad pública;
+- forks y adaptaciones;
+- prohibición de confusión institucional;
+- prohibición de uso electoral;
+- rol del fundador;
+- entidad de custodia neutral.
+
+Debe leerse antes de cualquier donación, convenio, adopción institucional, prueba piloto, fork relevante o presentación pública del proyecto.
+
+---
+
+## docs/PROTECCION_DATOS_PERSONALES.md
+
+Desarrolla el enfoque de protección de datos personales aplicable a SUBE Prioridad.
+
+Su eje es que el core operativo no debe procesar diagnósticos médicos, historia clínica, DNI, nombre, domicilio ni certificados médicos en texto plano.
+
+Establece principios de:
+
+- privacidad por diseño;
+- minimización de datos;
+- finalidad determinada;
+- pseudoanonimización;
+- separación entre acreditación y operación;
+- seguridad de la información;
+- registros mínimos;
+- evaluación agregada;
+- no exposición pública de condiciones sensibles.
+
+Debe leerse como documento central para evaluar la viabilidad jurídica y ética del proyecto.
+
+---
+
+## docs/PROTOCOLO_OPERATIVO.md
+
+Describe un protocolo operativo conceptual para una eventual prueba piloto o implementación controlada.
+
+Ordena roles, etapas y límites prácticos del sistema.
+
+Incluye criterios sobre:
+
+- usuarios voluntarios;
+- acreditación previa fuera del core;
+- activación del atributo técnico;
+- preferencias de asistencia;
+- alertas genéricas;
+- rol limitado del chofer;
+- colaboración voluntaria de pasajeros;
+- gestión de incidentes;
+- canales de reclamo;
+- evaluación agregada;
+- criterios de suspensión o revisión.
+
+Debe leerse como una guía operativa prudente, no como una orden de implementación.
+
+---
+
+## docs/PRUEBA_PILOTO_MODELO.md
+
+Propone un modelo conceptual de prueba piloto limitada, voluntaria, reversible y auditable.
+
+La prueba piloto debe servir para evaluar si un atributo técnico de prioridad puede facilitar asistencia preventiva sin revelar datos sensibles ni alterar el régimen vigente de transporte.
+
+Incluye criterios sobre:
+
+- alcance territorial;
+- duración;
+- autoridad responsable;
+- selección voluntaria de participantes;
+- datos excluidos del core;
+- modalidad de asistencia;
+- indicadores;
 - incidentes;
 - reclamos;
-- fallas técnicas;
+- evaluación final;
+- criterios de continuidad, ajuste o cierre.
+
+Debe leerse como el documento base para presentar una primera experiencia controlada.
+
+---
+
+## docs/FUNDAMENTOS_JURIDICOS.md
+
+Reúne fundamentos jurídicos para analizar la compatibilidad de SUBE Prioridad con derechos, garantías y marcos normativos aplicables.
+
+Su enfoque principal es presentar el proyecto como herramienta complementaria de accesibilidad efectiva, no como sustitución de derechos existentes.
+
+Aborda, entre otros ejes:
+
+- igualdad real;
 - accesibilidad;
-- satisfacción de usuarios;
-- opinión de operadores;
-- posibilidad de continuidad;
-- necesidad de ajustes.
+- ajustes razonables;
+- dignidad;
+- autonomía personal;
+- protección de datos;
+- no discriminación;
+- derecho al transporte;
+- derechos de personas con discapacidad;
+- límites del rol del chofer;
+- voluntariedad;
+- proporcionalidad;
+- gradualidad;
+- evaluación institucional.
 
-Los indicadores deben ser agregados y no sensibles.
-
-No deben utilizarse para vigilancia individualizada ni perfilamiento indebido.
-
----
-
-## 18. Gobernanza de incidentes
-
-Toda prueba piloto debe prever un mecanismo de gestión de incidentes.
-
-Pueden considerarse incidentes:
-
-- exposición indebida de datos;
-- falla técnica;
-- activación errónea;
-- conflicto entre pasajeros;
-- reclamo de usuario;
-- sobrecarga al chofer;
-- confusión comunicacional;
-- uso indebido;
-- riesgo de discriminación;
-- falla de seguridad.
-
-Cada incidente debe ser documentado, evaluado y tratado de manera proporcional.
+Debe leerse como fundamento argumental para evaluación legislativa, administrativa o institucional.
 
 ---
 
-## 19. Gobernanza del Bono Solidario
+## docs/FUNDAMENTOS_MEDICOS.md
 
-El Bono Solidario debe considerarse una evolución futura, no parte indispensable del núcleo inicial.
+Desarrolla fundamentos médicos, funcionales y preventivos vinculados con la necesidad de viajar sentado en determinadas situaciones.
 
-Su eventual análisis requiere gobernanza específica.
+No debe leerse como guía clínica, protocolo médico ni criterio automático de admisión.
 
-Debe evitar:
+Su finalidad es explicar que existen condiciones visibles y no visibles que pueden hacer razonable una asistencia preventiva en el transporte público.
 
-- rankings públicos;
-- sanciones encubiertas;
-- presión social;
-- vigilancia entre pasajeros;
-- exposición de usuarios prioritarios;
-- incentivos indebidos;
-- uso comercial de datos;
-- afectación del régimen legal de asientos prioritarios.
-
-No debería incorporarse hasta que el sistema base haya sido evaluado y estabilizado.
-
----
-
-## 20. Gobernanza documental
-
-La documentación forma parte de la gobernanza del proyecto.
-
-El repositorio debe mantener coherencia entre:
-
-- README;
-- Architecture Guardrails;
-- Arquitectura de Referencia;
-- Roadmap;
-- Decisiones de Arquitectura;
-- Protección de Datos;
-- Fundamentos Jurídicos;
-- Fundamentos Médicos;
-- Protocolo Operativo;
-- Modelo de Prueba Piloto;
-- documentos institucionales;
-- código del MVP.
-
-Toda documentación debe evitar afirmar implementaciones reales inexistentes.
-
----
-
-## 21. Gobernanza del código
-
-La evolución del código debe respetar reglas de cambio seguro.
-
-Antes de incorporar cambios relevantes, debería verificarse:
-
-```bash
-python -m py_compile main.py validator.py cache_manager.py circuit_breaker.py xroad_gateway.py
-pytest -q
-```
-
-El código no debe incorporar campos sensibles en el core.
-
-No deben agregarse integraciones reales sin autorización, documentación técnica y marco jurídico suficiente.
-
----
-
-## 22. Gobernanza de seguridad de la información
-
-Una implementación real debería contar con medidas de seguridad proporcionales al riesgo.
-
-Entre ellas:
-
-- control de accesos;
-- cifrado cuando corresponda;
-- gestión de claves;
-- segregación de entornos;
-- revisión de código;
-- auditoría;
-- monitoreo;
-- gestión de incidentes;
-- respaldo y recuperación;
-- eliminación segura;
-- trazabilidad de cambios;
-- pruebas de seguridad.
-
-El MVP actual no debe interpretarse como infraestructura productiva segura.
-
----
-
-## 23. Gobernanza federal
-
-La eventual evolución de SUBE Prioridad debe contemplar la organización federal del transporte, la accesibilidad y las competencias públicas.
-
-Una implementación más amplia podría requerir:
-
-- coordinación nacional;
-- intervención provincial;
-- participación municipal;
-- convenios;
-- adendas;
-- resoluciones administrativas;
-- estándares técnicos;
-- participación de operadores;
-- evaluación presupuestaria;
-- adaptación territorial.
-
-La escalabilidad debe surgir de evidencia y decisión institucional, no de automatismo.
-
----
-
-## 24. Gobernanza internacional o adaptable
-
-La arquitectura puede servir como referencia para otras jurisdicciones, regiones o países.
-
-Sin embargo, no debe presentarse como un modelo exportable cerrado.
-
-Toda adaptación internacional deberá respetar:
-
-- normativa local;
-- infraestructura disponible;
-- autoridades competentes;
-- cultura de transporte;
-- reglas de privacidad;
-- sistemas tarifarios;
-- capacidades tecnológicas;
-- evaluación social;
-- accesibilidad local.
-
-Lo reutilizable es la arquitectura de principios, no una implementación obligatoria.
-
----
-
-## 25. Criterios mínimos de avance
-
-Antes de avanzar de una etapa a otra debería verificarse:
+Debe preservar el principio central del proyecto:
 
 ```text
-[ ] Autoridad responsable definida.
-[ ] Alcance documentado.
-[ ] Finalidad determinada.
-[ ] Datos tratados identificados.
-[ ] Datos excluidos del core documentados.
-[ ] Evaluación de privacidad realizada.
-[ ] Riesgos operativos analizados.
-[ ] Rol del chofer delimitado.
-[ ] Comunicación pública preparada.
-[ ] Indicadores definidos.
-[ ] Canales de reclamo habilitados.
-[ ] Criterios de suspensión establecidos.
-[ ] Informe final previsto.
-[ ] Evaluación jurídica realizada.
-[ ] Evaluación técnica realizada.
-[ ] Evaluación presupuestaria considerada.
+el sistema operativo no necesita conocer el diagnóstico
 ```
+
+Lo relevante para el MVP no es la enfermedad específica, sino la existencia de una necesidad previamente acreditada de asistencia durante el viaje.
 
 ---
 
-## 26. Relación con otros documentos del repositorio
+## docs/DOSSIER_INSTITUCIONAL_BREVE.md
 
-Este documento debe leerse junto con:
+Documento ejecutivo de presentación institucional.
+
+Resume el proyecto en lenguaje claro para autoridades, legisladores, municipios, organismos públicos, universidades, organizaciones sociales, operadores de transporte y ciudadanía.
+
+Debe servir como primera lectura institucional cuando no sea posible revisar toda la documentación técnica.
+
+Explica:
+
+- qué es SUBE Prioridad;
+- qué problema busca abordar;
+- cómo funciona conceptualmente;
+- qué datos no procesa;
+- qué límites respeta;
+- por qué puede evaluarse mediante prueba piloto;
+- cuál es su valor público.
+
+---
+
+## docs/MODELO_PROYECTO_RESOLUCION.md
+
+Modelo conceptual de proyecto de resolución o acto administrativo para promover la evaluación institucional de SUBE Prioridad.
+
+No constituye una norma vigente ni una presentación oficial por sí misma.
+
+Su finalidad es ofrecer una base de redacción para que una autoridad competente pueda, si lo considera adecuado, impulsar:
+
+- una mesa técnica;
+- un estudio de factibilidad;
+- una prueba piloto;
+- una evaluación de privacidad;
+- una convocatoria a actores relevantes;
+- un informe de viabilidad.
+
+Debe adaptarse siempre a la jurisdicción, competencia y procedimiento aplicable.
+
+---
+
+## docs/ESTRATEGIA_LEGISLATIVA_Y_PARTICIPACION_CIUDADANA.md
+
+Desarrolla una estrategia para presentar SUBE Prioridad ante legisladores, autoridades administrativas, organismos públicos, universidades, organizaciones sociales, cámaras, municipios y ciudadanía.
+
+Su objetivo no es solicitar una implementación inmediata, obligatoria o nacional, sino promover evaluación, diálogo institucional, prueba piloto y participación pública.
+
+Incluye criterios sobre:
+
+- narrativa pública;
+- actores destinatarios;
+- etapas de incidencia;
+- participación ciudadana;
+- comunicación institucional;
+- riesgos discursivos;
+- lenguaje prudente;
+- articulación con organizaciones;
+- escalabilidad política.
+
+Debe leerse como guía de posicionamiento público e institucional del proyecto.
+
+---
+
+## docs/PLIEGO_TECNICO_EXTENDIDO.md
+
+Conserva el pliego técnico extendido y la visión integral original del Programa SUBE Prioridad.
+
+Debe interpretarse como documentación conceptual, prospectiva y evolutiva.
+
+No representa una implementación productiva, una integración real vigente con SUBE, organismos públicos, validadoras, hardware embarcado ni infraestructura estatal.
+
+Su lectura debe realizarse junto con:
 
 - `README.md`;
 - `ARCHITECTURE_GUARDRAILS.md`;
-- `docs/INDICE_DOCUMENTAL.md`;
 - `docs/ARQUITECTURA_DE_REFERENCIA.md`;
 - `docs/ROADMAP_IMPLEMENTACION.md`;
 - `docs/DECISIONES_DE_ARQUITECTURA.md`;
-- `docs/PROTECCION_DATOS_PERSONALES.md`;
-- `docs/FUNDAMENTOS_JURIDICOS.md`;
-- `docs/FUNDAMENTOS_MEDICOS.md`;
-- `docs/PROTOCOLO_OPERATIVO.md`;
-- `docs/PRUEBA_PILOTO_MODELO.md`.
+- `docs/PRINCIPIOS_DE_GOBERNANZA.md`;
+- `docs/NEUTRALIDAD_INSTITUCIONAL_Y_CUSTODIA_PUBLICA.md`;
+- `docs/PROTECCION_DATOS_PERSONALES.md`.
+
+Este documento conserva la visión técnica original, pero debe quedar subordinado a los límites actuales del MVP y a la nota de alcance incluida al inicio del propio archivo.
 
 ---
 
-## 27. Declaración final
+## Documentos técnicos de código
 
-La gobernanza de SUBE Prioridad debe asegurar que la innovación pública avance de manera prudente, transparente, reversible y respetuosa de los derechos de las personas usuarias.
+Además de la documentación institucional, el repositorio contiene archivos de código y configuración que integran el MVP conceptual.
 
-El proyecto sólo puede sostenerse si mantiene coherencia entre accesibilidad efectiva, privacidad por diseño, minimización de datos, evaluación institucional, neutralidad tecnológica y protección del rol de los actores involucrados.
+Entre ellos:
 
-La tecnología no debe desplazar la decisión pública ni sustituir garantías jurídicas.
+- `main.py`;
+- `validator.py`;
+- `cache_manager.py`;
+- `circuit_breaker.py`;
+- `xroad_gateway.py`;
+- `test_main.py`;
+- `test_antifraud.py`;
+- `requirements.txt`;
+- `.github/workflows/ci.yml`;
+- `docker-compose.yml`;
+- `Dockerfile`, si corresponde.
 
-Debe funcionar como una herramienta documentada, auditable y controlada al servicio de una mejor experiencia de viaje, sin convertir la asistencia preventiva en exposición, vigilancia o discriminación.
+Estos archivos deben interpretarse como implementación demostrativa y simulada.
+
+No deben incorporar datos reales ni integraciones productivas sin autorización, documentación técnica, marco jurídico y evaluación institucional suficiente.
+
+---
+
+## Regla de interpretación general
+
+Todo el repositorio debe interpretarse bajo las siguientes reglas:
+
+```text
+MVP conceptual
+no implementación oficial vigente
+no integración real con SUBE
+no conexión real con organismos públicos
+no procesamiento de datos sensibles
+no diagnóstico médico en el core
+no modificación actual de validadoras reales
+no alteración del cobro del transporte
+no sanciones automáticas
+no nuevas cargas indebidas al chofer
+no sustitución de derechos vigentes
+no apropiación partidaria
+no uso electoral
+no cierre opaco del código
+no explotación comercial incompatible con el interés público
+```
+
+---
+
+## Núcleo funcional del MVP
+
+La versión 1.0 documenta y demuestra este núcleo conceptual:
+
+```text
+persona con necesidad previamente acreditada
+↓
+atributo técnico de prioridad
+↓
+preferencia de asistencia
+↓
+validación demostrativa
+↓
+alerta genérica, discreta o visible
+↓
+colaboración voluntaria o asistencia preventiva
+↓
+evaluación agregada
+```
+
+El sistema no debe revelar la causa médica, funcional o personal de la prioridad.
+
+---
+
+## Criterios para prueba piloto
+
+Una eventual prueba piloto debería ser:
+
+- limitada;
+- voluntaria;
+- reversible;
+- auditable;
+- institucionalmente autorizada;
+- territorialmente acotada;
+- técnicamente controlada;
+- respetuosa de la privacidad;
+- sin diagnósticos en el core;
+- sin obligación de colaboración;
+- sin sanciones;
+- sin sobrecarga al chofer;
+- con indicadores agregados;
+- con canales de reclamo;
+- con informe final.
+
+La primera meta no es una implementación nacional inmediata, sino evaluar si el modelo de asistencia preventiva resulta útil, aceptable, seguro y respetuoso de derechos.
+
+---
+
+## Bono Solidario
+
+El Bono Solidario debe considerarse una evolución futura.
+
+No forma parte del núcleo indispensable del MVP inicial.
+
+Su eventual análisis requiere reglas específicas de:
+
+- voluntariedad;
+- privacidad;
+- antifraude;
+- no discriminación;
+- no vigilancia;
+- no presión social;
+- no afectación del régimen legal de asientos prioritarios;
+- evaluación institucional previa.
+
+No debe implementarse como multa, sanción, ranking público ni mecanismo de control entre pasajeros.
+
+---
+
+## Neutralidad institucional y custodia pública
+
+SUBE Prioridad debe preservar su carácter de iniciativa ciudadana abierta, no partidaria, auditable y orientada al interés público.
+
+Su eventual evaluación, donación, adopción institucional, prueba piloto, fork o presentación pública no debe implicar apropiación partidaria, uso electoral, cierre opaco del código, eliminación de la atribución de origen ni explotación comercial incompatible con sus principios fundacionales.
+
+El documento específico sobre esta materia es:
+
+`docs/NEUTRALIDAD_INSTITUCIONAL_Y_CUSTODIA_PUBLICA.md`
+
+Debe leerse antes de cualquier transferencia, convenio, donación con cargo, política de marca, uso institucional de la identidad SUBE Prioridad o adopción por terceros.
+
+---
+
+## Declaración de cierre documental v1.0
+
+La versión documental 1.0 de SUBE Prioridad consolida el repositorio como una propuesta ciudadana de innovación pública, de código abierto, orientada a evaluar una arquitectura de asistencia preventiva en el transporte público argentino.
+
+Su propósito es aportar una base técnica, jurídica, médica, operativa, institucional y documental para que las autoridades competentes, organizaciones sociales, universidades, operadores y ciudadanía puedan analizar la viabilidad de una prueba piloto limitada, voluntaria, reversible y auditable.
+
+SUBE Prioridad no pretende imponer una solución cerrada ni afirmar una implementación vigente.
+
+Propone explorar si una necesidad previamente acreditada puede representarse mediante un atributo técnico de prioridad, mínimo y no sensible, que facilite asistencia preventiva sin exponer diagnósticos, sin alterar el sistema de cobro, sin sustituir derechos existentes y sin trasladar cargas indebidas al personal de conducción.
+
+La apertura del proyecto no habilita su apropiación partidaria, su uso electoral, el borramiento de su origen ciudadano ni su transformación en una herramienta de vigilancia, sanción, negocio cerrado o propaganda institucional incompatible con sus principios fundacionales.
