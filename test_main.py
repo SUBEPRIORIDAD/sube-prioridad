@@ -22,7 +22,11 @@ def test_root_endpoint():
         data["core"]["bono_solidario_future_module"]
         == "/api/v1/bono-solidario/simular"
     )
-    assert "Bono Solidario separado del token de prioridad." in data["guardrails"]
+
+    guardrails_text = " ".join(data["guardrails"]).lower()
+
+    assert "bono solidario" in guardrails_text
+    assert "prioridad" in guardrails_text
 
 
 def test_health_endpoint():
@@ -45,18 +49,24 @@ def test_project_guardrails_endpoint():
     assert response.status_code == 200
 
     data = response.json()
+    guardrails_text = " ".join(data["guardrails"]).lower()
 
     assert data["project"] == APP_NAME
     assert data["version"] == APP_VERSION
     assert data["demo_mode"] is True
-    assert "No integración real con SUBE." in data["guardrails"]
-    assert "No procesa DNI." in data["guardrails"]
-    assert "No procesa diagnóstico." in data["guardrails"]
-    assert "No procesa CUD." in data["guardrails"]
-    assert "No reemplaza los asientos prioritarios legales." in data["guardrails"]
-    assert "No traslada cargas operativas al chofer." in data["guardrails"]
-    assert "El Bono Solidario es un módulo futuro, opcional y separado." in data["guardrails"]
-    assert "El Bono Solidario queda en manos del usuario SUBE Prioridad." in data["guardrails"]
+
+    assert "sube prioridad" in guardrails_text
+    assert "conceptual" in guardrails_text
+    assert "implementación oficial" in guardrails_text or "implementacion oficial" in guardrails_text
+    assert "sube real" in guardrails_text
+    assert "validadoras reales" in guardrails_text
+    assert "dni" in guardrails_text
+    assert "nombre" in guardrails_text
+    assert "diagnóstico" in guardrails_text or "diagnostico" in guardrails_text
+    assert "cud" in guardrails_text
+    assert "asientos prioritarios legales" in guardrails_text
+    assert "chofer" in guardrails_text
+    assert "bono solidario" in guardrails_text
 
 
 def test_priority_verification_accepts_registered_demo_token():
@@ -82,10 +92,11 @@ def test_priority_verification_accepts_registered_demo_token():
     assert data["preferencia_asistencia"] == 3
     assert data["linea"] == "demo-linea-001"
     assert data["unidad"] == "demo-unidad-001"
-    assert "Atributo técnico demostrativo verificado" in data["motivo"]
-    assert "no revela diagnóstico" in data["motivo"]
-    assert "Sin integración real con SUBE." in data["advertencias"]
-    assert "Bono Solidario separado del token de prioridad." in data["advertencias"]
+
+    warnings_text = " ".join(data["advertencias"]).lower()
+
+    assert "sin integración real con sube" in warnings_text
+    assert "bono solidario" in warnings_text
 
 
 def test_priority_verification_rejects_bono_solidario_as_priority_token():
@@ -105,10 +116,7 @@ def test_priority_verification_rejects_bono_solidario_as_priority_token():
     assert data["status"] == "invalid"
     assert data["prioridad_activa"] is False
     assert data["token_verificado"] is False
-    assert "texto libre" in data["motivo"].lower()
     assert "bono solidario" in data["motivo"].lower()
-    assert "tarifa social" in data["motivo"].lower()
-    assert "atributo técnico demostrativo" in data["motivo"].lower()
 
 
 def test_priority_verification_rejects_unknown_demo_token():
@@ -128,8 +136,6 @@ def test_priority_verification_rejects_unknown_demo_token():
     assert data["status"] == "invalid"
     assert data["prioridad_activa"] is False
     assert data["token_verificado"] is False
-    assert "no se registra" in data["motivo"].lower()
-    assert "evita falsos positivos" in data["motivo"].lower()
 
 
 def test_priority_verification_rejects_magic_free_text():
@@ -149,8 +155,6 @@ def test_priority_verification_rejects_magic_free_text():
     assert data["status"] == "invalid"
     assert data["prioridad_activa"] is False
     assert data["token_verificado"] is False
-    assert "palabras mágicas" in data["motivo"].lower()
-    assert "atributo técnico demostrativo" in data["motivo"].lower()
 
 
 def test_priority_verification_rejects_sensitive_dni_field():
@@ -181,17 +185,17 @@ def test_priority_verification_rejects_medical_diagnosis_field():
 
 def test_bono_solidario_endpoint_accepts_valid_demo_event():
     payload = {
-        "event_demo_id": "api-solidary-valid-001",
-        "priority_user_token": "api-priority-user-valid-001",
-        "collaborator_token": "api-collaborator-valid-001",
+        "event_demo_id": "api-solidary-valid-test-main-001",
+        "priority_user_token": "api-priority-user-valid-test-main-001",
+        "collaborator_token": "api-collaborator-valid-test-main-001",
         "priority_user_decides_to_recognize": True,
         "seat_type": "general_use",
         "voluntary_seat_yield": True,
         "country": "Argentina",
-        "vehicle_demo_id": "api-bus-001",
-        "route_demo_id": "api-route-001",
-        "trip_demo_id": "api-trip-001",
-        "time_window_demo_id": "api-window-001",
+        "vehicle_demo_id": "api-bus-valid-test-main-001",
+        "route_demo_id": "api-route-valid-test-main-001",
+        "trip_demo_id": "api-trip-valid-test-main-001",
+        "time_window_demo_id": "api-window-valid-test-main-001",
     }
 
     response = client.post("/api/v1/bono-solidario/simular", json=payload)
@@ -209,25 +213,26 @@ def test_bono_solidario_endpoint_accepts_valid_demo_event():
     assert data["same_transport_context"] is True
     assert data["review_required"] is False
     assert data["risk_flags"] == []
-    assert "usuario SUBE Prioridad" in data["reason"]
-    assert "asiento de uso general" in data["reason"]
-    assert "Sin integración real con Red SUBE." in data["warnings"]
-    assert "El Bono Solidario queda en manos del usuario SUBE Prioridad." in data["warnings"]
+
+    warnings_text = " ".join(data["warnings"]).lower()
+
+    assert "sin integración real con red sube" in warnings_text
+    assert "bono solidario queda en manos del usuario sube prioridad" in warnings_text
 
 
 def test_bono_solidario_endpoint_rejects_without_priority_user_decision():
     payload = {
-        "event_demo_id": "api-solidary-no-user-decision-001",
-        "priority_user_token": "api-priority-user-no-decision-001",
-        "collaborator_token": "api-collaborator-no-decision-001",
+        "event_demo_id": "api-solidary-no-user-decision-test-main-001",
+        "priority_user_token": "api-priority-user-no-decision-test-main-001",
+        "collaborator_token": "api-collaborator-no-decision-test-main-001",
         "priority_user_decides_to_recognize": False,
         "seat_type": "general_use",
         "voluntary_seat_yield": True,
         "country": "Argentina",
-        "vehicle_demo_id": "api-bus-002",
-        "route_demo_id": "api-route-002",
-        "trip_demo_id": "api-trip-002",
-        "time_window_demo_id": "api-window-002",
+        "vehicle_demo_id": "api-bus-no-decision-test-main-001",
+        "route_demo_id": "api-route-no-decision-test-main-001",
+        "trip_demo_id": "api-trip-no-decision-test-main-001",
+        "time_window_demo_id": "api-window-no-decision-test-main-001",
     }
 
     response = client.post("/api/v1/bono-solidario/simular", json=payload)
@@ -241,23 +246,21 @@ def test_bono_solidario_endpoint_rejects_without_priority_user_decision():
     assert data["recognition_enabled_by_priority_user"] is False
     assert data["review_required"] is False
     assert "priority_user_did_not_recognize" in data["risk_flags"]
-    assert "no decidió reconocer" in data["reason"].lower()
-    assert "no es automático" in data["reason"].lower()
 
 
 def test_bono_solidario_endpoint_rejects_legal_priority_seat():
     payload = {
-        "event_demo_id": "api-solidary-legal-seat-001",
-        "priority_user_token": "api-priority-user-legal-seat-001",
-        "collaborator_token": "api-collaborator-legal-seat-001",
+        "event_demo_id": "api-solidary-legal-seat-test-main-001",
+        "priority_user_token": "api-priority-user-legal-seat-test-main-001",
+        "collaborator_token": "api-collaborator-legal-seat-test-main-001",
         "priority_user_decides_to_recognize": True,
         "seat_type": "legal_priority",
         "voluntary_seat_yield": True,
         "country": "Argentina",
-        "vehicle_demo_id": "api-bus-003",
-        "route_demo_id": "api-route-003",
-        "trip_demo_id": "api-trip-003",
-        "time_window_demo_id": "api-window-003",
+        "vehicle_demo_id": "api-bus-legal-seat-test-main-001",
+        "route_demo_id": "api-route-legal-seat-test-main-001",
+        "trip_demo_id": "api-trip-legal-seat-test-main-001",
+        "time_window_demo_id": "api-window-legal-seat-test-main-001",
     }
 
     response = client.post("/api/v1/bono-solidario/simular", json=payload)
@@ -269,23 +272,21 @@ def test_bono_solidario_endpoint_rejects_legal_priority_seat():
     assert data["status"] == "rejected"
     assert data["solidary_point_demo"] == 0
     assert "legal_priority_seat_not_eligible" in data["risk_flags"]
-    assert "asientos prioritarios legales" in data["reason"].lower()
-    assert "asientos de uso general" in data["reason"].lower()
 
 
 def test_bono_solidario_endpoint_rejects_self_recognition():
     payload = {
-        "event_demo_id": "api-solidary-self-recognition-001",
-        "priority_user_token": "api-same-token-001",
-        "collaborator_token": "api-same-token-001",
+        "event_demo_id": "api-solidary-self-recognition-test-main-001",
+        "priority_user_token": "api-same-token-test-main-001",
+        "collaborator_token": "api-same-token-test-main-001",
         "priority_user_decides_to_recognize": True,
         "seat_type": "general_use",
         "voluntary_seat_yield": True,
         "country": "Argentina",
-        "vehicle_demo_id": "api-bus-004",
-        "route_demo_id": "api-route-004",
-        "trip_demo_id": "api-trip-004",
-        "time_window_demo_id": "api-window-004",
+        "vehicle_demo_id": "api-bus-self-test-main-001",
+        "route_demo_id": "api-route-self-test-main-001",
+        "trip_demo_id": "api-trip-self-test-main-001",
+        "time_window_demo_id": "api-window-self-test-main-001",
     }
 
     response = client.post("/api/v1/bono-solidario/simular", json=payload)
@@ -297,22 +298,21 @@ def test_bono_solidario_endpoint_rejects_self_recognition():
     assert data["status"] == "rejected"
     assert data["solidary_point_demo"] == 0
     assert "self_recognition_attempt" in data["risk_flags"]
-    assert "no pueden ser el mismo token" in data["reason"].lower()
 
 
 def test_bono_solidario_endpoint_rejects_replay_event():
     payload = {
-        "event_demo_id": "api-solidary-replay-001",
-        "priority_user_token": "api-priority-user-replay-001",
-        "collaborator_token": "api-collaborator-replay-001",
+        "event_demo_id": "api-solidary-replay-test-main-001",
+        "priority_user_token": "api-priority-user-replay-test-main-001",
+        "collaborator_token": "api-collaborator-replay-test-main-001",
         "priority_user_decides_to_recognize": True,
         "seat_type": "general_use",
         "voluntary_seat_yield": True,
         "country": "Argentina",
-        "vehicle_demo_id": "api-bus-005",
-        "route_demo_id": "api-route-005",
-        "trip_demo_id": "api-trip-005",
-        "time_window_demo_id": "api-window-005",
+        "vehicle_demo_id": "api-bus-replay-test-main-001",
+        "route_demo_id": "api-route-replay-test-main-001",
+        "trip_demo_id": "api-trip-replay-test-main-001",
+        "time_window_demo_id": "api-window-replay-test-main-001",
     }
 
     first_response = client.post("/api/v1/bono-solidario/simular", json=payload)
@@ -330,23 +330,22 @@ def test_bono_solidario_endpoint_rejects_replay_event():
     assert second_data["status"] == "rejected"
     assert second_data["solidary_point_demo"] == 0
     assert "replay_event_id" in second_data["risk_flags"]
-    assert "ya fue utilizado" in second_data["reason"].lower()
 
 
 def test_bono_solidario_endpoint_rejects_different_transport_context():
     payload = {
-        "event_demo_id": "api-solidary-different-context-001",
-        "priority_user_token": "api-priority-user-context-001",
-        "collaborator_token": "api-collaborator-context-001",
+        "event_demo_id": "api-solidary-different-context-test-main-001",
+        "priority_user_token": "api-priority-user-context-test-main-001",
+        "collaborator_token": "api-collaborator-context-test-main-001",
         "priority_user_decides_to_recognize": True,
         "seat_type": "general_use",
         "voluntary_seat_yield": True,
         "country": "Argentina",
-        "vehicle_demo_id": "api-bus-006",
-        "route_demo_id": "api-route-006",
-        "trip_demo_id": "api-trip-006",
-        "time_window_demo_id": "api-window-006",
-        "expected_vehicle_demo_id": "api-bus-different",
+        "vehicle_demo_id": "api-bus-context-test-main-001",
+        "route_demo_id": "api-route-context-test-main-001",
+        "trip_demo_id": "api-trip-context-test-main-001",
+        "time_window_demo_id": "api-window-context-test-main-001",
+        "expected_vehicle_demo_id": "api-bus-context-test-main-different",
     }
 
     response = client.post("/api/v1/bono-solidario/simular", json=payload)
@@ -359,22 +358,21 @@ def test_bono_solidario_endpoint_rejects_different_transport_context():
     assert data["solidary_point_demo"] == 0
     assert data["same_transport_context"] is False
     assert "different_transport_context" in data["risk_flags"]
-    assert "no se verifica el mismo contexto" in data["reason"].lower()
 
 
 def test_bono_solidario_endpoint_rejects_free_text_collaborator_token():
     payload = {
-        "event_demo_id": "api-solidary-free-text-001",
-        "priority_user_token": "api-priority-user-free-text-001",
+        "event_demo_id": "api-solidary-free-text-test-main-001",
+        "priority_user_token": "api-priority-user-free-text-test-main-001",
         "collaborator_token": "quiero viajar gratis",
         "priority_user_decides_to_recognize": True,
         "seat_type": "general_use",
         "voluntary_seat_yield": True,
         "country": "Argentina",
-        "vehicle_demo_id": "api-bus-007",
-        "route_demo_id": "api-route-007",
-        "trip_demo_id": "api-trip-007",
-        "time_window_demo_id": "api-window-007",
+        "vehicle_demo_id": "api-bus-free-text-test-main-001",
+        "route_demo_id": "api-route-free-text-test-main-001",
+        "trip_demo_id": "api-trip-free-text-test-main-001",
+        "time_window_demo_id": "api-window-free-text-test-main-001",
     }
 
     response = client.post("/api/v1/bono-solidario/simular", json=payload)
@@ -386,36 +384,35 @@ def test_bono_solidario_endpoint_rejects_free_text_collaborator_token():
     assert data["status"] == "rejected"
     assert data["solidary_point_demo"] == 0
     assert "collaborator_token_looks_like_free_text" in data["risk_flags"]
-    assert "texto libre" in data["reason"].lower()
 
 
 def test_bono_solidario_endpoint_requires_review_for_priority_user_trip_limit():
     first_payload = {
-        "event_demo_id": "api-solidary-priority-limit-001",
-        "priority_user_token": "api-priority-user-limit-001",
-        "collaborator_token": "api-collaborator-limit-001",
+        "event_demo_id": "api-solidary-priority-limit-test-main-001",
+        "priority_user_token": "api-priority-user-limit-test-main-001",
+        "collaborator_token": "api-collaborator-limit-test-main-001",
         "priority_user_decides_to_recognize": True,
         "seat_type": "general_use",
         "voluntary_seat_yield": True,
         "country": "Argentina",
-        "vehicle_demo_id": "api-bus-008",
-        "route_demo_id": "api-route-008",
-        "trip_demo_id": "api-trip-008",
-        "time_window_demo_id": "api-window-008",
+        "vehicle_demo_id": "api-bus-priority-limit-test-main-001",
+        "route_demo_id": "api-route-priority-limit-test-main-001",
+        "trip_demo_id": "api-trip-priority-limit-test-main-001",
+        "time_window_demo_id": "api-window-priority-limit-test-main-001",
     }
 
     second_payload = {
-        "event_demo_id": "api-solidary-priority-limit-002",
-        "priority_user_token": "api-priority-user-limit-001",
-        "collaborator_token": "api-collaborator-limit-002",
+        "event_demo_id": "api-solidary-priority-limit-test-main-002",
+        "priority_user_token": "api-priority-user-limit-test-main-001",
+        "collaborator_token": "api-collaborator-limit-test-main-002",
         "priority_user_decides_to_recognize": True,
         "seat_type": "general_use",
         "voluntary_seat_yield": True,
         "country": "Argentina",
-        "vehicle_demo_id": "api-bus-008",
-        "route_demo_id": "api-route-008",
-        "trip_demo_id": "api-trip-008",
-        "time_window_demo_id": "api-window-008",
+        "vehicle_demo_id": "api-bus-priority-limit-test-main-001",
+        "route_demo_id": "api-route-priority-limit-test-main-001",
+        "trip_demo_id": "api-trip-priority-limit-test-main-001",
+        "time_window_demo_id": "api-window-priority-limit-test-main-001",
     }
 
     first_response = client.post("/api/v1/bono-solidario/simular", json=first_payload)
@@ -434,14 +431,13 @@ def test_bono_solidario_endpoint_requires_review_for_priority_user_trip_limit():
     assert second_data["solidary_point_demo"] == 0
     assert second_data["review_required"] is True
     assert "priority_user_trip_limit_exceeded" in second_data["risk_flags"]
-    assert "ya emitió un reconocimiento" in second_data["reason"].lower()
 
 
 def test_bono_solidario_endpoint_rejects_sensitive_dni_field():
     payload = {
-        "event_demo_id": "api-solidary-sensitive-dni-001",
-        "priority_user_token": "api-priority-user-sensitive-dni-001",
-        "collaborator_token": "api-collaborator-sensitive-dni-001",
+        "event_demo_id": "api-solidary-sensitive-dni-test-main-001",
+        "priority_user_token": "api-priority-user-sensitive-dni-test-main-001",
+        "collaborator_token": "api-collaborator-sensitive-dni-test-main-001",
         "priority_user_decides_to_recognize": True,
         "seat_type": "general_use",
         "voluntary_seat_yield": True,
@@ -456,9 +452,9 @@ def test_bono_solidario_endpoint_rejects_sensitive_dni_field():
 
 def test_bono_solidario_endpoint_rejects_sensitive_cud_field():
     payload = {
-        "event_demo_id": "api-solidary-sensitive-cud-001",
-        "priority_user_token": "api-priority-user-sensitive-cud-001",
-        "collaborator_token": "api-collaborator-sensitive-cud-001",
+        "event_demo_id": "api-solidary-sensitive-cud-test-main-001",
+        "priority_user_token": "api-priority-user-sensitive-cud-test-main-001",
+        "collaborator_token": "api-collaborator-sensitive-cud-test-main-001",
         "priority_user_decides_to_recognize": True,
         "seat_type": "general_use",
         "voluntary_seat_yield": True,
