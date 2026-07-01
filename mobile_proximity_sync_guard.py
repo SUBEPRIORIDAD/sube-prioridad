@@ -6,14 +6,13 @@ Regla central:
     No tener celular, app, NFC, BLE, conectividad o tablet no bloquea por sí solo.
     Tener celular disponible tampoco significa haber usado sincronización móvil.
 
-No integra SUBE real.
-No integra Red SUBE real.
-No consulta tarjetas reales.
-No modifica saldo.
-No usa DNI.
-No usa diagnóstico.
-No usa CUD visible.
-No impone carga al chofer.
+Este módulo mantiene compatibilidad con nombres anteriores usados por tests:
+    - priority_token
+    - collaborator_token
+    - access_context
+    - in_vehicle_sync_window_minutes
+    - station_platform_sync_window_minutes
+    - device_session_name
 """
 
 from __future__ import annotations
@@ -26,7 +25,7 @@ from typing import Any, Dict, List, Optional
 
 PROJECT_NAME = "SUBE Prioridad"
 MODULE_NAME = "Guardia Demo de Proximidad Móvil No Excluyente"
-GUARD_VERSION = "0.2.2"
+GUARD_VERSION = "0.2.3"
 DEMO_MODE = True
 
 
@@ -112,6 +111,14 @@ class ProximityGuardPolicy:
     allow_offline_deferred_validation: bool = True
     enable_audit_trail: bool = True
 
+    @property
+    def in_vehicle_sync_window_minutes(self) -> int:
+        return self.in_vehicle_max_minutes
+
+    @property
+    def station_platform_sync_window_minutes(self) -> int:
+        return self.station_platform_max_minutes
+
 
 @dataclass(frozen=True)
 class MobileDeviceBindingDemo:
@@ -120,6 +127,10 @@ class MobileDeviceBindingDemo:
     payment_method_demo_token: str
     active_binding: bool = True
     voluntarily_linked_to_payment: bool = True
+
+    @property
+    def device_session_name(self) -> str:
+        return self.device_session_demo_token
 
 
 @dataclass(frozen=True)
@@ -153,6 +164,18 @@ class ProximitySignal:
     offline_mode_detected: bool
     offline_deferred_minutes_elapsed: int
 
+    @property
+    def priority_token(self) -> str:
+        return self.priority_user_token
+
+    @property
+    def collaborator_token(self) -> str:
+        return self.collaborator_user_token
+
+    @property
+    def access_context(self) -> TransportAccessContext:
+        return self.transport_access_context
+
 
 @dataclass(frozen=True)
 class ProximityGuardResult:
@@ -164,6 +187,10 @@ class ProximityGuardResult:
     proximity_strength: ProximityStrength
     mobile_filter_available: bool
     mobile_filter_used: bool
+    mobile_filter_absent: bool
+    mobile_filter_available_but_not_used: bool
+    handshake_signal_present: bool
+    device_binding_matched: bool
     proximity_reinforced: bool
     non_exclusive_filter: bool
     blocks_solidary_bonus_flow: bool
@@ -199,7 +226,33 @@ def create_demo_proximity_guard_policy(
     require_mobile_for_extended_context: bool = False,
     allow_offline_deferred_validation: bool = True,
     enable_audit_trail: bool = True,
+    **legacy_kwargs: Any,
 ) -> ProximityGuardPolicy:
+    if "in_vehicle_sync_window_minutes" in legacy_kwargs:
+        in_vehicle_max_minutes = legacy_kwargs["in_vehicle_sync_window_minutes"]
+
+    if "station_platform_sync_window_minutes" in legacy_kwargs:
+        station_platform_max_minutes = legacy_kwargs[
+            "station_platform_sync_window_minutes"
+        ]
+
+    if "terminal_sync_window_minutes" in legacy_kwargs:
+        terminal_max_minutes = legacy_kwargs["terminal_sync_window_minutes"]
+
+    if "offline_sync_window_minutes" in legacy_kwargs:
+        offline_deferred_validation_window_minutes = legacy_kwargs[
+            "offline_sync_window_minutes"
+        ]
+
+    for field_name, value in {
+        "in_vehicle_max_minutes": in_vehicle_max_minutes,
+        "station_platform_max_minutes": station_platform_max_minutes,
+        "terminal_max_minutes": terminal_max_minutes,
+        "offline_deferred_validation_window_minutes": offline_deferred_validation_window_minutes,
+    }.items():
+        if value <= 0:
+            raise ValueError(f"El campo {field_name} debe ser mayor a cero.")
+
     return ProximityGuardPolicy(
         in_vehicle_max_minutes=in_vehicle_max_minutes,
         station_platform_max_minutes=station_platform_max_minutes,
@@ -218,7 +271,25 @@ def create_demo_mobile_device_binding(
     payment_method_demo_token: str = "demo-payment-method-001",
     active_binding: bool = True,
     voluntarily_linked_to_payment: bool = True,
+    **legacy_kwargs: Any,
 ) -> MobileDeviceBindingDemo:
+    if "device_session_name" in legacy_kwargs:
+        device_session_demo_token = legacy_kwargs["device_session_name"]
+
+    if "payment_token" in legacy_kwargs:
+        payment_method_demo_token = legacy_kwargs["payment_token"]
+
+    if "linked_to_payment" in legacy_kwargs:
+        voluntarily_linked_to_payment = legacy_kwargs["linked_to_payment"]
+
+    for field_name, value in {
+        "user_token": user_token,
+        "device_session_demo_token": device_session_demo_token,
+        "payment_method_demo_token": payment_method_demo_token,
+    }.items():
+        if not value or not str(value).strip():
+            raise ValueError(f"El campo demostrativo {field_name} no puede estar vacío.")
+
     assert_no_prohibited_fields(
         {
             "user_token": user_token,
@@ -228,9 +299,9 @@ def create_demo_mobile_device_binding(
     )
 
     return MobileDeviceBindingDemo(
-        user_token=user_token,
-        device_session_demo_token=device_session_demo_token,
-        payment_method_demo_token=payment_method_demo_token,
+        user_token=user_token.strip(),
+        device_session_demo_token=device_session_demo_token.strip(),
+        payment_method_demo_token=payment_method_demo_token.strip(),
         active_binding=active_binding,
         voluntarily_linked_to_payment=voluntarily_linked_to_payment,
     )
@@ -265,7 +336,38 @@ def create_demo_proximity_signal(
     collaborator_device_binding: Optional[MobileDeviceBindingDemo] = None,
     offline_mode_detected: bool = False,
     offline_deferred_minutes_elapsed: int = 0,
+    **legacy_kwargs: Any,
 ) -> ProximitySignal:
+    if "priority_token" in legacy_kwargs:
+        priority_user_token = legacy_kwargs["priority_token"]
+
+    if "collaborator_token" in legacy_kwargs:
+        collaborator_user_token = legacy_kwargs["collaborator_token"]
+
+    if "access_context" in legacy_kwargs:
+        transport_access_context = legacy_kwargs["access_context"]
+
+    if "priority_payment_token" in legacy_kwargs:
+        priority_payment_method_demo_token = legacy_kwargs["priority_payment_token"]
+
+    if "collaborator_payment_token" in legacy_kwargs:
+        collaborator_payment_method_demo_token = legacy_kwargs[
+            "collaborator_payment_token"
+        ]
+
+    if "payment_token" in legacy_kwargs:
+        priority_payment_method_demo_token = legacy_kwargs["payment_token"]
+
+    for field_name, value in {
+        "sync_event_demo_id": sync_event_demo_id,
+        "priority_user_token": priority_user_token,
+        "collaborator_user_token": collaborator_user_token,
+        "priority_payment_method_demo_token": priority_payment_method_demo_token,
+        "collaborator_payment_method_demo_token": collaborator_payment_method_demo_token,
+    }.items():
+        if not value or not str(value).strip():
+            raise ValueError(f"El campo demostrativo {field_name} no puede estar vacío.")
+
     assert_no_prohibited_fields(
         {
             "sync_event_demo_id": sync_event_demo_id,
@@ -295,11 +397,11 @@ def create_demo_proximity_signal(
         )
 
     return ProximitySignal(
-        sync_event_demo_id=sync_event_demo_id,
-        priority_user_token=priority_user_token,
-        collaborator_user_token=collaborator_user_token,
-        priority_payment_method_demo_token=priority_payment_method_demo_token,
-        collaborator_payment_method_demo_token=collaborator_payment_method_demo_token,
+        sync_event_demo_id=sync_event_demo_id.strip(),
+        priority_user_token=priority_user_token.strip(),
+        collaborator_user_token=collaborator_user_token.strip(),
+        priority_payment_method_demo_token=priority_payment_method_demo_token.strip(),
+        collaborator_payment_method_demo_token=collaborator_payment_method_demo_token.strip(),
         transport_access_context=transport_access_context,
         proximity_method=proximity_method,
         proximity_attempt_timestamp_utc=now,
@@ -389,7 +491,7 @@ def evaluate_mobile_proximity_sync_guard(
             audit_flags=audit_flags,
             blocks_solidary_bonus_flow=False,
             requires_audit_review=True,
-            reason="Validación diferida offline demo. No bloquea por sí sola, pero requiere auditoría.",
+            reason="Validación diferida offline demo. Requiere auditoría posterior.",
         )
 
     if hard_risk_flags:
@@ -444,6 +546,10 @@ def result_to_dict(result: ProximityGuardResult) -> Dict[str, Any]:
         "proximity_strength": result.proximity_strength.value,
         "mobile_filter_available": result.mobile_filter_available,
         "mobile_filter_used": result.mobile_filter_used,
+        "mobile_filter_absent": result.mobile_filter_absent,
+        "mobile_filter_available_but_not_used": result.mobile_filter_available_but_not_used,
+        "handshake_signal_present": result.handshake_signal_present,
+        "device_binding_matched": result.device_binding_matched,
         "proximity_reinforced": result.proximity_reinforced,
         "non_exclusive_filter": result.non_exclusive_filter,
         "blocks_solidary_bonus_flow": result.blocks_solidary_bonus_flow,
@@ -526,6 +632,12 @@ def _hard_risk_flags(
 ) -> List[str]:
     flags: List[str] = []
 
+    if _looks_like_free_text(signal.priority_user_token):
+        flags.append("priority_user_token_looks_like_free_text")
+
+    if _looks_like_free_text(signal.collaborator_user_token):
+        flags.append("collaborator_user_token_looks_like_free_text")
+
     if signal.priority_user_token == signal.collaborator_user_token:
         flags.append("same_user_token_not_allowed")
 
@@ -581,7 +693,7 @@ def _hard_risk_flags(
     ):
         flags.append("mobile_required_for_extended_context_by_policy")
 
-    return flags
+    return _deduplicate(flags)
 
 
 def _audit_flags(
@@ -618,7 +730,7 @@ def _audit_flags(
     if signal.offline_mode_detected:
         flags.append("offline_deferred_validation_audit")
 
-    return flags
+    return _deduplicate(flags)
 
 
 def _handshake_signal_present(signal: ProximitySignal) -> bool:
@@ -733,6 +845,12 @@ def _result(
         proximity_strength=proximity_strength,
         mobile_filter_available=metrics["mobile_filter_available"],
         mobile_filter_used=metrics["mobile_filter_used"],
+        mobile_filter_absent=metrics["mobile_filter_absent"],
+        mobile_filter_available_but_not_used=metrics[
+            "mobile_filter_available_but_not_used"
+        ],
+        handshake_signal_present=metrics["handshake_signal_present"],
+        device_binding_matched=metrics["device_binding_matched"],
         proximity_reinforced=metrics["proximity_reinforced"],
         non_exclusive_filter=True,
         blocks_solidary_bonus_flow=blocks_solidary_bonus_flow,
@@ -745,6 +863,12 @@ def _result(
             "proximity_method": signal.proximity_method.value,
             "mobile_filter_available": metrics["mobile_filter_available"],
             "mobile_filter_used": metrics["mobile_filter_used"],
+            "mobile_filter_absent": metrics["mobile_filter_absent"],
+            "mobile_filter_available_but_not_used": metrics[
+                "mobile_filter_available_but_not_used"
+            ],
+            "handshake_signal_present": metrics["handshake_signal_present"],
+            "device_binding_matched": metrics["device_binding_matched"],
             "proximity_reinforced": metrics["proximity_reinforced"],
             "same_transport_context": signal.same_transport_context,
             "same_vehicle_demo_id": signal.same_vehicle_demo_id,
@@ -791,6 +915,53 @@ def _result(
         ],
         timestamp_utc=datetime.now(timezone.utc).isoformat(),
     )
+
+
+def _looks_like_free_text(token: str) -> bool:
+    normalized = token.lower().strip()
+
+    suspicious_terms = {
+        "quiero",
+        "gratis",
+        "beneficio",
+        "tarifa",
+        "social",
+        "diagnostico",
+        "diagnóstico",
+        "cud",
+        "certificado",
+        "medico",
+        "médico",
+        "andis",
+        "sancion",
+        "sanción",
+        "ranking",
+        "vigilancia",
+        "premio",
+        "puntos",
+        "bono solidario",
+        "red sube",
+        "gps",
+        "telefono",
+        "teléfono",
+        "email",
+        "saldo",
+        "dinero",
+    }
+
+    return any(term in normalized for term in suspicious_terms) or len(normalized.split()) > 1
+
+
+def _deduplicate(flags: List[str]) -> List[str]:
+    seen = set()
+    result = []
+
+    for flag in flags:
+        if flag not in seen:
+            seen.add(flag)
+            result.append(flag)
+
+    return result
 
 
 if __name__ == "__main__":
