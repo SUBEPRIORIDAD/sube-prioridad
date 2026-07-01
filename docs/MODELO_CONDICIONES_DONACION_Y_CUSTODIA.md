@@ -1,8 +1,8 @@
-# Adenda Modelo de Donación con Cargo — SUBE Prioridad
+# Modelo de Condiciones para Donación y Custodia — SUBE Prioridad
 
 ## 1. Propósito del documento
 
-Este documento contiene un modelo conceptual de adenda para una eventual donación, cesión, transferencia, convenio de colaboración o puesta a disposición institucional de SUBE Prioridad.
+Este documento contiene un modelo conceptual de condiciones para una eventual donación, cesión, transferencia, convenio de colaboración o puesta a disposición institucional de SUBE Prioridad.
 
 Su finalidad es preservar la voluntad original de Andrés Federico Di Fiore y evitar que el proyecto sea utilizado para fines incompatibles con su carácter ciudadano, abierto, social, no partidario, auditable y orientado al interés público.
 
@@ -12,11 +12,11 @@ Toda utilización real deberá ser revisada y adaptada por profesionales compete
 
 ---
 
-## 2. Naturaleza de la adenda
+## 2. Naturaleza del modelo de condiciones
 
-La presente adenda modelo parte de la idea de que SUBE Prioridad podría ser ofrecido al Estado, a universidades, organismos públicos, municipios, provincias, entidades de transporte u otros actores institucionales bajo condiciones destinadas a preservar su finalidad pública.
+El presente modelo parte de la idea de que SUBE Prioridad podría ser ofrecido al Estado, a universidades, organismos públicos, municipios, provincias, entidades de transporte u otros actores institucionales bajo condiciones destinadas a preservar su finalidad pública.
 
-El instrumento podría adoptar, según corresponda, alguna de las siguientes formas:
+El instrumento jurídico o institucional concreto podría adoptar, según corresponda, alguna de las siguientes formas:
 
 - donación con cargo;
 - convenio de colaboración;
@@ -37,7 +37,7 @@ La denominación final dependerá del encuadre jurídico y administrativo aplica
 
 A los fines del modelo, podrían intervenir:
 
-### Parte impulsora, donante o cedente
+### Parte impulsora, donante, cedente o titular de custodia
 
 Andrés Federico Di Fiore, en su carácter de impulsor original de la iniciativa ciudadana SUBE Prioridad, o la entidad de custodia neutral que eventualmente se constituya o designe.
 
@@ -63,7 +63,7 @@ Podrían intervenir también, según el caso:
 
 ## 4. Objeto
 
-El objeto de la adenda es establecer condiciones mínimas para que cualquier evaluación, recepción, adopción, prueba piloto, uso institucional o derivación de SUBE Prioridad respete los principios fundacionales del proyecto.
+El objeto de este modelo es establecer condiciones mínimas para que cualquier evaluación, recepción, adopción, prueba piloto, uso institucional o derivación de SUBE Prioridad respete los principios fundacionales del proyecto.
 
 Podrían quedar comprendidos:
 
@@ -547,7 +547,7 @@ La figura concreta deberá definirse con asesoramiento jurídico específico.
 
 ## 27. Cláusula de revisión jurídica
 
-Antes de su firma o utilización formal, toda adenda, convenio, donación con cargo, transferencia, licencia institucional o autorización de uso de marca deberá ser revisada por profesionales competentes.
+Antes de su firma o utilización formal, todo convenio, donación con cargo, transferencia, licencia institucional o autorización de uso de marca deberá ser revisado por profesionales competentes.
 
 La revisión deberá considerar:
 
@@ -570,7 +570,7 @@ La revisión deberá considerar:
 
 ## 28. Relación con otros documentos del repositorio
 
-Esta adenda modelo debe leerse junto con:
+Este modelo de condiciones debe leerse junto con:
 
 - `README.md`;
 - `ARCHITECTURE_GUARDRAILS.md`;
@@ -616,7 +616,7 @@ La parte receptora reconoce que cualquier implementación real requerirá evalua
 
 ## 30. Declaración final
 
-La finalidad de esta adenda modelo es impedir que una eventual donación, cesión, convenio, transferencia o adopción institucional de SUBE Prioridad desnaturalice la voluntad original de Andrés Federico Di Fiore.
+La finalidad de este modelo de condiciones es impedir que una eventual donación, cesión, convenio, transferencia o adopción institucional de SUBE Prioridad desnaturalice la voluntad original de Andrés Federico Di Fiore.
 
 SUBE Prioridad debe permanecer como una iniciativa ciudadana abierta, no partidaria, auditable, respetuosa de la privacidad, orientada al interés público y destinada a mejorar la experiencia de viaje de quienes más necesitan asistencia preventiva en el transporte público.
 
