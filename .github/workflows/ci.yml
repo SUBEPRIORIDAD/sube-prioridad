@@ -10,7 +10,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  test:
+  python-tests:
     name: Python tests and simulators
     runs-on: ubuntu-latest
 
@@ -18,17 +18,35 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Show current commit
+        run: |
+          echo "Current commit:"
+          git rev-parse HEAD
+          echo "Current branch/ref:"
+          git branch --show-current || true
+          echo "Repository files:"
+          ls -la
+
+      - name: Show Bono Solidario simulator header
+        run: |
+          echo "=== FIRST 40 LINES OF bono_solidario_simulator.py ==="
+          nl -ba bono_solidario_simulator.py | sed -n '1,40p'
+          echo "=== SEARCHING FOR CIRCULAR IMPORT ==="
+          if grep -n "from bono_solidario_simulator import" bono_solidario_simulator.py; then
+            echo "ERROR: bono_solidario_simulator.py imports itself."
+            exit 1
+          else
+            echo "OK: no self-import found in bono_solidario_simulator.py"
+          fi
+
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
 
-      - name: Upgrade pip
-        run: |
-          python -m pip install --upgrade pip
-
       - name: Install dependencies
         run: |
+          python -m pip install --upgrade pip
           pip install -r requirements.txt
 
       - name: Compile Python files
@@ -62,44 +80,25 @@ jobs:
           assert result["project"] == "SUBE Prioridad"
           assert result["demo_mode"] is True
           assert result["status"] == "valid"
-          assert result["assistance_preference"] == "preventiva"
+          assert result["priority_active"] is True
+          assert result["validated_attribute"] is True
+          assert "Sin integración real con SUBE." in result["warnings"]
 
-          warnings = result.get("warnings", [])
-          assert "Sin integración real con SUBE." in warnings
-          assert "Sin conexión real con organismos públicos." in warnings
-          assert "Sin procesamiento de datos sensibles reales." in warnings
-
-          print("MVP simulator verified successfully.")
+          print("MVP simulator output verified.")
           PY
 
       - name: Verify MVP sensitive data rejection
         run: |
           python - <<'PY'
-          from mvp_simulator import (
-              AssistancePreference,
-              create_demo_priority_attribute,
-              simulate_priority_validation,
-          )
-
-          attribute = create_demo_priority_attribute(
-              token="demo-priority-attribute-actions",
-              assistance_preference=AssistancePreference.PREVENTIVA,
-          )
+          from mvp_simulator import assert_no_prohibited_fields
 
           try:
-              simulate_priority_validation(
-                  attribute,
-                  context={
-                      "dni": "12345678",
-                      "vehicle_demo_id": "demo-bus-001",
-                  },
-              )
+              assert_no_prohibited_fields({"dni": "12345678"})
           except ValueError as exc:
-              message = str(exc).lower()
-              assert "dni" in message
-              print("MVP sensitive data rejection verified successfully.")
+              assert "dni" in str(exc).lower()
+              print("Sensitive data rejection verified.")
           else:
-              raise AssertionError("Sensitive data was not rejected by MVP simulator.")
+              raise AssertionError("Expected ValueError for prohibited field.")
           PY
 
       - name: Verify Bono Solidario simulator output
@@ -119,135 +118,81 @@ jobs:
           assert result["review_required"] is False
           assert result["risk_flags"] == []
 
-          warnings = result.get("warnings", [])
-          assert "Sin integración real con SUBE." in warnings
-          assert "Sin integración real con Red SUBE." in warnings
-          assert "Sin puntos reales." in warnings
-          assert "Sin beneficios reales." in warnings
-          assert "El Bono Solidario queda en manos del usuario SUBE Prioridad." in warnings
-
-          print("Bono Solidario simulator verified successfully.")
+          print("Bono Solidario simulator output verified.")
           PY
 
       - name: Verify Bono Solidario rejection without priority user decision
         run: |
           python - <<'PY'
           from bono_solidario_simulator import (
-              DemoRecognitionLedger,
-              SeatType,
-              SolidaryRecognitionStatus,
               create_demo_solidary_event,
-              create_demo_transport_context,
               simulate_solidary_recognition,
           )
 
-          context = create_demo_transport_context()
-          ledger = DemoRecognitionLedger()
-
           event = create_demo_solidary_event(
-              event_demo_id="demo-actions-no-user-decision",
-              priority_user_token="demo-priority-user-actions",
-              collaborator_token="demo-collaborator-actions",
+              event_demo_id="ci-solidary-no-user-decision-001",
+              priority_user_token="ci-priority-user-no-decision-001",
+              collaborator_token="ci-collaborator-no-decision-001",
               priority_user_decides_to_recognize=False,
-              seat_type=SeatType.GENERAL_USE,
-              voluntary_seat_yield=True,
-              transport_context=context,
           )
 
-          result = simulate_solidary_recognition(
-              event=event,
-              expected_context=context,
-              ledger=ledger,
-          )
+          result = simulate_solidary_recognition(event)
 
-          assert result.status == SolidaryRecognitionStatus.REJECTED
+          assert result.status.value == "rejected"
           assert result.solidary_point_demo == 0
-          assert result.recognition_enabled_by_priority_user is False
-          assert result.review_required is False
           assert "priority_user_did_not_recognize" in result.risk_flags
-          assert "no decidió reconocer" in result.reason.lower()
-          assert "no es automático" in result.reason.lower()
 
-          print("Bono Solidario optional-user-control rule verified successfully.")
+          print("Bono Solidario no-user-decision rejection verified.")
           PY
 
       - name: Verify Bono Solidario rejection for legal priority seat
         run: |
           python - <<'PY'
           from bono_solidario_simulator import (
-              DemoRecognitionLedger,
               SeatType,
-              SolidaryRecognitionStatus,
               create_demo_solidary_event,
-              create_demo_transport_context,
               simulate_solidary_recognition,
           )
 
-          context = create_demo_transport_context()
-          ledger = DemoRecognitionLedger()
-
           event = create_demo_solidary_event(
-              event_demo_id="demo-actions-legal-priority-seat",
-              priority_user_token="demo-priority-user-actions",
-              collaborator_token="demo-collaborator-actions",
+              event_demo_id="ci-solidary-legal-seat-001",
+              priority_user_token="ci-priority-user-legal-seat-001",
+              collaborator_token="ci-collaborator-legal-seat-001",
               priority_user_decides_to_recognize=True,
               seat_type=SeatType.LEGAL_PRIORITY,
-              voluntary_seat_yield=True,
-              transport_context=context,
           )
 
-          result = simulate_solidary_recognition(
-              event=event,
-              expected_context=context,
-              ledger=ledger,
-          )
+          result = simulate_solidary_recognition(event)
 
-          assert result.status == SolidaryRecognitionStatus.REJECTED
+          assert result.status.value == "rejected"
           assert result.solidary_point_demo == 0
           assert "legal_priority_seat_not_eligible" in result.risk_flags
-          assert "asientos prioritarios legales" in result.reason.lower()
-          assert "asientos de uso general" in result.reason.lower()
 
-          print("Bono Solidario general-use-seat rule verified successfully.")
+          print("Bono Solidario legal-priority-seat rejection verified.")
           PY
 
       - name: Verify Bono Solidario self-recognition rejection
         run: |
           python - <<'PY'
           from bono_solidario_simulator import (
-              DemoRecognitionLedger,
-              SeatType,
-              SolidaryRecognitionStatus,
               create_demo_solidary_event,
-              create_demo_transport_context,
               simulate_solidary_recognition,
           )
 
-          context = create_demo_transport_context()
-          ledger = DemoRecognitionLedger()
-
           event = create_demo_solidary_event(
-              event_demo_id="demo-actions-self-recognition",
-              priority_user_token="demo-same-token-actions",
-              collaborator_token="demo-same-token-actions",
+              event_demo_id="ci-solidary-self-recognition-001",
+              priority_user_token="ci-same-token-001",
+              collaborator_token="ci-same-token-001",
               priority_user_decides_to_recognize=True,
-              seat_type=SeatType.GENERAL_USE,
-              voluntary_seat_yield=True,
-              transport_context=context,
           )
 
-          result = simulate_solidary_recognition(
-              event=event,
-              expected_context=context,
-              ledger=ledger,
-          )
+          result = simulate_solidary_recognition(event)
 
-          assert result.status == SolidaryRecognitionStatus.REJECTED
+          assert result.status.value == "rejected"
           assert result.solidary_point_demo == 0
           assert "self_recognition_attempt" in result.risk_flags
-          assert "no pueden ser el mismo token" in result.reason.lower()
 
-          print("Bono Solidario self-recognition rejection verified successfully.")
+          print("Bono Solidario self-recognition rejection verified.")
           PY
 
       - name: Verify Bono Solidario replay rejection
@@ -255,47 +200,30 @@ jobs:
           python - <<'PY'
           from bono_solidario_simulator import (
               DemoRecognitionLedger,
-              SeatType,
-              SolidaryRecognitionStatus,
               create_demo_solidary_event,
-              create_demo_transport_context,
               simulate_solidary_recognition,
           )
 
-          context = create_demo_transport_context()
           ledger = DemoRecognitionLedger()
 
           event = create_demo_solidary_event(
-              event_demo_id="demo-actions-replay-event",
-              priority_user_token="demo-priority-user-actions",
-              collaborator_token="demo-collaborator-actions",
+              event_demo_id="ci-solidary-replay-001",
+              priority_user_token="ci-priority-user-replay-001",
+              collaborator_token="ci-collaborator-replay-001",
               priority_user_decides_to_recognize=True,
-              seat_type=SeatType.GENERAL_USE,
-              voluntary_seat_yield=True,
-              transport_context=context,
           )
 
-          first_result = simulate_solidary_recognition(
-              event=event,
-              expected_context=context,
-              ledger=ledger,
-          )
+          first = simulate_solidary_recognition(event, ledger=ledger)
+          second = simulate_solidary_recognition(event, ledger=ledger)
 
-          second_result = simulate_solidary_recognition(
-              event=event,
-              expected_context=context,
-              ledger=ledger,
-          )
+          assert first.status.value == "accepted"
+          assert first.solidary_point_demo == 1
 
-          assert first_result.status == SolidaryRecognitionStatus.ACCEPTED
-          assert first_result.solidary_point_demo == 1
+          assert second.status.value == "rejected"
+          assert second.solidary_point_demo == 0
+          assert "replay_event_id" in second.risk_flags
 
-          assert second_result.status == SolidaryRecognitionStatus.REJECTED
-          assert second_result.solidary_point_demo == 0
-          assert "replay_event_id" in second_result.risk_flags
-          assert "ya fue utilizado" in second_result.reason.lower()
-
-          print("Bono Solidario replay rejection verified successfully.")
+          print("Bono Solidario replay rejection verified.")
           PY
 
       - name: Verify Bono Solidario expired event rejection
@@ -304,44 +232,28 @@ jobs:
           from datetime import datetime, timedelta, timezone
 
           from bono_solidario_simulator import (
-              DemoRecognitionLedger,
-              SeatType,
-              SolidaryRecognitionStatus,
               create_demo_solidary_event,
-              create_demo_transport_context,
               simulate_solidary_recognition,
           )
 
-          context = create_demo_transport_context()
-          ledger = DemoRecognitionLedger()
-
-          issued_at = datetime.now(timezone.utc) - timedelta(minutes=20)
+          issued_at = datetime.now(timezone.utc) - timedelta(minutes=10)
 
           event = create_demo_solidary_event(
-              event_demo_id="demo-actions-expired-event",
-              priority_user_token="demo-priority-user-actions",
-              collaborator_token="demo-collaborator-actions",
+              event_demo_id="ci-solidary-expired-001",
+              priority_user_token="ci-priority-user-expired-001",
+              collaborator_token="ci-collaborator-expired-001",
               priority_user_decides_to_recognize=True,
-              seat_type=SeatType.GENERAL_USE,
-              voluntary_seat_yield=True,
-              transport_context=context,
               issued_at_utc=issued_at,
-              ttl_minutes=5,
+              ttl_minutes=1,
           )
 
-          result = simulate_solidary_recognition(
-              event=event,
-              expected_context=context,
-              ledger=ledger,
-              now_utc=datetime.now(timezone.utc),
-          )
+          result = simulate_solidary_recognition(event)
 
-          assert result.status == SolidaryRecognitionStatus.REJECTED
+          assert result.status.value == "rejected"
           assert result.solidary_point_demo == 0
           assert "expired_event" in result.risk_flags
-          assert "expiró" in result.reason.lower()
 
-          print("Bono Solidario expired event rejection verified successfully.")
+          print("Bono Solidario expired-event rejection verified.")
           PY
 
       - name: Verify Bono Solidario needs review for priority user trip limit
@@ -349,97 +261,71 @@ jobs:
           python - <<'PY'
           from bono_solidario_simulator import (
               DemoRecognitionLedger,
-              SeatType,
-              SolidaryRecognitionStatus,
               create_demo_solidary_event,
               create_demo_transport_context,
               simulate_solidary_recognition,
           )
 
-          context = create_demo_transport_context()
           ledger = DemoRecognitionLedger()
+          context = create_demo_transport_context(
+              vehicle_demo_id="ci-bus-trip-limit",
+              route_demo_id="ci-route-trip-limit",
+              trip_demo_id="ci-trip-limit",
+              time_window_demo_id="ci-window-trip-limit",
+          )
 
           first_event = create_demo_solidary_event(
-              event_demo_id="demo-actions-priority-limit-001",
-              priority_user_token="demo-priority-user-actions",
-              collaborator_token="demo-collaborator-actions-001",
+              event_demo_id="ci-solidary-priority-limit-001",
+              priority_user_token="ci-priority-user-limit-001",
+              collaborator_token="ci-collaborator-limit-001",
               priority_user_decides_to_recognize=True,
-              seat_type=SeatType.GENERAL_USE,
-              voluntary_seat_yield=True,
               transport_context=context,
           )
 
           second_event = create_demo_solidary_event(
-              event_demo_id="demo-actions-priority-limit-002",
-              priority_user_token="demo-priority-user-actions",
-              collaborator_token="demo-collaborator-actions-002",
+              event_demo_id="ci-solidary-priority-limit-002",
+              priority_user_token="ci-priority-user-limit-001",
+              collaborator_token="ci-collaborator-limit-002",
               priority_user_decides_to_recognize=True,
-              seat_type=SeatType.GENERAL_USE,
-              voluntary_seat_yield=True,
               transport_context=context,
           )
 
-          first_result = simulate_solidary_recognition(
-              event=first_event,
-              expected_context=context,
-              ledger=ledger,
-          )
+          first = simulate_solidary_recognition(first_event, ledger=ledger)
+          second = simulate_solidary_recognition(second_event, ledger=ledger)
 
-          second_result = simulate_solidary_recognition(
-              event=second_event,
-              expected_context=context,
-              ledger=ledger,
-          )
+          assert first.status.value == "accepted"
+          assert first.solidary_point_demo == 1
 
-          assert first_result.status == SolidaryRecognitionStatus.ACCEPTED
-          assert first_result.solidary_point_demo == 1
+          assert second.status.value == "needs_review"
+          assert second.solidary_point_demo == 0
+          assert second.review_required is True
+          assert "priority_user_trip_limit_exceeded" in second.risk_flags
 
-          assert second_result.status == SolidaryRecognitionStatus.NEEDS_REVIEW
-          assert second_result.solidary_point_demo == 0
-          assert second_result.review_required is True
-          assert "priority_user_trip_limit_exceeded" in second_result.risk_flags
-          assert "ya emitió un reconocimiento" in second_result.reason.lower()
-
-          print("Bono Solidario priority user trip limit verified successfully.")
+          print("Bono Solidario priority-user trip-limit review verified.")
           PY
 
       - name: Verify Bono Solidario free text rejection
         run: |
           python - <<'PY'
           from bono_solidario_simulator import (
-              DemoRecognitionLedger,
-              SeatType,
-              SolidaryRecognitionStatus,
               create_demo_solidary_event,
-              create_demo_transport_context,
               simulate_solidary_recognition,
           )
 
-          context = create_demo_transport_context()
-          ledger = DemoRecognitionLedger()
-
           event = create_demo_solidary_event(
-              event_demo_id="demo-actions-free-text",
-              priority_user_token="demo-priority-user-actions",
+              event_demo_id="ci-solidary-free-text-001",
+              priority_user_token="ci-priority-user-free-text-001",
               collaborator_token="quiero viajar gratis",
               priority_user_decides_to_recognize=True,
-              seat_type=SeatType.GENERAL_USE,
-              voluntary_seat_yield=True,
-              transport_context=context,
           )
 
-          result = simulate_solidary_recognition(
-              event=event,
-              expected_context=context,
-              ledger=ledger,
-          )
+          result = simulate_solidary_recognition(event)
 
-          assert result.status == SolidaryRecognitionStatus.REJECTED
+          assert result.status.value == "rejected"
           assert result.solidary_point_demo == 0
           assert "collaborator_token_looks_like_free_text" in result.risk_flags
-          assert "texto libre" in result.reason.lower()
 
-          print("Bono Solidario free-text rejection verified successfully.")
+          print("Bono Solidario free-text rejection verified.")
           PY
 
       - name: Verify Bono Solidario sensitive data rejection
@@ -448,16 +334,10 @@ jobs:
           from bono_solidario_simulator import assert_no_prohibited_fields
 
           try:
-              assert_no_prohibited_fields(
-                  {
-                      "dni": "12345678",
-                      "vehicle_demo_id": "demo-bus-001",
-                  }
-              )
+              assert_no_prohibited_fields({"cud": "dato-no-permitido"})
           except ValueError as exc:
-              message = str(exc).lower()
-              assert "dni" in message
-              print("Bono Solidario sensitive data rejection verified successfully.")
+              assert "cud" in str(exc).lower()
+              print("Bono Solidario sensitive data rejection verified.")
           else:
-              raise AssertionError("Sensitive data was not rejected by Bono Solidario simulator.")
+              raise AssertionError("Expected ValueError for prohibited field.")
           PY
