@@ -1,5 +1,5 @@
 """
-SUBE Prioridad — Simulador conceptual de Bono Solidario.
+SUBE Prioridad — Simulador conceptual blindado de Bono Solidario.
 
 Este módulo forma parte de una línea futura, opcional y separada del core
 inicial de prioridad.
@@ -31,20 +31,30 @@ Finalidad:
 
 Regla central:
     El Bono Solidario queda en manos del usuario SUBE Prioridad.
+
+Regla de blindaje:
+    Ningún evento individual debe ser suficiente por sí solo para construir
+    confianza productiva. Esta demo usa validaciones mínimas, límites y
+    señales de riesgo para mostrar cómo evitar abusos sin convertir el
+    sistema en una herramienta de vigilancia.
 """
 
 from __future__ import annotations
 
-from dataclasses import dataclass
-from datetime import datetime, timezone
+from dataclasses import dataclass, field
+from datetime import datetime, timedelta, timezone
 from enum import Enum
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, Set
 
 
 PROJECT_NAME = "SUBE Prioridad"
 MODULE_NAME = "Bono Solidario"
-SIMULATOR_VERSION = "0.1.0"
+SIMULATOR_VERSION = "0.2.0"
 DEMO_MODE = True
+
+DEFAULT_EVENT_TTL_MINUTES = 5
+MAX_RECOGNITIONS_PER_PRIORITY_USER_PER_TRIP = 1
+MAX_RECOGNITIONS_PER_COLLABORATOR_PER_TRIP = 2
 
 
 PROHIBITED_FIELDS = {
@@ -90,10 +100,22 @@ class SeatType(str, Enum):
 class SolidaryRecognitionStatus(str, Enum):
     """
     Estados posibles del reconocimiento solidario demostrativo.
+
+    ACCEPTED:
+        El evento cumple las reglas mínimas de la demo.
+
+    REJECTED:
+        El evento incumple una regla dura.
+
+    NEEDS_REVIEW:
+        El evento no necesariamente es inválido, pero presenta un patrón
+        que en una implementación futura debería revisarse antes de acreditar
+        cualquier reconocimiento.
     """
 
     ACCEPTED = "accepted"
     REJECTED = "rejected"
+    NEEDS_REVIEW = "needs_review"
 
 
 @dataclass(frozen=True)
@@ -104,6 +126,7 @@ class TransportContext:
     No representa una unidad real.
     No representa una línea real.
     No representa una operación productiva.
+    No implica geolocalización.
     """
 
     country: str
@@ -122,12 +145,15 @@ class SolidarySeatYieldEvent:
     Sólo representa tokens demostrativos no sensibles.
     """
 
+    event_demo_id: str
     priority_user_token: str
     collaborator_token: str
     seat_type: SeatType
     voluntary_seat_yield: bool
     priority_user_decides_to_recognize: bool
     transport_context: TransportContext
+    issued_at_utc: datetime
+    expires_at_utc: datetime
 
 
 @dataclass(frozen=True)
@@ -148,11 +174,45 @@ class SolidaryRecognitionResult:
     solidary_point_demo: int
     recognition_enabled_by_priority_user: bool
     same_transport_context: bool
+    review_required: bool
+    risk_flags: List[str]
     reason: str
     privacy_notice: str
     driver_burden: str
     warnings: List[str]
     timestamp_utc: str
+
+
+@dataclass
+class DemoRecognitionLedger:
+    """
+    Libro demostrativo en memoria para blindaje del Bono Solidario.
+
+    No es una base de datos.
+    No persiste información real.
+    No identifica personas reales.
+    Sólo permite simular reglas anti-replay y límites por viaje.
+    """
+
+    used_event_ids: Set[str] = field(default_factory=set)
+    recognitions_by_priority_user_trip: Dict[str, int] = field(default_factory=dict)
+    recognitions_by_collaborator_trip: Dict[str, int] = field(default_factory=dict)
+
+    def register_accepted_event(self, event: SolidarySeatYieldEvent) -> None:
+        """
+        Registra un evento aceptado dentro del ledger demostrativo.
+        """
+        self.used_event_ids.add(event.event_demo_id)
+
+        priority_key = _priority_user_trip_key(event)
+        collaborator_key = _collaborator_trip_key(event)
+
+        self.recognitions_by_priority_user_trip[priority_key] = (
+            self.recognitions_by_priority_user_trip.get(priority_key, 0) + 1
+        )
+        self.recognitions_by_collaborator_trip[collaborator_key] = (
+            self.recognitions_by_collaborator_trip.get(collaborator_key, 0) + 1
+        )
 
 
 def assert_no_prohibited_fields(payload: Dict[str, Any]) -> None:
@@ -196,15 +256,21 @@ def create_demo_solidary_event(
     priority_user_token: str,
     collaborator_token: str,
     priority_user_decides_to_recognize: bool,
+    event_demo_id: str = "demo-solidary-event-001",
     seat_type: SeatType = SeatType.GENERAL_USE,
     voluntary_seat_yield: bool = True,
     transport_context: Optional[TransportContext] = None,
+    issued_at_utc: Optional[datetime] = None,
+    ttl_minutes: int = DEFAULT_EVENT_TTL_MINUTES,
 ) -> SolidarySeatYieldEvent:
     """
     Crea un evento demostrativo de cesión voluntaria de asiento.
 
     El reconocimiento queda siempre en manos del usuario SUBE Prioridad.
     """
+    if not event_demo_id or not event_demo_id.strip():
+        raise ValueError("El identificador demostrativo del evento no puede estar vacío.")
+
     if not priority_user_token or not priority_user_token.strip():
         raise ValueError("El token demostrativo del usuario SUBE Prioridad no puede estar vacío.")
 
@@ -212,24 +278,33 @@ def create_demo_solidary_event(
         raise ValueError("El token demostrativo del colaborador no puede estar vacío.")
 
     payload = {
+        "event_demo_id": event_demo_id,
         "priority_user_token": priority_user_token,
         "collaborator_token": collaborator_token,
     }
     assert_no_prohibited_fields(payload)
 
+    issued_at = issued_at_utc or datetime.now(timezone.utc)
+    expires_at = issued_at + timedelta(minutes=ttl_minutes)
+
     return SolidarySeatYieldEvent(
+        event_demo_id=event_demo_id.strip(),
         priority_user_token=priority_user_token.strip(),
         collaborator_token=collaborator_token.strip(),
         seat_type=seat_type,
         voluntary_seat_yield=voluntary_seat_yield,
         priority_user_decides_to_recognize=priority_user_decides_to_recognize,
         transport_context=transport_context or create_demo_transport_context(),
+        issued_at_utc=issued_at,
+        expires_at_utc=expires_at,
     )
 
 
 def simulate_solidary_recognition(
     event: SolidarySeatYieldEvent,
     expected_context: Optional[TransportContext] = None,
+    ledger: Optional[DemoRecognitionLedger] = None,
+    now_utc: Optional[datetime] = None,
 ) -> SolidaryRecognitionResult:
     """
     Simula el reconocimiento conceptual del Bono Solidario.
@@ -240,15 +315,25 @@ def simulate_solidary_recognition(
         - asiento de uso general;
         - decisión voluntaria del usuario SUBE Prioridad;
         - mismo contexto demostrativo de transporte;
+        - evento no expirado;
+        - evento no reutilizado;
+        - usuario prioritario y colaborador no pueden ser el mismo token;
+        - límites demostrativos por viaje;
         - sin datos sensibles;
         - sin intervención del chofer.
     """
     assert_no_prohibited_fields(
         {
+            "event_demo_id": event.event_demo_id,
             "priority_user_token": event.priority_user_token,
             "collaborator_token": event.collaborator_token,
         }
     )
+
+    ledger = ledger or DemoRecognitionLedger()
+    current_time = now_utc or datetime.now(timezone.utc)
+
+    risk_flags: List[str] = []
 
     same_context = _same_transport_context(
         event.transport_context,
@@ -263,6 +348,62 @@ def simulate_solidary_recognition(
             ),
             recognition_enabled_by_priority_user=event.priority_user_decides_to_recognize,
             same_transport_context=same_context,
+            risk_flags=["outside_argentina_context"],
+        )
+
+    if _looks_like_free_text(event.priority_user_token):
+        return _rejected_result(
+            reason=(
+                "El token del usuario SUBE Prioridad parece texto libre. "
+                "El simulador sólo acepta tokens técnicos demostrativos."
+            ),
+            recognition_enabled_by_priority_user=event.priority_user_decides_to_recognize,
+            same_transport_context=same_context,
+            risk_flags=["priority_user_token_looks_like_free_text"],
+        )
+
+    if _looks_like_free_text(event.collaborator_token):
+        return _rejected_result(
+            reason=(
+                "El token del colaborador parece texto libre. "
+                "El simulador sólo acepta tokens técnicos demostrativos."
+            ),
+            recognition_enabled_by_priority_user=event.priority_user_decides_to_recognize,
+            same_transport_context=same_context,
+            risk_flags=["collaborator_token_looks_like_free_text"],
+        )
+
+    if event.priority_user_token == event.collaborator_token:
+        return _rejected_result(
+            reason=(
+                "El usuario SUBE Prioridad y el colaborador no pueden ser el mismo token. "
+                "Esto evita auto-reconocimientos demostrativos."
+            ),
+            recognition_enabled_by_priority_user=event.priority_user_decides_to_recognize,
+            same_transport_context=same_context,
+            risk_flags=["self_recognition_attempt"],
+        )
+
+    if event.event_demo_id in ledger.used_event_ids:
+        return _rejected_result(
+            reason=(
+                "El evento demostrativo ya fue utilizado. "
+                "Esto evita replay fraud o reutilización del mismo reconocimiento."
+            ),
+            recognition_enabled_by_priority_user=event.priority_user_decides_to_recognize,
+            same_transport_context=same_context,
+            risk_flags=["replay_event_id"],
+        )
+
+    if current_time > event.expires_at_utc:
+        return _rejected_result(
+            reason=(
+                "El evento demostrativo expiró. "
+                "El Bono Solidario futuro debería operar dentro de una ventana temporal breve."
+            ),
+            recognition_enabled_by_priority_user=event.priority_user_decides_to_recognize,
+            same_transport_context=same_context,
+            risk_flags=["expired_event"],
         )
 
     if not event.voluntary_seat_yield:
@@ -273,6 +414,7 @@ def simulate_solidary_recognition(
             ),
             recognition_enabled_by_priority_user=event.priority_user_decides_to_recognize,
             same_transport_context=same_context,
+            risk_flags=["no_voluntary_seat_yield"],
         )
 
     if event.seat_type != SeatType.GENERAL_USE:
@@ -283,6 +425,7 @@ def simulate_solidary_recognition(
             ),
             recognition_enabled_by_priority_user=event.priority_user_decides_to_recognize,
             same_transport_context=same_context,
+            risk_flags=["legal_priority_seat_not_eligible"],
         )
 
     if not event.priority_user_decides_to_recognize:
@@ -293,6 +436,7 @@ def simulate_solidary_recognition(
             ),
             recognition_enabled_by_priority_user=False,
             same_transport_context=same_context,
+            risk_flags=["priority_user_did_not_recognize"],
         )
 
     if not same_context:
@@ -304,7 +448,40 @@ def simulate_solidary_recognition(
             ),
             recognition_enabled_by_priority_user=True,
             same_transport_context=False,
+            risk_flags=["different_transport_context"],
         )
+
+    priority_key = _priority_user_trip_key(event)
+    collaborator_key = _collaborator_trip_key(event)
+
+    priority_user_count = ledger.recognitions_by_priority_user_trip.get(priority_key, 0)
+    collaborator_count = ledger.recognitions_by_collaborator_trip.get(collaborator_key, 0)
+
+    if priority_user_count >= MAX_RECOGNITIONS_PER_PRIORITY_USER_PER_TRIP:
+        return _needs_review_result(
+            reason=(
+                "El usuario SUBE Prioridad ya emitió un reconocimiento en este viaje demostrativo. "
+                "Un nuevo reconocimiento no se rechaza por sanción, pero debería requerir revisión "
+                "antes de acreditar cualquier punto futuro."
+            ),
+            recognition_enabled_by_priority_user=True,
+            same_transport_context=True,
+            risk_flags=["priority_user_trip_limit_exceeded"],
+        )
+
+    if collaborator_count >= MAX_RECOGNITIONS_PER_COLLABORATOR_PER_TRIP:
+        return _needs_review_result(
+            reason=(
+                "El colaborador registra múltiples reconocimientos en el mismo viaje demostrativo. "
+                "Este patrón podría ser legítimo, pero requiere revisión para evitar colusión "
+                "o acumulación artificial de puntos."
+            ),
+            recognition_enabled_by_priority_user=True,
+            same_transport_context=True,
+            risk_flags=["collaborator_trip_limit_exceeded"],
+        )
+
+    ledger.register_accepted_event(event)
 
     return SolidaryRecognitionResult(
         project=PROJECT_NAME,
@@ -315,6 +492,8 @@ def simulate_solidary_recognition(
         solidary_point_demo=1,
         recognition_enabled_by_priority_user=True,
         same_transport_context=True,
+        review_required=False,
+        risk_flags=[],
         reason=(
             "Reconocimiento solidario demostrativo aceptado. "
             "El usuario SUBE Prioridad decidió voluntariamente reconocer una cesión "
@@ -346,6 +525,8 @@ def result_to_dict(result: SolidaryRecognitionResult) -> Dict[str, Any]:
         "solidary_point_demo": result.solidary_point_demo,
         "recognition_enabled_by_priority_user": result.recognition_enabled_by_priority_user,
         "same_transport_context": result.same_transport_context,
+        "review_required": result.review_required,
+        "risk_flags": result.risk_flags,
         "reason": result.reason,
         "privacy_notice": result.privacy_notice,
         "driver_burden": result.driver_burden,
@@ -361,8 +542,10 @@ def run_demo() -> Dict[str, Any]:
     Esta función sirve para pruebas locales y GitHub Actions.
     """
     context = create_demo_transport_context()
+    ledger = DemoRecognitionLedger()
 
     event = create_demo_solidary_event(
+        event_demo_id="demo-solidary-event-001",
         priority_user_token="demo-priority-user-001",
         collaborator_token="demo-collaborator-001",
         priority_user_decides_to_recognize=True,
@@ -374,6 +557,7 @@ def run_demo() -> Dict[str, Any]:
     result = simulate_solidary_recognition(
         event=event,
         expected_context=context,
+        ledger=ledger,
     )
 
     return result_to_dict(result)
@@ -399,10 +583,73 @@ def _same_transport_context(
     )
 
 
+def _priority_user_trip_key(event: SolidarySeatYieldEvent) -> str:
+    return "|".join(
+        [
+            event.priority_user_token,
+            event.transport_context.vehicle_demo_id,
+            event.transport_context.route_demo_id,
+            event.transport_context.trip_demo_id,
+            event.transport_context.time_window_demo_id,
+        ]
+    )
+
+
+def _collaborator_trip_key(event: SolidarySeatYieldEvent) -> str:
+    return "|".join(
+        [
+            event.collaborator_token,
+            event.transport_context.vehicle_demo_id,
+            event.transport_context.route_demo_id,
+            event.transport_context.trip_demo_id,
+            event.transport_context.time_window_demo_id,
+        ]
+    )
+
+
+def _looks_like_free_text(token: str) -> bool:
+    """
+    Detecta valores que parecen frases libres o intentos de abuso.
+
+    La demo no interpreta frases.
+    Sólo acepta tokens técnicos demostrativos simples.
+    """
+    normalized = token.lower().strip()
+
+    suspicious_terms = {
+        "quiero",
+        "gratis",
+        "beneficio",
+        "bono",
+        "solidario",
+        "tarifa",
+        "social",
+        "diagnostico",
+        "diagnóstico",
+        "cud",
+        "certificado",
+        "medico",
+        "médico",
+        "andis",
+        "sancion",
+        "sanción",
+        "ranking",
+    }
+
+    if any(term in normalized for term in suspicious_terms):
+        return True
+
+    if len(normalized.split()) > 1:
+        return True
+
+    return False
+
+
 def _rejected_result(
     reason: str,
     recognition_enabled_by_priority_user: bool,
     same_transport_context: bool,
+    risk_flags: Optional[List[str]] = None,
 ) -> SolidaryRecognitionResult:
     return SolidaryRecognitionResult(
         project=PROJECT_NAME,
@@ -413,6 +660,37 @@ def _rejected_result(
         solidary_point_demo=0,
         recognition_enabled_by_priority_user=recognition_enabled_by_priority_user,
         same_transport_context=same_transport_context,
+        review_required=False,
+        risk_flags=risk_flags or [],
+        reason=reason,
+        privacy_notice=(
+            "No se procesa ni solicita información sensible para esta respuesta."
+        ),
+        driver_burden=(
+            "El personal de conducción no debe resolver ni administrar el reconocimiento."
+        ),
+        warnings=_common_warnings(),
+        timestamp_utc=_now_utc(),
+    )
+
+
+def _needs_review_result(
+    reason: str,
+    recognition_enabled_by_priority_user: bool,
+    same_transport_context: bool,
+    risk_flags: Optional[List[str]] = None,
+) -> SolidaryRecognitionResult:
+    return SolidaryRecognitionResult(
+        project=PROJECT_NAME,
+        module=MODULE_NAME,
+        version=SIMULATOR_VERSION,
+        demo_mode=DEMO_MODE,
+        status=SolidaryRecognitionStatus.NEEDS_REVIEW,
+        solidary_point_demo=0,
+        recognition_enabled_by_priority_user=recognition_enabled_by_priority_user,
+        same_transport_context=same_transport_context,
+        review_required=True,
+        risk_flags=risk_flags or [],
         reason=reason,
         privacy_notice=(
             "No se procesa ni solicita información sensible para esta respuesta."
