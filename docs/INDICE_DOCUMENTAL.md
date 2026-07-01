@@ -8,7 +8,7 @@
 
 Este documento organiza la documentación principal del repositorio SUBE Prioridad.
 
-Su finalidad es permitir una lectura ordenada, gradual y comprensible del proyecto, diferenciando documentos introductorios, ejecutivos, técnicos, jurídicos, médicos, operativos, institucionales, de gobernanza, de protección de datos, de marca y de custodia pública.
+Su finalidad es permitir una lectura ordenada, gradual y comprensible del proyecto, diferenciando documentos introductorios, ejecutivos, técnicos, jurídicos, médicos, operativos, institucionales, de gobernanza, de protección de datos, de marca, de custodia pública y de cierre documental.
 
 SUBE Prioridad debe interpretarse como una iniciativa ciudadana abierta, conceptual, demostrativa y documentada, impulsada originalmente por Andrés Federico Di Fiore, orientada al análisis de accesibilidad efectiva, asistencia preventiva y convivencia dentro del transporte público.
 
@@ -28,6 +28,7 @@ resumen ejecutivo
 mapa de lectura
 README actualizado
 índice documental
+cierre documental de versión 1.0
 arquitectura de referencia
 guardrails técnicos
 fundamentos jurídicos
@@ -64,9 +65,10 @@ Para una primera aproximación al proyecto, se recomienda leer en este orden:
 3. docs/MAPA_DE_LECTURA.md
 4. README.md
 5. docs/INDICE_DOCUMENTAL.md
+6. docs/CIERRE_VERSION_DOCUMENTAL_1_0.md
 ```
 
-Este recorrido permite comprender primero la idea general, luego la síntesis institucional, después las rutas de lectura por perfil, más tarde la visión completa del repositorio y finalmente la organización documental detallada.
+Este recorrido permite comprender primero la idea general, luego la síntesis institucional, después las rutas de lectura por perfil, más tarde la visión completa del repositorio, luego la organización documental detallada y finalmente el estado de consolidación de la versión documental 1.0.
 
 ---
 
@@ -171,6 +173,24 @@ Es el documento madre del repositorio.
 Explica la visión general, el estado del proyecto, el objetivo, el MVP, los principios rectores, la privacidad, los fundamentos jurídicos y médicos, el protocolo operativo, el estado técnico, los endpoints, la documentación estratégica, la neutralidad institucional, la política de marca, las condiciones para donación y custodia, la licencia y la declaración final.
 
 Debe leerse como referencia general del proyecto.
+
+---
+
+### 4.5. Cierre de versión documental 1.0
+
+Archivo:
+
+```text
+docs/CIERRE_VERSION_DOCUMENTAL_1_0.md
+```
+
+Función:
+
+Deja constancia del cierre de la versión documental 1.0.
+
+Ordena el estado actual del repositorio, identifica los documentos consolidados, fija reglas de interpretación, enumera límites fundacionales y recomienda evitar sobreediciones innecesarias sobre documentos ya cerrados.
+
+Debe leerse antes de etiquetar, presentar, comunicar o utilizar la versión documental 1.0 como base institucional, técnica, ciudadana o estratégica.
 
 ---
 
@@ -686,9 +706,46 @@ Ordena condiciones sobre:
 
 ---
 
-## 10. Documentos técnicos de ejecución y código
+## 10. Documentos de cierre y control de versión
 
-### 10.1. Código demostrativo
+### 10.1. Cierre de versión documental 1.0
+
+Archivo:
+
+```text
+docs/CIERRE_VERSION_DOCUMENTAL_1_0.md
+```
+
+Función:
+
+Deja constancia de la consolidación de la versión documental 1.0.
+
+Ordena:
+
+- estado actual del proyecto;
+- documentos consolidados de entrada;
+- documentos técnicos consolidados;
+- documentos jurídicos, médicos y de protección de datos;
+- documentos operativos;
+- documentos institucionales y ciudadanos;
+- documentos de gobernanza, marca y custodia;
+- código demostrativo consolidado;
+- límites fundacionales;
+- rol del chofer;
+- Bono Solidario como evolución futura separada;
+- criterios para prueba piloto;
+- política de marca;
+- licencia y revisión futura;
+- regla de no sobreedición;
+- orden recomendado de revisión final.
+
+Este documento debe leerse como constancia de cierre documental y como punto de partida para futuras revisiones responsables.
+
+---
+
+## 11. Documentos técnicos de ejecución y código
+
+### 11.1. Código demostrativo
 
 Archivos principales:
 
@@ -710,7 +767,7 @@ Debe leerse como una demostración técnica mínima de arquitectura conceptual.
 
 ---
 
-### 10.2. Tests
+### 11.2. Tests
 
 Archivos principales:
 
@@ -727,7 +784,7 @@ Los tests deben mantener coherencia con los guardrails del proyecto.
 
 ---
 
-### 10.3. Dependencias, Docker e integración continua
+### 11.3. Dependencias, Docker e integración continua
 
 Archivos principales:
 
@@ -744,7 +801,7 @@ Permiten instalar dependencias, ejecutar el proyecto localmente, correr pruebas,
 
 ---
 
-## 11. Documentos que deben leerse antes de una prueba piloto
+## 12. Documentos que deben leerse antes de una prueba piloto
 
 Antes de cualquier prueba piloto real deberían revisarse, como mínimo:
 
@@ -762,6 +819,7 @@ docs/PRINCIPIOS_DE_GOBERNANZA.md
 docs/NEUTRALIDAD_INSTITUCIONAL_Y_CUSTODIA_PUBLICA.md
 docs/POLITICA_DE_MARCA.md
 docs/MODELO_CONDICIONES_DONACION_Y_CUSTODIA.md
+docs/CIERRE_VERSION_DOCUMENTAL_1_0.md
 ```
 
 Ninguna prueba piloto debería avanzar sin evaluación jurídica, técnica, operativa, médica, institucional y de protección de datos personales.
@@ -770,7 +828,7 @@ La prueba piloto debe ser limitada, voluntaria, temporal, reversible, auditable 
 
 ---
 
-## 12. Documentos que deben leerse antes de una donación, cesión o adopción institucional
+## 13. Documentos que deben leerse antes de una donación, cesión o adopción institucional
 
 Antes de cualquier donación, cesión, transferencia, convenio, adopción institucional, autorización de uso de marca o custodia neutral, deberían revisarse:
 
@@ -782,6 +840,7 @@ docs/PRINCIPIOS_DE_GOBERNANZA.md
 docs/PROTECCION_DATOS_PERSONALES.md
 README.md
 docs/RESUMEN_EJECUTIVO.md
+docs/CIERRE_VERSION_DOCUMENTAL_1_0.md
 ```
 
 Estos documentos buscan evitar:
@@ -800,7 +859,7 @@ Estos documentos buscan evitar:
 
 ---
 
-## 13. Documentos que deben leerse antes de modificar código
+## 14. Documentos que deben leerse antes de modificar código
 
 Antes de modificar código, endpoints, validadores, simuladores o servicios, deberían revisarse:
 
@@ -811,6 +870,7 @@ docs/ARQUITECTURA_DE_REFERENCIA.md
 docs/DECISIONES_DE_ARQUITECTURA.md
 docs/PROTECCION_DATOS_PERSONALES.md
 docs/PRINCIPIOS_DE_GOBERNANZA.md
+docs/CIERRE_VERSION_DOCUMENTAL_1_0.md
 ```
 
 Toda modificación técnica debe respetar los guardrails fundacionales del proyecto.
@@ -830,7 +890,7 @@ El código no debe evolucionar hacia modelos que impliquen:
 
 ---
 
-## 14. Lectura por perfil
+## 15. Lectura por perfil
 
 Para recorridos detallados según perfil de lector, debe consultarse:
 
@@ -861,7 +921,7 @@ El Mapa de Lectura orienta qué leer según el perfil, rol o necesidad de cada p
 
 ---
 
-## 15. Orden sugerido para revisión institucional completa
+## 16. Orden sugerido para revisión institucional completa
 
 Para una revisión institucional completa, se recomienda este orden:
 
@@ -871,28 +931,29 @@ Para una revisión institucional completa, se recomienda este orden:
 3. README.md
 4. docs/INDICE_DOCUMENTAL.md
 5. docs/MAPA_DE_LECTURA.md
-6. docs/FUNDAMENTOS_JURIDICOS.md
-7. docs/FUNDAMENTOS_MEDICOS.md
-8. docs/PROTECCION_DATOS_PERSONALES.md
-9. docs/PROTOCOLO_OPERATIVO.md
-10. docs/PRUEBA_PILOTO_MODELO.md
-11. ARCHITECTURE_GUARDRAILS.md
-12. docs/ARQUITECTURA_DE_REFERENCIA.md
-13. docs/DECISIONES_DE_ARQUITECTURA.md
-14. docs/ROADMAP_IMPLEMENTACION.md
-15. docs/PRINCIPIOS_DE_GOBERNANZA.md
-16. docs/NEUTRALIDAD_INSTITUCIONAL_Y_CUSTODIA_PUBLICA.md
-17. docs/POLITICA_DE_MARCA.md
-18. docs/MODELO_CONDICIONES_DONACION_Y_CUSTODIA.md
-19. docs/ESTRATEGIA_LEGISLATIVA_Y_PARTICIPACION_CIUDADANA.md
-20. docs/PLIEGO_TECNICO_EXTENDIDO.md
+6. docs/CIERRE_VERSION_DOCUMENTAL_1_0.md
+7. docs/FUNDAMENTOS_JURIDICOS.md
+8. docs/FUNDAMENTOS_MEDICOS.md
+9. docs/PROTECCION_DATOS_PERSONALES.md
+10. docs/PROTOCOLO_OPERATIVO.md
+11. docs/PRUEBA_PILOTO_MODELO.md
+12. ARCHITECTURE_GUARDRAILS.md
+13. docs/ARQUITECTURA_DE_REFERENCIA.md
+14. docs/DECISIONES_DE_ARQUITECTURA.md
+15. docs/ROADMAP_IMPLEMENTACION.md
+16. docs/PRINCIPIOS_DE_GOBERNANZA.md
+17. docs/NEUTRALIDAD_INSTITUCIONAL_Y_CUSTODIA_PUBLICA.md
+18. docs/POLITICA_DE_MARCA.md
+19. docs/MODELO_CONDICIONES_DONACION_Y_CUSTODIA.md
+20. docs/ESTRATEGIA_LEGISLATIVA_Y_PARTICIPACION_CIUDADANA.md
+21. docs/PLIEGO_TECNICO_EXTENDIDO.md
 ```
 
 Este orden permite avanzar desde la comprensión general hacia la evaluación jurídica, médica, operativa, técnica, institucional y estratégica.
 
 ---
 
-## 16. Advertencias documentales relevantes
+## 17. Advertencias documentales relevantes
 
 SUBE Prioridad no debe ser presentado como:
 
@@ -917,7 +978,7 @@ El uso de la denominación SUBE Prioridad no implica autorización oficial, adop
 
 ---
 
-## 17. Regla general de interpretación documental
+## 18. Regla general de interpretación documental
 
 Todo el repositorio debe interpretarse bajo estas reglas:
 
@@ -948,7 +1009,7 @@ implementación sólo mediante evaluación institucional competente
 
 ---
 
-## 18. Atribución de origen
+## 19. Atribución de origen
 
 SUBE Prioridad es una iniciativa ciudadana impulsada originalmente por Andrés Federico Di Fiore.
 
@@ -960,7 +1021,7 @@ La eventual adopción institucional no debería transformar una iniciativa ciuda
 
 ---
 
-## 19. Relación entre documentación y código
+## 20. Relación entre documentación y código
 
 El código demostrativo debe interpretarse a la luz de la documentación estratégica.
 
@@ -985,7 +1046,27 @@ Las simulaciones, endpoints, validadores, servicios y módulos futuros deben con
 
 ---
 
-## 20. Cierre
+## 21. Regla de no sobreedición
+
+Una vez consolidada la versión documental 1.0, se recomienda evitar modificaciones reiteradas sobre documentos ya cerrados.
+
+Sólo deberían realizarse cambios cuando exista:
+
+- error evidente;
+- enlace roto;
+- contradicción interna;
+- nueva decisión documentada;
+- cambio técnico relevante;
+- necesidad de precisión jurídica;
+- actualización institucional;
+- mejora de claridad sin alterar el sentido;
+- corrección de formato.
+
+El objetivo es preservar la coherencia general del repositorio y evitar ciclos innecesarios de edición.
+
+---
+
+## 22. Cierre
 
 Este índice documental organiza la versión documental 1.0 de SUBE Prioridad.
 
@@ -994,3 +1075,9 @@ El proyecto debe leerse como una propuesta ciudadana abierta, prudente, document
 Su objetivo es aportar una base para analizar si una arquitectura tecnológica responsable puede contribuir a una experiencia de transporte público más segura, digna y respetuosa, facilitando asistencia preventiva sin exponer diagnósticos, sin alterar derechos existentes, sin imponer sanciones, sin sobrecargar al personal de conducción y sin transformar la tecnología en una herramienta de vigilancia o propaganda.
 
 La lectura integral del repositorio debe preservar siempre el carácter ciudadano, abierto, no partidario, auditable y social del proyecto.
+
+El documento específico de cierre de esta etapa es:
+
+```text
+docs/CIERRE_VERSION_DOCUMENTAL_1_0.md
+```
