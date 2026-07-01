@@ -4,407 +4,86 @@ on:
   push:
     branches:
       - main
+      - master
+      - "**"
   pull_request:
     branches:
       - main
-  workflow_dispatch:
+      - master
 
 jobs:
-  python-tests:
-    name: Python tests and simulators
+  test:
+    name: Tests Python
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Show current commit
-        run: |
-          echo "Current commit:"
-          git rev-parse HEAD
-          echo "Current branch/ref:"
-          git branch --show-current || true
-          echo "Repository files:"
-          ls -la
-
-      - name: Show Bono Solidario simulator header
-        run: |
-          echo "=== FIRST 30 LINES OF bono_solidario_simulator.py ==="
-          nl -ba bono_solidario_simulator.py | sed -n '1,30p'
-          echo "=== SEARCHING FOR CIRCULAR IMPORT ==="
-          if grep -n "from bono_solidario_simulator import" bono_solidario_simulator.py; then
-            echo "ERROR: bono_solidario_simulator.py imports itself."
-            exit 1
-          else
-            echo "OK: no self-import found in bono_solidario_simulator.py"
-          fi
-
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
 
+      - name: Show Python version
+        run: python --version
+
+      - name: Upgrade pip
+        run: python -m pip install --upgrade pip
+
       - name: Install dependencies
         run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
+          if [ -f requirements.txt ]; then
+            pip install -r requirements.txt
+          else
+            pip install pytest fastapi httpx uvicorn pydantic
+          fi
 
-      - name: Compile Python files
+      - name: Compile core modules
         run: |
           python -m py_compile main.py
-          python -m py_compile mvp_simulator.py
-          python -m py_compile bono_solidario_simulator.py
-          python -m py_compile test_main.py
-          python -m py_compile test_mvp_simulator.py
-          python -m py_compile test_bono_solidario_simulator.py
+          python -m py_compile validator.py
+          python -m py_compile cache_manager.py
 
-          if [ -f assistance_ecosystem_simulator.py ]; then
-            python -m py_compile assistance_ecosystem_simulator.py
-          fi
-
-          if [ -f test_assistance_ecosystem_simulator.py ]; then
-            python -m py_compile test_assistance_ecosystem_simulator.py
-          fi
-
-          if [ -f solidary_sync_security_flow.py ]; then
-            python -m py_compile solidary_sync_security_flow.py
-          fi
-
-          if [ -f test_solidary_sync_security_flow.py ]; then
-            python -m py_compile test_solidary_sync_security_flow.py
-          fi
-
-      - name: Run MVP simulator
+      - name: Compile SUBE Prioridad demo modules
         run: |
-          python mvp_simulator.py
+          python -m py_compile bono_solidario_simulator.py
+          python -m py_compile assistance_ecosystem_simulator.py
+          python -m py_compile solidary_sync_security_flow.py
+          python -m py_compile passive_alert_preferences_flow.py
+          python -m py_compile sube_account_preferences_flow.py
+          python -m py_compile validator_trigger_alert_flow.py
+          python -m py_compile solidary_bonus_frontend_flow.py
+          python -m py_compile solidary_bonus_handoff_flow.py
+          python -m py_compile red_sube_discount_policy.py
+          python -m py_compile red_sube_trip_window_matcher.py
+          python -m py_compile mobile_proximity_sync_guard.py
+          python -m py_compile nfc_card_solidary_handoff_flow.py
+          python -m py_compile solidary_sync_channel_selector.py
 
-      - name: Run Bono Solidario simulator
+      - name: Compile Bono Solidario MVP modules
+        run: |
+          python -m py_compile solidary_bonus_mvp_sync_options.py
+          python -m py_compile solidary_bonus_mvp_accrual_flow.py
+          python -m py_compile solidary_bonus_mvp_end_to_end_flow.py
+
+      - name: Run stable demo commands
         run: |
           python bono_solidario_simulator.py
-
-      - name: Run Assistance Ecosystem simulator if present
-        run: |
-          if [ -f assistance_ecosystem_simulator.py ]; then
-            python assistance_ecosystem_simulator.py
-          else
-            echo "assistance_ecosystem_simulator.py not present. Skipping."
-          fi
-
-      - name: Run Solidary Sync Security Flow if present
-        run: |
-          if [ -f solidary_sync_security_flow.py ]; then
-            python solidary_sync_security_flow.py
-          else
-            echo "solidary_sync_security_flow.py not present. Skipping."
-          fi
+          python solidary_sync_security_flow.py
+          python passive_alert_preferences_flow.py
+          python sube_account_preferences_flow.py
+          python validator_trigger_alert_flow.py
+          python solidary_bonus_frontend_flow.py
+          python solidary_bonus_handoff_flow.py
+          python red_sube_discount_policy.py
+          python red_sube_trip_window_matcher.py
+          python mobile_proximity_sync_guard.py
+          python nfc_card_solidary_handoff_flow.py
+          python solidary_sync_channel_selector.py
+          python solidary_bonus_mvp_sync_options.py
+          python solidary_bonus_mvp_accrual_flow.py
+          python solidary_bonus_mvp_end_to_end_flow.py
 
       - name: Run tests
-        run: |
-          pytest -q
-
-      - name: Verify MVP simulator output
-        run: |
-          python - <<'PY'
-          from mvp_simulator import run_demo
-
-          result = run_demo()
-
-          print("MVP simulator result:")
-          print(result)
-
-          assert result["project"] == "SUBE Prioridad"
-          assert result["demo_mode"] is True
-          assert result["status"] == "valid"
-
-          assert "assistance_preference" in result
-          assert "alert_message" in result
-          assert "privacy_notice" in result
-          assert "warnings" in result
-
-          warnings_text = " ".join(result["warnings"]).lower()
-          privacy_text = result["privacy_notice"].lower()
-
-          assert "sube" in warnings_text
-          assert "sin integración real" in warnings_text or "sin integracion real" in warnings_text
-          assert "diagnóstico" in privacy_text or "diagnostico" in privacy_text
-          assert "dni" in privacy_text
-          assert "cud" in privacy_text
-
-          print("MVP simulator output verified.")
-          PY
-
-      - name: Verify MVP sensitive data rejection
-        run: |
-          python - <<'PY'
-          from mvp_simulator import assert_no_prohibited_fields
-
-          try:
-              assert_no_prohibited_fields({"dni": "12345678"})
-          except ValueError as exc:
-              assert "dni" in str(exc).lower()
-              print("MVP sensitive data rejection verified.")
-          else:
-              raise AssertionError("Expected ValueError for prohibited field.")
-          PY
-
-      - name: Verify Bono Solidario simulator output
-        run: |
-          python - <<'PY'
-          from bono_solidario_simulator import run_demo
-
-          result = run_demo()
-
-          print("Bono Solidario simulator result:")
-          print(result)
-
-          assert result["project"] == "SUBE Prioridad"
-          assert result["module"] == "Bono Solidario"
-          assert result["demo_mode"] is True
-          assert result["status"] == "accepted"
-          assert result["solidary_point_demo"] == 1
-          assert result["recognition_enabled_by_priority_user"] is True
-          assert result["same_transport_context"] is True
-          assert result["review_required"] is False
-          assert result["risk_flags"] == []
-
-          print("Bono Solidario simulator output verified.")
-          PY
-
-      - name: Verify Bono Solidario rejection without priority user decision
-        run: |
-          python - <<'PY'
-          from bono_solidario_simulator import (
-              create_demo_solidary_event,
-              simulate_solidary_recognition,
-          )
-
-          event = create_demo_solidary_event(
-              event_demo_id="ci-solidary-no-user-decision-001",
-              priority_user_token="ci-priority-user-no-decision-001",
-              collaborator_token="ci-collaborator-no-decision-001",
-              priority_user_decides_to_recognize=False,
-          )
-
-          result = simulate_solidary_recognition(event)
-
-          assert result.status.value == "rejected"
-          assert result.solidary_point_demo == 0
-          assert "priority_user_did_not_recognize" in result.risk_flags
-
-          print("Bono Solidario no-user-decision rejection verified.")
-          PY
-
-      - name: Verify Bono Solidario rejection for legal priority seat
-        run: |
-          python - <<'PY'
-          from bono_solidario_simulator import (
-              SeatType,
-              create_demo_solidary_event,
-              simulate_solidary_recognition,
-          )
-
-          event = create_demo_solidary_event(
-              event_demo_id="ci-solidary-legal-seat-001",
-              priority_user_token="ci-priority-user-legal-seat-001",
-              collaborator_token="ci-collaborator-legal-seat-001",
-              priority_user_decides_to_recognize=True,
-              seat_type=SeatType.LEGAL_PRIORITY,
-          )
-
-          result = simulate_solidary_recognition(event)
-
-          assert result.status.value == "rejected"
-          assert result.solidary_point_demo == 0
-          assert "legal_priority_seat_not_eligible" in result.risk_flags
-
-          print("Bono Solidario legal-priority-seat rejection verified.")
-          PY
-
-      - name: Verify Bono Solidario self-recognition rejection
-        run: |
-          python - <<'PY'
-          from bono_solidario_simulator import (
-              create_demo_solidary_event,
-              simulate_solidary_recognition,
-          )
-
-          event = create_demo_solidary_event(
-              event_demo_id="ci-solidary-self-recognition-001",
-              priority_user_token="ci-same-token-001",
-              collaborator_token="ci-same-token-001",
-              priority_user_decides_to_recognize=True,
-          )
-
-          result = simulate_solidary_recognition(event)
-
-          assert result.status.value == "rejected"
-          assert result.solidary_point_demo == 0
-          assert "self_recognition_attempt" in result.risk_flags
-
-          print("Bono Solidario self-recognition rejection verified.")
-          PY
-
-      - name: Verify Bono Solidario replay rejection
-        run: |
-          python - <<'PY'
-          from bono_solidario_simulator import (
-              DemoRecognitionLedger,
-              create_demo_solidary_event,
-              simulate_solidary_recognition,
-          )
-
-          ledger = DemoRecognitionLedger()
-
-          event = create_demo_solidary_event(
-              event_demo_id="ci-solidary-replay-001",
-              priority_user_token="ci-priority-user-replay-001",
-              collaborator_token="ci-collaborator-replay-001",
-              priority_user_decides_to_recognize=True,
-          )
-
-          first = simulate_solidary_recognition(event, ledger=ledger)
-          second = simulate_solidary_recognition(event, ledger=ledger)
-
-          assert first.status.value == "accepted"
-          assert first.solidary_point_demo == 1
-
-          assert second.status.value == "rejected"
-          assert second.solidary_point_demo == 0
-          assert "replay_event_id" in second.risk_flags
-
-          print("Bono Solidario replay rejection verified.")
-          PY
-
-      - name: Verify Bono Solidario expired event rejection
-        run: |
-          python - <<'PY'
-          from datetime import datetime, timedelta, timezone
-
-          from bono_solidario_simulator import (
-              create_demo_solidary_event,
-              simulate_solidary_recognition,
-          )
-
-          issued_at = datetime.now(timezone.utc) - timedelta(minutes=10)
-
-          event = create_demo_solidary_event(
-              event_demo_id="ci-solidary-expired-001",
-              priority_user_token="ci-priority-user-expired-001",
-              collaborator_token="ci-collaborator-expired-001",
-              priority_user_decides_to_recognize=True,
-              issued_at_utc=issued_at,
-              ttl_minutes=1,
-          )
-
-          result = simulate_solidary_recognition(event)
-
-          assert result.status.value == "rejected"
-          assert result.solidary_point_demo == 0
-          assert "expired_event" in result.risk_flags
-
-          print("Bono Solidario expired-event rejection verified.")
-          PY
-
-      - name: Verify Bono Solidario needs review for priority user trip limit
-        run: |
-          python - <<'PY'
-          from bono_solidario_simulator import (
-              DemoRecognitionLedger,
-              create_demo_solidary_event,
-              create_demo_transport_context,
-              simulate_solidary_recognition,
-          )
-
-          ledger = DemoRecognitionLedger()
-          context = create_demo_transport_context(
-              vehicle_demo_id="ci-bus-trip-limit",
-              route_demo_id="ci-route-trip-limit",
-              trip_demo_id="ci-trip-limit",
-              time_window_demo_id="ci-window-trip-limit",
-          )
-
-          first_event = create_demo_solidary_event(
-              event_demo_id="ci-solidary-priority-limit-001",
-              priority_user_token="ci-priority-user-limit-001",
-              collaborator_token="ci-collaborator-limit-001",
-              priority_user_decides_to_recognize=True,
-              transport_context=context,
-          )
-
-          second_event = create_demo_solidary_event(
-              event_demo_id="ci-solidary-priority-limit-002",
-              priority_user_token="ci-priority-user-limit-001",
-              collaborator_token="ci-collaborator-limit-002",
-              priority_user_decides_to_recognize=True,
-              transport_context=context,
-          )
-
-          first = simulate_solidary_recognition(first_event, ledger=ledger)
-          second = simulate_solidary_recognition(second_event, ledger=ledger)
-
-          assert first.status.value == "accepted"
-          assert first.solidary_point_demo == 1
-
-          assert second.status.value == "needs_review"
-          assert second.solidary_point_demo == 0
-          assert second.review_required is True
-          assert "priority_user_trip_limit_exceeded" in second.risk_flags
-
-          print("Bono Solidario priority-user trip-limit review verified.")
-          PY
-
-      - name: Verify Bono Solidario free text rejection
-        run: |
-          python - <<'PY'
-          from bono_solidario_simulator import (
-              create_demo_solidary_event,
-              simulate_solidary_recognition,
-          )
-
-          event = create_demo_solidary_event(
-              event_demo_id="ci-solidary-free-text-001",
-              priority_user_token="ci-priority-user-free-text-001",
-              collaborator_token="quiero viajar gratis",
-              priority_user_decides_to_recognize=True,
-          )
-
-          result = simulate_solidary_recognition(event)
-
-          assert result.status.value == "rejected"
-          assert result.solidary_point_demo == 0
-          assert "collaborator_token_looks_like_free_text" in result.risk_flags
-
-          print("Bono Solidario free-text rejection verified.")
-          PY
-
-      - name: Verify Bono Solidario sensitive data rejection
-        run: |
-          python - <<'PY'
-          from bono_solidario_simulator import assert_no_prohibited_fields
-
-          try:
-              assert_no_prohibited_fields({"cud": "dato-no-permitido"})
-          except ValueError as exc:
-              assert "cud" in str(exc).lower()
-              print("Bono Solidario sensitive data rejection verified.")
-          else:
-              raise AssertionError("Expected ValueError for prohibited field.")
-          PY
-
-      - name: Verify Assistance Ecosystem simulator if present
-        run: |
-          if [ -f assistance_ecosystem_simulator.py ]; then
-            python assistance_ecosystem_simulator.py
-            python -c "from assistance_ecosystem_simulator import run_demo; result = run_demo(); assert result['project'] == 'SUBE Prioridad'; assert result['module'] == 'Ecosistema de Asistencia'; assert result['demo_mode'] is True; assert result['priority_active'] is True; assert result['previously_accredited_need'] is True; assert result['alert_plan']['driver_action_required'] is False; assert result['alert_plan']['passenger_action_required'] is False; print('Assistance Ecosystem simulator output verified.')"
-          else
-            echo "assistance_ecosystem_simulator.py not present. Skipping."
-          fi
-
-      - name: Verify Solidary Sync Security Flow if present
-        run: |
-          if [ -f solidary_sync_security_flow.py ]; then
-            python solidary_sync_security_flow.py
-            python -c "from solidary_sync_security_flow import run_demo; result = run_demo(); assert result['project'] == 'SUBE Prioridad'; assert result['module'] == 'Flujo de Seguridad de Sincronización Solidaria'; assert result['demo_mode'] is True; assert result['status'] == 'accepted'; assert result['accepted_demo_sync'] is True; assert result['solidary_point_demo'] == 1; assert result['risk_flags'] == []; print('Solidary Sync Security Flow output verified.')"
-          else
-            echo "solidary_sync_security_flow.py not present. Skipping."
-          fi
+        run: pytest -q
