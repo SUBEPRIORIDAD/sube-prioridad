@@ -1,0 +1,495 @@
+# Cierre de Versión Documental 1.0 — SUBE Prioridad
+
+## Consolidación documental del proyecto ciudadano
+
+---
+
+## 1. Finalidad de este documento
+
+Este documento deja constancia del cierre de la **versión documental 1.0** del proyecto SUBE Prioridad.
+
+Su finalidad es ordenar el estado actual del repositorio, identificar los documentos consolidados, fijar reglas de interpretación y evitar modificaciones innecesarias sobre documentos que ya cumplen una función institucional, técnica o estratégica clara.
+
+SUBE Prioridad debe entenderse como una iniciativa ciudadana abierta, conceptual, demostrativa y documentada, impulsada originalmente por Andrés Federico Di Fiore, orientada al análisis de accesibilidad efectiva, asistencia preventiva y convivencia dentro del transporte público.
+
+La versión documental 1.0 no representa una implementación oficial vigente, una integración productiva con SUBE, una conexión real con organismos públicos, una modificación actual de validadoras, una base de datos médica ni un sistema de sanciones.
+
+---
+
+## 2. Estado general de la versión 1.0
+
+La versión documental 1.0 consolida al repositorio como una base pública, abierta y auditable para análisis, discusión, mejora y eventual evaluación institucional.
+
+El estado actual del proyecto es:
+
+```text
+MVP conceptual: sí
+Código demostrativo: sí
+API de ejemplo: sí
+Documentación técnica: sí
+Introducción general: sí
+Resumen ejecutivo: sí
+Mapa de lectura: sí
+Índice documental: sí
+README consolidado: sí
+Fundamentos jurídicos: sí
+Fundamentos médicos: sí
+Protección de datos personales: sí
+Protocolo operativo conceptual: sí
+Modelo de prueba piloto: sí
+Arquitectura de referencia: sí
+Roadmap conceptual: sí
+Decisiones de arquitectura: sí
+Principios de gobernanza: sí
+Neutralidad institucional: sí
+Política de marca: sí
+Modelo de condiciones para donación y custodia: sí
+Pliego técnico extendido: sí
+
+Implementación oficial vigente: no
+Integración real con SUBE: no
+Integración real con organismos públicos: no
+Procesamiento de datos sensibles reales: no
+Modificación actual de validadoras: no
+Implementación nacional inmediata: no
+```
+
+---
+
+## 3. Documentos consolidados de entrada
+
+Los documentos de entrada principales quedan consolidados de la siguiente manera:
+
+```text
+INTRODUCCION_SUBE_PRIORIDAD.md
+docs/RESUMEN_EJECUTIVO.md
+README.md
+docs/INDICE_DOCUMENTAL.md
+docs/MAPA_DE_LECTURA.md
+```
+
+Cada uno cumple una función distinta:
+
+```text
+INTRODUCCION_SUBE_PRIORIDAD.md
+puerta de entrada ciudadana y general
+
+docs/RESUMEN_EJECUTIVO.md
+presentación institucional y estratégica
+
+README.md
+documento madre del repositorio
+
+docs/INDICE_DOCUMENTAL.md
+organización de documentos existentes
+
+docs/MAPA_DE_LECTURA.md
+recorridos sugeridos por perfil de lector
+```
+
+Estos documentos no deberían volver a modificarse salvo para corregir errores evidentes, actualizar enlaces, mejorar coherencia interna o incorporar cambios relevantes ya consolidados en el repositorio.
+
+---
+
+## 4. Documentos técnicos consolidados
+
+Los documentos técnicos y de arquitectura principales son:
+
+```text
+ARCHITECTURE_GUARDRAILS.md
+docs/ARQUITECTURA_DE_REFERENCIA.md
+docs/DECISIONES_DE_ARQUITECTURA.md
+docs/ROADMAP_IMPLEMENTACION.md
+docs/PLIEGO_TECNICO_EXTENDIDO.md
+```
+
+Estos documentos ordenan:
+
+- límites técnicos;
+- arquitectura conceptual;
+- decisiones de diseño;
+- evolución gradual;
+- alcance prospectivo;
+- simulaciones;
+- interoperabilidad responsable;
+- privacidad por diseño;
+- separación entre acreditación y operación.
+
+Toda modificación futura del código debería respetar estos documentos.
+
+---
+
+## 5. Documentos jurídicos, médicos y de datos consolidados
+
+Los documentos jurídicos, médicos y de protección de datos principales son:
+
+```text
+docs/FUNDAMENTOS_JURIDICOS.md
+docs/FUNDAMENTOS_MEDICOS.md
+docs/PROTECCION_DATOS_PERSONALES.md
+```
+
+Estos documentos sostienen el enfoque conceptual del proyecto en materia de:
+
+- accesibilidad efectiva;
+- dignidad;
+- igualdad real;
+- no discriminación;
+- protección de datos personales;
+- minimización de datos;
+- no exposición de diagnósticos;
+- no procesamiento de información médica sensible en el core;
+- separación entre acreditación y operación;
+- evaluación institucional previa.
+
+La regla central se mantiene:
+
+```text
+el transporte no necesita conocer el diagnóstico
+```
+
+---
+
+## 6. Documentos operativos consolidados
+
+Los documentos operativos principales son:
+
+```text
+docs/PROTOCOLO_OPERATIVO.md
+docs/PRUEBA_PILOTO_MODELO.md
+```
+
+Estos documentos no constituyen instrucciones operativas vigentes.
+
+Deben leerse como guías conceptuales para una eventual prueba piloto limitada, voluntaria, temporal, reversible, auditable y respetuosa de la privacidad.
+
+Ninguna prueba piloto debería avanzar sin evaluación jurídica, técnica, operativa, médica, institucional y de protección de datos personales.
+
+---
+
+## 7. Documentos institucionales, ciudadanos y legislativos consolidados
+
+Los documentos institucionales, ciudadanos y legislativos principales son:
+
+```text
+docs/DOSSIER_INSTITUCIONAL_BREVE.md
+docs/PETITORIO_MODELO.md
+docs/MODELO_PROYECTO_RESOLUCION.md
+docs/ESTRATEGIA_LEGISLATIVA_Y_PARTICIPACION_CIUDADANA.md
+```
+
+Estos documentos permiten acompañar conversaciones institucionales, presentaciones ciudadanas, pedidos de evaluación, reuniones con autoridades, espacios legislativos o ámbitos de participación pública.
+
+No deben presentarse como instrumentos oficiales vigentes.
+
+Deben adaptarse a cada jurisdicción, competencia, autoridad, procedimiento y estrategia institucional.
+
+---
+
+## 8. Documentos de gobernanza, marca y custodia consolidados
+
+Los documentos de gobernanza, neutralidad, marca y custodia son:
+
+```text
+docs/PRINCIPIOS_DE_GOBERNANZA.md
+docs/NEUTRALIDAD_INSTITUCIONAL_Y_CUSTODIA_PUBLICA.md
+docs/POLITICA_DE_MARCA.md
+docs/MODELO_CONDICIONES_DONACION_Y_CUSTODIA.md
+```
+
+Estos documentos preservan:
+
+- finalidad pública;
+- neutralidad no partidaria;
+- atribución de origen;
+- trazabilidad pública;
+- uso responsable de marca;
+- no uso electoral;
+- no apropiación partidaria;
+- no cierre opaco del código;
+- no explotación comercial incompatible;
+- no implementación sin evaluación;
+- protección de datos personales;
+- gobernanza multi-actor;
+- revisión jurídica previa.
+
+La apertura del código y de la documentación no implica autorización automática para usar la marca, borrar el origen ciudadano del proyecto ni adoptar institucionalmente el sistema sin condiciones fundacionales.
+
+---
+
+## 9. Código demostrativo consolidado
+
+El código actual debe interpretarse como MVP técnico demostrativo.
+
+Archivos principales:
+
+```text
+main.py
+validator.py
+cache_manager.py
+circuit_breaker.py
+xroad_gateway.py
+test_main.py
+test_antifraud.py
+requirements.txt
+Dockerfile
+docker-compose.yml
+.github/workflows/ci.yml
+```
+
+El código no procesa usuarios reales.
+
+El código no se conecta con organismos públicos.
+
+El código no modifica validadoras reales.
+
+El código no opera sobre infraestructura SUBE.
+
+El código no procesa diagnósticos, historia clínica, DNI, nombre, domicilio ni datos sensibles reales.
+
+Toda evolución técnica debe respetar:
+
+```text
+ARCHITECTURE_GUARDRAILS.md
+docs/ARQUITECTURA_DE_REFERENCIA.md
+docs/DECISIONES_DE_ARQUITECTURA.md
+docs/PROTECCION_DATOS_PERSONALES.md
+```
+
+---
+
+## 10. Límites fundacionales consolidados
+
+La versión documental 1.0 consolida los siguientes límites:
+
+```text
+no implementación oficial vigente
+no integración real con SUBE
+no conexión real con organismos públicos
+no procesamiento de datos sensibles reales
+no diagnóstico médico en el core
+no modificación actual de validadoras reales
+no alteración del sistema de cobro
+no beneficio tarifario
+no subsidio
+no sanciones
+no vigilancia
+no ranking público
+no obligación nueva para pasajeros
+no sobrecarga al chofer
+no sustitución de derechos existentes
+no apropiación partidaria
+no uso electoral
+no uso irrestricto de marca
+no donación o transferencia sin condiciones fundacionales
+implementación sólo mediante evaluación institucional competente
+```
+
+Estos límites deben orientar toda lectura, presentación, fork, modificación técnica, comunicación pública, donación, convenio, prueba piloto o adopción futura.
+
+---
+
+## 11. Rol del personal de conducción
+
+La versión documental 1.0 mantiene como principio que el personal de conducción no debe ser convertido en:
+
+- evaluador médico;
+- fiscalizador documental;
+- administrador de datos sensibles;
+- árbitro principal de conflictos entre pasajeros;
+- aplicador de sanciones;
+- gestor de beneficios;
+- operador de información clínica o sanitaria.
+
+La conducción segura debe conservar prioridad operativa.
+
+El proyecto debe reducir fricciones, no trasladarlas al chofer.
+
+---
+
+## 12. Bono Solidario
+
+El Bono Solidario queda expresamente identificado como una posible evolución futura separada.
+
+No forma parte del núcleo inicial necesario del MVP.
+
+No debe interpretarse como:
+
+- multa;
+- sanción;
+- obligación;
+- ranking público;
+- mecanismo de presión social;
+- sistema de vigilancia;
+- parte necesaria de una primera prueba piloto;
+- sustitución del régimen legal de asientos prioritarios.
+
+Su eventual análisis requerirá evaluación específica de voluntariedad, privacidad, antifraude, no discriminación, impacto operativo, compatibilidad jurídica y autorización institucional suficiente.
+
+---
+
+## 13. Prueba piloto
+
+Una eventual prueba piloto debería ser:
+
+```text
+limitada
+voluntaria
+temporal
+reversible
+auditable
+respetuosa de la privacidad
+sin diagnósticos en el core
+sin datos sensibles innecesarios
+sin sanciones
+sin obligación de colaboración
+sin sobrecarga al chofer
+con indicadores definidos
+con evaluación previa y posterior
+con informe final
+con posibilidad de suspensión, corrección o cierre
+```
+
+La finalidad de una prueba piloto sería obtener evidencia antes de considerar cualquier evolución.
+
+El objetivo inicial no es implementar nacionalmente el sistema, sino evaluar utilidad, aceptación, riesgos, impacto operativo, privacidad y viabilidad institucional.
+
+---
+
+## 14. Política de marca y denominación
+
+La denominación SUBE Prioridad debe utilizarse con prudencia.
+
+El uso de esa denominación no implica autorización oficial, adopción vigente ni vinculación institucional actual con el sistema SUBE o sus operadores.
+
+La apertura del repositorio no implica autorización automática para utilizar la marca, nombre, logotipos, identidad visual o denominaciones vinculadas con SUBE Prioridad de manera irrestricta.
+
+Todo uso público, institucional, comunicacional, derivado o comercial debe respetar:
+
+```text
+docs/POLITICA_DE_MARCA.md
+docs/NEUTRALIDAD_INSTITUCIONAL_Y_CUSTODIA_PUBLICA.md
+docs/MODELO_CONDICIONES_DONACION_Y_CUSTODIA.md
+```
+
+---
+
+## 15. Licencia y revisión futura
+
+El repositorio mantiene su licencia vigente según el archivo de licencia correspondiente.
+
+La publicación abierta no debe interpretarse como:
+
+- autorización de implementación productiva;
+- autorización oficial de uso institucional;
+- renuncia a la atribución de origen;
+- renuncia a la protección de marca;
+- habilitación para usos partidarios;
+- habilitación para usos electorales;
+- autorización para borrar la finalidad social del proyecto.
+
+Cualquier eventual revisión de licenciamiento, migración a copyleft, adenda de interés público, política de marca formal, contrato de donación con cargo, convenio o instrumento de custodia deberá realizarse de manera documentada y con revisión jurídica previa.
+
+---
+
+## 16. Qué queda pendiente después de la versión 1.0
+
+La versión documental 1.0 no cierra el proyecto.
+
+Ordena su primera consolidación.
+
+A partir de este punto, los próximos pasos posibles son:
+
+```text
+revisión final de enlaces internos
+verificación de consistencia del README
+verificación del índice documental
+verificación del mapa de lectura
+verificación de guardrails técnicos
+ejecución de tests
+revisión de licencia
+evaluación de release o tag v1.0
+preparación de presentación institucional breve
+preparación de comunicación pública prudente
+evaluación jurídica antes de cualquier donación o convenio
+```
+
+Ninguno de estos pasos implica implementación oficial.
+
+---
+
+## 17. Regla de no sobreedición
+
+Una vez cerrada la versión documental 1.0, se recomienda evitar modificaciones reiteradas sobre documentos ya consolidados.
+
+Sólo deberían realizarse cambios cuando exista:
+
+- error evidente;
+- enlace roto;
+- contradicción interna;
+- nueva decisión documentada;
+- cambio técnico relevante;
+- necesidad de precisión jurídica;
+- actualización institucional;
+- mejora de claridad sin alterar el sentido;
+- corrección de formato.
+
+El objetivo es evitar ciclos innecesarios de edición que debiliten la coherencia general del repositorio.
+
+---
+
+## 18. Orden recomendado de revisión final
+
+Antes de etiquetar o presentar la versión documental 1.0, se recomienda revisar en este orden:
+
+```text
+1. README.md
+2. INTRODUCCION_SUBE_PRIORIDAD.md
+3. docs/RESUMEN_EJECUTIVO.md
+4. docs/INDICE_DOCUMENTAL.md
+5. docs/MAPA_DE_LECTURA.md
+6. ARCHITECTURE_GUARDRAILS.md
+7. docs/PROTECCION_DATOS_PERSONALES.md
+8. docs/NEUTRALIDAD_INSTITUCIONAL_Y_CUSTODIA_PUBLICA.md
+9. docs/POLITICA_DE_MARCA.md
+10. docs/MODELO_CONDICIONES_DONACION_Y_CUSTODIA.md
+```
+
+Luego deberían revisarse los documentos técnicos, jurídicos, médicos, operativos y estratégicos restantes.
+
+---
+
+## 19. Declaración de cierre documental
+
+La versión documental 1.0 de SUBE Prioridad consolida una propuesta ciudadana seria, abierta, prudente, auditable y orientada al interés público.
+
+El repositorio queda organizado como base para analizar si una arquitectura tecnológica responsable puede contribuir a una experiencia de transporte público más segura, digna y respetuosa.
+
+La propuesta se basa en:
+
+- accesibilidad efectiva;
+- asistencia preventiva;
+- privacidad por diseño;
+- minimización de datos;
+- separación entre acreditación y operación;
+- no exposición de diagnósticos;
+- no vigilancia;
+- no sanción;
+- no sobrecarga al chofer;
+- neutralidad institucional;
+- atribución de origen;
+- protección de marca;
+- gobernanza plural;
+- evaluación institucional previa.
+
+---
+
+## 20. Cierre
+
+SUBE Prioridad debe interpretarse, en esta etapa, como una iniciativa ciudadana abierta y documentada para evaluación institucional futura.
+
+No debe presentarse como implementación oficial vigente, integración real con SUBE, política pública adoptada, sistema productivo, beneficio tarifario, subsidio, sistema de sanciones, herramienta de vigilancia ni plataforma cerrada.
+
+La lectura integral del repositorio debe preservar siempre el carácter ciudadano, abierto, no partidario, auditable y social del proyecto impulsado originalmente por Andrés Federico Di Fiore.
+
+La versión documental 1.0 queda consolidada como punto de partida para análisis, discusión, mejora responsable y eventual evaluación institucional competente.
