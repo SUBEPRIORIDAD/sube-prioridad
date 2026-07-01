@@ -4,7 +4,7 @@
 
 SUBE Prioridad es una propuesta ciudadana de innovación pública orientada a analizar herramientas complementarias que puedan facilitar que personas con una necesidad previamente acreditada de viajar sentadas accedan a condiciones de viaje más seguras, respetuosas y adecuadas dentro del transporte público.
 
-Este repositorio contiene un **MVP conceptual, técnico y demostrativo**, acompañado por documentación de arquitectura, fundamentos jurídicos, fundamentos médicos, estrategia legislativa, lineamientos de protección de datos personales, modelo de prueba piloto, protocolo operativo, gobernanza, decisiones de arquitectura, neutralidad institucional, custodia pública, política de marca, modelo de condiciones para donación y custodia, resumen ejecutivo, mapa de lectura y anexos técnicos.
+Este repositorio contiene un **MVP conceptual, técnico y demostrativo**, acompañado por documentación de arquitectura, fundamentos jurídicos, fundamentos médicos, estrategia legislativa, lineamientos de protección de datos personales, modelo de prueba piloto, protocolo operativo, gobernanza, decisiones de arquitectura, neutralidad institucional, custodia pública, política de marca, modelo de condiciones para donación y custodia, resumen ejecutivo, mapa de lectura, cierre documental de versión 1.0 y anexos técnicos.
 
 ---
 
@@ -28,6 +28,10 @@ Para elegir el recorrido documental según el perfil del lector se recomienda le
 
 [`docs/MAPA_DE_LECTURA.md`](docs/MAPA_DE_LECTURA.md)
 
+Para revisar el estado de consolidación de la versión documental 1.0 se recomienda leer:
+
+[`docs/CIERRE_VERSION_DOCUMENTAL_1_0.md`](docs/CIERRE_VERSION_DOCUMENTAL_1_0.md)
+
 La versión 1.0 no representa una implementación oficial vigente ni una integración productiva con SUBE, organismos públicos, validadoras, hardware embarcado o infraestructura estatal.
 
 ---
@@ -46,6 +50,8 @@ Documentación estratégica: sí
 Introducción general: sí
 Resumen ejecutivo: sí
 Mapa de lectura: sí
+Índice documental: sí
+Cierre documental de versión 1.0: sí
 Fundamentos jurídicos: sí
 Fundamentos médicos: sí
 Protocolo operativo conceptual: sí
@@ -459,6 +465,7 @@ Para facilitar la lectura del proyecto, el repositorio incluye documentos de ent
 - [`docs/RESUMEN_EJECUTIVO.md`](docs/RESUMEN_EJECUTIVO.md): documento institucional de presentación, análisis y evaluación del proyecto ciudadano.
 - [`docs/MAPA_DE_LECTURA.md`](docs/MAPA_DE_LECTURA.md): guía para elegir qué documentos leer según el perfil del lector.
 - [`docs/INDICE_DOCUMENTAL.md`](docs/INDICE_DOCUMENTAL.md): índice general de documentación del repositorio.
+- [`docs/CIERRE_VERSION_DOCUMENTAL_1_0.md`](docs/CIERRE_VERSION_DOCUMENTAL_1_0.md): constancia de consolidación de la versión documental 1.0.
 
 Orden sugerido para una primera lectura:
 
@@ -470,6 +477,8 @@ docs/RESUMEN_EJECUTIVO.md
 docs/MAPA_DE_LECTURA.md
 ↓
 docs/INDICE_DOCUMENTAL.md
+↓
+docs/CIERRE_VERSION_DOCUMENTAL_1_0.md
 ```
 
 ---
@@ -482,6 +491,7 @@ La documentación principal del repositorio se organiza en los siguientes docume
 - [`docs/RESUMEN_EJECUTIVO.md`](docs/RESUMEN_EJECUTIVO.md): resumen institucional para presentación, análisis y evaluación.
 - [`docs/MAPA_DE_LECTURA.md`](docs/MAPA_DE_LECTURA.md): guía de lectura por perfil de lector.
 - [`docs/INDICE_DOCUMENTAL.md`](docs/INDICE_DOCUMENTAL.md): guía de lectura y organización general de la documentación.
+- [`docs/CIERRE_VERSION_DOCUMENTAL_1_0.md`](docs/CIERRE_VERSION_DOCUMENTAL_1_0.md): cierre y constancia de consolidación de la versión documental 1.0.
 - [`docs/DOSSIER_INSTITUCIONAL_BREVE.md`](docs/DOSSIER_INSTITUCIONAL_BREVE.md): síntesis institucional para autoridades, legisladores, asesores y ciudadanía.
 - [`docs/PETITORIO_MODELO.md`](docs/PETITORIO_MODELO.md): modelo orientativo de petitorio ciudadano para acompañar firmas y presentaciones.
 - [`docs/MODELO_PROYECTO_RESOLUCION.md`](docs/MODELO_PROYECTO_RESOLUCION.md): modelo orientativo para impulsar formalmente la evaluación institucional.
@@ -509,7 +519,19 @@ Se recomienda comenzar por:
 
 ---
 
-## 23. Pliego técnico extendido
+## 23. Cierre documental de versión 1.0
+
+El repositorio incluye un documento específico de cierre de versión documental 1.0:
+
+[`docs/CIERRE_VERSION_DOCUMENTAL_1_0.md`](docs/CIERRE_VERSION_DOCUMENTAL_1_0.md)
+
+Ese documento deja constancia del estado consolidado del proyecto, identifica los documentos principales, fija reglas de interpretación, ordena los límites fundacionales y recomienda evitar sobreediciones innecesarias sobre documentos ya consolidados.
+
+Debe leerse antes de etiquetar, presentar, comunicar o utilizar la versión documental 1.0 como base institucional, técnica o ciudadana.
+
+---
+
+## 24. Pliego técnico extendido
 
 El repositorio conserva un pliego técnico extendido con la visión integral original del Programa SUBE Prioridad.
 
@@ -523,7 +545,7 @@ Ver:
 
 ---
 
-## 24. Neutralidad institucional y custodia pública
+## 25. Neutralidad institucional y custodia pública
 
 SUBE Prioridad debe preservar su carácter de iniciativa ciudadana abierta, no partidaria, auditable y orientada al interés público.
 
@@ -537,7 +559,7 @@ Ese documento debe leerse antes de cualquier transferencia, convenio, donación 
 
 ---
 
-## 25. Política de marca
+## 26. Política de marca
 
 La apertura del código y de la documentación no implica autorización automática para utilizar la marca, nombre, logotipos, identidad visual o denominaciones vinculadas con SUBE Prioridad de manera irrestricta.
 
@@ -551,7 +573,7 @@ Ese documento debe leerse antes de cualquier uso institucional, público, comerc
 
 ---
 
-## 26. Modelo de condiciones para donación y custodia
+## 27. Modelo de condiciones para donación y custodia
 
 Antes de cualquier donación, transferencia, convenio, adopción institucional, autorización de uso de marca o prueba piloto real, deberían definirse condiciones mínimas para preservar la finalidad original del proyecto.
 
@@ -565,7 +587,7 @@ No constituye un contrato vigente ni una donación aceptada. Debe ser revisado y
 
 ---
 
-## 27. Ejecución local
+## 28. Ejecución local
 
 Instalar dependencias:
 
@@ -587,7 +609,7 @@ http://127.0.0.1:8000/docs
 
 ---
 
-## 28. Tests
+## 29. Tests
 
 Ejecutar tests:
 
@@ -603,7 +625,7 @@ python -m py_compile main.py validator.py cache_manager.py circuit_breaker.py xr
 
 ---
 
-## 29. Docker
+## 30. Docker
 
 Construir y ejecutar con Docker Compose:
 
@@ -613,7 +635,7 @@ docker compose up --build
 
 ---
 
-## 30. Estructura técnica orientativa
+## 31. Estructura técnica orientativa
 
 El repositorio incluye, entre otros archivos:
 
@@ -637,12 +659,13 @@ La estructura podrá evolucionar conforme avance el proyecto, manteniendo cohere
 
 ---
 
-## 31. Regla de interpretación general
+## 32. Regla de interpretación general
 
 Todo el repositorio debe interpretarse bajo estas reglas:
 
 ```text
 MVP conceptual
+versión documental 1.0
 no implementación oficial vigente
 no integración real con SUBE
 no conexión real con organismos públicos
@@ -663,7 +686,7 @@ no explotación comercial incompatible con el interés público
 
 ---
 
-## 32. Autoría e iniciativa
+## 33. Autoría e iniciativa
 
 SUBE Prioridad es una iniciativa ciudadana de innovación pública impulsada por Andrés Federico Di Fiore.
 
@@ -673,7 +696,7 @@ La atribución de origen debe preservarse en toda presentación, fork, evaluaci�
 
 ---
 
-## 33. Licencia
+## 34. Licencia
 
 Este proyecto se publica bajo licencia MIT, salvo indicación expresa en contrario para documentos, marcas, logos, archivos institucionales o materiales de terceros.
 
@@ -685,7 +708,7 @@ Cualquier eventual revisión de licenciamiento, migración a copyleft, adenda de
 
 ---
 
-## 34. Declaración final
+## 35. Declaración final
 
 SUBE Prioridad es una propuesta ciudadana de innovación pública orientada a fortalecer la accesibilidad efectiva, la asistencia preventiva y la convivencia dentro del transporte público.
 
@@ -693,7 +716,7 @@ El repositorio no pretende demostrar una solución cerrada ni una implementació
 
 Su finalidad es ofrecer una arquitectura conceptual, documentada y técnicamente demostrable para que pueda ser analizada, discutida, mejorada y eventualmente evaluada por las autoridades competentes.
 
-El valor del proyecto reside en articular tecnología, privacidad, accesibilidad, dignidad, fundamentos jurídicos, fundamentos médicos, protocolo operativo, participación ciudadana, gobernanza, gradualidad institucional, neutralidad no partidaria, custodia pública, política de marca, modelo de condiciones para donación y custodia, resumen ejecutivo, mapa de lectura y código abierto en una propuesta seria, prudente y escalable.
+El valor del proyecto reside en articular tecnología, privacidad, accesibilidad, dignidad, fundamentos jurídicos, fundamentos médicos, protocolo operativo, participación ciudadana, gobernanza, gradualidad institucional, neutralidad no partidaria, custodia pública, política de marca, modelo de condiciones para donación y custodia, resumen ejecutivo, mapa de lectura, cierre documental de versión 1.0 y código abierto en una propuesta seria, prudente y escalable.
 
 La versión documental 1.0 consolida el repositorio como una base pública, abierta y auditable para explorar si una necesidad previamente acreditada puede representarse mediante un atributo técnico de prioridad, mínimo y no sensible, que facilite asistencia preventiva sin exponer diagnósticos, sin alterar el sistema de cobro, sin sustituir derechos existentes y sin trasladar cargas indebidas al personal de conducción.
 
