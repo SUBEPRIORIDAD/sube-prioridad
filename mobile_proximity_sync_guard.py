@@ -1,19 +1,26 @@
 """
-SUBE Prioridad — Guardia demostrativa de proximidad para sincronización solidaria.
+SUBE Prioridad — Guardia demostrativa de proximidad móvil no excluyente.
 
-Este módulo modela una segunda capa antifraude para el Bono Solidario.
+Este módulo modela una capa de refuerzo antifraude para el Bono Solidario.
 
-Problema que resuelve:
-    En trenes, subtes, estaciones, andenes o terminales, dos personas pueden haber
-    validado su viaje dentro de una ventana amplia, pero eso no prueba por sí solo
-    que hayan estado cerca al momento real de la cesión del asiento.
+Regla central:
+    La proximidad móvil NO es requisito excluyente.
+    La ausencia de celular, smartphone, tablet, conectividad o app no debe impedir
+    por sí sola la sincronización solidaria ni la eventual evaluación del Bono Solidario.
 
-Por eso este módulo separa:
+Finalidad:
+    - reforzar la validación cuando existen señales móviles voluntarias;
+    - generar registros de auditoría ante sospechas de fraude;
+    - aportar contexto probatorio adicional;
+    - permitir validación diferida en entornos sin conectividad;
+    - evitar que la tecnología se transforme en una nueva barrera de acceso.
 
-    1. Ventana de acceso o validación.
-    2. Cercanía razonable al momento de sincronizar.
-    3. Confirmación voluntaria del usuario SUBE Prioridad.
-    4. Señales no sensibles y tokenizadas.
+Este módulo NO acredita el Bono Solidario.
+Este módulo NO calcula descuentos.
+Este módulo NO decide beneficios tarifarios.
+Este módulo NO reemplaza el handoff antifraude.
+Este módulo NO reemplaza el matcher temporal Red SUBE demo.
+Este módulo NO exige celular como condición prioritaria.
 
 No representa implementación oficial.
 No integra SUBE real.
@@ -36,22 +43,19 @@ No genera vigilancia.
 No impone obligaciones a pasajeros.
 No impone cargas operativas al chofer.
 
-Señales admitidas en modo demo:
-    - QR temporal.
-    - NFC temporal.
-    - BLE/Bluetooth Low Energy demostrativo.
-    - token de dispositivo.
-    - token de medio de pago.
-    - token de tarjeta SUBE demo.
-    - mismo contexto de estación, andén, unidad o formación.
-    - validación diferida offline.
-    - confirmación del usuario SUBE Prioridad.
+Uso esperado dentro del ecosistema:
+    handoff aceptado
+    + ventana temporal / contexto de viaje válido
+    + confirmación del usuario SUBE Prioridad
+    + asiento de uso general
+    + filtros antifraude mínimos
+    + proximidad móvil, si existe
+    =
+    evaluación posterior del Bono Solidario demo.
 
-Regla central:
-    La validación de pago habilita una ventana.
-    La sincronización digital genera una solicitud.
-    La proximidad reforzada reduce riesgo de fraude.
-    El Bono Solidario demo sólo puede avanzar si las capas mínimas coinciden.
+Si no existe proximidad móvil:
+    el resultado queda registrado como "sin señal móvil disponible",
+    pero no bloquea automáticamente el flujo.
 """
 
 from __future__ import annotations
@@ -63,8 +67,8 @@ from typing import Any, Dict, List, Optional
 
 
 PROJECT_NAME = "SUBE Prioridad"
-MODULE_NAME = "Guardia Demo de Proximidad Móvil"
-GUARD_VERSION = "0.1.0"
+MODULE_NAME = "Guardia Demo de Proximidad Móvil No Excluyente"
+GUARD_VERSION = "0.2.0"
 DEMO_MODE = True
 
 
@@ -99,12 +103,15 @@ PROHIBITED_FIELDS = {
     "longitud",
     "latitude",
     "longitude",
+    "imei",
+    "mac",
 }
 
 
 class ProximityGuardStatus(str, Enum):
-    ACCEPTED = "accepted"
-    REJECTED = "rejected"
+    ACCEPTED_REINFORCED = "accepted_reinforced"
+    ACCEPTED_WITHOUT_MOBILE_EVIDENCE = "accepted_without_mobile_evidence"
+    REJECTED_HARD_RISK = "rejected_hard_risk"
     NEEDS_REVIEW = "needs_review"
     DEFERRED_OFFLINE_VALIDATION = "deferred_offline_validation"
 
@@ -118,6 +125,7 @@ class TransportAccessContext(str, Enum):
 
 
 class ProximityMethod(str, Enum):
+    NONE_AVAILABLE = "none_available"
     QR_TEMPORARY_DEMO = "qr_temporary_demo"
     NFC_TEMPORARY_DEMO = "nfc_temporary_demo"
     BLE_NEARBY_DEMO = "ble_nearby_demo"
@@ -129,38 +137,37 @@ class ProximityStrength(str, Enum):
     STRONG = "strong"
     MODERATE = "moderate"
     WEAK = "weak"
+    NOT_AVAILABLE = "not_available"
     NONE = "none"
 
 
 @dataclass(frozen=True)
 class ProximityGuardPolicy:
     """
-    Política demostrativa para evaluar cercanía al momento de sincronizar.
+    Política demostrativa de proximidad.
 
-    in_vehicle_sync_window_minutes:
-        Ventana corta para colectivo, tren con validadora a bordo o unidad donde
-        ambos ya se encuentran físicamente dentro del transporte.
+    mobile_required_for_bonus:
+        Debe permanecer en False para evitar que el celular sea requisito excluyente.
 
-    station_extended_access_window_minutes:
-        Ventana más amplia para molinetes, estaciones, andenes y espera de tren/subte.
+    require_mobile_for_extended_context:
+        Si es False, la ausencia de señal móvil en estación/andén no bloquea por sí sola.
+        Sólo reduce la fuerza probatoria y deja registro de auditoría.
 
-    sync_moment_proximity_window_minutes:
-        Ventana estricta para el momento real del agradecimiento o sincronización.
-
-    require_device_or_handshake_for_extended_context:
-        En estación/andén, una ventana amplia no alcanza sola. Se exige señal
-        adicional: QR, NFC, BLE, token de dispositivo o código temporal.
+    enable_audit_trail:
+        Permite registrar señales ausentes, débiles o reforzadas para revisión posterior.
     """
 
     in_vehicle_sync_window_minutes: int
     station_extended_access_window_minutes: int
     sync_moment_proximity_window_minutes: int
+    mobile_required_for_bonus: bool
     require_user_confirmation: bool
     require_distinct_users: bool
     require_distinct_payment_methods: bool
-    require_device_or_handshake_for_extended_context: bool
+    require_mobile_for_extended_context: bool
     allow_offline_deferred_validation: bool
     max_pending_offline_minutes: int
+    enable_audit_trail: bool
 
 
 @dataclass(frozen=True)
@@ -168,9 +175,11 @@ class MobileDeviceBindingDemo:
     """
     Vinculación demostrativa de dispositivo.
 
+    Puede no existir.
     No contiene número de teléfono real.
     No contiene email real.
     No contiene IMEI real.
+    No contiene MAC real.
     No contiene identidad civil.
     """
 
@@ -185,11 +194,9 @@ class MobileDeviceBindingDemo:
 @dataclass(frozen=True)
 class ProximitySignal:
     """
-    Señal demostrativa de cercanía.
+    Señal demostrativa de proximidad.
 
-    No usa GPS exacto.
-    No usa ubicación real.
-    No identifica civilmente a las personas.
+    La señal móvil puede estar ausente sin bloquear automáticamente el flujo.
     """
 
     sync_event_demo_id: str
@@ -199,6 +206,8 @@ class ProximitySignal:
     proximity_method: ProximityMethod
     priority_device: Optional[MobileDeviceBindingDemo]
     collaborator_device: Optional[MobileDeviceBindingDemo]
+    priority_user_has_mobile_device: bool
+    collaborator_has_mobile_device: bool
     qr_or_code_token_demo: Optional[str]
     nfc_handshake_token_demo: Optional[str]
     ble_ephemeral_token_demo: Optional[str]
@@ -226,8 +235,13 @@ class ProximityGuardResult:
     demo_mode: bool
     status: ProximityGuardStatus
     proximity_strength: ProximityStrength
-    proximity_accepted: bool
+    mobile_filter_available: bool
+    mobile_filter_used: bool
+    proximity_reinforced: bool
+    non_exclusive_filter: bool
+    blocks_solidary_bonus_flow: bool
     requires_deferred_validation: bool
+    requires_audit_review: bool
     access_context: str
     proximity_method: str
     access_window_matched: bool
@@ -236,9 +250,11 @@ class ProximityGuardResult:
     device_binding_matched: bool
     handshake_signal_present: bool
     same_transport_context_score: int
-    risk_flags: List[str]
+    hard_risk_flags: List[str]
+    audit_flags: List[str]
     reason: str
     security_summary: Dict[str, Any]
+    audit_record_demo: Dict[str, Any]
     privacy_notice: str
     driver_burden: str
     warnings: List[str]
@@ -263,15 +279,17 @@ def create_demo_proximity_guard_policy(
     in_vehicle_sync_window_minutes: int = 10,
     station_extended_access_window_minutes: int = 60,
     sync_moment_proximity_window_minutes: int = 5,
+    mobile_required_for_bonus: bool = False,
     require_user_confirmation: bool = True,
     require_distinct_users: bool = True,
     require_distinct_payment_methods: bool = True,
-    require_device_or_handshake_for_extended_context: bool = True,
+    require_mobile_for_extended_context: bool = False,
     allow_offline_deferred_validation: bool = True,
     max_pending_offline_minutes: int = 120,
+    enable_audit_trail: bool = True,
 ) -> ProximityGuardPolicy:
     """
-    Crea política demostrativa para la guardia de proximidad.
+    Crea una política demostrativa donde el celular no es requisito excluyente.
     """
     if in_vehicle_sync_window_minutes <= 0:
         raise ValueError("La ventana a bordo debe ser mayor a cero minutos.")
@@ -294,12 +312,14 @@ def create_demo_proximity_guard_policy(
         in_vehicle_sync_window_minutes=in_vehicle_sync_window_minutes,
         station_extended_access_window_minutes=station_extended_access_window_minutes,
         sync_moment_proximity_window_minutes=sync_moment_proximity_window_minutes,
+        mobile_required_for_bonus=mobile_required_for_bonus,
         require_user_confirmation=require_user_confirmation,
         require_distinct_users=require_distinct_users,
         require_distinct_payment_methods=require_distinct_payment_methods,
-        require_device_or_handshake_for_extended_context=require_device_or_handshake_for_extended_context,
+        require_mobile_for_extended_context=require_mobile_for_extended_context,
         allow_offline_deferred_validation=allow_offline_deferred_validation,
         max_pending_offline_minutes=max_pending_offline_minutes,
+        enable_audit_trail=enable_audit_trail,
     )
 
 
@@ -345,6 +365,8 @@ def create_demo_proximity_signal(
     proximity_method: ProximityMethod = ProximityMethod.QR_TEMPORARY_DEMO,
     priority_device: Optional[MobileDeviceBindingDemo] = None,
     collaborator_device: Optional[MobileDeviceBindingDemo] = None,
+    priority_user_has_mobile_device: bool = True,
+    collaborator_has_mobile_device: bool = True,
     qr_or_code_token_demo: Optional[str] = "demo-qr-token-001",
     nfc_handshake_token_demo: Optional[str] = None,
     ble_ephemeral_token_demo: Optional[str] = None,
@@ -365,6 +387,10 @@ def create_demo_proximity_signal(
 ) -> ProximitySignal:
     """
     Crea señal demostrativa de proximidad.
+
+    Si alguna de las partes no tiene dispositivo móvil, no se crea binding móvil
+    para esa parte y el resultado se tratará como señal no disponible, no como
+    fraude automático.
     """
     required_values = {
         "sync_event_demo_id": sync_event_demo_id,
@@ -380,26 +406,45 @@ def create_demo_proximity_signal(
 
     now = created_at_utc or datetime.now(timezone.utc)
 
+    default_priority_device = (
+        create_demo_mobile_device_binding(
+            device_session_token="demo-priority-device-session-001",
+            account_demo_token="demo-priority-account-001",
+            payment_method_demo_token="demo-priority-payment-001",
+            sube_card_demo_token="demo-priority-sube-card-001",
+        )
+        if priority_user_has_mobile_device
+        else None
+    )
+
+    default_collaborator_device = (
+        create_demo_mobile_device_binding(
+            device_session_token="demo-collaborator-device-session-001",
+            account_demo_token="demo-collaborator-account-001",
+            payment_method_demo_token="demo-collaborator-payment-001",
+            sube_card_demo_token="demo-collaborator-sube-card-001",
+        )
+        if collaborator_has_mobile_device
+        else None
+    )
+
+    normalized_method = proximity_method
+
+    if not priority_user_has_mobile_device or not collaborator_has_mobile_device:
+        normalized_method = ProximityMethod.NONE_AVAILABLE
+
     return ProximitySignal(
         sync_event_demo_id=sync_event_demo_id.strip(),
         priority_user_token=priority_user_token.strip(),
         collaborator_token=collaborator_token.strip(),
         access_context=access_context,
-        proximity_method=proximity_method,
-        priority_device=priority_device
-        or create_demo_mobile_device_binding(
-            device_session_token="demo-priority-device-session-001",
-            account_demo_token="demo-priority-account-001",
-            payment_method_demo_token="demo-priority-payment-001",
-            sube_card_demo_token="demo-priority-sube-card-001",
-        ),
+        proximity_method=normalized_method,
+        priority_device=priority_device if priority_device is not None else default_priority_device,
         collaborator_device=collaborator_device
-        or create_demo_mobile_device_binding(
-            device_session_token="demo-collaborator-device-session-001",
-            account_demo_token="demo-collaborator-account-001",
-            payment_method_demo_token="demo-collaborator-payment-001",
-            sube_card_demo_token="demo-collaborator-sube-card-001",
-        ),
+        if collaborator_device is not None
+        else default_collaborator_device,
+        priority_user_has_mobile_device=priority_user_has_mobile_device,
+        collaborator_has_mobile_device=collaborator_has_mobile_device,
         qr_or_code_token_demo=_strip_optional(qr_or_code_token_demo),
         nfc_handshake_token_demo=_strip_optional(nfc_handshake_token_demo),
         ble_ephemeral_token_demo=_strip_optional(ble_ephemeral_token_demo),
@@ -424,12 +469,7 @@ def create_demo_station_extended_proximity_signal(
     created_at_utc: Optional[datetime] = None,
 ) -> ProximitySignal:
     """
-    Crea caso demo de tren/subte:
-        - validación previa en molinete;
-        - espera en andén;
-        - ventana extendida;
-        - señal BLE/QR al momento de sincronizar;
-        - mismo andén o misma estación.
+    Caso demo de tren/subte con señal móvil disponible.
     """
     timestamp = created_at_utc or datetime.now(timezone.utc)
 
@@ -453,15 +493,56 @@ def create_demo_station_extended_proximity_signal(
     )
 
 
+def create_demo_no_mobile_proximity_signal(
+    created_at_utc: Optional[datetime] = None,
+) -> ProximitySignal:
+    """
+    Caso demo donde una o ambas personas no cuentan con teléfono móvil.
+
+    Debe quedar registrado para auditoría, pero no bloquear automáticamente
+    la evaluación del Bono Solidario.
+    """
+    timestamp = created_at_utc or datetime.now(timezone.utc)
+
+    return create_demo_proximity_signal(
+        sync_event_demo_id="demo-no-mobile-proximity-sync-001",
+        access_context=TransportAccessContext.PLATFORM_WAIT_AFTER_TURNSTILE,
+        proximity_method=ProximityMethod.NONE_AVAILABLE,
+        priority_user_has_mobile_device=False,
+        collaborator_has_mobile_device=True,
+        qr_or_code_token_demo=None,
+        nfc_handshake_token_demo=None,
+        ble_ephemeral_token_demo=None,
+        same_network_demo_id=True,
+        same_route_demo_id=True,
+        same_station_demo_id=True,
+        same_platform_demo_id=True,
+        same_vehicle_demo_id=False,
+        same_trainset_demo_id=False,
+        same_service_window_demo_id=True,
+        access_window_matched=True,
+        trip_window_matched=True,
+        created_at_utc=timestamp,
+        sync_attempted_at_utc=timestamp + timedelta(minutes=40),
+    )
+
+
 def evaluate_mobile_proximity_sync_guard(
     signal: ProximitySignal,
     policy: Optional[ProximityGuardPolicy] = None,
 ) -> ProximityGuardResult:
     """
-    Evalúa la proximidad demostrativa al momento de sincronizar.
+    Evalúa la señal móvil como refuerzo no excluyente.
 
-    La aceptación no acredita el Bono Solidario por sí sola.
-    Sólo habilita una capa técnica para módulos posteriores.
+    Sólo bloquea cuando aparecen riesgos duros:
+        - mismo usuario;
+        - mismo medio de pago cuando debe ser distinto;
+        - reclamo unilateral del colaborador;
+        - falta de confirmación del usuario SUBE Prioridad;
+        - ausencia de ventana temporal mínima;
+        - ausencia total de contexto compartido.
+
+    La falta de celular no bloquea automáticamente.
     """
     policy = policy or create_demo_proximity_guard_policy()
 
@@ -474,44 +555,84 @@ def evaluate_mobile_proximity_sync_guard(
     )
 
     metrics = _metrics(signal, policy)
-    risk_flags = _risk_flags(signal, policy, metrics)
+    hard_risk_flags = _hard_risk_flags(signal, policy, metrics)
+    audit_flags = _audit_flags(signal, policy, metrics)
     strength = _proximity_strength(signal, metrics)
 
-    if signal.offline_mode and _offline_can_be_deferred(policy, metrics, risk_flags):
+    if signal.offline_mode and _offline_can_be_deferred(policy, metrics, hard_risk_flags):
         return _result(
             signal=signal,
             policy=policy,
             metrics=metrics,
             status=ProximityGuardStatus.DEFERRED_OFFLINE_VALIDATION,
             proximity_strength=strength,
-            proximity_accepted=False,
+            proximity_reinforced=False,
+            blocks_solidary_bonus_flow=False,
             requires_deferred_validation=True,
-            risk_flags=["offline_validation_pending"],
+            requires_audit_review=True,
+            hard_risk_flags=[],
+            audit_flags=_deduplicate(audit_flags + ["offline_validation_pending"]),
             reason=(
-                "La sincronización se registró en modo offline. "
-                "Debe validarse en diferido cuando exista conectividad."
+                "La señal móvil se registró en modo offline. No bloquea por sí sola, "
+                "pero requiere validación diferida y queda registrada para auditoría."
             ),
         )
 
-    if risk_flags:
-        status = (
-            ProximityGuardStatus.NEEDS_REVIEW
-            if _review_only(risk_flags)
-            else ProximityGuardStatus.REJECTED
-        )
-
+    if hard_risk_flags:
         return _result(
             signal=signal,
             policy=policy,
             metrics=metrics,
-            status=status,
+            status=ProximityGuardStatus.REJECTED_HARD_RISK,
             proximity_strength=strength,
-            proximity_accepted=False,
+            proximity_reinforced=False,
+            blocks_solidary_bonus_flow=True,
             requires_deferred_validation=False,
-            risk_flags=risk_flags,
+            requires_audit_review=True,
+            hard_risk_flags=hard_risk_flags,
+            audit_flags=audit_flags,
             reason=(
-                "La guardia de proximidad no aceptó la sincronización porque "
-                "la solicitud no supera las reglas mínimas antifraude."
+                "La guardia detectó riesgos duros. En este caso el filtro sí bloquea "
+                "el avance porque no se trata de simple ausencia de celular."
+            ),
+        )
+
+    if metrics["mobile_filter_available"] and metrics["mobile_filter_used"]:
+        return _result(
+            signal=signal,
+            policy=policy,
+            metrics=metrics,
+            status=ProximityGuardStatus.ACCEPTED_REINFORCED,
+            proximity_strength=strength,
+            proximity_reinforced=True,
+            blocks_solidary_bonus_flow=False,
+            requires_deferred_validation=False,
+            requires_audit_review=bool(audit_flags),
+            hard_risk_flags=[],
+            audit_flags=audit_flags,
+            reason=(
+                "La proximidad móvil actúa como refuerzo positivo no excluyente. "
+                "Aporta evidencia adicional, pero no acredita el Bono Solidario por sí sola."
+            ),
+        )
+
+    if audit_flags:
+        return _result(
+            signal=signal,
+            policy=policy,
+            metrics=metrics,
+            status=ProximityGuardStatus.ACCEPTED_WITHOUT_MOBILE_EVIDENCE,
+            proximity_strength=ProximityStrength.NOT_AVAILABLE,
+            proximity_reinforced=False,
+            blocks_solidary_bonus_flow=False,
+            requires_deferred_validation=False,
+            requires_audit_review=True,
+            hard_risk_flags=[],
+            audit_flags=audit_flags,
+            reason=(
+                "No existe señal móvil suficiente. La ausencia de celular o app no bloquea "
+                "automáticamente la sincronización, pero queda registrada como menor fuerza "
+                "probatoria para auditoría antifraude."
             ),
         )
 
@@ -519,14 +640,17 @@ def evaluate_mobile_proximity_sync_guard(
         signal=signal,
         policy=policy,
         metrics=metrics,
-        status=ProximityGuardStatus.ACCEPTED,
-        proximity_strength=strength,
-        proximity_accepted=True,
+        status=ProximityGuardStatus.ACCEPTED_WITHOUT_MOBILE_EVIDENCE,
+        proximity_strength=ProximityStrength.NOT_AVAILABLE,
+        proximity_reinforced=False,
+        blocks_solidary_bonus_flow=False,
         requires_deferred_validation=False,
-        risk_flags=[],
+        requires_audit_review=False,
+        hard_risk_flags=[],
+        audit_flags=[],
         reason=(
-            "Guardia de proximidad aceptada: existe señal voluntaria, no sensible "
-            "y razonable de cercanía al momento de sincronizar."
+            "No se usó proximidad móvil. El filtro es no excluyente y no bloquea "
+            "el flujo del Bono Solidario demo."
         ),
     )
 
@@ -542,8 +666,13 @@ def result_to_dict(result: ProximityGuardResult) -> Dict[str, Any]:
         "demo_mode": result.demo_mode,
         "status": result.status.value,
         "proximity_strength": result.proximity_strength.value,
-        "proximity_accepted": result.proximity_accepted,
+        "mobile_filter_available": result.mobile_filter_available,
+        "mobile_filter_used": result.mobile_filter_used,
+        "proximity_reinforced": result.proximity_reinforced,
+        "non_exclusive_filter": result.non_exclusive_filter,
+        "blocks_solidary_bonus_flow": result.blocks_solidary_bonus_flow,
         "requires_deferred_validation": result.requires_deferred_validation,
+        "requires_audit_review": result.requires_audit_review,
         "access_context": result.access_context,
         "proximity_method": result.proximity_method,
         "access_window_matched": result.access_window_matched,
@@ -552,9 +681,11 @@ def result_to_dict(result: ProximityGuardResult) -> Dict[str, Any]:
         "device_binding_matched": result.device_binding_matched,
         "handshake_signal_present": result.handshake_signal_present,
         "same_transport_context_score": result.same_transport_context_score,
-        "risk_flags": result.risk_flags,
+        "hard_risk_flags": result.hard_risk_flags,
+        "audit_flags": result.audit_flags,
         "reason": result.reason,
         "security_summary": result.security_summary,
+        "audit_record_demo": result.audit_record_demo,
         "privacy_notice": result.privacy_notice,
         "driver_burden": result.driver_burden,
         "warnings": result.warnings,
@@ -564,7 +695,7 @@ def result_to_dict(result: ProximityGuardResult) -> Dict[str, Any]:
 
 def run_demo() -> Dict[str, Any]:
     """
-    Ejecuta demo estable de validadora a bordo.
+    Demo estable con señal móvil disponible.
     """
     signal = create_demo_proximity_signal()
 
@@ -575,9 +706,22 @@ def run_demo() -> Dict[str, Any]:
 
 def run_station_demo() -> Dict[str, Any]:
     """
-    Ejecuta demo estable de estación/andén con ventana extendida.
+    Demo estable de estación/andén con BLE.
     """
     signal = create_demo_station_extended_proximity_signal()
+
+    result = evaluate_mobile_proximity_sync_guard(signal)
+
+    return result_to_dict(result)
+
+
+def run_no_mobile_demo() -> Dict[str, Any]:
+    """
+    Demo estable sin celular disponible para una de las partes.
+
+    Debe aceptar sin refuerzo móvil y registrar auditoría.
+    """
+    signal = create_demo_no_mobile_proximity_signal()
 
     result = evaluate_mobile_proximity_sync_guard(signal)
 
@@ -612,6 +756,15 @@ def _metrics(
 
     same_transport_context_score = _same_transport_context_score(signal)
 
+    mobile_filter_available = (
+        signal.priority_user_has_mobile_device
+        and signal.collaborator_has_mobile_device
+    )
+
+    mobile_filter_used = mobile_filter_available and (
+        device_binding_matched or handshake_signal_present
+    )
+
     extended_context = signal.access_context in {
         TransportAccessContext.PLATFORM_WAIT_AFTER_TURNSTILE,
         TransportAccessContext.STATION_ACCESS_WAIT,
@@ -627,11 +780,13 @@ def _metrics(
         "device_binding_matched": device_binding_matched,
         "handshake_signal_present": handshake_signal_present,
         "same_transport_context_score": same_transport_context_score,
+        "mobile_filter_available": mobile_filter_available,
+        "mobile_filter_used": mobile_filter_used,
         "extended_context": extended_context,
     }
 
 
-def _risk_flags(
+def _hard_risk_flags(
     signal: ProximitySignal,
     policy: ProximityGuardPolicy,
     metrics: Dict[str, Any],
@@ -662,23 +817,6 @@ def _risk_flags(
     if not metrics["access_context_window_matched"]:
         flags.append("access_context_window_expired")
 
-    if (
-        signal.access_context == TransportAccessContext.IN_VEHICLE_AFTER_PAYMENT
-        and not metrics["sync_moment_window_matched"]
-    ):
-        flags.append("in_vehicle_sync_moment_window_expired")
-
-    if metrics["extended_context"]:
-        if not metrics["access_context_window_matched"]:
-            flags.append("extended_station_access_window_expired")
-
-        if (
-            policy.require_device_or_handshake_for_extended_context
-            and not metrics["handshake_signal_present"]
-            and not metrics["device_binding_matched"]
-        ):
-            flags.append("extended_context_requires_handshake_or_device_signal")
-
     if metrics["same_transport_context_score"] <= 0:
         flags.append("no_shared_transport_context")
 
@@ -702,40 +840,78 @@ def _risk_flags(
         ):
             flags.append("same_sube_card_token_not_allowed")
 
-    if signal.priority_device and not signal.priority_device.device_binding_active:
-        flags.append("priority_device_binding_inactive")
-
-    if signal.collaborator_device and not signal.collaborator_device.device_binding_active:
-        flags.append("collaborator_device_binding_inactive")
-
-    if signal.priority_device and not signal.priority_device.mobile_account_linked_to_payment_demo:
-        flags.append("priority_mobile_not_linked_to_payment_demo")
-
-    if signal.collaborator_device and not signal.collaborator_device.mobile_account_linked_to_payment_demo:
-        flags.append("collaborator_mobile_not_linked_to_payment_demo")
-
     if signal.offline_mode and not policy.allow_offline_deferred_validation:
         flags.append("offline_validation_not_allowed")
 
     if signal.offline_mode and not metrics["offline_pending_window_matched"]:
         flags.append("offline_pending_window_expired")
 
+    if policy.mobile_required_for_bonus and not metrics["mobile_filter_used"]:
+        flags.append("mobile_required_by_policy_but_not_available")
+
+    if (
+        policy.require_mobile_for_extended_context
+        and metrics["extended_context"]
+        and not metrics["mobile_filter_used"]
+    ):
+        flags.append("extended_context_mobile_required_by_policy")
+
     return _deduplicate(flags)
 
 
-def _review_only(risk_flags: List[str]) -> bool:
-    review_only_flags = {
-        "extended_context_requires_handshake_or_device_signal",
-        "unknown_access_context",
-    }
+def _audit_flags(
+    signal: ProximitySignal,
+    policy: ProximityGuardPolicy,
+    metrics: Dict[str, Any],
+) -> List[str]:
+    if not policy.enable_audit_trail:
+        return []
 
-    return bool(risk_flags) and set(risk_flags).issubset(review_only_flags)
+    flags: List[str] = []
+
+    if not signal.priority_user_has_mobile_device:
+        flags.append("priority_user_mobile_not_available_non_blocking")
+
+    if not signal.collaborator_has_mobile_device:
+        flags.append("collaborator_mobile_not_available_non_blocking")
+
+    if not metrics["mobile_filter_available"]:
+        flags.append("mobile_filter_not_available_non_blocking")
+
+    if metrics["mobile_filter_available"] and not metrics["mobile_filter_used"]:
+        flags.append("mobile_filter_available_but_not_used")
+
+    if metrics["extended_context"] and not metrics["mobile_filter_used"]:
+        flags.append("extended_context_without_mobile_reinforcement")
+
+    if signal.access_context == TransportAccessContext.PLATFORM_WAIT_AFTER_TURNSTILE:
+        flags.append("station_or_platform_context_audit")
+
+    if signal.access_context == TransportAccessContext.IN_VEHICLE_AFTER_PAYMENT:
+        flags.append("in_vehicle_context_audit")
+
+    if signal.offline_mode:
+        flags.append("offline_mode_audit")
+
+    if signal.priority_device and not signal.priority_device.device_binding_active:
+        flags.append("priority_device_binding_inactive_audit")
+
+    if signal.collaborator_device and not signal.collaborator_device.device_binding_active:
+        flags.append("collaborator_device_binding_inactive_audit")
+
+    if signal.priority_device and not signal.priority_device.mobile_account_linked_to_payment_demo:
+        flags.append("priority_mobile_not_linked_to_payment_demo_audit")
+
+    if signal.collaborator_device and not signal.collaborator_device.mobile_account_linked_to_payment_demo:
+        flags.append("collaborator_mobile_not_linked_to_payment_demo_audit")
+
+    return _deduplicate(flags)
 
 
 def _offline_can_be_deferred(
     policy: ProximityGuardPolicy,
     metrics: Dict[str, Any],
-    risk_flags: List[str],
+    hard_risk_flags: List[str],
 ) -> bool:
     if not policy.allow_offline_deferred_validation:
         return False
@@ -743,24 +919,22 @@ def _offline_can_be_deferred(
     if not metrics["offline_pending_window_matched"]:
         return False
 
-    blocking_flags = set(risk_flags) - {
-        "extended_context_requires_handshake_or_device_signal",
-    }
-
-    return not blocking_flags
+    return not hard_risk_flags
 
 
 def _proximity_strength(
     signal: ProximitySignal,
     metrics: Dict[str, Any],
 ) -> ProximityStrength:
-    if not metrics["access_context_window_matched"]:
+    if not metrics["mobile_filter_available"]:
+        return ProximityStrength.NOT_AVAILABLE
+
+    if not metrics["mobile_filter_used"]:
         return ProximityStrength.NONE
 
     if signal.access_context == TransportAccessContext.IN_VEHICLE_AFTER_PAYMENT:
         if signal.same_vehicle_demo_id or signal.same_trainset_demo_id:
-            if metrics["handshake_signal_present"] or metrics["device_binding_matched"]:
-                return ProximityStrength.STRONG
+            return ProximityStrength.STRONG
 
     if signal.access_context in {
         TransportAccessContext.PLATFORM_WAIT_AFTER_TURNSTILE,
@@ -790,9 +964,12 @@ def _result(
     metrics: Dict[str, Any],
     status: ProximityGuardStatus,
     proximity_strength: ProximityStrength,
-    proximity_accepted: bool,
+    proximity_reinforced: bool,
+    blocks_solidary_bonus_flow: bool,
     requires_deferred_validation: bool,
-    risk_flags: List[str],
+    requires_audit_review: bool,
+    hard_risk_flags: List[str],
+    audit_flags: List[str],
     reason: str,
 ) -> ProximityGuardResult:
     return ProximityGuardResult(
@@ -802,8 +979,13 @@ def _result(
         demo_mode=DEMO_MODE,
         status=status,
         proximity_strength=proximity_strength,
-        proximity_accepted=proximity_accepted,
+        mobile_filter_available=metrics["mobile_filter_available"],
+        mobile_filter_used=metrics["mobile_filter_used"],
+        proximity_reinforced=proximity_reinforced,
+        non_exclusive_filter=True,
+        blocks_solidary_bonus_flow=blocks_solidary_bonus_flow,
         requires_deferred_validation=requires_deferred_validation,
+        requires_audit_review=requires_audit_review,
         access_context=signal.access_context.value,
         proximity_method=signal.proximity_method.value,
         access_window_matched=signal.access_window_matched,
@@ -812,9 +994,11 @@ def _result(
         device_binding_matched=metrics["device_binding_matched"],
         handshake_signal_present=metrics["handshake_signal_present"],
         same_transport_context_score=metrics["same_transport_context_score"],
-        risk_flags=risk_flags,
+        hard_risk_flags=hard_risk_flags,
+        audit_flags=audit_flags,
         reason=reason,
         security_summary=_security_summary(signal, policy, metrics),
+        audit_record_demo=_audit_record_demo(signal, metrics, hard_risk_flags, audit_flags),
         privacy_notice=_privacy_notice(),
         driver_burden=_driver_burden_notice(),
         warnings=_common_warnings(),
@@ -836,6 +1020,10 @@ def _security_summary(
         "sync_moment_proximity_window_minutes": policy.sync_moment_proximity_window_minutes,
         "in_vehicle_sync_window_minutes": policy.in_vehicle_sync_window_minutes,
         "station_extended_access_window_minutes": policy.station_extended_access_window_minutes,
+        "mobile_required_for_bonus": policy.mobile_required_for_bonus,
+        "require_mobile_for_extended_context": policy.require_mobile_for_extended_context,
+        "mobile_filter_available": metrics["mobile_filter_available"],
+        "mobile_filter_used": metrics["mobile_filter_used"],
         "same_network_demo_id": signal.same_network_demo_id,
         "same_route_demo_id": signal.same_route_demo_id,
         "same_station_demo_id": signal.same_station_demo_id,
@@ -844,6 +1032,36 @@ def _security_summary(
         "same_trainset_demo_id": signal.same_trainset_demo_id,
         "same_service_window_demo_id": signal.same_service_window_demo_id,
         "offline_mode": signal.offline_mode,
+    }
+
+
+def _audit_record_demo(
+    signal: ProximitySignal,
+    metrics: Dict[str, Any],
+    hard_risk_flags: List[str],
+    audit_flags: List[str],
+) -> Dict[str, Any]:
+    """
+    Registro demostrativo de auditoría.
+
+    No contiene datos personales.
+    No contiene diagnóstico.
+    No contiene GPS.
+    No contiene teléfono.
+    """
+    return {
+        "sync_event_demo_id": signal.sync_event_demo_id,
+        "mobile_filter_available": metrics["mobile_filter_available"],
+        "mobile_filter_used": metrics["mobile_filter_used"],
+        "proximity_method": signal.proximity_method.value,
+        "access_context": signal.access_context.value,
+        "same_transport_context_score": metrics["same_transport_context_score"],
+        "hard_risk_flags": hard_risk_flags,
+        "audit_flags": audit_flags,
+        "audit_purpose": (
+            "Registro no sensible para revisión antifraude ante patrones anómalos "
+            "o sospechas posteriores."
+        ),
     }
 
 
@@ -876,6 +1094,9 @@ def _device_binding_matched(signal: ProximitySignal) -> bool:
 
 
 def _handshake_signal_present(signal: ProximitySignal) -> bool:
+    if signal.proximity_method == ProximityMethod.NONE_AVAILABLE:
+        return False
+
     if signal.proximity_method == ProximityMethod.QR_TEMPORARY_DEMO:
         return bool(signal.qr_or_code_token_demo)
 
@@ -994,8 +1215,8 @@ def _strip_optional(value: Optional[str]) -> Optional[str]:
 def _privacy_notice() -> str:
     return (
         "La guardia de proximidad no revela DNI, nombre, domicilio, diagnóstico, CUD, "
-        "historia clínica, certificado médico, teléfono, email ni GPS exacto. "
-        "Sólo utiliza tokens demostrativos, voluntarios y temporales."
+        "historia clínica, certificado médico, teléfono, email, IMEI, MAC ni GPS exacto. "
+        "La ausencia de celular no bloquea automáticamente el flujo."
     )
 
 
@@ -1009,6 +1230,7 @@ def _driver_burden_notice() -> str:
 def _common_warnings() -> List[str]:
     return [
         "Guardia de proximidad conceptual y demostrativa.",
+        "Filtro móvil no excluyente.",
         "Sin implementación oficial vigente.",
         "Sin integración real con SUBE.",
         "Sin integración real con Red SUBE.",
@@ -1021,16 +1243,19 @@ def _common_warnings() -> List[str]:
         "Sin certificados médicos reales.",
         "Sin teléfono real.",
         "Sin email real.",
+        "Sin IMEI real.",
+        "Sin MAC real.",
         "Sin geolocalización GPS exacta.",
         "Sin vigilancia.",
         "Sin ranking.",
         "Sin sanciones.",
+        "Sin obligación de tener celular.",
         "Sin obligación para pasajeros.",
         "Sin carga operativa para el chofer.",
-        "La ventana amplia de estación no alcanza por sí sola.",
-        "La proximidad debe reforzarse al momento de sincronizar.",
+        "La proximidad móvil refuerza, pero no reemplaza los demás filtros.",
+        "La ausencia de señal móvil puede registrarse para auditoría sin bloquear automáticamente.",
         "La aceptación de proximidad no acredita beneficios por sí sola.",
-        "El resultado debe combinarse con handoff, antifraude y política demo de descuento.",
+        "El resultado debe combinarse con handoff, matcher temporal, antifraude y política demo de descuento.",
     ]
 
 
@@ -1043,3 +1268,4 @@ if __name__ == "__main__":
 
     print(json.dumps(run_demo(), indent=2, ensure_ascii=False))
     print(json.dumps(run_station_demo(), indent=2, ensure_ascii=False))
+    print(json.dumps(run_no_mobile_demo(), indent=2, ensure_ascii=False))
