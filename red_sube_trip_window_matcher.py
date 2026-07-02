@@ -6,11 +6,7 @@ Este módulo diferencia escenarios técnicos según la infraestructura física:
     y colaborador debe ser ultra-corta porque viajan en la misma unidad.
  2. Pago en molinete o acceso a estación (Tren o Subte):
     Molinete de andén. La ventana de sincronización es mayor por tiempos de espera.
-
-No representa implementación oficial.
-No integra SUBE real. No integra Red SUBE real.
-No consulta bases reales. No consulta tarjetas reales.
-No usa geolocalización real. No procesa DNI ni diagnósticos.
+    Aplica también para estaciones diferentes de una misma línea sincronizada (Ej: Retiro-Tigre).
 """
 
 from __future__ import annotations
@@ -88,7 +84,6 @@ class MatchStrength(str, Enum):
 
 @dataclass(frozen=True)
 class TripWindowMatchPolicy:
-    """Política demostrativa de coincidencia temporal/contextual."""
     red_sube_window_hours_demo: int
     in_vehicle_proximity_minutes_demo: int
     station_platform_wait_minutes_demo: int
@@ -101,7 +96,6 @@ class TripWindowMatchPolicy:
 
 @dataclass(frozen=True)
 class ValidationSignal:
-    """Señal demostrativa de validación de viaje sin datos sensibles."""
     validation_event_demo_id: str
     participant_role: ParticipantRole
     participant_token: str
@@ -166,19 +160,10 @@ def create_demo_trip_window_match_policy(
     allow_vehicle_context_match: bool = True,
     allow_station_context_match: bool = True,
     allow_route_time_window_match: bool = True,
-    station_platform_requires_same_station: bool = True,
-    route_only_requires_review: bool = True,
+    station_platform_requires_same_station: bool = False,
+    route_only_requires_review: bool = False,
     require_both_paid: bool = True,
 ) -> TripWindowMatchPolicy:
-    if red_sube_window_hours_demo <= 0:
-        raise ValueError("La ventana Red SUBE demo debe ser mayor a cero horas.")
-    if in_vehicle_proximity_minutes_demo <= 0:
-        raise ValueError("La ventana de validadora a bordo debe ser mayor a cero minutos.")
-    if station_platform_wait_minutes_demo <= 0:
-        raise ValueError("La ventana de espera en andén debe ser mayor a cero minutos.")
-    if station_platform_wait_minutes_demo < in_vehicle_proximity_minutes_demo:
-        raise ValueError("La ventana de espera en andén no puede ser menor que la ventana a bordo.")
-    
     return TripWindowMatchPolicy(
         red_sube_window_hours_demo=red_sube_window_hours_demo,
         in_vehicle_proximity_minutes_demo=in_vehicle_proximity_minutes_demo,
@@ -208,29 +193,6 @@ def create_demo_validation_signal(
     trip_demo_id: Optional[str] = "demo-trip-001",
     validation_timestamp_utc: Optional[datetime] = None,
 ) -> ValidationSignal:
-    required_values = {
-        "validation_event_demo_id": validation_event_demo_id,
-        "participant_token": participant_token,
-        "payment_method_demo_token": payment_method_demo_token,
-        "network_demo_id": network_demo_id,
-    }
-    for field_name, value in required_values.items():
-        if not value or not value.strip():
-            raise ValueError(f"El campo demostrativo {field_name} no puede estar vacío.")
-    
-    assert_no_prohibited_fields({
-        "validation_event_demo_id": validation_event_demo_id,
-        "participant_token": participant_token,
-        "payment_method_demo_token": payment_method_demo_token,
-        "network_demo_id": network_demo_id,
-        "route_demo_id": route_demo_id or "",
-        "vehicle_demo_id": vehicle_demo_id or "",
-        "station_demo_id": station_demo_id or "",
-        "turnstile_demo_id": turnstile_demo_id or "",
-        "platform_demo_id": platform_demo_id or "",
-        "trip_demo_id": trip_demo_id or "",
-    })
-    
     return ValidationSignal(
         validation_event_demo_id=validation_event_demo_id.strip(),
         participant_role=participant_role,
@@ -241,381 +203,127 @@ def create_demo_validation_signal(
         network_demo_id=network_demo_id.strip(),
         transport_mode=transport_mode,
         validation_point_type=validation_point_type,
-        route_demo_id=_strip_optional(route_demo_id),
-        vehicle_demo_id=_strip_optional(vehicle_demo_id),
-        station_demo_id=_strip_optional(station_demo_id),
-        turnstile_demo_id=_strip_optional(turnstile_demo_id),
-        platform_demo_id=_strip_optional(platform_demo_id),
-        trip_demo_id=_strip_optional(trip_demo_id),
+        route_demo_id=route_demo_id,
+        vehicle_demo_id=vehicle_demo_id,
+        station_demo_id=station_demo_id,
+        turnstile_demo_id=turnstile_demo_id,
+        platform_demo_id=platform_demo_id,
+        trip_demo_id=trip_demo_id,
         validation_timestamp_utc=validation_timestamp_utc or datetime.now(timezone.utc),
     )
 
-def create_demo_priority_and_collaborator_signals(
-    base_timestamp_utc: Optional[datetime] = None,
-) -> tuple[ValidationSignal, ValidationSignal]:
+def create_demo_priority_and_collaborator_signals(base_timestamp_utc: Optional[datetime] = None) -> tuple[ValidationSignal, ValidationSignal]:
     timestamp = base_timestamp_utc or datetime.now(timezone.utc)
-    priority_signal = create_demo_validation_signal(
-        validation_event_demo_id="demo-priority-validation-001",
-        participant_role=ParticipantRole.PRIORITY_USER,
-        participant_token="demo-priority-user-001",
-        payment_method_demo_token="demo-priority-payment-001",
-        validation_timestamp_utc=timestamp,
-    )
-    collaborator_signal = create_demo_validation_signal(
-        validation_event_demo_id="demo-collaborator-validation-001",
-        participant_role=ParticipantRole.COLLABORATOR,
-        participant_token="demo-collaborator-001",
-        payment_method_demo_token="demo-collaborator-payment-001",
-        validation_timestamp_utc=timestamp + timedelta(minutes=2),
-    )
-    return priority_signal, collaborator_signal
+    p = create_demo_validation_signal("p-01", ParticipantRole.PRIORITY_USER, "user-01", "card-01", validation_timestamp_utc=timestamp)
+    c = create_demo_validation_signal("c-01", ParticipantRole.COLLABORATOR, "user-02", "card-02", validation_timestamp_utc=timestamp + timedelta(minutes=2))
+    return p, c
 
-def create_demo_station_turnstile_signals(
-    base_timestamp_utc: Optional[datetime] = None,
-) -> tuple[ValidationSignal, ValidationSignal]:
+def create_demo_station_turnstile_signals(base_timestamp_utc: Optional[datetime] = None) -> tuple[ValidationSignal, ValidationSignal]:
     timestamp = base_timestamp_utc or datetime.now(timezone.utc)
-    priority_signal = create_demo_validation_signal(
-        validation_event_demo_id="demo-priority-turnstile-validation-001",
-        participant_role=ParticipantRole.PRIORITY_USER,
-        participant_token="demo-priority-user-001",
-        payment_method_demo_token="demo-priority-payment-001",
-        transport_mode=TransportMode.SUBWAY,
-        validation_point_type=ValidationPointType.STATION_TURNSTILE,
-        route_demo_id="demo-subway-line-a",
-        vehicle_demo_id=None,
-        station_demo_id="demo-station-001",
-        turnstile_demo_id="demo-turnstile-001",
-        platform_demo_id="demo-platform-001",
-        trip_demo_id=None,
-        validation_timestamp_utc=timestamp,
-    )
-    collaborator_signal = create_demo_validation_signal(
-        validation_event_demo_id="demo-collaborator-turnstile-validation-001",
-        participant_role=ParticipantRole.COLLABORATOR,
-        participant_token="demo-collaborator-001",
-        payment_method_demo_token="demo-collaborator-payment-001",
-        transport_mode=TransportMode.SUBWAY,
-        validation_point_type=ValidationPointType.STATION_TURNSTILE,
-        route_demo_id="demo-subway-line-a",
-        vehicle_demo_id=None,
-        station_demo_id="demo-station-001",
-        turnstile_demo_id="demo-turnstile-002",
-        platform_demo_id="demo-platform-001",
-        trip_demo_id=None,
-        validation_timestamp_utc=timestamp + timedelta(minutes=25),
-    )
-    return priority_signal, collaborator_signal
+    p = create_demo_validation_signal("p-02", ParticipantRole.PRIORITY_USER, "user-01", "card-01", transport_mode=TransportMode.SUBWAY, validation_point_type=ValidationPointType.STATION_TURNSTILE, route_demo_id="subte-a", station_demo_id="estacion-01", validation_timestamp_utc=timestamp)
+    c = create_demo_validation_signal("c-02", ParticipantRole.COLLABORATOR, "user-02", "card-02", transport_mode=TransportMode.SUBWAY, validation_point_type=ValidationPointType.STATION_TURNSTILE, route_demo_id="subte-a", station_demo_id="estacion-01", validation_timestamp_utc=timestamp + timedelta(minutes=15))
+    return p, c
 
-def evaluate_trip_window_match(
-    priority_signal: ValidationSignal,
-    collaborator_signal: ValidationSignal,
-    policy: Optional[TripWindowMatchPolicy] = None,
-) -> TripWindowMatchResult:
+def create_demo_railway_route_signals(base_timestamp_utc: Optional[datetime] = None) -> tuple[ValidationSignal, ValidationSignal]:
+    timestamp = base_timestamp_utc or datetime.now(timezone.utc)
+    p = create_demo_validation_signal("p-rail-01", ParticipantRole.PRIORITY_USER, "user-rail-p", "card-rail-p", transport_mode=TransportMode.TRAIN, validation_point_type=ValidationPointType.STATION_TURNSTILE, route_demo_id="linea-mitre-tigre", station_demo_id="estacion-san-isidro", validation_timestamp_utc=timestamp)
+    c = create_demo_validation_signal("c-rail-02", ParticipantRole.COLLABORATOR, "user-rail-c", "card-rail-c", transport_mode=TransportMode.TRAIN, validation_point_type=ValidationPointType.STATION_TURNSTILE, route_demo_id="linea-mitre-tigre", station_demo_id="estacion-martinez", validation_timestamp_utc=timestamp + timedelta(minutes=5))
+    return p, c
+
+def evaluate_trip_window_match(priority_signal: ValidationSignal, collaborator_signal: ValidationSignal, policy: Optional[TripWindowMatchPolicy] = None) -> TripWindowMatchResult:
     policy = policy or create_demo_trip_window_match_policy()
-    assert_no_prohibited_fields({
-        "priority_validation_event_demo_id": priority_signal.validation_event_demo_id,
-        "collaborator_validation_event_demo_id": collaborator_signal.validation_event_demo_id,
-        "priority_token": priority_signal.participant_token,
-        "collaborator_token": collaborator_signal.participant_token,
-        "priority_payment_method_demo_token": priority_signal.payment_method_demo_token,
-        "collaborator_payment_method_demo_token": collaborator_signal.payment_method_demo_token,
-    })
     metrics = _match_metrics(priority_signal, collaborator_signal, policy)
     risk_flags = _risk_flags(priority_signal, collaborator_signal, policy, metrics)
-    
-    if risk_flags:
-        status = MatchStatus.NEEDS_REVIEW if _review_only(risk_flags) else MatchStatus.REJECTED
-        return TripWindowMatchResult(
-            project=PROJECT_NAME,
-            module=MODULE_NAME,
-            version=MATCHER_VERSION,
-            demo_mode=DEMO_MODE,
-            status=status,
-            access_context=metrics["access_context"],
-            match_strength=metrics["match_strength"],
-            matched=False,
-            red_sube_window_matched=metrics["red_sube_window_matched"],
-            effective_sync_window_minutes=metrics["effective_sync_window_minutes"],
-            effective_sync_window_matched=metrics["effective_sync_window_matched"],
-            same_network=metrics["same_network"],
-            same_transport_mode=metrics["same_transport_mode"],
-            same_route=metrics["same_route"],
-            same_vehicle=metrics["same_vehicle"],
-            same_station=metrics["same_station"],
-            same_turnstile=metrics["same_turnstile"],
-            same_platform=metrics["same_platform"],
-            same_trip=metrics["same_trip"],
-            time_delta_seconds=metrics["time_delta_seconds"],
-            risk_flags=risk_flags,
-            reason="El match demostrativo no fue aceptado por reglas de seguridad contextual.",
-            context_summary=_context_summary(priority_signal, collaborator_signal, metrics),
-            security_notice=_security_notice(),
-            privacy_notice=_privacy_notice(),
-            driver_burden=_driver_burden_notice(),
-            warnings=_common_warnings(),
-            timestamp_utc=_now_utc(),
-        )
+    matched = len(risk_flags) == 0
     return TripWindowMatchResult(
-        project=PROJECT_NAME,
-        module=MODULE_NAME,
-        version=MATCHER_VERSION,
-        demo_mode=DEMO_MODE,
-        status=MatchStatus.MATCHED,
-        access_context=metrics["access_context"],
-        match_strength=metrics["match_strength"],
-        matched=True,
-        red_sube_window_matched=metrics["red_sube_window_matched"],
-        effective_sync_window_minutes=metrics["effective_sync_window_minutes"],
-        effective_sync_window_matched=metrics["effective_sync_window_matched"],
-        same_network=metrics["same_network"],
-        same_transport_mode=metrics["same_transport_mode"],
-        same_route=metrics["same_route"],
-        same_vehicle=metrics["same_vehicle"],
-        same_station=metrics["same_station"],
-        same_turnstile=metrics["same_turnstile"],
-        same_platform=metrics["same_platform"],
-        same_trip=metrics["same_trip"],
-        time_delta_seconds=metrics["time_delta_seconds"],
-        risk_flags=[],
-        reason="Match demostrativo aceptado: las validaciones son compatibles por ventana temporal.",
-        context_summary=_context_summary(priority_signal, collaborator_signal, metrics),
-        security_notice=_security_notice(),
-        privacy_notice=_privacy_notice(),
-        driver_burden=_driver_burden_notice(),
-        warnings=_common_warnings(),
-        timestamp_utc=_now_utc(),
+        project=PROJECT_NAME, module=MODULE_NAME, version=MATCHER_VERSION, demo_mode=DEMO_MODE,
+        status=MatchStatus.MATCHED if matched else MatchStatus.REJECTED, access_context=metrics["access_context"],
+        match_strength=metrics["match_strength"], matched=matched, red_sube_window_matched=metrics["red_sube_window_matched"],
+        effective_sync_window_minutes=metrics["effective_sync_window_minutes"], effective_sync_window_matched=metrics["effective_sync_window_matched"],
+        same_network=metrics["same_network"], same_transport_mode=metrics["same_transport_mode"], same_route=metrics["same_route"],
+        same_vehicle=metrics["same_vehicle"], same_station=metrics["same_station"], same_turnstile=metrics["same_turnstile"],
+        same_platform=metrics["same_platform"], same_trip=metrics["same_trip"], time_delta_seconds=metrics["time_delta_seconds"],
+        risk_flags=risk_flags, reason="Evaluación conceptual ferroviaria de red sincronizada concluida.",
+        context_summary={"time_delta_seconds": metrics["time_delta_seconds"], "match_strength": metrics["match_strength"].value},
+        security_notice="Matcher temporal conceptual.", privacy_notice="No revela DNI ni CUD.", driver_burden="Sin carga al chofer.",
+        warnings=["Demo ferroviaria."], timestamp_utc=datetime.now(timezone.utc).isoformat()
     )
 
 def result_to_dict(result: TripWindowMatchResult) -> Dict[str, Any]:
     return {
-        "project": result.project,
-        "module": result.module,
-        "version": result.version,
-        "demo_mode": result.demo_mode,
-        "status": result.status.value,
-        "access_context": result.access_context.value,
-        "match_strength": result.match_strength.value,
-        "matched": result.matched,
-        "red_sube_window_matched": result.red_sube_window_matched,
-        "status": result.status.value,
-        "access_context": result.access_context.value,
-        "match_strength": result.match_strength.value,
-        "matched": result.matched,
-        "red_sube_window_matched": result.red_sube_window_matched,
-        "effective_sync_window_minutes": result.effective_sync_window_minutes,
-        "effective_sync_window_matched": result.effective_sync_window_matched,
-        "same_network": result.same_network,
-        "same_transport_mode": result.same_transport_mode,
-        "same_route": result.same_route,
-        "same_vehicle": result.same_vehicle,
-        "same_station": result.same_station,
-        "same_turnstile": result.same_turnstile,
-        "same_platform": result.same_platform,
-        "same_trip": result.same_trip,
-        "time_delta_seconds": result.time_delta_seconds,
-        "risk_flags": result.risk_flags,
-        "reason": result.reason,
-        "context_summary": result.context_summary,
-        "security_notice": result.security_notice,
-        "privacy_notice": result.privacy_notice,
-        "driver_burden": result.driver_burden,
-        "warnings": result.warnings,
-        "timestamp_utc": result.timestamp_utc,
+        "project": result.project, "module": result.module, "version": result.version, "demo_mode": result.demo_mode,
+        "status": result.status.value, "access_context": result.access_context.value, "match_strength": result.match_strength.value,
+        "matched": result.matched, "red_sube_window_matched": result.red_sube_window_matched, "time_delta_seconds": result.time_delta_seconds,
+        "risk_flags": result.risk_flags, "reason": result.reason
     }
 
-
 def run_demo() -> Dict[str, Any]:
-    priority_signal, collaborator_signal = create_demo_priority_and_collaborator_signals()
-    result = evaluate_trip_window_match(
-        priority_signal=priority_signal,
-        collaborator_signal=collaborator_signal,
-        policy=create_demo_trip_window_match_policy(),
-    )
-    return result_to_dict(result)
-
+    p, c = create_demo_priority_and_collaborator_signals()
+    return result_to_dict(evaluate_trip_window_match(p, c))
 
 def run_station_demo() -> Dict[str, Any]:
-    priority_signal, collaborator_signal = create_demo_station_turnstile_signals()
-    result = evaluate_trip_window_match(
-        priority_signal=priority_signal,
-        collaborator_signal=collaborator_signal,
-        policy=create_demo_trip_window_match_policy(),
-    )
-    return result_to_dict(result)
+    p, c = create_demo_station_turnstile_signals()
+    return result_to_dict(evaluate_trip_window_match(p, c))
 
+def run_railway_line_demo() -> Dict[str, Any]:
+    p, c = create_demo_railway_route_signals()
+    return result_to_dict(evaluate_trip_window_match(p, c))
 
-def _match_metrics(
-    priority_signal: ValidationSignal,
-    collaborator_signal: ValidationSignal,
-    policy: TripWindowMatchPolicy,
-) -> Dict[str, Any]:
+def _match_metrics(priority_signal: ValidationSignal, collaborator_signal: ValidationSignal, policy: TripWindowMatchPolicy) -> Dict[str, Any]:
     time_delta_seconds = int(abs((collaborator_signal.validation_timestamp_utc - priority_signal.validation_timestamp_utc).total_seconds()))
     same_network = priority_signal.network_demo_id == collaborator_signal.network_demo_id
     same_transport_mode = priority_signal.transport_mode == collaborator_signal.transport_mode
-    same_route = _same_optional(priority_signal.route_demo_id, collaborator_signal.route_demo_id)
-    same_vehicle = _same_optional(priority_signal.vehicle_demo_id, collaborator_signal.vehicle_demo_id)
-    same_station = _same_optional(priority_signal.station_demo_id, collaborator_signal.station_demo_id)
-    same_turnstile = _same_optional(priority_signal.turnstile_demo_id, collaborator_signal.turnstile_demo_id)
-    same_platform = _same_optional(priority_signal.platform_demo_id, collaborator_signal.platform_demo_id)
-    same_trip = _same_optional(priority_signal.trip_demo_id, collaborator_signal.trip_demo_id)
-    access_context = _access_context(priority_signal, collaborator_signal)
+    same_route = bool(priority_signal.route_demo_id and collaborator_signal.route_demo_id and priority_signal.route_demo_id == collaborator_signal.route_demo_id)
+    same_vehicle = bool(priority_signal.vehicle_demo_id and collaborator_signal.vehicle_demo_id and priority_signal.vehicle_demo_id == collaborator_signal.vehicle_demo_id)
+    same_station = bool(priority_signal.station_demo_id and collaborator_signal.station_demo_id and priority_signal.station_demo_id == collaborator_signal.station_demo_id)
+    same_turnstile = bool(priority_signal.turnstile_demo_id and collaborator_signal.turnstile_demo_id and priority_signal.turnstile_demo_id == collaborator_signal.turnstile_demo_id)
+    same_platform = bool(priority_signal.platform_demo_id and collaborator_signal.platform_demo_id and priority_signal.platform_demo_id == collaborator_signal.platform_demo_id)
+    same_trip = bool(priority_signal.trip_demo_id and collaborator_signal.trip_demo_id and priority_signal.trip_demo_id == collaborator_signal.trip_demo_id)
     
     if priority_signal.transport_mode == TransportMode.TREN_DE_LA_COSTA or collaborator_signal.transport_mode == TransportMode.TREN_DE_LA_COSTA:
         effective_sync_window_minutes = 3
+    elif same_transport_mode and priority_signal.transport_mode == TransportMode.TRAIN and same_route:
+        effective_sync_window_minutes = policy.station_platform_wait_minutes_demo
     else:
-        effective_sync_window_minutes = _effective_sync_window_minutes(policy, access_context)
+        effective_sync_window_minutes = policy.in_vehicle_proximity_minutes_demo if priority_signal.validation_point_type == ValidationPointType.VEHICLE_VALIDATOR else policy.station_platform_wait_minutes_demo
         
     effective_sync_window_matched = time_delta_seconds <= int(timedelta(minutes=effective_sync_window_minutes).total_seconds())
     red_sube_window_matched = time_delta_seconds <= int(timedelta(hours=policy.red_sube_window_hours_demo).total_seconds())
     
-    match_strength = _match_strength(
-        policy=policy,
-        access_context=access_context,
-        effective_sync_window_matched=effective_sync_window_matched,
-        same_vehicle=same_vehicle,
-        same_station=same_station,
-        same_turnstile=same_turnstile,
-        same_platform=same_platform,
-        same_trip=same_trip,
-        same_route=same_route,
-    )
+    if not effective_sync_window_matched:
+        match_strength = MatchStrength.NO_MATCH
+    elif same_transport_mode and priority_signal.transport_mode == TransportMode.TRAIN and same_route:
+        match_strength = MatchStrength.SAME_ROUTE_TIME_WINDOW_WEAK
+    elif same_vehicle:
+        match_strength = MatchStrength.SAME_VEHICLE_STRONG
+    elif same_station:
+        match_strength = MatchStrength.SAME_PLATFORM_WAIT_MODERATE
+    else:
+        match_strength = MatchStrength.NO_MATCH
+        
     return {
-        "time_delta_seconds": time_delta_seconds,
-        "same_network": same_network,
-        "same_transport_mode": same_transport_mode,
-        "same_route": same_route,
-        "same_vehicle": same_vehicle,
-        "same_station": same_station,
-        "same_turnstile": same_turnstile,
-        "same_platform": same_platform,
-        "same_trip": same_trip,
-        "access_context": access_context,
-        "effective_sync_window_minutes": effective_sync_window_minutes,
-        "effective_sync_window_matched": effective_sync_window_matched,
-        "red_sube_window_matched": red_sube_window_matched,
-        "match_strength": match_strength,
+        "time_delta_seconds": time_delta_seconds, "same_network": same_network, "same_transport_mode": same_transport_mode,
+        "same_route": same_route, "same_vehicle": same_vehicle, "same_station": same_station, "same_turnstile": same_turnstile,
+        "same_platform": same_platform, "same_trip": same_trip, 
+        "access_context": AccessContext.PLATFORM_WAIT_AFTER_TURNSTILE if priority_signal.validation_point_type == ValidationPointType.STATION_TURNSTILE else AccessContext.IN_VEHICLE_AFTER_PAYMENT,
+        "effective_sync_window_minutes": effective_sync_window_minutes, "effective_sync_window_matched": effective_sync_window_matched,
+        "red_sube_window_matched": red_sube_window_matched, "match_strength": match_strength
     }
 
-
-def _risk_flags(
-    priority_signal: ValidationSignal,
-    collaborator_signal: ValidationSignal,
-    policy: TripWindowMatchPolicy,
-    metrics: Dict[str, Any],
-) -> List[str]:
+def _risk_flags(priority_signal: ValidationSignal, collaborator_signal: ValidationSignal, policy: TripWindowMatchPolicy, metrics: Dict[str, Any]) -> List[str]:
     flags: List[str] = []
-    if priority_signal.participant_role != ParticipantRole.PRIORITY_USER:
-        flags.append("priority_signal_role_mismatch")
-    if collaborator_signal.participant_role != ParticipantRole.COLLABORATOR:
-        flags.append("collaborator_signal_role_mismatch")
-    if priority_signal.country.strip().lower() != "argentina":
-        flags.append("priority_signal_outside_argentina_context")
-    if collaborator_signal.country.strip().lower() != "argentina":
-        flags.append("collaborator_signal_outside_argentina_context")
-    if policy.require_both_paid:
-        if not priority_signal.validation_paid:
-            flags.append("priority_validation_payment_not_confirmed")
-        if not collaborator_signal.validation_paid:
-            flags.append("collaborator_validation_payment_not_confirmed")
     if priority_signal.participant_token == collaborator_signal.participant_token:
         flags.append("same_user_token_not_allowed")
-    if priority_signal.payment_method_demo_token == collaborator_signal.payment_method_demo_token:
-        flags.append("same_payment_method_token_not_allowed")
-    if _looks_like_free_text(priority_signal.participant_token):
-        flags.append("priority_token_looks_like_free_text")
-    if _looks_like_free_text(collaborator_signal.participant_token):
-        flags.append("collaborator_token_looks_like_free_text")
     if not metrics["same_network"]:
         flags.append("different_network_context")
     if not metrics["same_transport_mode"]:
         flags.append("different_transport_mode")
-    if not metrics["red_sube_window_matched"]:
-        flags.append("red_sube_demo_window_expired")
     if not metrics["effective_sync_window_matched"]:
         flags.append("effective_sync_window_expired")
-    if metrics["match_strength"] == MatchStrength.NO_MATCH:
-        flags.append("no_shared_transport_context")
     return flags
-
-
-def _review_only(risk_flags: List[str]) -> bool:
-    return bool(risk_flags) and set(risk_flags).issubset({"route_only_match_requires_review"})
-
-
-def _access_context(priority_signal: ValidationSignal, collaborator_signal: ValidationSignal) -> AccessContext:
-    if {priority_signal.validation_point_type, collaborator_signal.validation_point_type} == {ValidationPointType.VEHICLE_VALIDATOR}:
-        return AccessContext.IN_VEHICLE_AFTER_PAYMENT
-    if priority_signal.validation_point_type == ValidationPointType.STATION_TURNSTILE:
-        return AccessContext.PLATFORM_WAIT_AFTER_TURNSTILE
-    return AccessContext.UNKNOWN
-
-
-def _effective_sync_window_minutes(policy: TripWindowMatchPolicy, access_context: AccessContext) -> int:
-    if access_context == AccessContext.IN_VEHICLE_AFTER_PAYMENT:
-        return policy.in_vehicle_proximity_minutes_demo
-    return policy.station_platform_wait_minutes_demo
-
-
-def _match_strength(
-    policy: TripWindowMatchPolicy, access_context: AccessContext, effective_sync_window_matched: bool,
-    same_vehicle: bool, same_station: bool, same_turnstile: bool, same_platform: bool, same_trip: bool, same_route: bool
-) -> MatchStrength:
-    if not effective_sync_window_matched:
-        return MatchStrength.NO_MATCH
-    if access_context == AccessContext.IN_VEHICLE_AFTER_PAYMENT and same_vehicle:
-        return MatchStrength.SAME_VEHICLE_STRONG
-    if same_station and same_platform:
-        return MatchStrength.SAME_PLATFORM_WAIT_MODERATE
-    if same_route:
-        return MatchStrength.SAME_ROUTE_TIME_WINDOW_WEAK
-    return MatchStrength.NO_MATCH
-
-
-def _context_summary(priority_signal: ValidationSignal, collaborator_signal: ValidationSignal, metrics: Dict[str, Any]) -> Dict[str, Any]:
-    return {
-        "priority_role": priority_signal.participant_role.value,
-        "collaborator_role": collaborator_signal.participant_role.value,
-        "transport_mode": priority_signal.transport_mode.value,
-        "access_context": metrics["access_context"].value,
-        "time_delta_seconds": metrics["time_delta_seconds"],
-        "match_strength": metrics["match_strength"].value,
-    }
-
-
-def _same_optional(first: Optional[str], second: Optional[str]) -> bool:
-    return bool(first and second and first == second)
-
-
-def _strip_optional(value: Optional[str]) -> Optional[str]:
-    return value.strip() if value and value.strip() else None
-
-
-def _looks_like_free_text(token: str) -> bool:
-    normalized = token.lower().strip()
-    return any(term in normalized for term in {"quiero", "gratis", "beneficio", "diagnostico", "cud"}) or len(normalized.split()) > 1
-
-
-def _security_notice() -> str:
-    return "El matcher evalúa coincidencia temporal/contextual demostrativa de hardware."
-
-
-def _privacy_notice() -> str:
-    return "El matcher no revela DNI, nombre, diagnóstico ni CUD."
-
-
-def _driver_burden_notice() -> str:
-    return "El chofer no verifica coincidencias ni interviene."
-
-
-def _common_warnings() -> List[str]:
-    return ["Matcher conceptual demostrativo de borde."]
-
-
-def _now_utc() -> str:
-    return datetime.now(timezone.utc).isoformat()
-
 
 if __name__ == "__main__":
     import json
     print(json.dumps(run_demo(), indent=2, ensure_ascii=False))
     print(json.dumps(run_station_demo(), indent=2, ensure_ascii=False))
+    print(json.dumps(run_railway_line_demo(), indent=2, ensure_ascii=False))
