@@ -133,10 +133,6 @@ class SolidaryRecognitionResult:
     driver_burden: str
     timestamp_utc: str
 
-# =====================================================================
-# 🆕 CAPA DE ABSTRACCIÓN DEL LIBRO DE REGISTROS (RESUELVE EL IMPORT ERROR)
-# =====================================================================
-
 class BaseRecognitionLedger(ABC):
     """Interfaz abstracta para el desacoplamiento de la persistencia cívica (DIP)."""
     @abstractmethod
@@ -144,7 +140,7 @@ class BaseRecognitionLedger(ABC):
         pass
 
 class DemoRecognitionLedger(BaseRecognitionLedger):
-    """Implementación conceptual en memoria para auditorías transaccionales de tests."""
+    """Implementación conceptual en memoria exigida por las pruebas unitarias."""
     def __init__(self) -> None:
         self._ledger: Dict[str, Dict[str, Any]] = {}
 
@@ -152,7 +148,6 @@ class DemoRecognitionLedger(BaseRecognitionLedger):
         if not event.priority_user_token or not event.collaborator_token:
             return False
         
-        # Simulación de registro asíncrono indexado despersonalizado
         self._ledger[event.event_demo_id] = {
             "priority_user_token": event.priority_user_token,
             "collaborator_token": event.collaborator_token,
@@ -167,11 +162,6 @@ class DemoRecognitionLedger(BaseRecognitionLedger):
     @property
     def size(self) -> int:
         return len(self._ledger)
-
-
-# =====================================================================
-# 🏛️ FUNCIONES CORE DE NEGOCIO (PRESERVADAS DE FORMA FIDELÍSIMA)
-# =====================================================================
 
 def assert_no_prohibited_fields(payload: Dict[str, Any]) -> None:
     keys = {str(key).strip().lower() for key in payload.keys()}
@@ -196,10 +186,6 @@ def create_demo_solidary_event(
     source: str = "demo-validator-or-user-confirmation",
     **legacy_kwargs: Any,
 ) -> SolidaryEvent:
-    """
-    Crea un evento demo de Bono Solidario.
-    Acepta nombres viejos y nuevos para no romper tests ni endpoints previos.
-    """
     if "priority_token" in legacy_kwargs:
         priority_user_token = legacy_kwargs["priority_token"]
     if "collaborator" in legacy_kwargs and collaborator_token is None:
@@ -298,3 +284,212 @@ def result_to_dict(result: SolidaryRecognitionResult) -> Dict[str, Any]:
         "privacy_notice": result.privacy_notice,
         "legal_scope_notice": result.legal_scope_notice,
         "driver_burden": result.driver_burden,
+        "timestamp_utc": result.timestamp_utc,
+    }
+
+def run_demo() -> Dict[str, Any]:
+    event = create_demo_solidary_event()
+    result = simulate_solidary_recognition(event)
+    return result_to_dict(result)
+
+def run_rejected_demo() -> Dict[str, Any]:
+    event = create_demo_solidary_event(
+        voluntary_seat_yield=False,
+    )
+    result = simulate_solidary_recognition(event)
+    return result_to_dict(result)
+
+def _risk_flags(event: SolidaryEvent) -> List[str]:
+    flags: List[str] = []
+    if event.priority_user_token == event.collaborator_token:
+        risk_flags=[],
+        audit_flags=audit_flags,
+    )
+
+def result_to_dict(result: SolidaryRecognitionResult) -> Dict[str, Any]:
+    return {
+        "project": result.project,
+        "module": result.module,
+        "version": result.version,
+        "demo_mode": result.demo_mode,
+        "status": result.status.value,
+        "accepted": result.accepted,
+        "recognition_token": result.recognition_token,
+        "priority_user_token": result.priority_user_token,
+        "collaborator_token": result.collaborator_token,
+        "collaborator_user_token": result.collaborator_token,
+        "seat_type": result.seat_type.value,
+        "rejection_reason": result.rejection_reason.value,
+        "risk_flags": result.risk_flags,
+        "audit_flags": result.audit_flags,
+        "bonus_summary": result.bonus_summary,
+        "privacy_notice": result.privacy_notice,
+        "legal_scope_notice": result.legal_scope_notice,
+        "driver_burden": result.driver_burden,
+        "timestamp_utc": result.timestamp_utc,
+    }
+
+def run_demo() -> Dict[str, Any]:
+    event = create_demo_solidary_event()
+    result = simulate_solidary_recognition(event)
+    return result_to_dict(result)
+
+def run_rejected_demo() -> Dict[str, Any]:
+    event = create_demo_solidary_event(
+        voluntary_seat_yield=False,
+    )
+    result = simulate_solidary_recognition(event)
+    return result_to_dict(result)
+
+def _risk_flags(event: SolidaryEvent) -> List[str]:
+    flags: List[str] = []
+    if event.priority_user_token == event.collaborator_token:
+        flags.append("same_user_not_allowed")
+    if not event.voluntary_seat_yield:
+        flags.append("no_voluntary_seat_yield")
+    if not event.priority_user_confirms_seat_yield:
+        flags.append("priority_user_did_not_confirm")
+    if not event.same_transport_context:
+        flags.append("not_same_transport_context")
+    if event.seat_type == SeatType.LEGAL_PRIORITY:
+        flags.append("legal_priority_seat_not_rewardable")
+    if _looks_like_free_text(event.priority_user_token):
+        flags.append("priority_user_token_looks_like_free_text")
+    if _looks_like_free_text(event.collaborator_token):
+        flags.append("collaborator_token_looks_like_free_text")
+    return _deduplicate(flags)
+
+def _audit_flags(event: SolidaryEvent) -> List[str]:
+    flags = [
+        "solidary_bonus_demo",
+        "voluntary_action_required",
+        "priority_user_confirmation_required",
+        "same_transport_context_required",
+        "general_use_seat_required",
+        "no_diagnosis_visible",
+        "no_cud_visible",
+        "no_real_sube_integration",
+        "no_real_discount_applied",
+    ]
+    if event.seat_type == SeatType.GENERAL_USE:
+        flags.append("general_use_seat_context")
+    if event.seat_type == SeatType.LEGAL_PRIORITY:
+        flags.append("legal_priority_seat_context_not_rewardable")
+    return _deduplicate(flags)
+
+def _primary_rejection_reason(
+    risk_flags: List[str],
+) -> SolidaryRejectionReason:
+    if "same_user_not_allowed" in risk_flags:
+        return SolidaryRejectionReason.SAME_USER_NOT_ALLOWED
+    if "no_voluntary_seat_yield" in risk_flags:
+        return SolidaryRejectionReason.NO_VOLUNTARY_SEAT_YIELD
+    if "priority_user_did_not_confirm" in risk_flags:
+        return SolidaryRejectionReason.PRIORITY_USER_DID_NOT_CONFIRM
+    if "not_same_transport_context" in risk_flags:
+        return SolidaryRejectionReason.NOT_SAME_TRANSPORT_CONTEXT
+    if "legal_priority_seat_not_rewardable" in risk_flags:
+        return SolidaryRejectionReason.LEGAL_PRIORITY_SEAT_NOT_REWARDABLE
+    return SolidaryRejectionReason.SENSITIVE_DATA_REJECTED
+
+def _result(
+    event: SolidaryEvent,
+    status: SolidaryRecognitionStatus,
+    accepted: bool,
+    recognition_token: Optional[str],
+    rejection_reason: SolidaryRejectionReason,
+    risk_flags: List[str],
+    audit_flags: List[str],
+) -> SolidaryRecognitionResult:
+    return SolidaryRecognitionResult(
+        project=PROJECT_NAME,
+        module=MODULE_NAME,
+        version=SIMULATOR_VERSION,
+        demo_mode=DEMO_MODE,
+        status=status,
+        accepted=accepted,
+        recognition_token=recognition_token,
+        priority_user_token=event.priority_user_token,
+        collaborator_token=event.collaborator_token,
+        seat_type=event.seat_type,
+        rejection_reason=rejection_reason,
+        risk_flags=_deduplicate(risk_flags),
+        audit_flags=_deduplicate(audit_flags),
+        bonus_summary={
+            "demo_only": True,
+            "real_discount_applied": False,
+            "real_balance_modified": False,
+            "recognition_type": (
+                "solidary_bonus_demo" if accepted else "no_bonus_generated"
+            ),
+            "seat_type": event.seat_type.value,
+            "same_transport_context": event.same_transport_context,
+            "voluntary_seat_yield": event.voluntary_seat_yield,
+            "priority_user_confirmed": event.priority_user_confirms_seat_yield,
+            "public_visibility": "Usuario SUBE Prioridad",
+            "contains_diagnosis": False,
+            "contains_cud_visible": False,
+            "contains_medical_certificate": False,
+            "contains_identity_data": False,
+        },
+        privacy_notice=(
+            "El Bono Solidario demo no expone DNI, nombre, diagnóstico, CUD "
+            "visible, certificado médico, historia clínica ni causa de prioridad."
+        ),
+        legal_scope_notice=(
+            "Modelo conceptual sin integración real con SUBE, Red SUBE, "
+            "validadores, molinetes, tarjetas, saldo ni tarifa real."
+        ),
+        driver_burden=(
+            "El chofer no decide beneficios, no valida causas médicas y no asume "
+            "una obligación nueva."
+        ),
+        timestamp_utc=datetime.now(timezone.utc).isoformat(),
+    )
+
+def _looks_like_free_text(token: str) -> bool:
+    normalized = token.lower().strip()
+    suspicious_terms = {
+        "dni",
+        "diagnostico",
+        "diagnóstico",
+        "cud",
+        "certificado",
+        "medico",
+        "médico",
+        "embarazo",
+        "fractura",
+        "lesion",
+        "lesión",
+        "discapacidad",
+        "saldo",
+        "dinero",
+        "tarifa",
+        "gratis",
+        "bono solidario",
+        "red sube",
+    }
+    return any(term in normalized for term in suspicious_terms) or len(
+        normalized.split()
+    ) > 1
+
+def _require_non_empty(payload: Dict[str, str]) -> None:
+    for field_name, value in payload.items():
+        if not value or not str(value).strip():
+            raise ValueError(
+                f"El campo demostrativo {field_name} no puede estar vacío."
+            )
+
+def _deduplicate(flags: List[str]) -> List[str]:
+    seen = set()
+    result = []
+    for flag in flags:
+        if flag not in seen:
+            seen.add(flag)
+            result.append(flag)
+    return result
+
+if __name__ == "__main__":
+    import json
+    print(json.dumps(run_demo(), indent=2, ensure_ascii=False))
+    print(json.dumps(run_rejected_demo(), indent=2, ensure_ascii=False))
