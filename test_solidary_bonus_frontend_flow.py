@@ -1,5 +1,5 @@
 """
-SUBE Prioridad — Tests unitarios para el Frontend Conceptual de Bono Solidario.
+SUBE Prioridad — Tests para el Frontend Conceptual de Bono Solidario.
 """
 
 from __future__ import annotations
