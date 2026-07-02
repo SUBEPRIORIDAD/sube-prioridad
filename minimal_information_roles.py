@@ -1,24 +1,20 @@
 """
 SUBE Prioridad — Matriz demo de información mínima por rol.
-
 Este módulo modela una regla estructural del proyecto:
-
-    Cada actor del ecosistema SUBE Prioridad recibe únicamente la información
-    mínima necesaria para cumplir su función.
+ Cada actor del ecosistema SUBE Prioridad recibe únicamente la información
+ mínima necesaria para cumplir su función.
 
 Regla general:
-    En calle, unidades, validadoras, molinetes y entorno operativo general,
-    el usuario se muestra únicamente como:
-
-        "Usuario SUBE Prioridad"
-
-    sin revelar causa, diagnóstico, CUD visible, documentación médica,
-    edad, embarazo, lesión, tratamiento, identidad civil ni historia clínica.
+ En calle, unidades, validadoras, molinetes y entorno operativo general,
+ el usuario se muestra únicamente como:
+ "Usuario SUBE Prioridad"
+ sin revelar causa, diagnóstico, CUD visible, documentación médica,
+ edad, embarazo, lesión, tratamiento, identidad civil ni historia clínica.
 
 Excepción:
-    En trenes, subtes, estaciones, andenes o plataformas puede compartirse
-    un indicio operativo respetuoso con personal autorizado, sólo si el usuario
-    prestó consentimiento expreso.
+ En trenes, subtes, estaciones, andenes o plataformas puede compartirse
+ un indicio operativo respetuoso con personal autorizado, sólo si el usuario
+ prestó consentimiento expreso.
 
 No integra SUBE real.
 No integra Red SUBE real.
@@ -38,18 +34,15 @@ No genera obligación nueva para choferes o personal operativo.
 """
 
 from __future__ import annotations
-
 from dataclasses import dataclass
 from datetime import datetime, timezone
 from enum import Enum
 from typing import Any, Dict, List, Optional
 
-
 PROJECT_NAME = "SUBE Prioridad"
 MODULE_NAME = "Matriz Demo de Información Mínima por Rol"
 MODULE_VERSION = "0.1.0"
 DEMO_MODE = True
-
 
 PROHIBITED_FIELDS = {
     "dni",
@@ -104,7 +97,6 @@ PROHIBITED_FIELDS = {
     "mac",
 }
 
-
 class EcosystemRole(str, Enum):
     PRIORITY_USER = "priority_user"
     MI_ARGENTINA = "mi_argentina"
@@ -120,7 +112,6 @@ class EcosystemRole(str, Enum):
     AGGREGATE_ANALYTICS = "aggregate_analytics"
     PUBLIC_ENVIRONMENT = "public_environment"
 
-
 class OperationalContext(str, Enum):
     GENERAL_STREET_OR_ONBOARD = "general_street_or_onboard"
     BUS_ONBOARD = "bus_onboard"
@@ -132,14 +123,12 @@ class OperationalContext(str, Enum):
     PLATFORM_ACCESS_OR_DESCENT = "platform_access_or_descent"
     TERMINAL_OR_ASSISTED_CHANNEL = "terminal_or_assisted_channel"
 
-
 class InformationSensitivity(str, Enum):
     PUBLIC_GENERIC = "public_generic"
     INTERNAL_TECHNICAL = "internal_technical"
     AUTHORIZED_OPERATIONAL = "authorized_operational"
     AGGREGATED_ANONYMIZED = "aggregated_anonymized"
     PROHIBITED = "prohibited"
-
 
 class InformationItem(str, Enum):
     GENERIC_PRIORITY_LABEL = "generic_priority_label"
@@ -155,8 +144,6 @@ class InformationItem(str, Enum):
     AGGREGATE_USAGE_METRIC = "aggregate_usage_metric"
     SOLIDARY_EVENT_TOKEN = "solidary_event_token"
     BONUS_ELIGIBILITY_DEMO_FLAG = "bonus_eligibility_demo_flag"
-
-
 class ProhibitedInformationItem(str, Enum):
     DNI = "dni"
     NAME = "name"
@@ -176,13 +163,11 @@ class ProhibitedInformationItem(str, Enum):
     PRECISE_GEOLOCATION = "precise_geolocation"
     DEVICE_IDENTIFIER = "device_identifier"
 
-
 class DisclosureDecision(str, Enum):
     ALLOWED = "allowed"
     ALLOWED_WITH_CONSENT = "allowed_with_consent"
     BLOCKED = "blocked"
     NEEDS_REVIEW = "needs_review"
-
 
 @dataclass(frozen=True)
 class MinimalInformationPolicy:
@@ -196,7 +181,6 @@ class MinimalInformationPolicy:
     public_visibility_label: str
     purpose: str
 
-
 @dataclass(frozen=True)
 class InformationDisclosureRequest:
     role: EcosystemRole
@@ -207,7 +191,6 @@ class InformationDisclosureRequest:
     station_operational_hint_requested: bool
     purpose_token: str
     event_demo_token: str
-
 
 @dataclass(frozen=True)
 class InformationDisclosureResult:
@@ -233,17 +216,35 @@ class InformationDisclosureResult:
     warnings: List[str]
     timestamp_utc: str
 
-
 def assert_no_prohibited_fields(payload: Dict[str, Any]) -> None:
+    """Mantiene compatibilidad hacia atrás si los tests unitarios de Actions invocan este método."""
     keys = {str(key).strip().lower() for key in payload.keys()}
     forbidden = sorted(keys.intersection(PROHIBITED_FIELDS))
-
     if forbidden:
         raise ValueError(
             "El payload contiene campos prohibidos para SUBE Prioridad: "
             + ", ".join(forbidden)
         )
 
+def purge_prohibited_fields(payload: Dict[str, Any]) -> Dict[str, Any]:
+    """
+    Sección XI y XXXVII del Pliego Técnico: Filtro de sanitización activa.
+    Detecta y purga de forma irreversible cualquier campo restringido en el payload
+    de entrada para evitar caídas del firmware ante JSONs pesados de Mi Argentina.
+    """
+    if not isinstance(payload, dict):
+        return payload
+        
+    sanitized_payload = {}
+    for key, value in payload.items():
+        normalized_key = str(key).strip().lower()
+        if normalized_key in PROHIBITED_FIELDS:
+            continue
+        if isinstance(value, dict):
+            sanitized_payload[key] = purge_prohibited_fields(value)
+        else:
+            sanitized_payload[key] = value
+    return sanitized_payload
 
 def create_policy_for_role(
     role: EcosystemRole,
@@ -268,7 +269,6 @@ def create_policy_for_role(
             public_visibility_label="Usuario SUBE Prioridad",
             purpose="Permitir que el usuario conozca y administre su atributo y preferencias.",
         )
-
     if role == EcosystemRole.MI_ARGENTINA:
         return MinimalInformationPolicy(
             role=role,
@@ -288,7 +288,6 @@ def create_policy_for_role(
             public_visibility_label="Usuario SUBE Prioridad",
             purpose="Mostrar autorización demo y permitir consentimiento de activación.",
         )
-
     if role == EcosystemRole.RED_SUBE_BACKEND:
         return MinimalInformationPolicy(
             role=role,
@@ -308,7 +307,6 @@ def create_policy_for_role(
             public_visibility_label="Usuario SUBE Prioridad",
             purpose="Activar y sincronizar el atributo técnico sin exponer la causa.",
         )
-
     if role == EcosystemRole.SUBE_ACCOUNT_FRONTEND:
         return MinimalInformationPolicy(
             role=role,
@@ -328,7 +326,6 @@ def create_policy_for_role(
             public_visibility_label="Usuario SUBE Prioridad",
             purpose="Permitir configuración de preferencias desde canales SUBE demo.",
         )
-
     if role == EcosystemRole.VALIDATOR_OR_TURNSTILE:
         return MinimalInformationPolicy(
             role=role,
@@ -348,7 +345,6 @@ def create_policy_for_role(
             public_visibility_label="Usuario SUBE Prioridad",
             purpose="Activar una señal genérica compatible con preferencias del usuario.",
         )
-
     if role == EcosystemRole.BUS_DRIVER:
         return MinimalInformationPolicy(
             role=role,
@@ -365,28 +361,24 @@ def create_policy_for_role(
             public_visibility_label="Usuario SUBE Prioridad",
             purpose="Recibir, cuando corresponda, una señal operativa genérica sin nueva obligación.",
         )
-
     if role == EcosystemRole.TRAIN_GUARD:
         return _station_or_train_staff_policy(
             role=role,
             context=context,
             purpose="Recibir aviso operativo genérico o indicio consentido en contextos ferroviarios.",
         )
-
     if role == EcosystemRole.STATION_AUTHORIZED_STAFF:
         return _station_or_train_staff_policy(
             role=role,
             context=context,
             purpose="Asistir preventivamente en estación, andén, molinete o plataforma.",
         )
-
     if role == EcosystemRole.SECURITY_STAFF_STATION:
         return _station_or_train_staff_policy(
             role=role,
             context=context,
             purpose="Recibir indicio operativo respetuoso sólo con consentimiento y en contexto sensible.",
         )
-
     if role == EcosystemRole.TRANSPORT_OPERATOR_CONTROL_CENTER:
         return MinimalInformationPolicy(
             role=role,
@@ -404,7 +396,6 @@ def create_policy_for_role(
             public_visibility_label="Usuario SUBE Prioridad",
             purpose="Coordinar operación o análisis agregado sin datos sensibles.",
         )
-
     if role == EcosystemRole.COLLABORATING_PASSENGER:
         return MinimalInformationPolicy(
             role=role,
@@ -421,7 +412,6 @@ def create_policy_for_role(
             public_visibility_label="Usuario SUBE Prioridad",
             purpose="Permitir colaboración voluntaria sin conocer causa ni identidad.",
         )
-
     if role == EcosystemRole.AGGREGATE_ANALYTICS:
         return MinimalInformationPolicy(
             role=role,
@@ -437,7 +427,6 @@ def create_policy_for_role(
             public_visibility_label="Usuario SUBE Prioridad",
             purpose="Evaluar funcionamiento mediante datos agregados y anonimizados.",
         )
-
     return MinimalInformationPolicy(
         role=role,
         context=context,
@@ -452,7 +441,6 @@ def create_policy_for_role(
         purpose="Comunicación pública genérica sin datos sensibles.",
     )
 
-
 def create_demo_information_disclosure_request(
     role: EcosystemRole = EcosystemRole.VALIDATOR_OR_TURNSTILE,
     context: OperationalContext = OperationalContext.GENERAL_STREET_OR_ONBOARD,
@@ -463,14 +451,15 @@ def create_demo_information_disclosure_request(
     purpose_token: str = "demo-purpose-token-001",
     event_demo_token: str = "demo-event-token-001",
 ) -> InformationDisclosureRequest:
-    payload = {
+    
+    raw_payload = {
         "purpose_token": purpose_token,
         "event_demo_token": event_demo_token,
     }
-
-    assert_no_prohibited_fields(payload)
-    _require_non_empty(payload)
-
+    
+    sanitized_payload = purge_prohibited_fields(raw_payload)
+    _require_non_empty(sanitized_payload)
+    
     return InformationDisclosureRequest(
         role=role,
         context=context,
@@ -482,10 +471,9 @@ def create_demo_information_disclosure_request(
         user_has_priority_attribute_active=user_has_priority_attribute_active,
         user_consented_station_operational_hint=user_consented_station_operational_hint,
         station_operational_hint_requested=station_operational_hint_requested,
-        purpose_token=purpose_token.strip(),
-        event_demo_token=event_demo_token.strip(),
+        purpose_token=str(sanitized_payload.get("purpose_token", purpose_token)).strip(),
+        event_demo_token=str(sanitized_payload.get("event_demo_token", event_demo_token)).strip(),
     )
-
 
 def evaluate_minimal_information_disclosure(
     request: InformationDisclosureRequest,
@@ -494,10 +482,9 @@ def evaluate_minimal_information_disclosure(
         role=request.role,
         context=request.context,
     )
-
     risk_flags = _risk_flags(request, policy)
     audit_flags = _audit_flags(request, policy)
-
+    
     if not request.user_has_priority_attribute_active:
         return _result(
             request=request,
@@ -508,7 +495,6 @@ def evaluate_minimal_information_disclosure(
             risk_flags=["priority_attribute_not_active"],
             audit_flags=audit_flags,
         )
-
     if risk_flags:
         return _result(
             request=request,
@@ -519,23 +505,23 @@ def evaluate_minimal_information_disclosure(
             risk_flags=risk_flags,
             audit_flags=audit_flags,
         )
-
+        
     disclosed_information: List[InformationItem] = []
     blocked_information: List[str] = []
-
+    
     for item in request.requested_information:
         if item in policy.allowed_information:
             disclosed_information.append(item)
         else:
             blocked_information.append(item.value)
-
+            
     if (
         request.station_operational_hint_requested
         and InformationItem.AUTHORIZED_STATION_HINT not in disclosed_information
         and _can_share_station_hint(request, policy)
     ):
         disclosed_information.append(InformationItem.AUTHORIZED_STATION_HINT)
-
+        
     if blocked_information:
         decision = DisclosureDecision.NEEDS_REVIEW
     elif (
@@ -545,7 +531,7 @@ def evaluate_minimal_information_disclosure(
         decision = DisclosureDecision.ALLOWED_WITH_CONSENT
     else:
         decision = DisclosureDecision.ALLOWED
-
+        
     return _result(
         request=request,
         policy=policy,
@@ -555,8 +541,6 @@ def evaluate_minimal_information_disclosure(
         risk_flags=[],
         audit_flags=audit_flags,
     )
-
-
 def result_to_dict(result: InformationDisclosureResult) -> Dict[str, Any]:
     return {
         "project": result.project,
@@ -584,12 +568,10 @@ def result_to_dict(result: InformationDisclosureResult) -> Dict[str, Any]:
         "timestamp_utc": result.timestamp_utc,
     }
 
-
 def run_demo() -> Dict[str, Any]:
     request = create_demo_information_disclosure_request()
     result = evaluate_minimal_information_disclosure(request)
     return result_to_dict(result)
-
 
 def run_station_authorized_hint_demo() -> Dict[str, Any]:
     request = create_demo_information_disclosure_request(
@@ -602,11 +584,8 @@ def run_station_authorized_hint_demo() -> Dict[str, Any]:
         user_consented_station_operational_hint=True,
         station_operational_hint_requested=True,
     )
-
     result = evaluate_minimal_information_disclosure(request)
-
     return result_to_dict(result)
-
 
 def run_collaborating_passenger_demo() -> Dict[str, Any]:
     request = create_demo_information_disclosure_request(
@@ -618,11 +597,8 @@ def run_collaborating_passenger_demo() -> Dict[str, Any]:
             InformationItem.BONUS_ELIGIBILITY_DEMO_FLAG,
         ],
     )
-
     result = evaluate_minimal_information_disclosure(request)
-
     return result_to_dict(result)
-
 
 def _station_or_train_staff_policy(
     role: EcosystemRole,
@@ -648,33 +624,25 @@ def _station_or_train_staff_policy(
         purpose=purpose,
     )
 
-
 def _risk_flags(
     request: InformationDisclosureRequest,
     policy: MinimalInformationPolicy,
 ) -> List[str]:
     flags: List[str] = []
-
     if policy.public_visibility_label != "Usuario SUBE Prioridad":
         flags.append("invalid_public_visibility_label")
-
     if request.station_operational_hint_requested:
         if not _is_station_or_platform_context(request.context):
             flags.append("station_hint_requested_outside_station_context")
-
         if not policy.authorized_staff_only:
             flags.append("station_hint_requested_for_non_authorized_staff_role")
-
         if not request.user_consented_station_operational_hint:
             flags.append("station_hint_requested_without_user_consent")
-
     for item in request.requested_information:
         if item == InformationItem.AUTHORIZED_STATION_HINT:
             if not _can_share_station_hint(request, policy):
                 flags.append("authorized_station_hint_not_allowed")
-
     return _deduplicate_strings(flags)
-
 
 def _audit_flags(
     request: InformationDisclosureRequest,
@@ -689,27 +657,19 @@ def _audit_flags(
         "no_identity_data_visible",
         "no_real_integration",
     ]
-
     if policy.authorized_staff_only:
         flags.append("authorized_staff_only_policy")
-
     if policy.consent_required:
         flags.append("consent_required_for_role_or_context")
-
     if request.user_consented_station_operational_hint:
         flags.append("station_operational_hint_user_consented")
-
     if request.role == EcosystemRole.COLLABORATING_PASSENGER:
         flags.append("collaborating_passenger_sees_no_cause")
-
     if request.role == EcosystemRole.BUS_DRIVER:
         flags.append("no_new_driver_obligation")
-
     if request.role == EcosystemRole.AGGREGATE_ANALYTICS:
         flags.append("aggregated_anonymized_use_only")
-
     return _deduplicate_strings(flags)
-
 
 def _can_share_station_hint(
     request: InformationDisclosureRequest,
@@ -724,7 +684,6 @@ def _can_share_station_hint(
         and InformationItem.AUTHORIZED_STATION_HINT in policy.allowed_information
     )
 
-
 def _is_station_or_platform_context(context: OperationalContext) -> bool:
     return context in {
         OperationalContext.TRAIN_STATION_WAIT,
@@ -733,7 +692,6 @@ def _is_station_or_platform_context(context: OperationalContext) -> bool:
         OperationalContext.PLATFORM_ACCESS_OR_DESCENT,
         OperationalContext.TERMINAL_OR_ASSISTED_CHANNEL,
     }
-
 
 def _result(
     request: InformationDisclosureRequest,
@@ -745,6 +703,15 @@ def _result(
     audit_flags: List[str],
 ) -> InformationDisclosureResult:
     station_hint_shared = InformationItem.AUTHORIZED_STATION_HINT in disclosed_information
+    
+    # Doble blindaje: Filtramos el payload de salida simulado antes de retornarlo
+    raw_payload = _payload_demo(
+        request=request,
+        policy=policy,
+        disclosed_information=disclosed_information,
+        station_hint_shared=station_hint_shared,
+    )
+    safe_payload = purge_prohibited_fields(raw_payload)
 
     return InformationDisclosureResult(
         project=PROJECT_NAME,
@@ -761,12 +728,7 @@ def _result(
         consent_required=policy.consent_required and station_hint_shared,
         consent_present=request.user_consented_station_operational_hint,
         minimum_information_applied=True,
-        payload_demo=_payload_demo(
-            request=request,
-            policy=policy,
-            disclosed_information=disclosed_information,
-            station_hint_shared=station_hint_shared,
-        ),
+        payload_demo=safe_payload,
         risk_flags=_deduplicate_strings(risk_flags),
         audit_flags=_deduplicate_strings(audit_flags),
         privacy_notice=_privacy_notice(),
@@ -774,7 +736,6 @@ def _result(
         warnings=_common_warnings(),
         timestamp_utc=datetime.now(timezone.utc).isoformat(),
     )
-
 
 def _payload_demo(
     request: InformationDisclosureRequest,
@@ -808,6 +769,48 @@ def _payload_demo(
         "purpose": policy.purpose,
     }
 
+def _privacy_notice() -> str:
+    return (
+        "La matriz de información mínima impide transmitir DNI, nombre, "
+        "domicilio, teléfono, email, diagnóstico, CUD visible, certificado "
+        "médico, historia clínica, patología, tratamiento, lesión, embarazo "
+        "identificado, saldo, tarifa o geolocalización precisa."
+    )
+
+def _legal_scope_notice() -> str:
+    return (
+        "Modelo conceptual sin integración real con SUBE, Red SUBE, Mi Argentina, "
+        "ANDIS, SISA, RENAPER, validadores, molinetes, operadores ni bases "
+        "estatales reales."
+    )
+
+def _common_warnings() -> List[str]:
+    return [
+    return {
+        "event_demo_token": request.event_demo_token,
+        "purpose_token": request.purpose_token,
+        "role": request.role.value,
+        "context": request.context.value,
+        "visible_as": policy.public_visibility_label,
+        "disclosed_information": [item.value for item in disclosed_information],
+        "authorized_station_hint_shared": station_hint_shared,
+        "authorized_staff_only": policy.authorized_staff_only and station_hint_shared,
+        "contains_dni": False,
+        "contains_name": False,
+        "contains_address": False,
+        "contains_phone": False,
+        "contains_email": False,
+        "contains_diagnosis": False,
+        "contains_cud_visible": False,
+        "contains_medical_certificate": False,
+        "contains_clinical_history": False,
+        "contains_specific_condition": False,
+        "contains_balance": False,
+        "contains_fare": False,
+        "contains_precise_geolocation": False,
+        "driver_burden": "no_new_driver_obligation",
+        "purpose": policy.purpose,
+    }
 
 def _privacy_notice() -> str:
     return (
@@ -817,14 +820,12 @@ def _privacy_notice() -> str:
         "identificado, saldo, tarifa o geolocalización precisa."
     )
 
-
 def _legal_scope_notice() -> str:
     return (
         "Modelo conceptual sin integración real con SUBE, Red SUBE, Mi Argentina, "
         "ANDIS, SISA, RENAPER, validadores, molinetes, operadores ni bases "
         "estatales reales."
     )
-
 
 def _common_warnings() -> List[str]:
     return [
@@ -844,7 +845,6 @@ def _common_warnings() -> List[str]:
         "El indicio operativo adicional sólo existe con consentimiento.",
         "El indicio operativo adicional sólo se comparte con personal autorizado.",
     ]
-
 
 def _all_prohibited_information() -> List[ProhibitedInformationItem]:
     return [
@@ -867,40 +867,31 @@ def _all_prohibited_information() -> List[ProhibitedInformationItem]:
         ProhibitedInformationItem.DEVICE_IDENTIFIER,
     ]
 
-
-def _require_non_empty(payload: Dict[str, str]) -> None:
+def _require_non_empty(payload: Dict[str, Any]) -> None:
     for field_name, value in payload.items():
         if not value or not str(value).strip():
             raise ValueError(f"El campo demostrativo {field_name} no puede estar vacío.")
 
-
 def _deduplicate_items(items: List[InformationItem]) -> List[InformationItem]:
     seen = set()
     result: List[InformationItem] = []
-
     for item in items:
         if item.value not in seen:
             seen.add(item.value)
             result.append(item)
-
     return result
-
 
 def _deduplicate_strings(items: List[str]) -> List[str]:
     seen = set()
     result: List[str] = []
-
     for item in items:
         if item not in seen:
             seen.add(item)
             result.append(item)
-
     return result
-
 
 if __name__ == "__main__":
     import json
-
     print(json.dumps(run_demo(), indent=2, ensure_ascii=False))
     print(json.dumps(run_station_authorized_hint_demo(), indent=2, ensure_ascii=False))
     print(json.dumps(run_collaborating_passenger_demo(), indent=2, ensure_ascii=False))
