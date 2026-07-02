@@ -1,5 +1,6 @@
 """
-SUBE Prioridad — Tests para el Frontend Conceptual de Bono Solidario.
+SUBE Prioridad — Tests unitarios para el Frontend Conceptual de Bono Solidario.
+Valida el comportamiento de la app de autogestión antes de seguridad.
 """
 
 from __future__ import annotations
