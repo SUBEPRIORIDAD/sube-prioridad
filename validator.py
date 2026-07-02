@@ -3,7 +3,6 @@ from datetime import datetime, timedelta, timezone
 from enum import Enum
 from typing import Any, Dict, List, Optional
 
-# --- GLOSARIO DE HARDWARE Y ENTORNOS OPERATIVOS ADICIONADO ---
 class HardwareTargetKind(str, Enum):
     COLECTIVO_EDGE_OFFLINE = "colectivo_edge_offline"
     TREN_DE_LA_COSTA_EDGE_MIXED = "tren_costa_edge_mixed"
@@ -15,9 +14,6 @@ class EventoValidacion:
     """
     Representa un evento conceptual de validación para el módulo futuro
     de Bono Solidario.
-    Este modelo no pertenece al núcleo inicial de asistencia preventiva.
-    Se conserva como componente experimental y demostrativo para evaluar
-    reglas antifraude en escenarios futuros.
     No debe contener DNI, nombre, apellido, diagnóstico médico, historia
     clínica, certificados médicos ni datos de salud identificables.
     """
@@ -26,27 +22,17 @@ class EventoValidacion:
     unidad: str
     timestamp: datetime
     tipo_evento: str = "validacion"
-    # Extensión de contexto físico sin romper compatibilidad (Opcional con default)
     hardware_origen: HardwareTargetKind = HardwareTargetKind.COLECTIVO_EDGE_OFFLINE
 
 @dataclass
 class ResultadoAntifraude:
     """
     Resultado conceptual del análisis antifraude.
-    permitido:
-        Indica si el evento supera las reglas demostrativas.
-    motivo:
-        Explica la razón principal del resultado.
-    alertas:
-        Lista de alertas no sensibles detectadas.
-    score_riesgo:
-        Puntaje conceptual de riesgo, entre 0 y 100.
     """
     permitido: bool
     motivo: str
     alertas: List[str]
     score_riesgo: int
-    # Campos de modulación de interfaz agregados de forma segura
     hardware_action: str = "standard_fare_deduction"
     open_solidary_window: bool = False
     latency_estimation_ms: int = 120
@@ -54,13 +40,6 @@ class ResultadoAntifraude:
 class AntifraudValidator:
     """
     Motor antifraude conceptual para escenarios futuros de Bono Solidario.
-    Este componente no forma parte del core inicial de SUBE Prioridad.
-    No se conecta con SUBE real.
-    No se conecta con Mi Argentina.
-    No se conecta con organismos públicos.
-    No procesa identidad real ni datos médicos.
-    Su finalidad actual es demostrar cómo podrían evaluarse reglas técnicas
-    no sensibles en un entorno de simulación.
     """
     def __init__(
         self,
@@ -74,27 +53,10 @@ class AntifraudValidator:
         self._eventos: List[EventoValidacion] = []
 
     def registrar_evento(self, evento: EventoValidacion) -> None:
-        """
-        Registra un evento conceptual en memoria.
-        Este registro es sólo demostrativo. No debe usarse como almacenamiento
-        productivo ni como base de auditoría real.
-        """
         self._eventos.append(evento)
         self._limpiar_eventos_antiguos(evento.timestamp)
 
     def validar_evento(self, evento: EventoValidacion) -> ResultadoAntifraude:
-        """
-        Evalúa un evento conceptual con reglas simples antifraude.
-        Reglas demostrativas:
-        - tarjeta_id no vacío;
-        - línea no vacía;
-        - unidad no vacía;
-        - timestamp válido;
-        - exceso de validaciones en ventana temporal;
-        - validaciones repetidas en la misma línea y unidad;
-        - validaciones simultáneas en unidades distintas.
-        Ninguna regla utiliza datos personales, médicos o identificatorios reales.
-        """
         alertas: List[str] = []
         score = 0
         
@@ -130,18 +92,14 @@ class AntifraudValidator:
         score = min(score, 100)
         permitido = score < self.max_score_permitido
         
-        # --- FILTRO DE ARQUITECTURA: DISCRIMINACIÓN FÍSICA DE ENTORNO ---
-        # Comportamiento exclusivo para Validación Descentralizada de Borde (Colectivos y Tren de la Costa)
         if evento.hardware_origen in [HardwareTargetKind.COLECTIVO_EDGE_OFFLINE, HardwareTargetKind.TREN_DE_LA_COSTA_EDGE_MIXED]:
             hardware_action = "execute_immediate_edge_habitaculo_alert"
             open_solidary_window = True if permitido else False
-            latency_estimation_ms = 240  # Latencia controlada en microcontroladores locales offline
-        
-        # Comportamiento exclusivo para Validación Centralizada Pre-Bordo (Molinetes Ferroviarios)
+            latency_estimation_ms = 240
         else:
             hardware_action = "route_async_signal_to_platform_displays"
-            open_solidary_window = False  # No se abre re-validación cívica en molinetes transitados
-            latency_estimation_ms = 380  # Tránsito WAN hacia el backend centralizado
+            open_solidary_window = False
+            latency_estimation_ms = 380
 
         motivo = (
             "Evento permitido en entorno demostrativo."
@@ -160,25 +118,15 @@ class AntifraudValidator:
         )
 
     def validar_y_registrar(self, evento: EventoValidacion) -> ResultadoAntifraude:
-        """
-        Evalúa el evento y, si corresponde, lo registra.
-        En este MVP demostrativo se registra tanto si está permitido como si
-        genera alertas, para poder simular comportamiento histórico.
-        """
         resultado = self.validar_evento(evento)
         self.registrar_evento(evento)
         return resultado
 
     def reset(self) -> None:
-        """
-        Limpia los eventos registrados en memoria.
-        """
         self._eventos.clear()
 
     def estado(self) -> Dict[str, Any]:
-        """
-        Devuelve un estado conceptual del validador.
-        """
+        self._limpiar_eventos_antiguos(datetime.now(timezone.utc))
         return {
             "componente": "AntifraudValidator",
             "entorno": "mvp-conceptual",
@@ -251,3 +199,37 @@ def crear_evento_demo(
     linea: str = "60",
     unidad: str = "1234",
     timestamp: Optional[datetime] = None,
+    hardware_origen: HardwareTargetKind = HardwareTargetKind.COLECTIVO_EDGE_OFFLINE
+) -> EventoValidacion:
+    """ Crea un evento demostrativo para tests o ejemplos locales. """
+    return EventoValidacion(
+        tarjeta_id=tarjeta_id,
+        linea=linea,
+        unidad=unidad,
+        timestamp=timestamp or datetime.now(timezone.utc),
+        hardware_origen=hardware_origen
+    )
+
+def validar_evento_demo(evento: Optional[EventoValidacion] = None) -> Dict[str, Any]:
+    validador = AntifraudValidator()
+    evento_final = evento or crear_evento_demo()
+    resultado = validador.validar_y_registrar(evento_final)
+    return {
+        "permitido": resultado.permitido,
+        "motivo": resultado.motivo,
+        "alertas": resultado.alertas,
+        "score_riesgo": resultado.score_riesgo,
+        "hardware_action": resultado.hardware_action,
+        "open_solidary_window": resultado.open_solidary_window,
+        "latency_estimation_ms": resultado.latency_estimation_ms,
+        "estado": validador.estado(),
+    }
+
+__all__ = [
+    "EventoValidacion",
+    "ResultadoAntifraude",
+    "AntifraudValidator",
+    "HardwareTargetKind",
+    "crear_evento_demo",
+    "validar_evento_demo",
+]
