@@ -1,6 +1,6 @@
 """
-SUBE Prioridad — Tests unitarios para la API principal (FastAPI).
-Valida el comportamiento de los endpoints frente a payloads válidos y fraudes.
+SUBE Prioridad — Tests unitarios saneados para la API (FastAPI).
+Valida el comportamiento de los endpoints de producción frente a payloads y fraudes.
 """
 
 from __future__ import annotations
@@ -17,7 +17,7 @@ def test_api_health_check():
     assert response.json()["status"] == "healthy"
 
 def test_api_successful_solidary_recognition():
-    """Valida la aceptación HTTP de un reconocimiento legítimo en asiento general."""
+    """Valida la aceptación HTTP de un reconocimiento legítimo en asiento de uso general."""
     payload = {
         "event_demo_id": "api-test-ok",
         "priority_user_token": "token-prioritario-api-ok",
