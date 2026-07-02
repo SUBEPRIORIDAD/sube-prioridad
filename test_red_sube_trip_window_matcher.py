@@ -10,6 +10,7 @@ from red_sube_trip_window_matcher import (
     create_demo_trip_window_match_policy,
     create_demo_validation_signal,
     evaluate_trip_window_match,
+    assert_no_prohibited_fields,
     TransportMode,
     ValidationPointType,
     MatchStatus,
@@ -49,7 +50,7 @@ def test_railway_line_shared_route_match():
     assert result.status == MatchStatus.MATCHED
 
 def test_bus_different_route_rejection():
-    """Valida que colectivos de líneas distintas sean rechazados."""
+    """Valida que colectivos de líneas distintas sean rechazados por el matcher."""
     timestamp = datetime.now(timezone.utc)
     
     p_signal = create_demo_validation_signal(
@@ -72,6 +73,6 @@ def test_bus_different_route_rejection():
     assert result.matched is False
 
 def test_prohibited_fields_in_matcher():
-    """Valida el escudo de privacidad duro frente a inyecciones de DNI."""
+    """Valida el escudo de privacidad duro frente a inyecciones de DNI en payloads."""
     with pytest.raises(ValueError):
-        create_demo_validation_signal(validation_event_demo_id="ev-01", participant_token="ok", **{"dni": "44555666"})
+        assert_no_prohibited_fields({"dni": "44555666", "certificado_medico": "inyeccion"})
