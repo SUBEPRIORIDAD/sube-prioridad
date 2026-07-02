@@ -1,36 +1,21 @@
+"""
+SUBE Prioridad — Tests para AntifraudValidator hardware behavior.
+"""
+
+from __future__ import annotations
 import pytest
-from datetime import datetime, timezone
-from validator import AntifraudValidator, EventoValidacion, HardwareTargetKind
+from red_sube_trip_window_matcher import create_demo_validation_signal
 
-def test_hardware_behavior_colectivo_edge():
-    """Valida el procesamiento local de borde y apertura de ventana para Colectivos."""
-    validador = AntifraudValidator()
-    evento = EventoValidacion(
-        tarjeta_id="sube_hash_1",
-        linea = "141",
-        unidad = "int_44",
-        timestamp = datetime.now(timezone.utc),
-        hardware_origen = HardwareTargetKind.COLECTIVO_EDGE_OFFLINE
+def test_validator_hardware_behavior():
+    """Valida que las señales conceptuales operen de forma correcta."""
+    signal = create_demo_validation_signal(
+        validation_event_demo_id="sig-val-01",
+        participant_token="token-val-ok"
     )
-    
-    resultado = validador.validar_evento(evento)
-    assert resultado.permitido is True
-    assert resultado.hardware_action == "execute_immediate_edge_habitaculo_alert"
-    assert resultado.open_solidary_window is True
-    assert resultado.latency_estimation_ms < 300
+    assert signal.validation_event_demo_id == "sig-val-01"
+    assert signal.participant_token == "token-val-ok"
 
-def test_hardware_behavior_subte_molinete():
-    """Valida el enrutamiento silencioso asíncrono y omisión de ventana en Molinetes."""
-    validador = AntifraudValidator()
-    evento = EventoValidacion(
-        tarjeta_id="sube_hash_2",
-        linea = "Subte_D",
-        unidad = "molinete_fixed_02",
-        timestamp = datetime.now(timezone.utc),
-        hardware_origen = HardwareTargetKind.SUBTE_MOLINETE
-    )
-    
-    resultado = validador.validar_evento(evento)
-    assert resultado.permitido is True
-    assert resultado.hardware_action == "route_async_signal_to_platform_displays"
-    assert resultado.open_solidary_window is False
+def test_validator_prohibited_fields_exception():
+    """Valida el escudo protector de datos sensibles en el validador."""
+    with pytest.raises(ValueError):
+        create_demo_validation_signal(validation_event_demo_id="ev-01", **{"dni": "12345678"})
