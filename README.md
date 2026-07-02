@@ -100,6 +100,14 @@ El proyecto propone una capa técnica que permita:
 6. Mantener límites estrictos de privacidad y no discriminación.
 
 ---
+## 🛡️ Documentación de Gobernanza y Arquitectura Avanzada
+
+Para garantizar el cumplimiento normativo, la resiliencia en el borde y la escalabilidad del sistema, se han incorporado manuales técnicos obligatorios para guiar el desarrollo continuo del ecosistema:
+
+*   [Manifiesto de Defensa de Interoperabilidad (Sandboxing)](./DOC_INTEROPERABILIDAD.md): Establece las directivas operacionales, restricciones físicas y salvaguardas de ciberseguridad inmutables para el aislamiento de la capa de red del Hito 1 y 2.
+*   [Hoja de Ruta y Directivas de Homologación (Gap Analysis)](./TECHNICAL_ROADMAP_NACION_SERVICIOS.md): Guía de arquitectura de grado industrial para perfiles Senior/Principal. Detalla los requerimientos de hardware reales (módulos SAM, MIFARE, CAN bus/SAE) necesarios para la transición del prototipo hacia el ecosistema real de Nación Servicios S.A.
+
+---
 
 ## Componentes principales
 
