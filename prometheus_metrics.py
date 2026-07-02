@@ -1,3 +1,15 @@
+"""
+SUBE Prioridad — Instrumentación estandarizada y telemetría de monitoreo.
+Este módulo expone contadores y calibradores conceptuales basados en OpenMetrics
+para medir latencias de validación de borde sin registrar datos personales.
+
+No representa implementación oficial.
+No integra SUBE real. No integra Red SUBE real.
+No transfiere beneficios reales. No modifica tarifas reales.
+No procesa DNI, nombre, domicilio, diagnóstico ni CUD de pasajeros.
+"""
+
+from __future__ import annotations
 import time
 
 class SubeMetricsCollector:
@@ -10,7 +22,6 @@ class SubeMetricsCollector:
             "sube_prioridad_bonos_assigned_total": 0,
             "sube_prioridad_latency_seconds_sum": 0.0
         }
-
     def registrar_transaccion(self, duracion_ns: int, bono_otorgado: bool) -> None:
         """Incrementa los vectores de telemetría de forma atómica en el bus local."""
         duracion_segundos = duracion_ns / 1_000_000_000.0
@@ -36,6 +47,7 @@ class SubeMetricsCollector:
         )
 
 if __name__ == "__main__":
+    import json
     collector = SubeMetricsCollector()
     collector.registrar_transaccion(duracion_ns=45_000_000, bono_otorgado=True)
     collector.registrar_transaccion(duracion_ns=12_000_000, bono_otorgado=False)
