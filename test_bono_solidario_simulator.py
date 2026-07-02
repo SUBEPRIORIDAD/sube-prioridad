@@ -8,6 +8,7 @@ import pytest
 from bono_solidario_simulator import (
     create_demo_solidary_event,
     simulate_solidary_recognition,
+    assert_no_prohibited_fields,
     SeatType,
     SolidaryRecognitionStatus,
     SolidaryRejectionReason,
@@ -78,7 +79,7 @@ def test_rejection_legal_priority_seat():
 def test_prohibited_fields_exception():
     """Valida que el escudo de privacidad arroje excepción ante campos de identidad civil."""
     with pytest.raises(ValueError):
-        create_demo_solidary_event(event_demo_id="ev-01", priority_user_token="ok", collaborator_token="ok", **{"dni": "12345678"})
+        assert_no_prohibited_fields({"dni": "12345678", "nombre": "Andres"})
 
 def test_demo_recognition_ledger_operations():
     """Valida el correcto funcionamiento del libro de registros en memoria exigido en el DIP."""
