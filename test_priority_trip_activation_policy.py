@@ -21,7 +21,6 @@ import pytest
 
 from priority_trip_activation_policy import (
     ConsentedOperationalHint,
-    OperationalContext,
     TransportContext,
     TripActivationStatus,
     TripAssistanceMode,
@@ -433,17 +432,4 @@ def test_run_station_hint_demo_shares_authorized_staff_hint() -> None:
     assert result["authorized_staff_only"] is True
     assert result["operational_hint"] == (
         ConsentedOperationalHint.MAY_NEED_PLATFORM_ASSISTANCE.value
-    )
-
-
-def test_operational_context_import_is_available_for_cross_module_language() -> None:
-    """
-    Este test protege el vocabulario conceptual compartido con
-    priority_accreditation_flow.py.
-
-    OperationalContext no se usa internamente en este módulo, pero puede ser útil
-    como lenguaje puente entre acreditación previa y activación por viaje.
-    """
-    assert OperationalContext.PLATFORM_ACCESS_OR_DESCENT.value == (
-        "platform_access_or_descent"
     )
