@@ -117,7 +117,6 @@ class RedSubeValidationContext:
     priority_validation_timestamp_utc: datetime
     collaborator_validation_timestamp_utc: datetime
     sync_attempt_timestamp_utc: datetime
-
 @dataclass(frozen=True)
 class SolidarySyncChannelRequest:
     sync_channel_event_demo_id: str
@@ -172,6 +171,7 @@ class SolidarySyncChannelResult:
     driver_burden: str
     warnings: List[str]
     timestamp_utc: str
+
 def assert_no_prohibited_fields(payload: Dict[str, Any]) -> None:
     normalized_keys = {str(key).strip().lower() for key in payload.keys()}
     forbidden = sorted(normalized_keys.intersection(PROHIBITED_FIELDS))
@@ -237,15 +237,11 @@ def create_demo_solidary_sync_channel_request(sync_channel_event_demo_id: str = 
         priority_user_has_active_attribute=priority_user_has_active_attribute, priority_need_previously_accredited=priority_need_previously_accredited,
         priority_device_availability=priority_device_availability or create_demo_user_device_availability(), collaborator_device_availability=collaborator_device_availability or create_demo_user_device_availability(has_mobile_device=False, has_nfc_capable_device=False),
         red_sube_context=red_sube_context or create_demo_red_sube_validation_context(), confirmation_mode=confirmation_mode, priority_user_confirms_or_can_confirm=priority_user_confirms_or_can_confirm,
-        voluntary_seat_yield_declared=voluntary_seat_yield_declared, collaborator_claims_unilaterally=collaborator_claims_unilaterally, same_network_demo_id=same_network_demo_id, same_route_demo_id=same_route_demo_id, same_service_window_demo_id=same_service_window_demo_id,
-        same_validator_or_turnstile_demo_id=same_validator_or_turnstile_demo_id, same_vehicle_demo_id=same_vehicle_demo_id, same_trainset_demo_id=same_trainset_demo_id, same_station_demo_id=same_station_demo_id, same_platform_demo_id=same_platform_demo_id, previous_handoff_security_accepted=previous_handoff_security_accepted, previous_proximity_guard_blocks_flow=previous_proximity_guard_blocks_flow,
-    )
-
-def create_demo_no_mobile_validator_based_request(created_at_utc: Optional[datetime] = None) -> SolidarySyncChannelRequest:
-    timestamp = created_at_utc or datetime.now(timezone.utc)
-    context = create_demo_red_sube_validation_context(transport_mode=TransportMode.BUS, validation_point_type=ValidationPointType.VEHICLE_VALIDATOR, vehicle_demo_id="demo-bus-vehicle-001", priority_validation_timestamp_utc=timestamp, collaborator_validation_timestamp_utc=timestamp + timedelta(minutes=1), sync_attempt_timestamp_utc=timestamp + timedelta(minutes=5))
-    return create_demo_solidary_sync_channel_request(sync_channel_event_demo_id="demo-no-mobile-validator-sync-001", priority_device_availability=create_demo_user_device_availability(has_mobile_device=False, has_nfc_capable_device=False, has_app_or_account_access_now=False, has_connectivity_now=False, has_physical_sube_card=True), collaborator_device_availability=create_demo_user_device_availability(has_mobile_device=False, has_nfc_capable_device=False, has_app_or_account_access_now=False, has_connectivity_now=False, has_physical_sube_card=True), red_sube_context=context, confirmation_mode=ConfirmationMode.VALIDATOR_WINDOW_PENDING_CONFIRMATION, priority_user_confirms_or_can_confirm=True, same_vehicle_demo_id=True, same_validator_or_turnstile_demo_id=True)
-
+        voluntary_seat_yield_declared=voluntary_seat_yield_declared,
+        collaborator_claims_unilaterally=collaborator_claims_unilaterally,
+        same_network_demo_id=same_network_demo_id,
+        same_route_demo_id=same_route_demo_id,
+        same_service_window_demo_id=same_service_window_demo_id,
         same_validator_or_turnstile_demo_id=same_validator_or_turnstile_demo_id,
         same_vehicle_demo_id=same_vehicle_demo_id,
         same_trainset_demo_id=same_trainset_demo_id,
@@ -298,9 +294,6 @@ def _select_channel(request: SolidarySyncChannelRequest, policy: SyncChannelPoli
     if policy.allow_no_mobile_channels and validation_point in {ValidationPointType.VEHICLE_VALIDATOR, ValidationPointType.ONBOARD_TRAIN_VALIDATOR}: return SyncChannel.VALIDATOR_CONTEXT_WINDOW
     if policy.allow_no_mobile_channels and validation_point in {ValidationPointType.STATION_TURNSTILE, ValidationPointType.STATION_ACCESS_GATE}: return SyncChannel.TURNSTILE_OR_STATION_WINDOW
     if policy.allow_assisted_channel and validation_point == ValidationPointType.TERMINAL_VALIDATOR: return SyncChannel.ASSISTED_STATION_OR_TERMINAL_CHANNEL
-    if policy.allow_deferred_account_confirmation and request.confirmation_mode == ConfirmationMode.DEFERRED_ACCOUNT_CONFIRMATION and context_score >= policy.max_context_score_for_ready_without_mobile: return SyncChannel.ACCOUNT_DEFERRED_CONFIRMATION
-    return SyncChannel.NO_CHANNEL_AVAILABLE
-
 def _hard_risk_flags(request: SolidarySyncChannelRequest, policy: SyncChannelPolicy, window_matched: bool, context_score: int) -> List[str]:
     flags: List[str] = []
     if _looks_like_free_text(request.priority_user_token): flags.append("priority_user_token_looks_like_free_text")
@@ -351,6 +344,7 @@ def _window_minutes(window_kind: WindowKind, policy: SyncChannelPolicy) -> int:
     if window_kind == WindowKind.TERMINAL_EXTENDED_WINDOW: return policy.terminal_window_minutes
     if window_kind == WindowKind.DEFERRED_ACCOUNT_WINDOW: return policy.deferred_confirmation_window_hours * 60
     return policy.in_vehicle_window_minutes
+
 def _window_matched(context: RedSubeValidationContext, window_minutes: int) -> bool:
     earliest = min(context.priority_validation_timestamp_utc, context.collaborator_validation_timestamp_utc)
     elapsed_seconds = abs((context.sync_attempt_timestamp_utc - earliest).total_seconds())
@@ -367,7 +361,6 @@ def _context_score(request: SolidarySyncChannelRequest) -> int:
     if request.same_station_demo_id: score += 1
     if request.same_platform_demo_id: score += 2
     return score
-
 def _result(request: SolidarySyncChannelRequest, policy: SyncChannelPolicy, status: SyncChannelStatus, selected_channel: SyncChannel, window_kind: WindowKind, window_minutes: int, window_matched: bool, context_score: int, opens_bonus_evaluation_window: bool, blocks_solidary_bonus_flow: bool, requires_audit_review: bool, hard_risk_flags: List[str], audit_flags: List[str], reason: str) -> SolidarySyncChannelResult:
     return SolidarySyncChannelResult(
         project=PROJECT_NAME, module=MODULE_NAME, version=MODULE_VERSION, demo_mode=DEMO_MODE, status=status, selected_channel=selected_channel, window_kind=window_kind, window_minutes=window_minutes, window_matched=window_matched, mobile_required=False,
@@ -379,19 +372,61 @@ def _result(request: SolidarySyncChannelRequest, policy: SyncChannelPolicy, stat
 def _security_summary(request: SolidarySyncChannelRequest, policy: SyncChannelPolicy, selected_channel: SyncChannel, window_kind: WindowKind, window_minutes: int, window_matched: bool, context_score: int) -> Dict[str, Any]:
     context = request.red_sube_context
     return {
-        "sync_channel_event_demo_id": request.sync_channel_event_demo_id, "selected_channel": selected_channel.value, "window_kind": window_kind.value, "window_minutes": window_minutes, "window_matched": window_matched, "context_score": context_score, "transport_mode": context.transport_mode.value, "validation_point_type": context.validation_point_type.value, "priority_mobile_available": request.priority_device_availability.has_mobile_device, "priority_nfc_available": request.priority_device_availability.has_nfc_capable_device, "collaborator_mobile_available": request.collaborator_device_availability.has_mobile_device, "collaborator_physical_sube_card_available": request.collaborator_device_availability.has_physical_sube_card, "priority_paid_validation_confirmed": context.priority_paid_validation_confirmed, "collaborator_paid_validation_confirmed": context.collaborator_paid_validation_confirmed, "confirmation_mode": request.confirmation_mode.value, "priority_user_confirms_or_can_confirm": request.priority_user_confirms_or_can_confirm, "same_network_demo_id": request.same_network_demo_id, "same_route_demo_id": request.same_route_demo_id, "same_service_window_demo_id": request.same_service_window_demo_id, "same_validator_or_turnstile_demo_id": request.same_validator_or_turnstile_demo_id, "same_vehicle_demo_id": request.same_vehicle_demo_id, "same_trainset_demo_id": request.same_trainset_demo_id, "same_station_demo_id": request.same_station_demo_id, "same_platform_demo_id": request.same_platform_demo_id, "allow_no_mobile_channels": policy.allow_no_mobile_channels, "allow_assisted_channel": policy.allow_assisted_channel, "allow_deferred_account_confirmation": policy.allow_deferred_account_confirmation
+        "sync_channel_event_demo_id": request.sync_channel_event_demo_id,
+        "selected_channel": selected_channel.value,
+        "window_kind": window_kind.value,
+        "window_minutes": window_minutes,
+        "window_matched": window_matched,
+        "context_score": context_score,
+        "transport_mode": context.transport_mode.value,
+        "validation_point_type": context.validation_point_type.value,
+        "priority_mobile_available": request.priority_device_availability.has_mobile_device,
+        "priority_nfc_available": request.priority_device_availability.has_nfc_capable_device,
+        "collaborator_mobile_available": request.collaborator_device_availability.has_mobile_device,
+        "collaborator_physical_sube_card_available": request.collaborator_device_availability.has_physical_sube_card,
+        "priority_paid_validation_confirmed": context.priority_paid_validation_confirmed,
+        "collaborator_paid_validation_confirmed": context.collaborator_paid_validation_confirmed,
+        "confirmation_mode": request.confirmation_mode.value,
+        "priority_user_confirms_or_can_confirm": request.priority_user_confirms_or_can_confirm,
+        "same_network_demo_id": request.same_network_demo_id,
+        "same_route_demo_id": request.same_route_demo_id,
+        "same_service_window_demo_id": request.same_service_window_demo_id,
+        "same_validator_or_turnstile_demo_id": request.same_validator_or_turnstile_demo_id,
+        "same_vehicle_demo_id": request.same_vehicle_demo_id,
+        "same_trainset_demo_id": request.same_trainset_demo_id,
+        "same_station_demo_id": request.same_station_demo_id,
+        "same_platform_demo_id": request.same_platform_demo_id,
+        "allow_no_mobile_channels": policy.allow_no_mobile_channels,
+        "allow_assisted_channel": policy.allow_assisted_channel,
+        "allow_deferred_account_confirmation": policy.allow_deferred_account_confirmation
     }
 
-def _privacy_notice() -> str: return "El selector de canales no revela DNI, nombre, domicilio, diagnóstico, CUD, historia clínica, certificado médico, teléfono, email, IMEI, MAC, saldo ni GPS exacto. La ausencia de celular no bloquea automáticamente."
-def _legal_scope_notice() -> str: return "La apertura de ventanas y canales es conceptual. No aplica descuentos reales, no actualiza tarjetas reales y no integra Red SUBE real. Una implementación requeriría autorización, integración oficial, auditoría y normativa competente."
-def _driver_burden_notice() -> str: return "El chofer no selecciona canales, no verifica sincronizaciones, no decide beneficios y no administra el Bono Solidario."
+def _privacy_notice() -> str: 
+    return "El selector de canales no revela DNI, nombre, domicilio, diagnóstico, CUD, historia clínica, certificado médico, teléfono, email, IMEI, MAC, saldo ni GPS exacto. La ausencia de celular no bloquea automáticamente."
+
+def _legal_scope_notice() -> str: 
+    return "La apertura de ventanas y canales es conceptual. No aplica descuentos reales, no actualiza tarjetas reales y no integra Red SUBE real. Una implementación requeriría autorización, integración oficial, auditoría y normativa competente."
+
+def _driver_burden_notice() -> str: 
+    return "El chofer no selecciona canales, no verifica sincronizaciones, no decide beneficios y no administra el Bono Solidario."
 
 def _common_warnings() -> List[str]:
-    return ["Selector conceptual y demostrativo.", "Sin implementación oficial vigente.", "Sin integración real con SUBE.", "Sin integración real con Red SUBE.", "Sin consulta a cuentas reales.", "Sin consulta a tarjetas reales.", "Sin consulta a validadoras reales.", "Sin consulta a molinetes reales.", "Sin saldo real.", "Sin tarifa real.", "Sin escritura real sobre chip SUBE.", "Sin DNI.", "Sin diagnóstico médico.", "Sin CUD visible.", "Sin teléfono real.", "Sin email real.", "Sin IMEI real.", "Sin MAC real.", "Sin GPS exacto.", "Sin vigilancia.", "Sin ranking.", "Sin sanciones.", "Sin obligación de tener celular.", "El usuario SUBE Prioridad puede no tener celular.", "El colaborador puede no tener celular.", "La Red SUBE demo puede abrir ventanas lógicas desde validadoras o molinetes.", "Cada tipo de validadora o molinete puede tener una ventana temporal distinta.", "La ausencia de móvil reduce refuerzo probatorio, pero no bloquea por sí sola.", "Las ventanas más amplias requieren mayor auditoría antifraude."]
+    return [
+        "Selector conceptual y demostrativo.", "Sin implementación oficial vigente.", "Sin integración real con SUBE.", 
+        "Sin integración real con Red SUBE.", "Sin consulta a cuentas reales.", "Sin consulta a tarjetas reales.", 
+        "Sin consulta a validadoras reales.", "Sin consulta a molinetes reales.", "Sin saldo real.", "Sin tarifa real.", 
+        "Sin escritura real sobre chip SUBE.", "Sin DNI.", "Sin diagnóstico médico.", "Sin CUD visible.", 
+        "Sin teléfono real.", "Sin email real.", "Sin IMEI real.", "Sin MAC real.", "Sin GPS exacto.", "Sin vigilancia.", 
+        "Sin ranking.", "Sin sanciones.", "Sin obligación de tener celular.", "El usuario SUBE Prioridad puede no tener celular.", 
+        "El colaborador puede no tener celular.", "La Red SUBE demo puede abrir ventanas lógicas desde validadoras o molinetes.", 
+        "Cada tipo de validadora o molinete puede tener una ventana temporal distinta.", "La ausencia de móvil reduce refuerzo probatorio, pero no bloquea por sí sola.", 
+        "Las ventanas más amplias requieren mayor auditoría antifraude."
+    ]
 
 def _validate_required_values(required_values: Dict[str, str]) -> None:
     for field_name, value in required_values.items():
-        if not value or not value.strip(): raise ValueError(f"El campo demostrativo {field_name} no puede estar vacío.")
+        if not value or not value.strip(): 
+            raise ValueError(f"El campo demostrativo {field_name} no puede estar vacío.")
 
 def _looks_like_free_text(token: str) -> bool:
     normalized = token.lower().strip()
@@ -404,16 +439,17 @@ def _strip_optional(value: Optional[str]) -> Optional[str]:
     return stripped if stripped else None
 
 def _deduplicate(flags: List[str]) -> List[str]:
-    seen = set(); result = []
+    seen = set()
+    result = []
     for flag in flags:
-        if flag not in seen: seen.add(flag); result.append(flag)
+        if flag not in seen: 
+            seen.add(flag)
+            result.append(flag)
     return result
 
-def _now_utc() -> str: return datetime.now(timezone.utc).isoformat()
+def _now_utc() -> str: 
+    return datetime.now(timezone.utc).isoformat()
 
 if __name__ == "__main__":
     import json
-    from solidary_sync_channel_selector import create_demo_solidary_sync_channel_request, create_demo_no_mobile_validator_based_request, create_demo_station_no_mobile_deferred_request
     print(json.dumps(run_demo(), indent=2, ensure_ascii=False))
-    print(json.dumps(run_no_mobile_validator_demo(), indent=2, ensure_ascii=False))
-    print(json.dumps(run_station_no_mobile_deferred_demo(), indent=2, ensure_ascii=False))
