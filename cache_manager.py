@@ -1,235 +1,122 @@
-from dataclasses import dataclass
-from datetime import datetime, timedelta, timezone
-from typing import Any, Dict, Optional
+import time
+from enum import Enum
+from typing import Callable, TypeVar, Any, Dict, List
 
 
-@dataclass
-class CacheEntry:
+T = TypeVar("T")
+
+
+class CircuitState(str, Enum):
+    CLOSED = "closed"
+    OPEN = "open"
+    HALF_OPEN = "half_open"
+
+
+class CircuitBreaker:
     """
-    Entrada conceptual de caché para el MVP.
+    Circuit breaker simple para proteger llamadas a servicios externos.
 
-    No debe utilizarse para almacenar DNI, nombre, apellido, diagnóstico médico,
-    historia clínica, certificados médicos ni datos de salud identificables.
-    """
-
-    key: str
-    value: Any
-    created_at: datetime
-    expires_at: Optional[datetime] = None
-
-    def is_expired(self, now: Optional[datetime] = None) -> bool:
-        """
-        Indica si la entrada se encuentra vencida.
-        """
-
-        if self.expires_at is None:
-            return False
-
-        current_time = now or datetime.now(timezone.utc)
-        return current_time >= self.expires_at
-
-
-class CacheManager:
-    """
-    Caché simple en memoria para uso demostrativo del MVP.
-
-    Este componente no es almacenamiento productivo.
-    No persiste datos.
-    No se conecta con organismos públicos.
-    No se conecta con SUBE real.
-    No se conecta con Mi Argentina.
-    No debe almacenar datos personales sensibles.
-
-    Su finalidad es permitir pruebas técnicas locales o conceptuales.
+    Uso previsto:
+    - ANDIS / SISA / RENAPER / gateway X-Road u otros servicios públicos.
+    - Si hay demasiados errores consecutivos, se abre el circuito.
+    - Luego de un tiempo de recuperación, permite una prueba en estado half-open.
     """
 
-    def __init__(self, default_ttl_seconds: int = 300) -> None:
-        self.default_ttl_seconds = default_ttl_seconds
-        self._items: Dict[str, CacheEntry] = {}
-
-    def set(
+    def __init__(
         self,
-        key: str,
-        value: Any,
-        ttl_seconds: Optional[int] = None,
+        failure_threshold: int = 3,
+        recovery_timeout_seconds: int = 30,
     ) -> None:
+        self.failure_threshold = failure_threshold
+        self.recovery_timeout_seconds = recovery_timeout_seconds
+        self.failure_count = 0
+        self.last_failure_time = 0.0
+        self.state = CircuitState.CLOSED
+
+    def call(self, function: Callable[..., T], *args, **kwargs) -> T:
+        if self.state == CircuitState.OPEN:
+            if self._can_attempt_recovery():
+                self.state = CircuitState.HALF_OPEN
+            else:
+                raise RuntimeError(
+                    "Circuit breaker abierto: servicio temporalmente no disponible."
+                )
+
+        try:
+            result = function(*args, **kwargs)
+        except Exception:
+            self._record_failure()
+            raise
+
+        self._record_success()
+        return result
+
+    def _record_failure(self) -> None:
+        self.failure_count += 1
+        self.last_failure_time = time.time()
+
+        if self.failure_count >= self.failure_threshold:
+            self.state = CircuitState.OPEN
+
+    def _record_success(self) -> None:
+        self.failure_count = 0
+        self.last_failure_time = 0.0
+        self.state = CircuitState.CLOSED
+
+    def _can_attempt_recovery(self) -> bool:
+        return (time.time() - self.last_failure_time) >= self.recovery_timeout_seconds
+
+    def reset(self) -> None:
+        self.failure_count = 0
+        self.last_failure_time = 0.0
+        self.state = CircuitState.CLOSED
+
+
+# =====================================================================
+# 🆕 EXTENSIÓN DE ARQUITECTURA: RESILIENCIA EN ENTORNOS OFFLINE (EDGE)
+# =====================================================================
+
+class TransportEdgeCircuitBreaker(CircuitBreaker):
+    """
+    Cortocircuito especializado para validadoras y hardware físico de transporte.
+    Si la conectividad WAN o las APIs centrales fallan, activa políticas 
+    de mitigación y degradación controlada en modo fuera de línea (Fail-Safe).
+    """
+    
+    def __init__(
+        self, 
+        failure_threshold: int = 3, 
+        recovery_timeout_seconds: int = 30
+    ) -> None:
+        super().__init__(failure_threshold, recovery_timeout_seconds)
+        self._local_offline_backup: List[Dict[str, Any]] = []
+
+    def call_with_edge_fallback(
+        self, 
+        function: Callable[..., T], 
+        fallback_function: Callable[..., T], 
+        *args: Any, 
+        **kwargs: Any
+    ) -> T:
         """
-        Guarda un valor en caché con vencimiento opcional.
-
-        Si ttl_seconds no se informa, se utiliza el TTL por defecto.
-        Si ttl_seconds es 0 o negativo, la entrada no tendrá vencimiento.
+        Intenta ejecutar la sincronización en línea. Si el circuito está abierto 
+        o la llamada remota falla, ejecuta la función de degradación local.
         """
-
-        self._validate_key(key)
-
-        created_at = datetime.now(timezone.utc)
-        ttl = self.default_ttl_seconds if ttl_seconds is None else ttl_seconds
-
-        expires_at = None
-        if ttl > 0:
-            expires_at = created_at + timedelta(seconds=ttl)
-
-        self._items[key] = CacheEntry(
-            key=key,
-            value=value,
-            created_at=created_at,
-            expires_at=expires_at,
-        )
-
-    def get(self, key: str, default: Any = None) -> Any:
-        """
-        Obtiene un valor de caché.
-
-        Si la entrada no existe o está vencida, devuelve default.
-        """
-
-        self._validate_key(key)
-
-        entry = self._items.get(key)
-
-        if entry is None:
-            return default
-
-        if entry.is_expired():
-            self.delete(key)
-            return default
-
-        return entry.value
-
-    def has(self, key: str) -> bool:
-        """
-        Indica si existe una entrada vigente para la clave indicada.
-        """
-
-        self._validate_key(key)
-
-        entry = self._items.get(key)
-
-        if entry is None:
-            return False
-
-        if entry.is_expired():
-            self.delete(key)
-            return False
-
-        return True
-
-    def delete(self, key: str) -> bool:
-        """
-        Elimina una entrada de caché.
-
-        Devuelve True si existía y fue eliminada.
-        """
-
-        self._validate_key(key)
-
-        if key in self._items:
-            del self._items[key]
-            return True
-
-        return False
-
-    def clear(self) -> None:
-        """
-        Limpia toda la caché en memoria.
-        """
-
-        self._items.clear()
-
-    def cleanup_expired(self) -> int:
-        """
-        Elimina entradas vencidas.
-
-        Devuelve la cantidad de entradas eliminadas.
-        """
-
-        now = datetime.now(timezone.utc)
-
-        expired_keys = [
-            key for key, entry in self._items.items() if entry.is_expired(now)
-        ]
-
-        for key in expired_keys:
-            del self._items[key]
-
-        return len(expired_keys)
-
-    def size(self) -> int:
-        """
-        Devuelve la cantidad de entradas vigentes en caché.
-        """
-
-        self.cleanup_expired()
-        return len(self._items)
-
-    def keys(self) -> list[str]:
-        """
-        Devuelve las claves vigentes.
-        """
-
-        self.cleanup_expired()
-        return list(self._items.keys())
+        try:
+            # Intentamos la vía centralizada estándar utilizando el motor base
+            return self.call(function, *args, **kwargs)
+        except Exception:
+            # Si ocurre un fallo y el circuito se abre, conmutamos al flujo offline
+            return fallback_function(*args, **kwargs)
 
     def estado(self) -> Dict[str, Any]:
         """
-        Devuelve estado conceptual del componente.
+        Devuelve el estado analítico de resiliencia del hardware de borde.
         """
-
-        self.cleanup_expired()
-
         return {
-            "componente": "CacheManager",
-            "entorno": "mvp-conceptual",
-            "tipo": "cache_en_memoria",
-            "items_en_cache": len(self._items),
-            "default_ttl_seconds": self.default_ttl_seconds,
-            "persistencia_productiva": False,
-            "procesa_datos_sensibles": False,
-            "integracion_real_con_organismos": False,
-            "integracion_real_sube": False,
-            "integracion_real_mi_argentina": False,
+            "componente": "TransportEdgeCircuitBreaker",
+            "estado_circuito": self.state.value,
+            "conteo_fallas": self.failure_count,
+            "segundos_recuperacion_configurados": self.recovery_timeout_seconds,
+            "modo_operación": "degradado_offline_fail_safe" if self.state == CircuitState.OPEN else "online_sincrono"
         }
-
-    def _validate_key(self, key: str) -> None:
-        if not isinstance(key, str) or not key.strip():
-            raise ValueError("La clave de caché debe ser un string no vacío.")
-
-
-def crear_cache_demo() -> CacheManager:
-    """
-    Crea una instancia demostrativa del cache manager.
-    """
-
-    cache = CacheManager(default_ttl_seconds=300)
-
-    cache.set(
-        key="demo-prioridad",
-        value={
-            "prioridad_activa": True,
-            "entorno": "mvp-conceptual",
-            "datos_sensibles_procesados": False,
-        },
-    )
-
-    return cache
-
-
-def cache_demo_estado() -> Dict[str, Any]:
-    """
-    Devuelve estado serializable de una caché demostrativa.
-    """
-
-    cache = crear_cache_demo()
-
-    return {
-        "valor_demo": cache.get("demo-prioridad"),
-        "estado": cache.estado(),
-    }
-
-
-__all__ = [
-    "CacheEntry",
-    "CacheManager",
-    "crear_cache_demo",
-    "cache_demo_estado",
-]
