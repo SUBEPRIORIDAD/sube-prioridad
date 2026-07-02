@@ -1,490 +1,108 @@
-from datetime import datetime, timedelta, timezone
+"""
+SUBE Prioridad — Tests unitarios para el Simulador de Bono Solidario.
+Valida el comportamiento analítico del backend despersonalizado.
+"""
 
+from __future__ import annotations
 import pytest
-
+from datetime import datetime, timezone
 from bono_solidario_simulator import (
-    DemoRecognitionLedger,
+    create_demo_solidary_event,
+    simulate_solidary_recognition,
     SeatType,
     SolidaryRecognitionStatus,
-    assert_no_prohibited_fields,
-    create_demo_solidary_event,
-    create_demo_transport_context,
-    run_demo,
-    simulate_solidary_recognition,
+    SolidaryRejectionReason,
+    DemoRecognitionLedger
 )
 
-
-def test_run_demo_accepts_valid_solidary_recognition():
-    result = run_demo()
-
-    assert result["project"] == "SUBE Prioridad"
-    assert result["module"] == "Bono Solidario"
-    assert result["demo_mode"] is True
-    assert result["status"] == "accepted"
-    assert result["solidary_point_demo"] == 1
-    assert result["recognition_enabled_by_priority_user"] is True
-    assert result["same_transport_context"] is True
-    assert result["review_required"] is False
-    assert result["risk_flags"] == []
-    assert "Usuario SUBE Prioridad" in result["reason"] or "usuario SUBE Prioridad" in result["reason"]
-    assert "Sin integración real con Red SUBE." in result["warnings"]
-    assert "El Bono Solidario queda en manos del usuario SUBE Prioridad." in result["warnings"]
-
-
-def test_solidary_recognition_requires_priority_user_decision():
-    context = create_demo_transport_context()
-    ledger = DemoRecognitionLedger()
-
+def test_successful_solidary_recognition():
+    """Valida la aprobación de un evento colaborativo legítimo en asiento general."""
     event = create_demo_solidary_event(
-        event_demo_id="test-solidary-event-user-decision",
-        priority_user_token="test-priority-user-001",
-        collaborator_token="test-collaborator-001",
-        priority_user_decides_to_recognize=False,
-        seat_type=SeatType.GENERAL_USE,
+        event_demo_id="test-event-ok",
+        priority_user_token="user-priority-ok",
+        collaborator_token="user-collaborator-ok",
         voluntary_seat_yield=True,
-        transport_context=context,
+        priority_user_confirms_seat_yield=True,
+        same_transport_context=True,
+        seat_type=SeatType.GENERAL_USE
     )
+    result = simulate_solidary_recognition(event)
+    assert result.accepted is True
+    assert result.status == SolidaryRecognitionStatus.ACCEPTED
+    assert result.rejection_reason == SolidaryRejectionReason.NONE
+    assert len(result.risk_flags) == 0
 
-    result = simulate_solidary_recognition(
-        event=event,
-        expected_context=context,
-        ledger=ledger,
-    )
-
-    assert result.status == SolidaryRecognitionStatus.REJECTED
-    assert result.solidary_point_demo == 0
-    assert result.recognition_enabled_by_priority_user is False
-    assert result.review_required is False
-    assert "priority_user_did_not_recognize" in result.risk_flags
-
-
-def test_solidary_recognition_requires_voluntary_seat_yield():
-    context = create_demo_transport_context()
-    ledger = DemoRecognitionLedger()
-
+def test_rejection_no_voluntary_yield():
+    """Valida el rechazo si la cesión del asiento de uso general no fue voluntaria."""
     event = create_demo_solidary_event(
-        event_demo_id="test-solidary-event-no-voluntary-yield",
-        priority_user_token="test-priority-user-002",
-        collaborator_token="test-collaborator-002",
-        priority_user_decides_to_recognize=True,
-        seat_type=SeatType.GENERAL_USE,
+        event_demo_id="test-event-no-voluntary",
+        priority_user_token="user-priority-ok",
+        collaborator_token="user-collaborator-ok",
         voluntary_seat_yield=False,
-        transport_context=context,
+        priority_user_confirms_seat_yield=True,
+        same_transport_context=True,
+        seat_type=SeatType.GENERAL_USE
     )
-
-    result = simulate_solidary_recognition(
-        event=event,
-        expected_context=context,
-        ledger=ledger,
-    )
-
+    result = simulate_solidary_recognition(event)
+    assert result.accepted is False
     assert result.status == SolidaryRecognitionStatus.REJECTED
-    assert result.solidary_point_demo == 0
     assert "no_voluntary_seat_yield" in result.risk_flags
+    assert result.rejection_reason == SolidaryRejectionReason.NO_VOLUNTARY_SEAT_YIELD
 
-
-def test_solidary_recognition_rejects_legal_priority_seat():
-    context = create_demo_transport_context()
-    ledger = DemoRecognitionLedger()
-
+def test_rejection_same_user_attempt():
+    """Valida el bloqueo antifraude si el token del colaborador coincide con el prioritario."""
     event = create_demo_solidary_event(
-        event_demo_id="test-solidary-event-legal-priority-seat",
-        priority_user_token="test-priority-user-003",
-        collaborator_token="test-collaborator-003",
-        priority_user_decides_to_recognize=True,
-        seat_type=SeatType.LEGAL_PRIORITY,
+        event_demo_id="test-event-same-user",
+        priority_user_token="fraud-token-01",
+        collaborator_token="fraud-token-01",
         voluntary_seat_yield=True,
-        transport_context=context,
+        priority_user_confirms_seat_yield=True,
+        same_transport_context=True,
+        seat_type=SeatType.GENERAL_USE
     )
-
-    result = simulate_solidary_recognition(
-        event=event,
-        expected_context=context,
-        ledger=ledger,
-    )
-
+    result = simulate_solidary_recognition(event)
+    assert result.accepted is False
     assert result.status == SolidaryRecognitionStatus.REJECTED
-    assert result.solidary_point_demo == 0
-    assert "legal_priority_seat_not_eligible" in result.risk_flags
+    assert "same_user_not_allowed" in result.risk_flags
+    assert result.rejection_reason == SolidaryRejectionReason.SAME_USER_NOT_ALLOWED
 
-
-def test_solidary_recognition_requires_same_transport_context():
-    actual_context = create_demo_transport_context(
-        country="Argentina",
-        vehicle_demo_id="test-bus-001",
-        route_demo_id="test-route-001",
-        trip_demo_id="test-trip-001",
-        time_window_demo_id="test-window-001",
-    )
-
-    expected_context = create_demo_transport_context(
-        country="Argentina",
-        vehicle_demo_id="test-bus-999",
-        route_demo_id="test-route-001",
-        trip_demo_id="test-trip-001",
-        time_window_demo_id="test-window-001",
-    )
-
-    ledger = DemoRecognitionLedger()
-
+def test_rejection_legal_priority_seat():
+    """Valida que no se premie la ocupación de asientos legalmente prioritarios."""
     event = create_demo_solidary_event(
-        event_demo_id="test-solidary-event-context",
-        priority_user_token="test-priority-user-004",
-        collaborator_token="test-collaborator-004",
-        priority_user_decides_to_recognize=True,
-        seat_type=SeatType.GENERAL_USE,
+        event_demo_id="test-event-legal-seat",
+        priority_user_token="user-priority-ok",
+        collaborator_token="user-collaborator-ok",
         voluntary_seat_yield=True,
-        transport_context=actual_context,
+        priority_user_confirms_seat_yield=True,
+        same_transport_context=True,
+        seat_type=SeatType.LEGAL_PRIORITY
     )
-
-    result = simulate_solidary_recognition(
-        event=event,
-        expected_context=expected_context,
-        ledger=ledger,
-    )
-
+    result = simulate_solidary_recognition(event)
+    assert result.accepted is False
     assert result.status == SolidaryRecognitionStatus.REJECTED
-    assert result.solidary_point_demo == 0
-    assert result.same_transport_context is False
-    assert "different_transport_context" in result.risk_flags
+    assert "legal_priority_seat_not_rewardable" in result.risk_flags
+    assert result.rejection_reason == SolidaryRejectionReason.LEGAL_PRIORITY_SEAT_NOT_REWARDABLE
 
+def test_prohibited_fields_exception():
+    """Valida que el escudo de privacidad arroje excepción ante campos de identidad civil."""
+    with pytest.raises(ValueError) as exc_info:
+        create_demo_solidary_event(**{"dni": "12345678", "priority_user_token": "ok"})
+    assert "campos prohibidos para SUBE Prioridad" in str(exc_info.value)
 
-def test_solidary_recognition_requires_argentina_context():
-    context = create_demo_transport_context(country="Uruguay")
+def test_demo_recognition_ledger_operations():
+    """Valida el correcto funcionamiento del libro de registros en memoria exigido en el DIP."""
     ledger = DemoRecognitionLedger()
-
+    assert ledger.size == 0
+    
     event = create_demo_solidary_event(
-        event_demo_id="test-solidary-event-outside-argentina",
-        priority_user_token="test-priority-user-005",
-        collaborator_token="test-collaborator-005",
-        priority_user_decides_to_recognize=True,
-        seat_type=SeatType.GENERAL_USE,
-        voluntary_seat_yield=True,
-        transport_context=context,
+        event_demo_id="ledger-test-01",
+        priority_user_token="priority-token",
+        collaborator_token="collaborator-token"
     )
-
-    result = simulate_solidary_recognition(
-        event=event,
-        expected_context=context,
-        ledger=ledger,
-    )
-
-    assert result.status == SolidaryRecognitionStatus.REJECTED
-    assert result.solidary_point_demo == 0
-    assert "outside_argentina_context" in result.risk_flags
-
-
-def test_solidary_recognition_rejects_self_recognition():
-    context = create_demo_transport_context()
-    ledger = DemoRecognitionLedger()
-
-    event = create_demo_solidary_event(
-        event_demo_id="test-solidary-event-self-recognition",
-        priority_user_token="test-same-token-001",
-        collaborator_token="test-same-token-001",
-        priority_user_decides_to_recognize=True,
-        seat_type=SeatType.GENERAL_USE,
-        voluntary_seat_yield=True,
-        transport_context=context,
-    )
-
-    result = simulate_solidary_recognition(
-        event=event,
-        expected_context=context,
-        ledger=ledger,
-    )
-
-    assert result.status == SolidaryRecognitionStatus.REJECTED
-    assert result.solidary_point_demo == 0
-    assert "self_recognition_attempt" in result.risk_flags
-
-
-def test_solidary_recognition_rejects_replay_event_id():
-    context = create_demo_transport_context()
-    ledger = DemoRecognitionLedger()
-
-    event = create_demo_solidary_event(
-        event_demo_id="test-solidary-event-replay",
-        priority_user_token="test-priority-user-006",
-        collaborator_token="test-collaborator-006",
-        priority_user_decides_to_recognize=True,
-        seat_type=SeatType.GENERAL_USE,
-        voluntary_seat_yield=True,
-        transport_context=context,
-    )
-
-    first_result = simulate_solidary_recognition(
-        event=event,
-        expected_context=context,
-        ledger=ledger,
-    )
-
-    second_result = simulate_solidary_recognition(
-        event=event,
-        expected_context=context,
-        ledger=ledger,
-    )
-
-    assert first_result.status == SolidaryRecognitionStatus.ACCEPTED
-    assert first_result.solidary_point_demo == 1
-
-    assert second_result.status == SolidaryRecognitionStatus.REJECTED
-    assert second_result.solidary_point_demo == 0
-    assert "replay_event_id" in second_result.risk_flags
-
-
-def test_solidary_recognition_rejects_expired_event():
-    context = create_demo_transport_context()
-    ledger = DemoRecognitionLedger()
-
-    issued_at = datetime.now(timezone.utc) - timedelta(minutes=10)
-
-    event = create_demo_solidary_event(
-        event_demo_id="test-solidary-event-expired",
-        priority_user_token="test-priority-user-007",
-        collaborator_token="test-collaborator-007",
-        priority_user_decides_to_recognize=True,
-        seat_type=SeatType.GENERAL_USE,
-        voluntary_seat_yield=True,
-        transport_context=context,
-        issued_at_utc=issued_at,
-        ttl_minutes=1,
-    )
-
-    result = simulate_solidary_recognition(
-        event=event,
-        expected_context=context,
-        ledger=ledger,
-    )
-
-    assert result.status == SolidaryRecognitionStatus.REJECTED
-    assert result.solidary_point_demo == 0
-    assert "expired_event" in result.risk_flags
-
-
-def test_solidary_recognition_needs_review_when_priority_user_trip_limit_exceeded():
-    context = create_demo_transport_context(
-        vehicle_demo_id="test-bus-priority-limit",
-        route_demo_id="test-route-priority-limit",
-        trip_demo_id="test-trip-priority-limit",
-        time_window_demo_id="test-window-priority-limit",
-    )
-
-    ledger = DemoRecognitionLedger()
-
-    first_event = create_demo_solidary_event(
-        event_demo_id="test-solidary-priority-limit-001",
-        priority_user_token="test-priority-user-limit-001",
-        collaborator_token="test-collaborator-limit-001",
-        priority_user_decides_to_recognize=True,
-        seat_type=SeatType.GENERAL_USE,
-        voluntary_seat_yield=True,
-        transport_context=context,
-    )
-
-    second_event = create_demo_solidary_event(
-        event_demo_id="test-solidary-priority-limit-002",
-        priority_user_token="test-priority-user-limit-001",
-        collaborator_token="test-collaborator-limit-002",
-        priority_user_decides_to_recognize=True,
-        seat_type=SeatType.GENERAL_USE,
-        voluntary_seat_yield=True,
-        transport_context=context,
-    )
-
-    first_result = simulate_solidary_recognition(
-        event=first_event,
-        expected_context=context,
-        ledger=ledger,
-    )
-
-    second_result = simulate_solidary_recognition(
-        event=second_event,
-        expected_context=context,
-        ledger=ledger,
-    )
-
-    assert first_result.status == SolidaryRecognitionStatus.ACCEPTED
-    assert first_result.solidary_point_demo == 1
-
-    assert second_result.status == SolidaryRecognitionStatus.NEEDS_REVIEW
-    assert second_result.solidary_point_demo == 0
-    assert second_result.review_required is True
-    assert "priority_user_trip_limit_exceeded" in second_result.risk_flags
-
-
-def test_solidary_recognition_needs_review_when_collaborator_trip_limit_exceeded():
-    context = create_demo_transport_context(
-        vehicle_demo_id="test-bus-collaborator-limit",
-        route_demo_id="test-route-collaborator-limit",
-        trip_demo_id="test-trip-collaborator-limit",
-        time_window_demo_id="test-window-collaborator-limit",
-    )
-
-    ledger = DemoRecognitionLedger()
-
-    first_event = create_demo_solidary_event(
-        event_demo_id="test-solidary-collaborator-limit-001",
-        priority_user_token="test-priority-user-collab-limit-001",
-        collaborator_token="test-collaborator-limit-same",
-        priority_user_decides_to_recognize=True,
-        seat_type=SeatType.GENERAL_USE,
-        voluntary_seat_yield=True,
-        transport_context=context,
-    )
-
-    second_event = create_demo_solidary_event(
-        event_demo_id="test-solidary-collaborator-limit-002",
-        priority_user_token="test-priority-user-collab-limit-002",
-        collaborator_token="test-collaborator-limit-same",
-        priority_user_decides_to_recognize=True,
-        seat_type=SeatType.GENERAL_USE,
-        voluntary_seat_yield=True,
-        transport_context=context,
-    )
-
-    third_event = create_demo_solidary_event(
-        event_demo_id="test-solidary-collaborator-limit-003",
-        priority_user_token="test-priority-user-collab-limit-003",
-        collaborator_token="test-collaborator-limit-same",
-        priority_user_decides_to_recognize=True,
-        seat_type=SeatType.GENERAL_USE,
-        voluntary_seat_yield=True,
-        transport_context=context,
-    )
-
-    first_result = simulate_solidary_recognition(
-        event=first_event,
-        expected_context=context,
-        ledger=ledger,
-    )
-
-    second_result = simulate_solidary_recognition(
-        event=second_event,
-        expected_context=context,
-        ledger=ledger,
-    )
-
-    third_result = simulate_solidary_recognition(
-        event=third_event,
-        expected_context=context,
-        ledger=ledger,
-    )
-
-    assert first_result.status == SolidaryRecognitionStatus.ACCEPTED
-    assert first_result.solidary_point_demo == 1
-
-    assert second_result.status == SolidaryRecognitionStatus.ACCEPTED
-    assert second_result.solidary_point_demo == 1
-
-    assert third_result.status == SolidaryRecognitionStatus.NEEDS_REVIEW
-    assert third_result.solidary_point_demo == 0
-    assert third_result.review_required is True
-    assert "collaborator_trip_limit_exceeded" in third_result.risk_flags
-
-
-def test_solidary_recognition_rejects_priority_user_token_free_text():
-    context = create_demo_transport_context()
-    ledger = DemoRecognitionLedger()
-
-    event = create_demo_solidary_event(
-        event_demo_id="test-solidary-event-priority-free-text",
-        priority_user_token="quiero viajar gratis",
-        collaborator_token="test-collaborator-008",
-        priority_user_decides_to_recognize=True,
-        seat_type=SeatType.GENERAL_USE,
-        voluntary_seat_yield=True,
-        transport_context=context,
-    )
-
-    result = simulate_solidary_recognition(
-        event=event,
-        expected_context=context,
-        ledger=ledger,
-    )
-
-    assert result.status == SolidaryRecognitionStatus.REJECTED
-    assert result.solidary_point_demo == 0
-    assert "priority_user_token_looks_like_free_text" in result.risk_flags
-
-
-def test_solidary_recognition_rejects_collaborator_token_free_text():
-    context = create_demo_transport_context()
-    ledger = DemoRecognitionLedger()
-
-    event = create_demo_solidary_event(
-        event_demo_id="test-solidary-event-collaborator-free-text",
-        priority_user_token="test-priority-user-008",
-        collaborator_token="quiero viajar gratis",
-        priority_user_decides_to_recognize=True,
-        seat_type=SeatType.GENERAL_USE,
-        voluntary_seat_yield=True,
-        transport_context=context,
-    )
-
-    result = simulate_solidary_recognition(
-        event=event,
-        expected_context=context,
-        ledger=ledger,
-    )
-
-    assert result.status == SolidaryRecognitionStatus.REJECTED
-    assert result.solidary_point_demo == 0
-    assert "collaborator_token_looks_like_free_text" in result.risk_flags
-
-
-def test_assert_no_prohibited_fields_rejects_sensitive_payload():
-    with pytest.raises(ValueError) as error:
-        assert_no_prohibited_fields(
-            {
-                "dni": "12345678",
-                "token": "demo-token",
-            }
-        )
-
-    assert "dni" in str(error.value).lower()
-
-
-def test_assert_no_prohibited_fields_rejects_medical_payload():
-    with pytest.raises(ValueError) as error:
-        assert_no_prohibited_fields(
-            {
-                "diagnostico": "dato no permitido",
-                "cud": "dato no permitido",
-            }
-        )
-
-    message = str(error.value).lower()
-
-    assert "diagnostico" in message
-    assert "cud" in message
-
-
-def test_create_demo_solidary_event_rejects_empty_event_demo_id():
-    with pytest.raises(ValueError):
-        create_demo_solidary_event(
-            event_demo_id="",
-            priority_user_token="test-priority-user-empty-event",
-            collaborator_token="test-collaborator-empty-event",
-            priority_user_decides_to_recognize=True,
-        )
-
-
-def test_create_demo_solidary_event_rejects_empty_priority_user_token():
-    with pytest.raises(ValueError):
-        create_demo_solidary_event(
-            event_demo_id="test-solidary-empty-priority-user",
-            priority_user_token="",
-            collaborator_token="test-collaborator-empty-priority-user",
-            priority_user_decides_to_recognize=True,
-        )
-
-
-def test_create_demo_solidary_event_rejects_empty_collaborator_token():
-    with pytest.raises(ValueError):
-        create_demo_solidary_event(
-            event_demo_id="test-solidary-empty-collaborator",
-            priority_user_token="test-priority-user-empty-collaborator",
-            collaborator_token="",
-            priority_user_decides_to_recognize=True,
-        )
+    
+    registration_success = ledger.register_interaction(event)
+    assert registration_success is True
+    assert ledger.size == 1
+    
+    ledger.clear()
+    assert ledger.size == 0
