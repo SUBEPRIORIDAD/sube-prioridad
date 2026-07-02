@@ -140,7 +140,7 @@ class BaseRecognitionLedger(ABC):
         pass
 
 class DemoRecognitionLedger(BaseRecognitionLedger):
-    """Implementación conceptual en memoria exigida por las pruebas unitarias."""
+    """Implementación de almacenamiento temporal en memoria exigido por tus tests."""
     def __init__(self) -> None:
         self._ledger: Dict[str, Dict[str, Any]] = {}
 
@@ -171,7 +171,6 @@ def assert_no_prohibited_fields(payload: Dict[str, Any]) -> None:
             "El payload contiene campos prohibidos para SUBE Prioridad: "
             + ", ".join(forbidden)
         )
-
 def create_demo_solidary_event(
     event_demo_id: str = "demo-solidary-event-001",
     priority_user_token: str = "demo-priority-user-001",
@@ -260,48 +259,6 @@ def simulate_solidary_recognition(
         accepted=True,
         recognition_token=recognition_token,
         rejection_reason=SolidaryRejectionReason.NONE,
-        risk_flags=[],
-        audit_flags=audit_flags,
-    )
-
-def result_to_dict(result: SolidaryRecognitionResult) -> Dict[str, Any]:
-    return {
-        "project": result.project,
-        "module": result.module,
-        "version": result.version,
-        "demo_mode": result.demo_mode,
-        "status": result.status.value,
-        "accepted": result.accepted,
-        "recognition_token": result.recognition_token,
-        "priority_user_token": result.priority_user_token,
-        "collaborator_token": result.collaborator_token,
-        "collaborator_user_token": result.collaborator_token,
-        "seat_type": result.seat_type.value,
-        "rejection_reason": result.rejection_reason.value,
-        "risk_flags": result.risk_flags,
-        "audit_flags": result.audit_flags,
-        "bonus_summary": result.bonus_summary,
-        "privacy_notice": result.privacy_notice,
-        "legal_scope_notice": result.legal_scope_notice,
-        "driver_burden": result.driver_burden,
-        "timestamp_utc": result.timestamp_utc,
-    }
-
-def run_demo() -> Dict[str, Any]:
-    event = create_demo_solidary_event()
-    result = simulate_solidary_recognition(event)
-    return result_to_dict(result)
-
-def run_rejected_demo() -> Dict[str, Any]:
-    event = create_demo_solidary_event(
-        voluntary_seat_yield=False,
-    )
-    result = simulate_solidary_recognition(event)
-    return result_to_dict(result)
-
-def _risk_flags(event: SolidaryEvent) -> List[str]:
-    flags: List[str] = []
-    if event.priority_user_token == event.collaborator_token:
         risk_flags=[],
         audit_flags=audit_flags,
     )
@@ -450,35 +407,17 @@ def _result(
 def _looks_like_free_text(token: str) -> bool:
     normalized = token.lower().strip()
     suspicious_terms = {
-        "dni",
-        "diagnostico",
-        "diagnóstico",
-        "cud",
-        "certificado",
-        "medico",
-        "médico",
-        "embarazo",
-        "fractura",
-        "lesion",
-        "lesión",
-        "discapacidad",
-        "saldo",
-        "dinero",
-        "tarifa",
-        "gratis",
-        "bono solidario",
-        "red sube",
+        "dni", "diagnostico", "diagnóstico", "cud", "certificado",
+        "medico", "médico", "embarazo", "fractura", "lesion", "lesión",
+        "discapacidad", "saldo", "dinero", "tarifa", "gratis",
+        "bono solidario", "red sube",
     }
-    return any(term in normalized for term in suspicious_terms) or len(
-        normalized.split()
-    ) > 1
+    return any(term in normalized for term in suspicious_terms) or len(normalized.split()) > 1
 
 def _require_non_empty(payload: Dict[str, str]) -> None:
     for field_name, value in payload.items():
         if not value or not str(value).strip():
-            raise ValueError(
-                f"El campo demostrativo {field_name} no puede estar vacío."
-            )
+            raise ValueError(f"El campo demostrativo {field_name} no puede estar vacío.")
 
 def _deduplicate(flags: List[str]) -> List[str]:
     seen = set()
