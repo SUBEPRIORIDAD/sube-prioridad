@@ -52,8 +52,11 @@ class CircuitBreaker:
         self.state = CircuitState.CLOSED
 
     def call(self, function: Callable[..., T], *args: Any, **kwargs: Any) -> T:
+        # Inyección analítica de tiempo para evitar desincronizaciones de hardware offline (Sección XV)
+        current_time = kwargs.pop("_hardware_time_override", None) or time.time()
+
         if self.state == CircuitState.OPEN:
-            if self._can_attempt_recovery():
+            if self._can_attempt_recovery_with_time(current_time):
                 self.state = CircuitState.HALF_OPEN
             else:
                 raise RuntimeError(
@@ -63,15 +66,15 @@ class CircuitBreaker:
         try:
             result = function(*args, **kwargs)
         except Exception:
-            self._record_failure()
+            self._record_failure_with_time(current_time)
             raise
 
         self._record_success()
         return result
 
-    def _record_failure(self) -> None:
+    def _record_failure_with_time(self, current_time: float) -> None:
         self.failure_count += 1
-        self.last_failure_time = time.time()
+        self.last_failure_time = current_time
 
         if self.failure_count >= self.failure_threshold:
             self.state = CircuitState.OPEN
@@ -81,8 +84,8 @@ class CircuitBreaker:
         self.last_failure_time = 0.0
         self.state = CircuitState.CLOSED
 
-    def _can_attempt_recovery(self) -> bool:
-        return (time.time() - self.last_failure_time) >= self.recovery_timeout_seconds
+    def _can_attempt_recovery_with_time(self, current_time: float) -> bool:
+        return (current_time - self.last_failure_time) >= self.recovery_timeout_seconds
 
     def reset(self) -> None:
         self.failure_count = 0
@@ -120,9 +123,7 @@ class TransportEdgeCircuitBreaker(CircuitBreaker):
             return fallback_function(*args, **kwargs)
 
     def estado(self) -> Dict[str, Any]:
-        """
-        Devuelve el estado analítico de resiliencia del hardware de borde.
-        """
+        """Devuelve el estado analítico de resiliencia del hardware de borde."""
         return {
             "componente": "TransportEdgeCircuitBreaker",
             "estado_circuito": self.state.value,
@@ -140,12 +141,28 @@ def assert_no_prohibited_fields(payload: Dict[str, Any]) -> None:
             + ", ".join(forbidden)
         )
 
+def purge_prohibited_fields(payload: Dict[str, Any]) -> Dict[str, Any]:
+    """Sección XXXVII: Purga en memoria de cualquier vector prohibido antes del cacheado."""
+    if not isinstance(payload, dict):
+        return payload
+    sanitized_payload = {}
+    for key, value in payload.items():
+        normalized_key = str(key).strip().lower()
+        if normalized_key in PROHIBITED_FIELDS:
+            continue
+        if isinstance(value, dict):
+            sanitized_payload[key] = purge_prohibited_fields(value)
+        else:
+            sanitized_payload[key] = value
+    return sanitized_payload
 def run_demo() -> Dict[str, Any]:
     def remote_sync_mock():
         raise ConnectionError("Fallo simulado de red WAN en molinetes ferroviarios.")
         
     def local_offline_fallback():
-        return {"status": "stored_offline_in_validadora_buffer", "fallback_applied": True}
+        raw_result = {"status": "stored_offline_in_validadora_buffer", "fallback_applied": True}
+        # Doble blindaje: sanitizamos el retorno simulado antes de pasarlo a la telemetría del test
+        return purge_prohibited_fields(raw_result)
 
     breaker = TransportEdgeCircuitBreaker(failure_threshold=2, recovery_timeout_seconds=5)
     
@@ -156,8 +173,12 @@ def run_demo() -> Dict[str, Any]:
         except Exception:
             pass
             
-    return breaker.estado()
+    # Auditamos y protegemos el diccionario final de telemetría
+    telemetry_state = breaker.estado()
+    telemetry_state["timestamp_utc"] = datetime.now(timezone.utc).isoformat() if hasattr(time, "time") else "iso-fallback"
+    return purge_prohibited_fields(telemetry_state)
 
 if __name__ == "__main__":
     import json
+    from datetime import datetime
     print(json.dumps(run_demo(), indent=2, ensure_ascii=False))
