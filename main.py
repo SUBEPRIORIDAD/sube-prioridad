@@ -1,241 +1,134 @@
 """
-SUBE Prioridad — API demo.
-
-Esta API expone endpoints conceptuales para el proyecto SUBE Prioridad.
-
-Importante:
-    No integra SUBE real.
-    No integra Red SUBE real.
-    No consulta tarjetas reales.
-    No consulta cuentas reales.
-    No consulta validadores reales.
-    No consulta molinetes reales.
-    No aplica tarifas reales.
-    No modifica saldo real.
-    No escribe chips reales.
-    No usa DNI.
-    No usa diagnóstico.
-    No usa CUD visible.
+SUBE Prioridad — API de Producción Saneada.
+Expone los endpoints del simulador de Bono Solidario, Matcher y Políticas de Descuento.
 """
 
 from __future__ import annotations
-
-from typing import Any, Dict, Optional
-
-from fastapi import FastAPI, HTTPException
+from datetime import datetime, timezone
+from typing import Any, Dict, List, Optional
+from fastapi import FastAPI, HTTPException, status
 from pydantic import BaseModel, Field
 
-from bono_solidario_simulator import (
-    SeatType,
-    create_demo_solidary_event,
-    result_to_dict as bono_result_to_dict,
-    simulate_solidary_recognition,
-)
-
-
-APP_NAME = "SUBE Prioridad"
-PROJECT_NAME = APP_NAME
-APP_VERSION = "0.4.3"
-DEMO_MODE = True
-
+import bono_solidario_simulator as simulator
+import red_sube_trip_window_matcher as matcher
+import red_sube_discount_policy as policy
+import solidary_bonus_frontend_flow as frontend
 
 app = FastAPI(
-    title=APP_NAME,
-    description=(
-        "API demo conceptual para asistencia preventiva, alertas de prioridad "
-        "y Bono Solidario en transporte público."
-    ),
-    version=APP_VERSION,
+    title="SUBE Prioridad API",
+    version="0.3.0",
+    description="Endpoints conceptuales para la prueba piloto de co-presencia cívica."
 )
 
-
-class PriorityVerificationRequest(BaseModel):
-    priority_attribute_active: bool = Field(...)
-    previously_accredited_need: bool = Field(...)
-    validation_paid: bool = Field(...)
-    user_token: Optional[str] = Field(default="demo-priority-user-001")
-    priority_attribute_token: Optional[str] = Field(default="demo-priority-attribute-001")
-
-
-class SolidaryBonusSimulationRequest(BaseModel):
+class SolidaryEventPayload(BaseModel):
+    event_demo_id: str = Field(default="demo-event-001")
     priority_user_token: str = Field(default="demo-priority-user-001")
-    collaborator_user_token: str = Field(default="demo-collaborator-user-001")
-    voluntary_seat_yield: bool = Field(default=True)
-    priority_user_confirms: bool = Field(default=True)
-    same_transport_context: bool = Field(default=True)
+    collaborator_token: str = Field(default="demo-collaborator-user-001")
+    voluntary_seat_yield: bool = True
+    priority_user_confirms_seat_yield: bool = True
+    same_transport_context: bool = True
     seat_type: str = Field(default="general_use")
 
+class ValidationSignalPayload(BaseModel):
+    validation_event_demo_id: str
+    participant_role: str
+    participant_token: str
+    payment_method_demo_token: str
+    validation_paid: bool
+    country: str = "Argentina"
+    network_demo_id: str
+    transport_mode: str
+    validation_point_type: str
+    route_demo_id: Optional[str] = None
+    vehicle_demo_id: Optional[str] = None
+    station_demo_id: Optional[str] = None
+    turnstile_demo_id: Optional[str] = None
+    platform_demo_id: Optional[str] = None
+    trip_demo_id: Optional[str] = None
 
-class SolidaryBonusMvpEndToEndRequest(BaseModel):
-    scenario: str = Field(default="mobile_to_mobile")
-    collaborator_account_demo_token: str = Field(default="demo-collaborator-account-001")
-    collaborator_sube_card_token: str = Field(default="demo-collaborator-sube-card-001")
-    collaborator_payment_method_demo_token: str = Field(default="demo-collaborator-payment-001")
+class MatchEvaluationRequest(BaseModel):
+    priority_signal: ValidationSignalPayload
+    collaborator_signal: ValidationSignalPayload
 
-
-@app.get("/")
-def root() -> Dict[str, Any]:
-    return {
-        "app_name": APP_NAME,
-        "project": PROJECT_NAME,
-        "version": APP_VERSION,
-        "demo_mode": DEMO_MODE,
-        "status": "ok",
-        "message": (
-            "SUBE Prioridad API demo. Proyecto conceptual sin integración real "
-            "con SUBE ni Red SUBE."
-        ),
-        "docs": "/docs",
-    }
-
-
-@app.get("/health")
-def health() -> Dict[str, Any]:
-    return {
-        "app_name": APP_NAME,
-        "project": PROJECT_NAME,
-        "version": APP_VERSION,
-        "demo_mode": DEMO_MODE,
-        "status": "ok",
-    }
-
-
-@app.get("/project/guardrails")
-def project_guardrails() -> Dict[str, Any]:
-    return {
-        "app_name": APP_NAME,
-        "project": PROJECT_NAME,
-        "version": APP_VERSION,
-        "demo_mode": DEMO_MODE,
-        "status": "ok",
-        "guardrails": [
-            "Sin integración real con SUBE.",
-            "Sin integración real con Red SUBE.",
-            "Sin consulta a tarjetas reales.",
-            "Sin consulta a cuentas reales.",
-            "Sin consulta a validadores reales.",
-            "Sin consulta a molinetes reales.",
-            "Sin tarifa real.",
-            "Sin saldo real.",
-            "Sin escritura real sobre chip SUBE.",
-            "Sin DNI.",
-            "Sin diagnóstico médico.",
-            "Sin CUD visible.",
-            "Sin historia clínica.",
-            "Sin certificado médico.",
-            "Sin GPS exacto.",
-            "Sin vigilancia.",
-            "Sin ranking.",
-            "Sin sanciones.",
-            "Sin obligación de tener celular.",
-            "Sin obligación nueva para choferes.",
-            "El transporte no necesita conocer el diagnóstico.",
-        ],
-    }
-
-
-@app.post("/api/v1/prioridad/verificar")
-def verificar_prioridad(
-    request: PriorityVerificationRequest,
-) -> Dict[str, Any]:
-    eligible = (
-        request.priority_attribute_active
-        and request.previously_accredited_need
-        and request.validation_paid
+@app.post("/api/v1/solidary-recognition", status_code=status.HTTP_200_OK)
+def process_solidary_recognition(payload: SolidaryEventPayload) -> Dict[str, Any]:
+    try:
+        seat_type_enum = simulator.SeatType(payload.seat_type)
+    except ValueError:
+        raise HTTPException(status_code=422, detail="Tipo de asiento no válido.")
+        
+    payload_dict = payload.dict()
+    try:
+        simulator.assert_no_prohibited_fields(payload_dict)
+    except ValueError as e:
+        raise HTTPException(status_code=422, detail=str(e))
+        
+    event = simulator.create_demo_solidary_event(
+        event_demo_id=payload.event_demo_id,
+        priority_user_token=payload.priority_user_token,
+        collaborator_token=payload.collaborator_token,
+        voluntary_seat_yield=payload.voluntary_seat_yield,
+        priority_user_confirms_seat_yield=payload.priority_user_confirms_seat_yield,
+        same_transport_context=payload.same_transport_context,
+        seat_type=seat_type_enum
     )
+    result = simulator.simulate_solidary_recognition(event)
+    if not result.accepted:
+        raise HTTPException(status_code=422, detail=f"Rechazado: {result.rejection_reason.value}")
+    return simulator.result_to_dict(result)
+@app.post("/api/v1/trip-window-match", status_code=status.HTTP_200_OK)
+def evaluate_hardware_match(payload: MatchEvaluationRequest) -> Dict[str, Any]:
+    try:
+        matcher.assert_no_prohibited_fields(payload.priority_signal.dict())
+        matcher.assert_no_prohibited_fields(payload.collaborator_signal.dict())
+    except ValueError as e:
+        raise HTTPException(status_code=422, detail=str(e))
+        
+    p_sig = matcher.create_demo_validation_signal(
+        validation_event_demo_id=payload.priority_signal.validation_event_demo_id,
+        participant_role=matcher.ParticipantRole(payload.priority_signal.participant_role),
+        participant_token=payload.priority_signal.participant_token,
+        payment_method_demo_token=payload.priority_signal.payment_method_demo_token,
+        validation_paid=payload.priority_signal.validation_paid,
+        country=payload.priority_signal.country,
+        network_demo_id=payload.priority_signal.network_demo_id,
+        transport_mode=matcher.TransportMode(payload.priority_signal.transport_mode),
+        validation_point_type=matcher.ValidationPointType(payload.priority_signal.validation_point_type),
+        route_demo_id=payload.priority_signal.route_demo_id,
+        vehicle_demo_id=payload.priority_signal.vehicle_demo_id,
+        station_demo_id=payload.priority_signal.station_demo_id,
+        turnstile_demo_id=payload.priority_signal.turnstile_demo_id,
+        platform_demo_id=payload.priority_signal.platform_demo_id,
+        trip_demo_id=payload.priority_signal.trip_demo_id
+    )
+    
+    c_sig = matcher.create_demo_validation_signal(
+        validation_event_demo_id=payload.collaborator_signal.validation_event_demo_id,
+        participant_role=matcher.ParticipantRole(payload.collaborator_signal.participant_role),
+        participant_token=payload.collaborator_signal.participant_token,
+        payment_method_demo_token=payload.collaborator_signal.payment_method_demo_token,
+        validation_paid=payload.collaborator_signal.validation_paid,
+        country=payload.collaborator_signal.country,
+        network_demo_id=payload.collaborator_signal.network_demo_id,
+        transport_mode=matcher.TransportMode(payload.collaborator_signal.transport_mode),
+        validation_point_type=matcher.ValidationPointType(payload.collaborator_signal.validation_point_type),
+        route_demo_id=payload.collaborator_signal.route_demo_id,
+        vehicle_demo_id=payload.collaborator_signal.vehicle_demo_id,
+        station_demo_id=payload.collaborator_signal.station_demo_id,
+        turnstile_demo_id=payload.collaborator_signal.turnstile_demo_id,
+        platform_demo_id=payload.collaborator_signal.platform_demo_id,
+        trip_demo_id=payload.collaborator_signal.trip_demo_id
+    )
+    
+    result = matcher.evaluate_trip_window_match(p_sig, c_sig)
+    if not result.matched:
+        raise HTTPException(status_code=422, detail="Las señales de hardware no coinciden.")
+    return matcher.result_to_dict(result)
 
-    risk_flags = []
-
-    if not request.priority_attribute_active:
-        risk_flags.append("priority_attribute_not_active")
-
-    if not request.previously_accredited_need:
-        risk_flags.append("priority_need_not_previously_accredited")
-
-    if not request.validation_paid:
-        risk_flags.append("validation_payment_not_confirmed")
-
+@app.get("/api/v1/health-check")
+def health_check() -> Dict[str, Any]:
     return {
-        "app_name": APP_NAME,
-        "project": PROJECT_NAME,
-        "demo_mode": DEMO_MODE,
-        "eligible": eligible,
-        "priority_attribute_active": request.priority_attribute_active,
-        "previously_accredited_need": request.previously_accredited_need,
-        "validation_paid": request.validation_paid,
-        "risk_flags": risk_flags,
-        "privacy_notice": (
-            "La verificación demo no usa DNI, diagnóstico, CUD, certificado médico "
-            "ni historia clínica."
-        ),
-        "legal_scope_notice": (
-            "Resultado conceptual sin integración real con SUBE ni Red SUBE."
-        ),
+        "status": "healthy",
+        "timestamp_utc": datetime.now(timezone.utc).isoformat(),
+        "project": "SUBE Prioridad"
     }
-
-
-@app.post("/api/v1/bono-solidario/simular")
-def simular_bono_solidario(
-    request: SolidaryBonusSimulationRequest,
-) -> Dict[str, Any]:
-    seat_type_map = {
-        "general_use": SeatType.GENERAL_USE,
-        "legal_priority": SeatType.LEGAL_PRIORITY,
-    }
-
-    if request.seat_type not in seat_type_map:
-        raise HTTPException(
-            status_code=400,
-            detail="seat_type debe ser general_use o legal_priority.",
-        )
-
-    event = create_demo_solidary_event(
-        priority_user_token=request.priority_user_token,
-        collaborator_token=request.collaborator_user_token,
-        voluntary_seat_yield=request.voluntary_seat_yield,
-        priority_user_confirms_seat_yield=request.priority_user_confirms,
-        same_transport_context=request.same_transport_context,
-        seat_type=seat_type_map[request.seat_type],
-    )
-
-    result = simulate_solidary_recognition(event)
-
-    return bono_result_to_dict(result)
-
-
-@app.post("/api/v1/bono-solidario-mvp/end-to-end")
-def bono_solidario_mvp_end_to_end(
-    request: SolidaryBonusMvpEndToEndRequest,
-) -> Dict[str, Any]:
-    from solidary_bonus_mvp_end_to_end_flow import (
-        EndToEndScenario,
-        create_demo_solidary_bonus_mvp_end_to_end_request,
-        result_to_dict,
-        run_solidary_bonus_mvp_end_to_end,
-    )
-
-    scenario_map = {
-        "mobile_to_mobile": EndToEndScenario.MOBILE_TO_MOBILE,
-        "priority_phone_nfc_card": EndToEndScenario.PRIORITY_PHONE_NFC_CARD,
-        "validator_assisted_card_tap": EndToEndScenario.VALIDATOR_ASSISTED_CARD_TAP,
-    }
-
-    if request.scenario not in scenario_map:
-        raise HTTPException(
-            status_code=400,
-            detail=(
-                "scenario debe ser uno de: mobile_to_mobile, "
-                "priority_phone_nfc_card, validator_assisted_card_tap."
-            ),
-        )
-
-    end_to_end_request = create_demo_solidary_bonus_mvp_end_to_end_request(
-        scenario=scenario_map[request.scenario],
-        collaborator_account_demo_token=request.collaborator_account_demo_token,
-        collaborator_sube_card_token=request.collaborator_sube_card_token,
-        collaborator_payment_method_demo_token=request.collaborator_payment_method_demo_token,
-    )
-
-    result = run_solidary_bonus_mvp_end_to_end(end_to_end_request)
-
-    return result_to_dict(result)
