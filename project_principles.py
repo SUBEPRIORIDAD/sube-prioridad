@@ -42,8 +42,6 @@ class ProjectGuardrails:
 
 
 GUARDRAILS: Final[ProjectGuardrails] = ProjectGuardrails()
-
-
 PROHIBITED_CORE_DATA: Final[Tuple[str, ...]] = (
     "dni",
     "nombre",
@@ -84,6 +82,11 @@ SIMULATED_EXTERNAL_SERVICES: Final[Tuple[str, ...]] = (
 )
 
 
+# Rutas de gobernanza e infraestructura incorporadas para la Fase II de Homologación
+DOCUMENTACION_GOBERNANZA_CORE: Final[Tuple[str, ...]] = (
+    "./DOC_INTEROPERABILIDAD.md",
+    "./TECHNICAL_ROADMAP_NACION_SERVICIOS.md",
+)
 def assert_safe_payload(payload: dict) -> None:
     """
     Verifica que un payload técnico no incluya campos prohibidos en el core.
@@ -114,6 +117,7 @@ def describe_project() -> dict:
         "mvp_core_modules": MVP_CORE_MODULES,
         "future_evolution_modules": FUTURE_EVOLUTION_MODULES,
         "simulated_external_services": SIMULATED_EXTERNAL_SERVICES,
+        "documentacion_gobernanza_core": DOCUMENTACION_GOBERNANZA_CORE,
     }
 
 
