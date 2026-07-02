@@ -1,35 +1,26 @@
 """
 SUBE Prioridad — Matriz demo de información mínima por rol.
 Este módulo modela una regla estructural del proyecto:
- Cada actor del ecosistema SUBE Prioridad recibe únicamente la información
- mínima necesaria para cumplir su función.
+Cada actor del ecosistema SUBE Prioridad recibe únicamente la información
+mínima necesaria para cumplir su función.
 
 Regla general:
- En calle, unidades, validadoras, molinetes y entorno operativo general,
- el usuario se muestra únicamente como:
- "Usuario SUBE Prioridad"
- sin revelar causa, diagnóstico, CUD visible, documentación médica,
- edad, embarazo, lesión, tratamiento, identidad civil ni historia clínica.
+En calle, unidades, validadoras, molinetes y entorno operativo general,
+el usuario se muestra únicamente como:
+"Usuario SUBE Prioridad"
+sin revelar causa, diagnóstico, CUD visible, documentación médica,
+edad, embarazo, lesión, tratamiento, identidad civil ni historia clínica.
 
 Excepción:
- En trenes, subtes, estaciones, andenes o plataformas puede compartirse
+En trenes, subtes, estaciones, andenes o plataformas puede compartirse
  un indicio operativo respetuoso con personal autorizado, sólo si el usuario
  prestó consentimiento expreso.
 
-No integra SUBE real.
-No integra Red SUBE real.
-No integra Mi Argentina real.
-No consulta bases estatales reales.
-No consulta ANDIS real.
-No consulta SISA real.
-No consulta RENAPER real.
-No consulta historias clínicas.
-No usa DNI visible.
-No usa diagnóstico.
-No usa CUD visible.
-No expone documentación médica.
-No aplica beneficios tarifarios reales.
-No modifica saldo.
+No integra SUBE real. No integra Red SUBE real. No integra Mi Argentina real.
+No consulta bases estatales reales. No consulta ANDIS real. No consulta SISA real.
+No consulta RENAPER real. No consulta historias clínicas. No usa DNI visible.
+No usa diagnóstico. No usa CUD visible. No expone documentación médica.
+No aplica beneficios tarifarios reales. No modifica saldo.
 No genera obligación nueva para choferes o personal operativo.
 """
 
@@ -41,7 +32,7 @@ from typing import Any, Dict, List, Optional
 
 PROJECT_NAME = "SUBE Prioridad"
 MODULE_NAME = "Matriz Demo de Información Mínima por Rol"
-MODULE_VERSION = "0.1.0"
+MODULE_VERSION = "1.0.0"
 DEMO_MODE = True
 
 PROHIBITED_FIELDS = {
@@ -245,7 +236,6 @@ def purge_prohibited_fields(payload: Dict[str, Any]) -> Dict[str, Any]:
         else:
             sanitized_payload[key] = value
     return sanitized_payload
-
 def create_policy_for_role(
     role: EcosystemRole,
     context: OperationalContext = OperationalContext.GENERAL_STREET_OR_ONBOARD,
@@ -425,7 +415,7 @@ def create_policy_for_role(
             consent_required=False,
             authorized_staff_only=False,
             public_visibility_label="Usuario SUBE Prioridad",
-            purpose="Evaluar funcionamiento mediante datos agregados y anonimizados.",
+            purpose="Evaluar funcionamiento mediante datos agregados and anonimizados.",
         )
     return MinimalInformationPolicy(
         role=role,
@@ -451,12 +441,10 @@ def create_demo_information_disclosure_request(
     purpose_token: str = "demo-purpose-token-001",
     event_demo_token: str = "demo-event-token-001",
 ) -> InformationDisclosureRequest:
-    
     raw_payload = {
         "purpose_token": purpose_token,
         "event_demo_token": event_demo_token,
     }
-    
     sanitized_payload = purge_prohibited_fields(raw_payload)
     _require_non_empty(sanitized_payload)
     
@@ -474,7 +462,6 @@ def create_demo_information_disclosure_request(
         purpose_token=str(sanitized_payload.get("purpose_token", purpose_token)).strip(),
         event_demo_token=str(sanitized_payload.get("event_demo_token", event_demo_token)).strip(),
     )
-
 def evaluate_minimal_information_disclosure(
     request: InformationDisclosureRequest,
 ) -> InformationDisclosureResult:
@@ -541,6 +528,7 @@ def evaluate_minimal_information_disclosure(
         risk_flags=[],
         audit_flags=audit_flags,
     )
+
 def result_to_dict(result: InformationDisclosureResult) -> Dict[str, Any]:
     return {
         "project": result.project,
@@ -599,7 +587,6 @@ def run_collaborating_passenger_demo() -> Dict[str, Any]:
     )
     result = evaluate_minimal_information_disclosure(request)
     return result_to_dict(result)
-
 def _station_or_train_staff_policy(
     role: EcosystemRole,
     context: OperationalContext,
@@ -704,7 +691,6 @@ def _result(
 ) -> InformationDisclosureResult:
     station_hint_shared = InformationItem.AUTHORIZED_STATION_HINT in disclosed_information
     
-    # Doble blindaje: Filtramos el payload de salida simulado antes de retornarlo
     raw_payload = _payload_demo(
         request=request,
         policy=policy,
@@ -743,49 +729,6 @@ def _payload_demo(
     disclosed_information: List[InformationItem],
     station_hint_shared: bool,
 ) -> Dict[str, Any]:
-    return {
-        "event_demo_token": request.event_demo_token,
-        "purpose_token": request.purpose_token,
-        "role": request.role.value,
-        "context": request.context.value,
-        "visible_as": policy.public_visibility_label,
-        "disclosed_information": [item.value for item in disclosed_information],
-        "authorized_station_hint_shared": station_hint_shared,
-        "authorized_staff_only": policy.authorized_staff_only and station_hint_shared,
-        "contains_dni": False,
-        "contains_name": False,
-        "contains_address": False,
-        "contains_phone": False,
-        "contains_email": False,
-        "contains_diagnosis": False,
-        "contains_cud_visible": False,
-        "contains_medical_certificate": False,
-        "contains_clinical_history": False,
-        "contains_specific_condition": False,
-        "contains_balance": False,
-        "contains_fare": False,
-        "contains_precise_geolocation": False,
-        "driver_burden": "no_new_driver_obligation",
-        "purpose": policy.purpose,
-    }
-
-def _privacy_notice() -> str:
-    return (
-        "La matriz de información mínima impide transmitir DNI, nombre, "
-        "domicilio, teléfono, email, diagnóstico, CUD visible, certificado "
-        "médico, historia clínica, patología, tratamiento, lesión, embarazo "
-        "identificado, saldo, tarifa o geolocalización precisa."
-    )
-
-def _legal_scope_notice() -> str:
-    return (
-        "Modelo conceptual sin integración real con SUBE, Red SUBE, Mi Argentina, "
-        "ANDIS, SISA, RENAPER, validadores, molinetes, operadores ni bases "
-        "estatales reales."
-    )
-
-def _common_warnings() -> List[str]:
-    return [
     return {
         "event_demo_token": request.event_demo_token,
         "purpose_token": request.purpose_token,
