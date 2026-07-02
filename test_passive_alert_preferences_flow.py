@@ -1,5 +1,6 @@
 """
 SUBE Prioridad — Tests unitarios para preferencias y alertas pasivas.
+Valida la persistencia del atributo activo del usuario sin datos de salud.
 """
 
 from __future__ import annotations
