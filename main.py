@@ -35,7 +35,7 @@ from bono_solidario_simulator import (
 
 APP_NAME = "SUBE Prioridad"
 PROJECT_NAME = APP_NAME
-APP_VERSION = "0.4.2"
+APP_VERSION = "0.4.3"
 DEMO_MODE = True
 
 
@@ -50,13 +50,6 @@ app = FastAPI(
 
 
 class PriorityVerificationRequest(BaseModel):
-    """
-    Payload de verificación demo.
-
-    Los campos centrales son requeridos para mantener compatibilidad con tests
-    y evitar que un payload vacío sea aceptado como válido.
-    """
-
     priority_attribute_active: bool = Field(...)
     previously_accredited_need: bool = Field(...)
     validation_paid: bool = Field(...)
@@ -65,12 +58,6 @@ class PriorityVerificationRequest(BaseModel):
 
 
 class SolidaryBonusSimulationRequest(BaseModel):
-    """
-    Payload para simulación simple del Bono Solidario.
-
-    Se conserva compatibilidad con el endpoint previo.
-    """
-
     priority_user_token: str = Field(default="demo-priority-user-001")
     collaborator_user_token: str = Field(default="demo-collaborator-user-001")
     voluntary_seat_yield: bool = Field(default=True)
@@ -80,15 +67,6 @@ class SolidaryBonusSimulationRequest(BaseModel):
 
 
 class SolidaryBonusMvpEndToEndRequest(BaseModel):
-    """
-    Solicitud del flujo end-to-end MVP.
-
-    Escenarios admitidos:
-        - mobile_to_mobile
-        - priority_phone_nfc_card
-        - validator_assisted_card_tap
-    """
-
     scenario: str = Field(default="mobile_to_mobile")
     collaborator_account_demo_token: str = Field(default="demo-collaborator-account-001")
     collaborator_sube_card_token: str = Field(default="demo-collaborator-sube-card-001")
@@ -160,13 +138,6 @@ def project_guardrails() -> Dict[str, Any]:
 def verificar_prioridad(
     request: PriorityVerificationRequest,
 ) -> Dict[str, Any]:
-    """
-    Verificación demo del atributo SUBE Prioridad.
-
-    No consulta bases reales.
-    No valida documentación real.
-    No expone información sensible.
-    """
     eligible = (
         request.priority_attribute_active
         and request.previously_accredited_need
@@ -207,11 +178,6 @@ def verificar_prioridad(
 def simular_bono_solidario(
     request: SolidaryBonusSimulationRequest,
 ) -> Dict[str, Any]:
-    """
-    Simulación base del Bono Solidario.
-
-    Este endpoint conserva la simulación simple previa del proyecto.
-    """
     seat_type_map = {
         "general_use": SeatType.GENERAL_USE,
         "legal_priority": SeatType.LEGAL_PRIORITY,
@@ -227,7 +193,7 @@ def simular_bono_solidario(
         priority_user_token=request.priority_user_token,
         collaborator_token=request.collaborator_user_token,
         voluntary_seat_yield=request.voluntary_seat_yield,
-        priority_user_confirms=request.priority_user_confirms,
+        priority_user_confirms_seat_yield=request.priority_user_confirms,
         same_transport_context=request.same_transport_context,
         seat_type=seat_type_map[request.seat_type],
     )
@@ -241,16 +207,6 @@ def simular_bono_solidario(
 def bono_solidario_mvp_end_to_end(
     request: SolidaryBonusMvpEndToEndRequest,
 ) -> Dict[str, Any]:
-    """
-    Ejecuta el flujo end-to-end del Bono Solidario MVP.
-
-    Este endpoint:
-        - evalúa la opción MVP;
-        - abre una ventana demo;
-        - ejecuta acumulación demo;
-        - genera instrucción conceptual para próximo viaje elegible;
-        - no aplica beneficios reales.
-    """
     from solidary_bonus_mvp_end_to_end_flow import (
         EndToEndScenario,
         create_demo_solidary_bonus_mvp_end_to_end_request,
